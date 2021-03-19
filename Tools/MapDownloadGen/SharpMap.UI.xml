@@ -1,0 +1,724 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpMap.UI</name>
+    </assembly>
+    <members>
+        <member name="E:SharpMap.Forms.MapToolStrip.MapControlChanged">
+            <summary>
+            Event raised when the corresponding map control has changed.
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapToolStrip.MapControlChanging">
+            <summary>
+            Event raised when the corresponding map control is about to change
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapToolStrip.MapControl">
+            <summary>
+            Gets or sets the control whose properties are currently being managed.
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage">
+            <summary>
+            MapImage Class - MapImage control for Windows forms
+            </summary>
+            <remarks>
+            The MapImage control adds basic functionality to a Windows Form, such as dynamic pan, zoom and data query.
+            </remarks>
+        </member>
+        <member name="M:SharpMap.Forms.MapImage.#ctor">
+            <summary>
+            Initializes a new map
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.MapImage.VariableLayersRequery(System.Object,System.EventArgs)">
+            <summary>
+            Handles need to requery of variable layers
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SharpMap.Forms.MapImage.Refresh">
+            <summary>
+            Refreshes the map
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.MapImage.QueryLayer(SharpMap.Layers.ILayer,System.Drawing.PointF)">
+            <summary>
+            Performs query on layer if it is of <see cref="T:SharpMap.Layers.ICanQueryLayer"/>
+            </summary>
+            <param name="layer">The layer to query</param>
+            <param name="pt">The point to perform the query on</param>
+        </member>
+        <member name="P:SharpMap.Forms.MapImage.ZoomToPointer">
+            <summary>
+            Sets whether the mouse wheel should zoom to the pointer location
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapImage.Map">
+            <summary>
+            Map reference
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapImage.QueryLayerIndex">
+            <summary>
+            Gets or sets the index of the active query layer 
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapImage.ActiveTool">
+            <summary>
+            Sets the active map tool
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapImage.PanOnClick">
+            <summary>
+            Sets whether the "go-to-cursor-on-click" feature is enabled or not (even if enabled it works only if the active tool is Pan)
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapImage.ZoomOnDblClick">
+            <summary>
+            Sets whether the "go-to-cursor-and-zoom-in-on-double-click" feature is enable or not
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MouseMove">
+            <summary>
+            Fires when mouse moves over the map
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MouseDown">
+            <summary>
+            Fires when map received a mouseclick
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MouseUp">
+            <summary>
+            Fires when mouse is released
+            </summary>		
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MouseDrag">
+            <summary>
+            Fired when mouse is dragging
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MapRefreshed">
+            <summary>
+            Fired when the map has been refreshed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MapZoomChanged">
+            <summary>
+            Fired when the zoom value has changed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MapZooming">
+            <summary>
+            Fired when the map is being zoomed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MapQueried">
+            <summary>
+            Fired when the map is queried
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.MapCenterChanged">
+            <summary>
+            Fired when the center of the map has changed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapImage.ActiveToolChanged">
+            <summary>
+            Fired when the active map tool has changed
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.Tools">
+            <summary>
+            Map tools enumeration
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapImage.Tools.Pan">
+            <summary>
+            Pan
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapImage.Tools.ZoomIn">
+            <summary>
+            Zoom in
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapImage.Tools.ZoomOut">
+            <summary>
+            Zoom out
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapImage.Tools.Query">
+            <summary>
+            Query tool
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapImage.Tools.PanOrQuery">
+            <summary>
+            Pan on drag, Query on click
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapImage.Tools.None">
+            <summary>
+            No active tool
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.ActiveToolChangedHandler">
+            <summary>
+            Eventtype fired when the map tool is changed
+            </summary>
+            <param name="tool"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.MapCenterChangedHandler">
+            <summary>
+            Eventtype fired when the center has changed
+            </summary>
+            <param name="center"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.MapQueryHandler">
+            <summary>
+            Eventtype fired when the map is queried
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.MapQueryDataSetHandler">
+            <summary>
+            Eventtype fired when the map is queried
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.MapZoomHandler">
+            <summary>
+            Eventtype fired when the zoom was or are being changed
+            </summary>
+            <param name="zoom"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapImage.MouseEventHandler">
+            <summary>
+            MouseEventtype fired from the MapImage control
+            </summary>
+            <param name="WorldPos"></param>
+            <param name="ImagePos"></param>
+        </member>
+        <member name="F:SharpMap.Forms.WktGeometryCreator.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.WktGeometryCreator.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SharpMap.Forms.WktGeometryCreator.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:SharpMap.Properties.Resources">
+            <summary>
+              Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+            </summary>
+        </member>
+        <member name="P:SharpMap.Properties.Resources.ResourceManager">
+            <summary>
+              Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+            </summary>
+        </member>
+        <member name="P:SharpMap.Properties.Resources.Culture">
+            <summary>
+              Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
+              Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox">
+            <summary>
+            MapBox Class - MapBox control for Windows forms
+            </summary>
+            <remarks>
+            The ExtendedMapImage control adds more than basic functionality to a Windows Form, such as dynamic pan, widow zoom and data query.
+            </remarks>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.RandomizeLayerColors(SharpMap.Layers.VectorLayer)">
+            <summary>
+            Assigns a random color to a vector layers style
+            </summary>
+            <param name="layer"></param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.#ctor">
+            <summary>
+            Initializes a new map
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.Dispose(System.Boolean)">
+            <summary>
+            Dispose method
+            </summary>
+            <param name="disposing">A parameter indicating that this method is called from either a call to <see cref="!:Control.Dispose()"/> (<c>true</c>)
+            or the finalizer (<c>false</c>)</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.HandleMapBoxLostFocus(System.Object,System.EventArgs)">
+            <summary>
+            Handles LostFocus event
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.HandleVariableLayersRequery(System.Object,System.EventArgs)">
+            <summary>
+            Handles need to requery of variable layers
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.Refresh">
+            <summary>
+            Refreshes the map
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMouseHover(System.EventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.MouseHover"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.EventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMouseWheel(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.MouseWheel"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMouseDown(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.MouseDown"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMouseMove(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.MouseMove"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnKeyDown(System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.KeyDown"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.KeyEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMapChanging(System.ComponentModel.CancelEventArgs)">
+            <summary>
+            Invokes the <see cref="E:SharpMap.Forms.MapBox.MapChanging"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.ComponentModel.CancelEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMapChanged(System.EventArgs)">
+            <summary>
+            Invokes the <see cref="E:SharpMap.Forms.MapBox.MapChanged"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.EventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnPaint(System.Windows.Forms.PaintEventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.Paint"/>-event.
+            </summary>
+            <param name="pe">A <see cref="T:System.Windows.Forms.PaintEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="M:SharpMap.Forms.MapBox.OnMouseUp(System.Windows.Forms.MouseEventArgs)">
+            <summary>
+            Invokes the <see cref="E:System.Windows.Forms.Control.MouseUp"/>-event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.MouseEventArgs"/> that contains the event arguments.</param>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MouseMove">
+            <summary>
+            Fires when mouse moves over the map
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MouseDown">
+            <summary>
+            Fires when map received a mouseclick
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MouseUp">
+            <summary>
+            Fires when mouse is released
+            </summary>		
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MouseDrag">
+            <summary>
+            Fired when mouse is dragging
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapRefreshed">
+            <summary>
+            Fired when the map has been refreshed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapChanging">
+            <summary>
+            Fired when the map is about to change
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapChanged">
+            <summary>
+            Fired when the map has been changed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapZoomChanged">
+            <summary>
+            Fired when the zoom value has changed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapZooming">
+            <summary>
+            Fired when the map is being zoomed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapQueried">
+            <summary>
+            Fired when the map is queried
+            
+            Will be fired one time for each layer selected for query depending on QueryLayerIndex and QuerySettings
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapQueryStarted">
+            <summary>
+            Fired when Map is Queried before the first MapQueried event is fired for that query
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapQueryDone">
+            <summary>
+            Fired when Map is Queried after the last MapQueried event is fired for that query
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.MapCenterChanged">
+            <summary>
+            Fired when the center of the map has changed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.ActiveToolChanged">
+            <summary>
+            Fired when the active map tool has changed
+            </summary>
+        </member>
+        <member name="E:SharpMap.Forms.MapBox.GeometryDefined">
+            <summary>
+            Fired when a new polygon has been defined
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.ShowProgressUpdate">
+            <summary>
+            Gets or sets a value on whether to report progress of map generation
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.PanOnClick">
+            <summary>
+            Gets or sets whether the "go-to-cursor-on-click" feature is enabled or not (even if enabled it works only if the active tool is Pan)
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.TakeFocusOnHover">
+            <summary>
+            Sets whether the mapcontrol should automatically grab focus when mouse is hovering the control
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.ZoomToPointer">
+            <summary>
+            Sets whether the mouse wheel should zoom to the pointer location
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.SetToolsNoneWhileRedrawing">
+            <summary>
+            Sets ActiveTool to None (and changing cursor) while redrawing the map
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.QueryGrowFactor">
+            <summary>
+            Gets or sets the number of pixels by which a bounding box around the query point should be "grown" prior to perform the query
+            </summary>
+            <remarks>Does not apply when querying against boxes.</remarks>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.SelectionBackColor">
+            <summary>
+            Gets or sets the value of the back color for the selection rectangle
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.SelectionForeColor">
+            <summary>
+            Gets or sets the value of the border color for the selection rectangle
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.Image">
+            <summary>
+            Gets the current map image
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.WheelZoomMagnitude">
+            <summary>
+            Gets or sets the amount which a single movement of the mouse wheel zooms by.
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.PreviewMode">
+            <summary>
+            Gets or sets the mode used to create preview image while panning or zooming.
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.FineZoomFactor">
+            <summary>
+            Gets or sets a value indicating the amount which the WheelZoomMagnitude is divided by 
+            when the Control key is pressed. A number greater than 1 decreases 
+            the zoom, and less than 1 increases it. A negative number reverses it.
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.EnableShiftButtonDragRectangleZoom">
+            <summary>
+            Gets or sets a value that enables shortcut to rectangle-zoom by holding down shift-button and drag rectangle
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.Map">
+            <summary>
+            Gets or sets the map reference
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.QueryLayerIndex">
+            <summary>
+            Gets or sets the index of the active query layer 
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.MapQueryMode">
+            <summary>
+            Gets or sets the mapquerying mode
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.MapBox.ActiveTool">
+            <summary>
+            Sets the active map tool
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.PreviewModes">
+            <summary>
+            Preview modes
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.PreviewModes.Best">
+            <summary>
+            Best preview mode
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.PreviewModes.Fast">
+            <summary>
+            Fast preview mode
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.XPosition">
+            <summary>
+            Horizontal alignment enumeration
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.YPosition">
+            <summary>
+            Vertical alignment enumeration
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.Tools">
+            <summary>
+            Map tools enumeration
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.Pan">
+            <summary>
+            Pan
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.ZoomIn">
+            <summary>
+            Zoom in
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.ZoomOut">
+            <summary>
+            Zoom out
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.QueryBox">
+            <summary>
+            Query bounding boxes for intersection
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.Query">
+            <summary>
+            Query tool
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.QueryPoint">
+            <summary>
+            Attempt true intersection query on geometry
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.QueryGeometry">
+            <summary>
+            Attempt true intersection query on geometry
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.ZoomWindow">
+            <summary>
+            Zoom window tool
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.DrawPoint">
+            <summary>
+            Define Point on Map
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.DrawLine">
+            <summary>
+            Define Line on Map
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.DrawPolygon">
+            <summary>
+            Define Polygon on Map
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.Tools.None">
+            <summary>
+            No active tool
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.MapQueryType">
+            <summary>
+            Enumeration of map query types
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.MapQueryType.LayerByIndex">
+            <summary>
+            Layer set in QueryLayerIndex is the only layers Queried  (Default)
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.MapQueryType.AllLayers">
+            <summary>
+            All layers are queried
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.MapQueryType.VisibleLayers">
+            <summary>
+            All visible layers are queried
+            </summary>
+        </member>
+        <member name="F:SharpMap.Forms.MapBox.MapQueryType.TopMostLayer">
+            <summary>
+            Visible layers are queried from Top and down until a layer with an intersecting feature is found 
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.MouseEventHandler">
+            <summary>
+            MouseEventtype fired from the MapImage control
+            </summary>
+            <param name="worldPos"></param>
+            <param name="imagePos"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.MapZoomHandler">
+            <summary>
+            Eventtype fired when the zoom was or are being changed
+            </summary>
+            <param name="zoom"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.MapQueryHandler">
+            <summary>
+            Eventtype fired when the map is queried
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.MapCenterChangedHandler">
+            <summary>
+            Eventtype fired when the center has changed
+            </summary>
+            <param name="center"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.ActiveToolChangedHandler">
+            <summary>
+            Eventtype fired when the map tool is changed
+            </summary>
+            <param name="tool"></param>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.GeometryDefinedHandler">
+            <summary>
+            Eventtype fired when a new geometry has been defined
+            </summary>
+            <param name="geometry">New Geometry</param>
+        </member>
+        <member name="T:SharpMap.Forms.MapBox.MouseWheelGrabber">
+            <summary>
+            MouseWheelGrabber is a MessageFilter that enables mousewheelcapture on mapcontrol even if the control does 
+            not have focus as long as the mouse is positioned over the control
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.ClipboardMetafileHelper.PutEnhMetafileOnClipboard(System.IntPtr,System.Drawing.Imaging.Metafile)">
+            <summary>
+            Puts the metafile to the clipboard
+            </summary>
+            <param name="hWnd">The handle</param>
+            <param name="mf">The metafie</param>
+            <remarks>Metafile mf is set to a state that is not valid inside this function.</remarks>
+            <returns><see langword="true"/> if operation was successfull</returns>
+        </member>
+        <member name="T:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack">
+            <summary>
+            An implementation of zoom previous/zoom next like *** MapControl
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.#ctor(SharpMap.Forms.MapBox)">
+            <summary>
+            Initialisation; no extents will be stored until .StoreExtents = true
+            </summary>
+            <param name="mapBox">mapbox control</param>
+        </member>
+        <member name="M:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.Clear">
+            <summary>
+            Erases the extents stack
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.ZoomPrevious">
+            <summary>
+            Execute a zoom previous
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.ZoomNext">
+            <summary>
+            Execute a zoom next
+            </summary>
+        </member>
+        <member name="M:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.Add(GeoAPI.Geometries.Envelope)">
+            <summary>
+            Adds the given extent to the stack
+            </summary>
+            <param name="newExtent">the extent to be stored</param>
+        </member>
+        <member name="P:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.StoreExtents">
+            <summary>
+            If true extents will be stored, starting with the current;
+            if false no extents will be stored (paused).
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.CanZoomPrevious">
+            <summary>
+            true if previous zoom is available
+            </summary>
+        </member>
+        <member name="P:SharpMap.Forms.ToolBar.MapZoomToolStrip.ZoomExtentStack.CanZoomNext">
+            <summary>
+            true if 'next' zoom is available
+            </summary>
+        </member>
+        <member name="T:SharpMap.Forms.ToolBar.MapDigitizeGeometriesToolStrip">
+            <summary>
+            Map tool strip that contains geometry edit controls
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,9 @@
+[submodule "LVGL.Core/lvgl"]
+	path = LVGL.Simulator/lvgl
+	url = https://github.com/lvgl/lvgl
+[submodule "LVGL.Examples/lv_examples"]
+	path = LVGL.Simulator/lv_examples
+	url = https://github.com/lvgl/lv_examples
+[submodule "LVGL.Simulator/lv_drivers"]
+	path = LVGL.Simulator/lv_drivers
+	url = https://github.com/lvgl/lv_drivers

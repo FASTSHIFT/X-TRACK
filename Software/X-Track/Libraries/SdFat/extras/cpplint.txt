@@ -1,0 +1,1 @@
+../src/FatLib/FatLibConfig.h:137:  Lines should be <= 80 characters long  [whitespace/line_length] [2]

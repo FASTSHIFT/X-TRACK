@@ -1,0 +1,575 @@
+9 Mar 2019
+
+Add startCluste argument to createContiguous().
+
+Functions to support SdFatLite library.
+
+28 Dec 2018
+
+Support for multiple SPI ports now uses a pointer to a SPIClass object.
+
+See the STM32Test example.
+
+explicit SdFat(SPIClass* spiPort);
+\\ or
+explicit SdFatEX(SPIClass* spiPort);
+
+
+Open flags for Particle Gen3 and ARM boards are now defined by fcntl.h.
+See SdFatConfig.h for options.
+
+Support for particle Gen3 devices.
+
+New cluster allocation algorithm.
+
+26 Apr 2017
+
+The SPI divisor has been replaced by SPISettings in the begin() call.
+
+bool begin(uint8_t csPin = SS, SPISettings spiSettings = SPI_FULL_SPEED);
+
+Several macros have been defined for backward compatibility. 
+
+#define SD_SCK_MHZ(maxMhz) SPISettings(1000000UL*maxMhz, MSBFIRST, SPI_MODE0)
+// SPI divisor constants
+/** Set SCK to max possible rate. */
+#define SPI_FULL_SPEED SD_SCK_MHZ(50)
+/** Set SCK rate to F_CPU/3 for Due */
+#define SPI_DIV3_SPEED SD_SCK_HZ(F_CPU/3)
+/** Set SCK rate to F_CPU/4. */
+#define SPI_HALF_SPEED SD_SCK_HZ(F_CPU/4)
+// ...
+
+There are two new classes, SdFatEX and SdFatSoftSpiEX.
+
+Teensy 3.5/3.6 SDIO support has been added.  Try the TeensySdioDemo example.
+Many other example will work with Teensy SDIO if you use the SdFatSdio classes
+and call begin with no parameters.
+
+ SdFatSdio sd;
+ 
+ ....
+ 
+  if (!sd.begin()) {
+    // Handle failure.
+  }
+ 
+
+13 Sep 2016
+
+Added SdFatSdioEX class with Extended SD I/O.  
+
+5 Sep 2016
+
+Restructured classes to support SPI and SDIO controllers. 
+
+Support for Teensy 3.5/3.6 SDIO.
+
+Added TeensySdioDemo example.
+
+15 Aug 2016
+
+New classes SdFatEX and SdFatSoftSpiEX with Extended SD I/O.
+These classes provide higher performance but require a dedicated
+SPI port.
+
+The symbol SD_SPI_CONFIGURATION has been replaced by three symbols,
+ENABLE_EXTENDED_TRANSFER_CLASS, USE_STANDARD_SPI_LIBRARY, and
+ENABLE_SOFTWARE_SPI_CLASS to define the SPI configuration.
+
+SPI transactions are always used.
+
+The SPI divisor has been replaced by SPISettings.  A new macro
+is used to generate SPISettings. This call will use the highest
+speed supported by the board that is not over 50 MHz.
+
+ sd.begin(CS_PIN, SD_SCK_MHZ(50));
+ 
+SdFat on STM32 now supports a SdFat constructor with the SPI
+port number.  See the STM32Test example for sample use.
+
+New versions of LowLatencyLogger for ADC, ADXL345, and MPU6050.
+
+Many internal changes to simplify ports to RTOS.
+
+19 jul 2016
+
+Fix for multi-block transfers chip select.
+
+27 Apr 2016
+
+Mods for STM32F1
+
+11 Apr 2016
+
+Mods for ESP8266
+
+9 Apr 2016
+
+Fix beginTransaction call for Standard SPI library
+
+14 Feb 2016
+
+Add startMicros to LowLatencyLogger
+
+12 Feb 2016
+
+Mods for Particle.io boards.
+
+Features for shared SPI with multiple block write.
+
+23 Jan 2016
+
+New Examples.
+
+New SPI structure for ports to boards like the Particle Photon/Electron.
+
+Several bug fixes.
+
+19 Jul 2015
+
+Converted to 1.5x library format.
+
+Use standard SPI library if no custom SPI library is available for a board.
+
+Option to maintain freeClusterCount.
+
+16 Mar 2015
+
+Minimal support for Teensy-LC.
+
+23 Feb 2015
+
+New 1284P software SPI macros.
+
+01 Feb 2015
+
+Code cleanup and re-factor.
+
+04 Dec 2014
+
+Added support for Long File Names.
+
+14 Nov 2014
+
+Replaced the core SdFat code with FatLib, a generic FAT12/FAT16/FAT32
+library.  This may result in bugs and backward compatibility problems.
+
+Added SdFatSoftSpi, software SPI template class.
+
+Allow simultaneous use of hardware and software SPI with multiple cards.
+See the ThreeCard example. 
+
+Added minimal Long File Name support.  See the LongFileName example.
+
+25 Oct 2014
+
+Added File class for compatibility with the Arduino SD.h library 
+
+Added StreamParseInt example.
+
+23 Oct 2014
+
+Added Read SD OCR register.
+
+SdInfo example now prints OCR register.
+
+05 Sep 2014
+
+Faster SdBaseFile::printField();
+
+Added SdBaseFile::printField(float value, char term, uint8_t prec);
+
+24 Aug 2014
+
+Added support for Software SPI on Due and Teensy 3.1
+
+Added support for SPI transactions.
+
+05 Aug 2014
+
+New examples.
+
+Teensy 3.x SPI mods.
+
+Test version of StdioStream.
+
+25 Dec 2013
+
+Improved cluster allocation speed.
+
+Fix for Teensy 3.0
+
+21 Jun 2013
+
+Improved speed of single block write.
+
+Added StressTest example.
+
+04 May 2013
+
+Fix FreeRam() for 1.05/1.53 malloc.
+
+Reorganised SPI code.
+
+SPI speed set by SCK divisor.
+
+Faster directory search in file open.
+
+Removed deprecated functions.
+
+13 Mar 2013
+
+Fix for 1.0.4 malloc
+
+New Software SPI
+
+07 Feb 2013
+
+Patch for 1.5.2 version of malloc.
+
+Updated SPI driver for Teensy 3.0
+
+Added fast printField() functions.
+
+19 Dec 2012
+
+Fixed SoftSPI bug
+
+01 Dec 2012
+
+Added support for the Arduino Due.
+
+The default for ALLOW_DEPRECATED_FUNCTIONS has been changed to
+false.  If you get compile errors for these functions, either
+change to the preferred replacement function indicated in the
+error message or set ALLOW_DEPRECATED_FUNCTIONS nonzero.
+
+A key change was to remove sd.init(spiRateID, chipSelect) in favor of
+sd.begin(chipSelect, spiRateID).  The difference between these two is
+the order of the arguments which has caused serious confusion at times.
+
+A massive number of internal changes have been made.  There are over 2600
+lines in the diff file of this version and the 20120719 version.
+
+20 Oct 2012
+
+Changes to support ARM processors.  Tested with a Teensy 3.0.
+
+Changes for higher performance with large reads and writes.
+
+25 Aug 2012
+
+Added uint32_t available();
+
+Support for new industrial SD cards
+
+Better support for MiniSerial and MiniSerial example
+
+Changes to support newer versions of avr-gcc
+
+Changed RawWrite example to use micros() for delay between blocks.
+
+Changed SdFatSize example to use MiniSerial
+
+19 Jul 2012
+
+Require Arduino 1.0 or greater.  Change file type for all examples to *.ino.
+
+Modify the SdFormatter example to format SDXC cards as FAT32.  This is not the 
+SDXC standard which is exFAT.
+
+30 May 2012
+
+Added << operator for Arduino flash string macro F().
+
+New RawWrite example for fast write of contiguous files.
+
+New faster software SPI
+
+Software SPI for Leonardo boards
+
+Don't use __cxa_pure_virtual by default for Arduino 1.0 or greater.
+
+26 Mar 2012
+
+Removed definition for SS_PIN, MISO_PIN, MOSI_PIN, and SCK_PIN.  Used the
+Arduino 1.0 symbols SS, MISO, MOSI, and SCK.
+
+Added Arduino style SdFat::begin(chipSelect, spiSpeed);
+
+Added options for SD crc checking.  Enabling crc checking increases reliability
+at the cost of speed.  Edit SdFatConfig.h to select CRC options.
+
+Override Print::getWriteError() and Print::clearWriteError() to use
+SdBaseFile functions.
+
+Many internal changes.
+
+08 Jan 2012
+
+Changes to allow use of the SerialPort library.
+
+Error messages and output from programs are now sent to a stdOut Print
+stream.
+
+The default stdOut is a small non-interrupt driven class that outputs messages
+to serial port zero.  This allows an alternate Serial library like SerialPort
+to be used with SdFat.
+
+You can redirect stdOut with SdFat::setStdOut(Print* stream) and
+get the current stdOut stream with SdFat::stdOut().
+
+If USE_SERIAL_FOR_STD_OUT in SdFatConfig.h is nonzero, the Arduino Serial
+object will be used as the default for stdOut.
+
+
+05 Dec 2011
+
+Changes for Arduino 1.0
+
+
+17 Sep 2011
+
+Changes for Arduino 1.0 beta 4
+
+Improved SPI handling
+
+02 Sep 2011
+--------------------------------------------------------------------------------
+Warning:
+Several changes are not backward compatible with the previous
+version of SdFat.
+
+The function cwd() was renamed vwd() to allow multiple SD cards.
+
+The type SdBaseFile was added to the class hierarchy to avoid conflicts with
+other Arduino libraries that are derived from the Print class.  Directory
+files should be declared type SdBaseFile.
+--------------------------------------------------------------------------------
+
+Added support for multiple SD cards.
+
+Change the name of SdFat::cwd() to SdFat::vwd() since the volume
+working directory is not the current working directory with
+multiple SD cards.
+
+Added the static function SdBaseFile::cwd() to return a pointer
+to the current working directory.
+
+Added the TwoCards.pde example to demonstrate use of multiple SD cards.
+
+Added readCSV.pde example to demonstrate iostream extractors.
+
+Added bool SdBaseFile::timestamp(SdBaseFile* file) to copy one
+file's timestamps to another file.
+
+Improved messages in the QuickStart.pde example.
+
+Added maximum latency test to the bench.pde example.
+
+Rearanged class hierarchy to fix conflicts with Flash.h and other Adruino
+libraries.  Print is no longer a private parent of file stream classes.
+
+Added high speed multiple block read functions to Sd2Card.
+
+Changed include files in SdFatUtil.h
+
+Removed option to write protect block zero of an SD card.
+
+Changes for Arduino 1.0.
+
+02 Jul 2011
+
+This is a major update based on previous beta versions.
+Read all changes since 10 Oct 2001
+
+Simplified examples in extra/examplesV1
+
+28 Jun 2011
+
+This is a release candidate to replace sdfatlib20101010.
+
+Initialize SPI bus before every access.
+
+Improved write multiple block functions for fast data logging.
+
+SdVolume::cacheClear() returns zero if it fails.
+
+Documentation changes.
+
+04 Jun 2011
+
+Added SdFatTestSuite and fixed bugs found by test programs.
+
+Added functions:
+
+bool SdFat::truncate(const char* path, uint32_t length); 
+
+int16_t SdFile::fgets(char* str, int16_t num, char* delim);
+
+11 May 2011
+
+Added QuickStart sketch and QuickStart.txt file for fast hardware test.
+
+Added several new examples.
+
+Version of ls() that can write to any Print object.
+
+New functions including freeClusterCount(), openNext() rename().
+
+14 Apr 2011
+
+Total rewrite to add iostreams and SdFat class with current working directory.
+Old API maintained for backward compatibility.
+
+
+27 Nov 2010
+
+
+Added experimental support for FAT12.  This can be enabled by setting
+FAT12_SUPPORT nonzero in SdFatConfig.h.
+
+Added an experimental sketch, SdFatFormatter.pde, to format SD cards as
+FAT16 and SDHC cards as FAT32.  See SdFat/examples/SdFormatter.
+
+The return type of SdVolume::cacheClear was changed to cache_t*.
+
+Many internal changes to support FAT12 and formatting SD/SDHC cards.
+
+
+10 Oct 2010
+
+Added Mega 2560.
+
+Fixed rmRfStar() bug.
+
+Fixed Sanguino NULL definition.
+
+18 Aug 2010
+
+Optimized write() for append at end of file.  Up to 50% faster sequential write.
+
+13 Aug 2010
+
+Added the following function to allow the SD chip select pin to be set
+at runtime.  Warning - if the hardware SS pin is not used as chip select, 
+the hardware SS pin will be set to output mode by init(). An avr processor
+will not function as an SPI master unless SS is set to output mode.
+
+uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin);
+
+Added more SPI clock rate choices.  The above init() function and 
+uint8_t Sd2Card::init(uint8_t sckRateID) call the new function 
+uint8_t Sd2Card::setSckRate(uint8_t sckRateID).
+
+setSckRate() sets the SPI clock rate to F_CPU/pow(2, 1 + sckRateID).
+On an 16 MHz cpu this ranges from 8 MHz for sckRateId = 0 to 125 kHz
+for sckRateID = 6.  This function must be called after the init() call.
+
+Modified most examples to call card.init(SPI_HALF_SPEED) to avoid SPI bus
+errors with breadboards and jumpers.  This sets the SPI speed to F_CPU/4.
+Defined SPI_FULL_SPEED so init(SPI_FULL_SPEED) sets the SPI speed to F_CPU/2.
+
+Added the following  function to cancel date/time callback. This function
+must now be used instead of dateTimeCallback(NULL).
+
+static void SdFat::dateTimeCallbackCancel(void);
+
+
+The following member functions have been added for users who wish to avoid
+calls to functions with non-const references.
+
+uint8_t SdFile::contiguousRange(uint32_t* bgnBlock, uint32_t* endBlock);
+uint8_t SdFile::createContiguous(SdFile* dirFile,
+  const char* fileName, uint32_t size);
+static void SdFile::dateTimeCallback(
+  void (*dateTime)(uint16_t* date, uint16_t* time));
+uint8_t SdFile::dirEntry(dir_t* dir);
+uint8_t SdFile::makeDir(SdFile* dir, const char* dirName);
+uint8_t SdFile::open(SdFile* dirFile, const char* fileName, uint8_t oflag);
+uint8_t SdFile::open(SdFile* dirFile, const char* fileName);
+uint8_t SdFile::open(SdFile* dirFile, uint16_t index, uint8_t oflag);
+uint8_t SdFile::openRoot(SdVolume* vol);
+int8_t SdFile::readDir(dir_t* dir);
+static uint8_t remove(SdFile* dirFile, const char* fileName);
+uint8_t SdVolume::init(Sd2Card* dev);
+uint8_t SdVolume::init(Sd2Card* dev, uint8_t part);
+
+The following member functions have been marked as deprecated since they
+are now wrappers for the new functions. dateTimeCallback is the only wrapper
+with extra overhead.  The other wrappers are squeezed out by the complier.
+These wrappers will be maintained in the future for backward compatibility.
+
+uint8_t SdFile::contiguousRange(uint32_t& bgnBlock, uint32_t& endBlock);
+uint8_t SdFile::createContiguous(SdFile& dirFile,
+  const char* fileName, uint32_t size);
+static void SdFile::dateTimeCallback(
+  void (*dateTime)(uint16_t& date, uint16_t& time));
+uint8_t SdFile::dirEntry(dir_t& dir);
+uint8_t SdFile::makeDir(SdFile& dir, const char* dirName);
+uint8_t SdFile::open(SdFile& dirFile, const char* fileName, uint8_t oflag);
+uint8_t SdFile::open(SdFile& dirFile, const char* fileName);
+uint8_t SdFile::open(SdFile& dirFile, uint16_t index, uint8_t oflag);
+uint8_t SdFile::openRoot(SdVolume& vol);
+int8_t SdFile::readDir(dir_t& dir);
+static uint8_t remove(SdFile& dirFile, const char* fileName);
+uint8_t SdVolume::init(Sd2Card& dev);
+uint8_t SdVolume::init(Sd2Card& dev, uint8_t part);
+
+The deprecated function can be disabled by editing SdFat.h and setting
+#define ALLOW_DEPRECATED_FUNCTIONS 0
+
+Fixed file modify time for file rewrite.
+
+Major internal cleanup/reformat based on Google cpplint.py code style.
+
+New Sd2Card::init() algorithm.
+
+New SdFatInfo sketch for modified SdReadData() and other internal changes.
+
+Modified examples to eliminate deprecated functions.
+
+11 Jun 2010
+Added definitions for Teensy to ArduinoPins.h (Paul Stoffregen)
+
+Added troubleshooting.txt
+
+
+23 Dec 2009
+
+Added Software SPI capability.  See Sd2Card.h
+
+Defining MEGA_SOFT_SPI allows an unmodified Adafruit GPS Shield to be used
+on Mega Arduinos.  Software SPI works well with GPS Shield V1.1 
+but many SD cards will fail with GPS Shield V1.0.
+
+Added file ArduinoPins.h for pin definitions.
+
+More error printout in examples.
+
+
+25 Nov 2009
+
+Added new functions for SdFile class:
+
+dateTimeCallback(), dirEntry(), isRoot(), isSubDir, ls(), 
+makeDir(), printDirName(), printFatDate(), printFatTime(), 
+printTwoDigits(), rmDir(), and rmRStar().
+
+Added new examples to test and illustrate use of new functions.
+
+Removed sdCard() from SdFile class.
+
+Fixed several bugs.
+
+
+
+
+12 Nov 2009
+
+Major rewrite of the version of SdFat that was included with
+the WaveRP library.  
+
+This is a preview that is being released to obtain comments
+from several colleagues and future users.
