@@ -4,15 +4,15 @@
 
 void setup()
 {
-    Serial.begin(115200);
-    
-    Display_Init();
     HAL::HAL_Init();
+    Display_Init();
 }
 
 void loop()
 {
+    HAL::HAL_Update();
     lv_task_handler();
+    __wfi();
 }
 
 /**

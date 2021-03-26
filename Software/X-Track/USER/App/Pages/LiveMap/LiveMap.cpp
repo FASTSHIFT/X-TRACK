@@ -4,6 +4,7 @@
 #define MAP_TILE_POS(pos) ((pos) - ((pos) % MAP_TILE_SIZE))
 
 LiveMap::LiveMap()
+    : mapUpdateIntervalTime(1000)
 {
 }
 
@@ -14,40 +15,32 @@ LiveMap::~LiveMap()
 
 void LiveMap::onViewLoad()
 {
+    lv_obj_set_style_local_value_str(root, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, "LOADING...");
+
     View.Create(root);
     AttachEvent(root);
     AttachEvent(View.ui.sliderLevel);
     AttachEvent(View.ui.map.cont);
+    AttachEvent(View.ui.btnInfo);
+    AttachEvent(View.ui.btnBack);
+
+    group = lv_group_create();
+
+    lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), group);
+
+    lv_group_add_obj(group, View.ui.sliderLevel);
+    lv_group_add_obj(group, View.ui.btnInfo);
+    lv_group_add_obj(group, View.ui.btnBack);
 
     Model.mapConv.SetLevel(15);
     Model.mapConv.SetRootName("S:MAP/Mapinfos");
     lv_slider_set_value(View.ui.sliderLevel, Model.mapConv.GetLevel(), LV_ANIM_OFF);
-    MapUpdate();
+    lv_obj_set_hidden(View.ui.map.cont, true);
 }
 
 void LiveMap::onViewDidLoad()
 {
-    group = lv_group_create();
-
-    lv_indev_t* cur_drv = NULL;
-    for (;;) 
-    {
-        cur_drv = lv_indev_get_next(cur_drv);
-        if (!cur_drv) 
-        {
-            break;
-        }
-
-        if (cur_drv->driver.type == LV_INDEV_TYPE_ENCODER) {
-            lv_indev_set_group(cur_drv, group);
-        }
-    }
-
-    lv_group_add_obj(group, View.ui.sliderLevel);
-    lv_group_focus_obj(View.ui.sliderLevel);
-    lv_group_set_editing(group, true);
-
-    taskUpdate = lv_task_create(TaskUpdate, 1000, LV_TASK_PRIO_MID, this);
+    
 }
 
 void LiveMap::onViewWillAppear()
@@ -57,12 +50,16 @@ void LiveMap::onViewWillAppear()
 
 void LiveMap::onViewDidAppear()
 {
-
+    taskUpdate = lv_task_create(TaskUpdate, 100, LV_TASK_PRIO_MID, this);
+    lv_obj_set_style_local_value_str(root, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, "");
+    MapUpdate();
+    lv_obj_set_hidden(View.ui.map.cont, false);
 }
 
 void LiveMap::onViewWillDisappear()
 {
-
+    lv_task_del(taskUpdate);
+    lv_obj_set_hidden(View.ui.map.cont, true);
 }
 
 void LiveMap::onViewDidDisappear()
@@ -71,8 +68,7 @@ void LiveMap::onViewDidDisappear()
 
 void LiveMap::onViewDidUnload()
 {
-    lv_group_del(group);
-    lv_task_del(taskUpdate);
+    lv_group_del(group);  
 }
 
 void LiveMap::AttachEvent(lv_obj_t* obj)
@@ -83,7 +79,11 @@ void LiveMap::AttachEvent(lv_obj_t* obj)
 
 void LiveMap::Update()
 {
-    MapUpdate();
+    if (lv_tick_elaps(lastUpdateTime) >= mapUpdateIntervalTime)
+    {
+        MapUpdate();
+        lastUpdateTime = lv_tick_get();
+    }
 }
 
 void LiveMap::MapUpdate()
@@ -110,7 +110,13 @@ void LiveMap::MapUpdate()
     int map0_X = MAP_TILE_POS(mapFocusX) - MAP_TILE_SIZE;
     int map0_Y = MAP_TILE_POS(mapFocusY) - MAP_TILE_SIZE;
 
-    lv_obj_set_pos(View.ui.map.imgArrow, mapX - map0_X, mapY - map0_Y);
+    lv_obj_t* img = View.ui.map.imgArrow;
+    lv_obj_set_pos(
+        img,
+        mapX - map0_X - lv_obj_get_width(img) / 2,
+        mapY - map0_Y - lv_obj_get_height(img) / 2
+    );
+    View.SetImgArrowAngle(gpsInfo.compass);
 
     FocusMap(mapX, mapY);
 
@@ -120,16 +126,22 @@ void LiveMap::MapUpdate()
         "lng: %lf\n"
         "lat:%lf\n"
         "alt: %0.2f\n"
-        "spd: %0.2f\n"
-        "%02d:%02d:%02d",
+        "compass: %0.1f\n"
+        "spd: %0.2fkm/h\n"
+        "%02d:%02d:%02d\n"
+        "Batt: %d%%\n"
+        "Steps: %d",
         gpsInfo.satellites,
         gpsInfo.longitude,
         gpsInfo.latitude,
         gpsInfo.altitude,
+        gpsInfo.compass,
         gpsInfo.speed,
         gpsInfo.clock.hour,
         gpsInfo.clock.min,
-        gpsInfo.clock.sec
+        gpsInfo.clock.sec,
+        HAL::Power_GetBattUsage(),
+        HAL::IMU_GetSteps()
     );
 }
 
@@ -145,9 +157,26 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
 
     if (obj == instance->root)
     {
-        if (event == LV_EVENT_CLICKED || event == LV_EVENT_LEAVE)
+        if (event == LV_EVENT_LEAVE)
         {
             instance->Manager->Pop();
+        }
+    }
+
+    if (obj == instance->View.ui.btnInfo)
+    {
+        if (event == LV_EVENT_CLICKED)
+        {
+            lv_obj_t* label = instance->View.ui.labelInfo;
+            lv_obj_set_hidden(label, !lv_obj_get_hidden(label));
+        }
+    }
+
+    if (obj == instance->View.ui.btnBack)
+    {
+        if (event == LV_EVENT_CLICKED)
+        {
+            lv_event_send(instance->root, LV_EVENT_LEAVE, instance);
         }
     }
 
@@ -155,7 +184,7 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
     {
         if (event == LV_EVENT_VALUE_CHANGED)
         {
-            instance->MapUpdate();
+            instance->lastUpdateTime = lv_tick_get() - (instance->mapUpdateIntervalTime - 50);
         }
     }
 

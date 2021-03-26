@@ -12,7 +12,6 @@ public:
  
     bool GetGPSInfo(HAL::GPS_Info_t* info)
     {
-        HAL::GPS_Update();
         return HAL::GPS_GetInfo(info);
     }
 private:

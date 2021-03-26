@@ -24,11 +24,11 @@ void LiveMapView::Create(lv_obj_t* par)
     }
 
     lv_obj_t* img = lv_img_create(cont, NULL);
-    lv_img_set_src(img, LV_SYMBOL_GPS);
+    lv_img_set_src(img, Resource.GetImage("img_src_gps_arrow"));
     ui.map.imgArrow = img;
 
     lv_obj_t* slider = lv_slider_create(par, NULL);
-    lv_obj_set_size(slider, 10, 150);
+    lv_obj_set_size(slider, 5, 100);
     lv_slider_set_range(slider, 3, 15);
     lv_obj_align(slider, NULL, LV_ALIGN_IN_LEFT_MID, 10, 0);
     ui.sliderLevel = slider;
@@ -36,7 +36,20 @@ void LiveMapView::Create(lv_obj_t* par)
     lv_obj_t* label = lv_label_create(par, NULL);
     lv_obj_align(label, NULL, LV_ALIGN_IN_TOP_MID, 0, 10);
     lv_obj_set_auto_realign(label, true);
-    //lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_20);
+    lv_obj_set_style_local_text_font(label, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &lv_font_montserrat_20);
     lv_label_set_text(label, "");
+    lv_obj_set_hidden(label, true);
     ui.labelInfo = label;
+
+    lv_obj_t* btn = lv_btn_create(par, NULL);
+    lv_obj_set_size(btn, 20, 20);
+    lv_obj_set_style_local_value_str(btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, "i");
+    lv_obj_align(btn, NULL, LV_ALIGN_IN_TOP_RIGHT, -5, 5);
+    ui.btnInfo = btn;
+
+    btn = lv_btn_create(par, NULL);
+    lv_obj_set_size(btn, 30, 20);
+    lv_obj_set_style_local_value_str(btn, LV_BTN_PART_MAIN, LV_STATE_DEFAULT, LV_SYMBOL_DOWN);
+    lv_obj_align(btn, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -5, -5);
+    ui.btnBack = btn;
 }

@@ -12,6 +12,7 @@
 namespace HAL {
     
 void HAL_Init();
+void HAL_Update();
 
 /*Backlight*/
 void Backlight_Init();
@@ -35,6 +36,8 @@ void MAG_Update();
 
 /*SD*/
 void SD_Init();
+void SD_Update();
+bool SD_GetReady();
 
 /*Power*/
 void Power_Init();
@@ -68,6 +71,7 @@ typedef struct {
     double longitude;
     double latitude;
     float altitude;
+    float compass;
     float speed;
     int16_t satellites;
     Clock_Value_t clock;
@@ -80,6 +84,26 @@ bool GPS_GetInfo(GPS_Info_t* info);
 void Buzz_init();
 void Buzz_SetEnable(bool en);
 void Buzz_Tone(uint32_t freq, int32_t duration = -1);
+
+/*Encoder*/
+void Encoder_Init();
+void Encoder_Update();
+int32_t Encoder_GetDiff();
+bool Encoder_GetIsPush();
+
+/*Audio*/
+void Audio_Init();
+void Audio_Update();
+bool Audio_PlayMusic(const char* name);
+
+/*AHRS*/
+typedef struct{
+    float pitch;
+    float row;
+    float yaw;
+}AHRS_Info_t;
+void AHRS_Update();
+void AHRS_GetInfo(AHRS_Info_t* info);
 
 }
 

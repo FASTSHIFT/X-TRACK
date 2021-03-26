@@ -19,8 +19,9 @@ static void Backlight_AnimCallback(void * obj, int16_t brightness)
   */
 void HAL::Backlight_Init()
 {
-    /*PWM初始化，1000级，20K频率*/
+    /*PWM初始化，1000级，20KHz频率*/
     PWM_Init(SCREEN_BLK_PIN, 1000, 20000);
+    Backlight_SetValue(0);
 }
 
 /**

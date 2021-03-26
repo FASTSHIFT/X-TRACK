@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>AT32F4xx</TargetName>
+      <TargetName>X-Track</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -556,7 +556,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Pages/Template</GroupName>
+          <GroupName>Pages/Dialplate</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -628,34 +628,34 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>Template.cpp</FileName>
+              <FileName>Dialplate.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Pages\Template\Template.cpp</FilePath>
+              <FilePath>..\USER\App\Pages\Dialplate\Dialplate.cpp</FilePath>
             </File>
             <File>
-              <FileName>Template.h</FileName>
+              <FileName>Dialplate.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Pages\Template\Template.h</FilePath>
+              <FilePath>..\USER\App\Pages\Dialplate\Dialplate.h</FilePath>
             </File>
             <File>
-              <FileName>TemplateModel.cpp</FileName>
+              <FileName>DialplateModel.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Pages\Template\TemplateModel.cpp</FilePath>
+              <FilePath>..\USER\App\Pages\Dialplate\DialplateModel.cpp</FilePath>
             </File>
             <File>
-              <FileName>TemplateModel.h</FileName>
+              <FileName>DialplateModel.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Pages\Template\TemplateModel.h</FilePath>
+              <FilePath>..\USER\App\Pages\Dialplate\DialplateModel.h</FilePath>
             </File>
             <File>
-              <FileName>TemplateView.cpp</FileName>
+              <FileName>DialplateView.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Pages\Template\TemplateView.cpp</FilePath>
+              <FilePath>..\USER\App\Pages\Dialplate\DialplateView.cpp</FilePath>
             </File>
             <File>
-              <FileName>TemplateView.h</FileName>
+              <FileName>DialplateView.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Pages\Template\TemplateView.h</FilePath>
+              <FilePath>..\USER\App\Pages\Dialplate\DialplateView.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -760,6 +760,110 @@
               <FileName>LiveMapView.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Pages\LiveMap\LiveMapView.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Pages/_Template</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>Template.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\_Template\Template.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Template.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\_Template\Template.h</FilePath>
+            </File>
+            <File>
+              <FileName>TemplateModel.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\_Template\TemplateModel.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TemplateModel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\_Template\TemplateModel.h</FilePath>
+            </File>
+            <File>
+              <FileName>TemplateView.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\_Template\TemplateView.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TemplateView.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\_Template\TemplateView.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -874,19 +978,9 @@
               <FilePath>..\USER\App\Utils\lv_ext\lv_anim_timeline.cpp</FilePath>
             </File>
             <File>
-              <FileName>lv_anim_timeline.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_anim_timeline.h</FilePath>
-            </File>
-            <File>
               <FileName>lv_label_anim_effect.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>lv_label_anim_effect.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_label_anim_effect.h</FilePath>
             </File>
             <File>
               <FileName>lv_obj_ext_func.cpp</FileName>
@@ -894,19 +988,9 @@
               <FilePath>..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp</FilePath>
             </File>
             <File>
-              <FileName>lv_obj_ext_func.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_obj_ext_func.h</FilePath>
-            </File>
-            <File>
               <FileName>lv_theme_custom.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\App\Utils\lv_ext\lv_theme_custom.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_theme_custom.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_theme_custom.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1262,6 +1346,21 @@
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_Buzz.cpp</FilePath>
             </File>
+            <File>
+              <FileName>HAL_Encoder.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Encoder.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Audio.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Audio.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_AHRS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_AHRS.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1362,6 +1461,21 @@
               <FileName>TinyGPS++.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Libraries\TinyGPSPlus\src\TinyGPS++.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ButtonEvent.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\ButtonEvent\ButtonEvent.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TonePlayer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\TonePlayer\TonePlayer.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Filters.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\Filters\Filters.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2339,97 +2453,97 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.3.0" condition="ARMv6_7_8-M Device">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="ADC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="BKPR" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH BKPR">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="DMA" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="EXTI" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="FMC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="GPIO" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH GPIO">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="PWR" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RCC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RTC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RTC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="SPI" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="TIMER" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="USART" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS">
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
     </components>
@@ -2475,7 +2589,7 @@
         <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" condition="AT32F403ACGU7" name="Device\Source\ARM\startup_at32f403acgu7.s" version="1.0.1">
@@ -2483,7 +2597,7 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
@@ -2491,7 +2605,7 @@
         <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
         <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
         <targetInfos>
-          <targetInfo name="AT32F4xx"/>
+          <targetInfo name="X-Track"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">

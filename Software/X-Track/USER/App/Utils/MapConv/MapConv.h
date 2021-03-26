@@ -6,7 +6,7 @@
 class MapConv {
 public:
     MapConv();
-    ~MapConv() {};
+    ~MapConv() {}
 
     typedef struct {
         uint32_t tileX;

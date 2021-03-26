@@ -32,10 +32,6 @@ static float Display_GetFPS(SCREEN_CLASS* scr, uint32_t loopNum);
   */
 void Display_Init()
 {
-    /*±≥π‚πÿ±’*/
-    HAL::Backlight_Init();
-    HAL::Backlight_SetValue(1000);
-    
     static SCREEN_CLASS screen(
         SCREEN_CS_PIN,
         SCREEN_DC_PIN, 
@@ -65,7 +61,7 @@ void Display_Init()
     Display_CommonInit();
     
     /*±≥π‚Ω•¡¡*/
-    //HAL::Backlight_SetGradual(HAL::Backlight_GetBKP(), 5000);
+    HAL::Backlight_SetGradual(HAL::Backlight_GetBKP(), 1000);
 }
 
 #if (USE_FPS_TEST == 1) 

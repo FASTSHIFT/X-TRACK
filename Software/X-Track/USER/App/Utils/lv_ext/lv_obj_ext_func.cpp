@@ -153,3 +153,21 @@ void lv_obj_add_anim(
      *------------------*/
     lv_anim_start(a);                             /*Start the animation*/
 }
+
+lv_indev_t* lv_get_indev(lv_indev_type_t type)
+{
+    lv_indev_t* cur_indev = NULL;
+    for (;;)
+    {
+        cur_indev = lv_indev_get_next(cur_indev);
+        if (!cur_indev)
+        {
+            break;
+        }
+
+        if (cur_indev->driver.type == type) {
+            return cur_indev;
+        }
+    }
+    return NULL;
+}

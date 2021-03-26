@@ -351,14 +351,23 @@
     <ClInclude Include="..\..\USER\App\Pages\LiveMap\LiveMapView.h">
       <Filter>App\Pages\LiveMap</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Pages\Template\Template.h">
-      <Filter>App\Pages\Template</Filter>
+    <ClInclude Include="..\..\USER\App\Pages\Dialplate\Dialplate.h">
+      <Filter>App\Pages\Dialplate</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Pages\Template\TemplateModel.h">
-      <Filter>App\Pages\Template</Filter>
+    <ClInclude Include="..\..\USER\App\Pages\Dialplate\DialplateModel.h">
+      <Filter>App\Pages\Dialplate</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Pages\Template\TemplateView.h">
-      <Filter>App\Pages\Template</Filter>
+    <ClInclude Include="..\..\USER\App\Pages\Dialplate\DialplateView.h">
+      <Filter>App\Pages\Dialplate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\_Template\Template.h">
+      <Filter>App\Pages\_Template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateModel.h">
+      <Filter>App\Pages\_Template</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateView.h">
+      <Filter>App\Pages\_Template</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -764,14 +773,29 @@
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMapView.cpp">
       <Filter>App\Pages\LiveMap</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Pages\Template\Template.cpp">
-      <Filter>App\Pages\Template</Filter>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Power.cpp">
+      <Filter>App\Common\HAL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Pages\Template\TemplateModel.cpp">
-      <Filter>App\Pages\Template</Filter>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp">
+      <Filter>App\Common\HAL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Pages\Template\TemplateView.cpp">
-      <Filter>App\Pages\Template</Filter>
+    <ClCompile Include="..\..\USER\App\Pages\Dialplate\Dialplate.cpp">
+      <Filter>App\Pages\Dialplate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\Dialplate\DialplateModel.cpp">
+      <Filter>App\Pages\Dialplate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\Dialplate\DialplateView.cpp">
+      <Filter>App\Pages\Dialplate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\_Template\Template.cpp">
+      <Filter>App\Pages\_Template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateModel.cpp">
+      <Filter>App\Pages\_Template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateView.cpp">
+      <Filter>App\Pages\_Template</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -850,7 +874,10 @@
     <Filter Include="App\Pages\LiveMap">
       <UniqueIdentifier>{f79f5fd7-cb59-4be5-9776-ef53be8f7061}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Pages\Template">
+    <Filter Include="App\Pages\Dialplate">
+      <UniqueIdentifier>{44ad08e5-c0ab-42ba-a878-3c39958c81c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Pages\_Template">
       <UniqueIdentifier>{7f1cd996-4e74-42a2-a406-aa9f81edd5b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

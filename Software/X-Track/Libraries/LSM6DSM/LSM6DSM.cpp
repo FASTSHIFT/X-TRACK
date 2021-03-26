@@ -148,7 +148,7 @@ bool LSM6DSM::Init(uint8_t addr)
 
     SoftReset();
     delay(50);
-    
+
     ConfigAcc(ACC_ODR_416_HZ, ACC_SCALE_4_G);
     ConfigGyr(GYR_POWER_DOWN, GYR_SCALE_500_DPS);
     //LSM6DSMSetScale(ACC_SCALE_4_G, GYR_SCALE_500_DPS);
@@ -178,23 +178,23 @@ void LSM6DSM::ConfigGyr(uint8_t gyr_odr, uint8_t gyr_scale)
 }
 
 void LSM6DSM::GetMotion6(
-        int16_t* acc_x,
-        int16_t* acc_y,
-        int16_t* acc_z,
-        int16_t* gyr_x,
-        int16_t* gyr_y,
-        int16_t* gyr_z
+    int16_t* acc_x,
+    int16_t* acc_y,
+    int16_t* acc_z,
+    int16_t* gyr_x,
+    int16_t* gyr_y,
+    int16_t* gyr_z
 )
 {
     uint8_t buf[12];
     ReadRegs(OUTX_L_G, buf, sizeof(buf));
-    
-    *gyr_x = (buf[3] << 8) | buf[2];// / 65.536;
-    *gyr_y = -(buf[1] << 8) | buf[0];// / 65.536;
-    *gyr_z = (buf[5] << 8) | buf[4];// / 65.536;
-    *acc_x = (buf[9] << 8) | buf[8];// / 8192.0;
-    *acc_y = -(buf[7] << 8) | buf[6];// / 8192.0;
-    *acc_z = (buf[11] << 8) | buf[10];// / 8192.0;
+
+    *gyr_x = (buf[3] << 8) | buf[2];
+    *gyr_y = -(buf[1] << 8) | buf[0];
+    *gyr_z = (buf[5] << 8) | buf[4];
+    *acc_x = (buf[9] << 8) | buf[8];
+    *acc_y = -(buf[7] << 8) | buf[6];
+    *acc_z = (buf[11] << 8) | buf[10];
 }
 
 int16_t LSM6DSM::ReadTemperature(void)
@@ -225,12 +225,12 @@ void LSM6DSM::EnableAWT(int16_t angle, int16_t delay)
     int16_t set_angle;
     set_delay = (uint8_t)(delay / 40);
     set_angle = (uint8_t)(sin(angle * PI / 180) * 64);
-    
+
     if(set_delay > 0xff)
         set_delay = 0xff;
     if(set_angle > 0xff)
         set_angle = 0xff;
-    
+
     WriteReg(FUNC_CFG_ACCESS,   0xa0);              // Enable access to embedded registers (bank B)
     WriteReg(A_WRIST_TILT_LAT,  set_delay);     // Set new latency in A_WRIST_TILT_LAT
     WriteReg(A_WRIST_TILT_THS,  set_angle);     // Set new threshold in A_WRIST_TILT_THS
@@ -261,7 +261,7 @@ void LSM6DSM::EnableTapDetection(void)
 
 void LSM6DSM::DisableTapDetection(void)
 {
-    SetRegisterBits(TAP_CFG, 0x08|0x04|0x02, false);    //tap detection on X-axis(0x08), Y-axis(0x04), Z-axis(0x02)
+    SetRegisterBits(TAP_CFG, 0x08 | 0x04 | 0x02, false); //tap detection on X-axis(0x08), Y-axis(0x04), Z-axis(0x02)
 }
 
 void LSM6DSM::EnablePedometer(uint16_t debounce_time, uint8_t debounce_step)

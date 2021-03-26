@@ -23,7 +23,7 @@
 #ifndef __PAGE_MANAGER_LOG_H
 #define __PAGE_MANAGER_LOG_H
 
-#define PAGE_MANAGER_USE_LOG 1
+#define PAGE_MANAGER_USE_LOG 0
 
 #if !defined(ARDUINO) && PAGE_MANAGER_USE_LOG
 #include <stdio.h>

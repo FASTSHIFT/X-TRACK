@@ -102,7 +102,7 @@ PageBase::State_t PageManager::StateLoadExecute(PageBase* base)
         PageBase* topAfter = GetStackTopAfter();
         if (topAfter != nullptr && topAfter->priv.IsCacheEnable)
         {
-            lv_anim_exec_xcb_t anim_exec_xcb = AnimState.LoadAttr_Grp[base->priv.Anim.Type].anim_setter;
+            lv_anim_exec_xcb_t anim_exec_xcb = AnimState.LoadAnimAttr_Grp[base->priv.Anim.Type].anim_setter;
             if (anim_exec_xcb == (lv_anim_exec_xcb_t)lv_obj_set_x)
             {
                 RootEnableDrag(base->root, LV_DRAG_DIR_HOR);

@@ -35,6 +35,8 @@ private:
 
     lv_task_t* taskUpdate;
     lv_group_t* group;
+    uint32_t lastUpdateTime;
+    uint16_t mapUpdateIntervalTime;
     static void TaskUpdate(lv_task_t* task);
     static void EventHandler(lv_obj_t* obj, lv_event_t event);
 };

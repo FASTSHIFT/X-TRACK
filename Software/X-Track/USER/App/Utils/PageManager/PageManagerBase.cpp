@@ -170,7 +170,7 @@ PageManager::PageManager(PageFactory* factory)
     PrevNode = nullptr;
     lv_obj_signal_cb = nullptr;
     memset(&AnimState, 0, sizeof(AnimState));
-    AnimState.LoadAttr_Grp = LoadAnimAttrArr;
+    AnimState.LoadAnimAttr_Grp = LoadAnimAttrArr;
 
     SetGlobalLoadAnimType();
 }

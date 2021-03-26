@@ -28,15 +28,12 @@
 
 static void encoder_init(void);
 static bool encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
-static void encoder_handler(void);
-static void buzz_handler(int dir);
 
 /**********************
  *  STATIC VARIABLES
  **********************/
 
 static lv_indev_t * encoder_indev;
-static volatile int32_t encoder_diff;
 
 /**********************
  *      MACROS
@@ -86,72 +83,26 @@ lv_indev_t * lv_port_indev_get(void)
 static void encoder_init(void)
 {
     /*Your code comes here*/
-    pinMode(ENCODER_A_PIN, INPUT_PULLUP);
-    pinMode(ENCODER_B_PIN, INPUT_PULLUP);
-    pinMode(ENCODER_PUSH_PIN, INPUT_PULLUP);
-    
-    attachInterrupt(ENCODER_A_PIN, encoder_handler, FALLING);
 }
 
 /* Will be called by the library to read the encoder */
 static bool encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 {
-    data->enc_diff = encoder_diff;
+    static bool lastState;
+    data->enc_diff = HAL::Encoder_GetDiff();
     
-    bool is_pressed = (digitalRead(ENCODER_PUSH_PIN) == LOW);
+    bool isPush = HAL::Encoder_GetIsPush();
     
-    data->state = is_pressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
-
-    encoder_diff = 0;
+    data->state = isPush ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
     
-    static bool last_state;
-    
-    if(is_pressed != last_state)
+    if(isPush != lastState)
     {
-        HAL::Buzz_Tone(is_pressed ? 500 : 700, 20);
-        last_state = is_pressed;
+        HAL::Buzz_Tone(isPush ? 500 : 700, 20);
+        lastState = isPush;
     }
-    
+
     /*Return `false` because we are not buffering and no more data to read*/
     return false;
-}
-
-static void buzz_handler(int dir)
-{
-    static const uint16_t freqStart = 2000;
-    static uint16_t freq = freqStart;
-    static uint32_t lastRotateTime;
-
-    if(lv_tick_elaps(lastRotateTime) > 1000)
-    {
-        freq = freqStart;
-    }
-    else
-    {
-        if(dir > 0)
-        {
-            freq += 100;
-        }
-        
-        if(dir < 0)
-        {
-            freq -= 100;
-        }
-        
-        freq = constrain(freq, 100, 20 * 1000);
-    }
-
-    lastRotateTime = lv_tick_get();
-    HAL::Buzz_Tone(freq, 5);
-}
-
-/*Call this function in an interrupt to process encoder events (turn, press)*/
-static void encoder_handler(void)
-{
-    /*Your code comes here*/
-    int dir = (digitalRead(ENCODER_B_PIN) == LOW ? +1 : -1);
-    encoder_diff += dir;
-    buzz_handler(dir);
 }
 
 #else /* Enable this file at the top */

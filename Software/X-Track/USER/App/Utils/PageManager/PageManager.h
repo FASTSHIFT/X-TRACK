@@ -116,7 +116,7 @@ public:
 
     const LoadAnimAttr_t* GetCurrentLoadAnimAttr()
     {
-        return &(AnimState.LoadAttr_Grp[AnimState.TypeCurrent]);
+        return &(AnimState.LoadAnimAttr_Grp[AnimState.TypeCurrent]);
     }
 
     LoadAnim_t GetCurrentLoadAnimType()
@@ -143,7 +143,7 @@ private:
         uint16_t Time;
         lv_anim_path_cb_t Path;
         bool IsPushing;
-        const LoadAnimAttr_t* LoadAttr_Grp;
+        const LoadAnimAttr_t* LoadAnimAttr_Grp;
     }AnimState;
 
     static lv_res_t onRootSignal(lv_obj_t* obj, lv_signal_t signal, void* param);

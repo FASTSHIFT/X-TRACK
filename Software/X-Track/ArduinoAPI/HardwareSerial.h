@@ -27,7 +27,7 @@
 #include "Print.h"
 #include "Stream.h"
 
-#define SERIAL_RX_BUFFER_SIZE 256
+#define SERIAL_RX_BUFFER_SIZE 512
 #define SERIAL_Config_Default SERIAL_8N1
 #define USART_PreemptionPriority_Default 1
 #define USART_SubPriority_Default 3

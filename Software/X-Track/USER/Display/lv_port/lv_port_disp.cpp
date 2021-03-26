@@ -1,15 +1,13 @@
 #include "../Display.h"
 
-/*屏幕驱动结构体地址*/
-static lv_disp_drv_t * disp_drv_p;
+static lv_disp_drv_t* disp_drv_p;
 
-/*乒乓缓冲区*/
 #define DISP_BUF_SIZE        (LV_HOR_RES_MAX * LV_VER_RES_MAX)
 static lv_color_t lv_full_disp_buf[DISP_BUF_SIZE];
 static lv_color_t* lv_disp_buf1 = lv_full_disp_buf;
 
-#define DISP_DMA_Channel DMA1_Channel3
-#define DISP_DMA_MAX_SIZE 65535
+#define DISP_DMA_Channel         DMA1_Channel3
+#define DISP_DMA_MAX_SIZE        65535
 static uint8_t* disp_dma_tar_p = NULL;
 static uint8_t* disp_dma_cur_p = NULL;
 
@@ -49,7 +47,7 @@ static void disp_spi_dma_send(const void* buf, uint32_t size)
   * @param  color_p:刷新缓冲区地址
   * @retval 无
   */
-static void disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
+static void disp_flush_cb(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
     SCREEN_CLASS* screen = (SCREEN_CLASS*)disp->user_data;
     
@@ -117,7 +115,7 @@ static void disp_spi_dma_init()
     DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)lv_disp_buf1;  //DMA内存基地址
     DMA_InitStructure.DMA_MemoryInc = DMA_MEMORYINC_ENABLE;  //内存地址寄存器自增
     DMA_InitStructure.DMA_MemoryDataWidth = DMA_MEMORYDATAWIDTH_BYTE; //数据宽度
-    DMA_InitStructure.DMA_BufferSize = sizeof(lv_disp_buf1);  //DMA通道的DMA缓存的大小
+    DMA_InitStructure.DMA_BufferSize = DISP_DMA_MAX_SIZE;  //DMA通道的DMA缓存的大小
     
     DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)(&(SPI1->DT));  //DMA外设SPI基地址
     DMA_InitStructure.DMA_PeripheralInc = DMA_PERIPHERALINC_DISABLE;  //外设地址寄存器不变
@@ -130,6 +128,11 @@ static void disp_spi_dma_init()
     NVIC_EnableIRQ(DMA1_Channel3_IRQn);
     
     DMA_INTConfig(DISP_DMA_Channel, DMA_INT_TC, ENABLE);
+}
+
+static void disp_wait_cb(lv_disp_drv_t* disp_drv)
+{
+    __wfi();
 }
 
 /**
@@ -147,7 +150,8 @@ void lv_port_disp_init(SCREEN_CLASS* scr)
     /*Initialize the display*/
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
-    disp_drv.flush_cb = disp_flush;
+    disp_drv.flush_cb = disp_flush_cb;
+    disp_drv.wait_cb = disp_wait_cb;
     disp_drv.buffer = &disp_buf;
     disp_drv.user_data = scr;
     lv_disp_drv_register(&disp_drv);

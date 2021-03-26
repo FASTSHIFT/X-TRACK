@@ -2,14 +2,14 @@
 
 #if LV_USE_FILESYSTEM
 #include "SdFat.h"
+#include "HAL/HAL.h"
 
-static SdFat SD(&SPI_2);
+extern SdFat SD;
 
 /*********************
  *      DEFINES
  *********************/
 #define SD_LETTER 'S'
-#define SD_CONFIG SdSpiConfig(SD_CS_PIN, DEDICATED_SPI, SD_SCK_MHZ(25), &SPI_2)
 
 /**********************
  *      TYPEDEFS
@@ -48,7 +48,6 @@ static lv_fs_res_t fs_dir_close (lv_fs_drv_t * drv, void * dir_p);
  *  STATIC VARIABLES
  **********************/
 static lv_fs_drv_t fs_drv;                         /*A driver descriptor*/
-static bool is_fs_ready = false;
 
 /**********************
  *      MACROS
@@ -102,27 +101,12 @@ void lv_fs_if_init(void)
 
 static bool fs_ready(lv_fs_drv_t * drv)
 {
-    return is_fs_ready;
+    return HAL::SD_GetReady();
 }
 
 /* Initialize your Storage device and File system. */
 static void fs_init(void)
 {
-#ifdef SD_CD_PIN
-    pinMode(SD_CD_PIN, INPUT_PULLUP);
-    if(digitalRead(SD_CD_PIN))
-    {
-        Serial.println("SD CARD was not insert");
-        return;
-    }
-#endif
-
-    is_fs_ready = SD.begin(SD_CS_PIN, SD_SCK_MHZ(25));
-
-    if(!is_fs_ready)
-    {
-        Serial.println("SD CARD ERROR");
-    }
 }
 
 /**

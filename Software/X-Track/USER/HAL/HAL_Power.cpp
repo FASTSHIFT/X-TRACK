@@ -12,6 +12,9 @@ static bool Power_AutoLowPowerEnable = false;
 
 static uint16_t Power_ADCValue = 0;
 
+#define BATT_MAX_VOLTAGE 4100
+#define BATT_MIN_VOLTAGE 3300
+
 /**
   * @brief  电源初始化
   * @param  无
@@ -21,14 +24,16 @@ void HAL::Power_Init()
 {
     /*电源使能保持*/
     pinMode(POWER_EN_PIN, OUTPUT);
+    delay(1000);
     digitalWrite(POWER_EN_PIN, HIGH);
     
     /*电池检测*/
     pinMode(BAT_DET_PIN, INPUT_ANALOG_DMA);
     pinMode(BAT_CHG_DET_PIN, INPUT_PULLUP);
     
-    Power_SetAutoLowPowerTimeout(5 * 60);
-    Power_HandleTimeUpdate();
+//    Power_SetAutoLowPowerTimeout(5 * 60);
+//    Power_HandleTimeUpdate();
+    Power_SetAutoLowPowerEnable(false);
 }
 
 /**
@@ -114,11 +119,11 @@ uint8_t HAL::Power_GetBattUsage()
     
     voltage *= 2;
     
-    __LimitValue(voltage, 3000, 4100);
+    __LimitValue(voltage, BATT_MIN_VOLTAGE, BATT_MAX_VOLTAGE);
     
     int usage = map(
         voltage,
-        3000, 4100,
+        BATT_MIN_VOLTAGE, BATT_MAX_VOLTAGE,
         0, 100
     );
     
