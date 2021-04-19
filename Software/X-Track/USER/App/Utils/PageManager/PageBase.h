@@ -40,6 +40,7 @@ class PageBase {
 public:
     virtual ~PageBase() {}
 
+    virtual void onCustomAttrConfig() {}
     virtual void onViewLoad() {}
     virtual void onViewDidLoad() {}
     virtual void onViewWillAppear() {}
@@ -48,13 +49,13 @@ public:
     virtual void onViewDidDisappear() {}
     virtual void onViewDidUnload() {}
     
-    void SetCacheEnable(bool en)
+    void SetCustomCacheEnable(bool en)
     {
-        SetAutoCacheEnable(false);
+        SetCustomAutoCacheEnable(false);
         priv.CacheEnableReq = en;
     }
 
-    void SetAutoCacheEnable(bool en)
+    void SetCustomAutoCacheEnable(bool en)
     {
         priv.DisableAutoCacheReq = !en;
     }

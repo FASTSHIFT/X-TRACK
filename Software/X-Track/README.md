@@ -23,3 +23,19 @@
 * 19.添加GNSSToolKit_Lite配置工程
 * 20.添加lv_get_indev()
 * 21.添加__wfi()，可能省点电
+
+## [v0.2] - 2021-4-19
+* 1.添加ArtDesign工程，使用Adobe Illustrator
+* 2.添加异步无锁Buffer库：PingPongBuffer
+* 3.删除离线图片和字体转换工具
+* 4.修改页面ID格式：DialplatePage->Pages/Dialplate
+* 5.添加消息发布订阅框架：DataCenter
+* 6.将HAL.h转移至应用层
+* 7.HAL: Clock_GetValue->Clock_GetInfo
+* 8.在PC模拟器上使用PC的电量显示
+* 9.更新PageManager
+* 10.降低SD热插拔监控扫描速度
+* 11.删除Music_Astronomia
+* 12.在编码器按下时忽略滚动，减少误触
+* 13.更新Dialplate页面
+* 14.更新LiveMap页面

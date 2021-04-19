@@ -369,6 +369,27 @@
     <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateView.h">
       <Filter>App\Pages\_Template</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\StatusBar\StatusBar.h">
+      <Filter>App\Pages\StatusBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\DataCenter\Account.h">
+      <Filter>App\Utils\DataCenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenter.h">
+      <Filter>App\Utils\DataCenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenterLog.h">
+      <Filter>App\Utils\DataCenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Common\DataProc\DataProc.h">
+      <Filter>App\Common\DataProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Common\HAL\HAL_Def.h">
+      <Filter>App\Common\HAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\Filters\Filters.h">
+      <Filter>App\Utils\Filters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lvgl\src\lv_core\lv_disp.c">
@@ -716,9 +737,6 @@
     <ClCompile Include="..\..\USER\App\Pages\AppFactory.cpp">
       <Filter>App\Pages</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManager.cpp">
-      <Filter>App\Utils\PageManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManagerBase.cpp">
       <Filter>App\Utils\PageManager</Filter>
     </ClCompile>
@@ -796,6 +814,75 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateView.cpp">
       <Filter>App\Pages\_Template</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManagerRouter.cpp">
+      <Filter>App\Utils\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_13.c">
+      <Filter>App\Resource\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_17.c">
+      <Filter>App\Resource\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_32.c">
+      <Filter>App\Resource\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_65.c">
+      <Filter>App\Resource\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_alarm.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_battery.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_locate.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_menu.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_origin_point.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_satellite.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_stop.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_trip.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\StatusBar\StatusBar.cpp">
+      <Filter>App\Pages\StatusBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\DataCenter\Account.cpp">
+      <Filter>App\Utils\DataCenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\DataCenter\DataCenter.cpp">
+      <Filter>App\Utils\DataCenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DataProc.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\Filters\Filters.c">
+      <Filter>App\Utils\Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Clock.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_GPS.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Power.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp">
+      <Filter>App\Common\HAL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -879,6 +966,18 @@
     </Filter>
     <Filter Include="App\Pages\_Template">
       <UniqueIdentifier>{7f1cd996-4e74-42a2-a406-aa9f81edd5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Pages\StatusBar">
+      <UniqueIdentifier>{63355414-3928-4d0a-9f61-933d9a6f05f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\DataCenter">
+      <UniqueIdentifier>{b4b4dde8-8a8c-473f-8b8a-50e31357b5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Common\DataProc">
+      <UniqueIdentifier>{5e01ce8e-124b-48ef-b610-8afc6b344152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\Filters">
+      <UniqueIdentifier>{ec12e6ef-c635-474c-83a3-c425f1d8c9a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

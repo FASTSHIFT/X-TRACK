@@ -11,7 +11,7 @@ void HAL::I2C_Scan(bool startScan)
     uint8_t error, address;
     int nDevices;
     
-    Serial.println("I2C device scanning...");
+    Serial.println("I2C: device scanning...");
 
     nDevices = 0;
     for (address = 1; address < 127; address++ )

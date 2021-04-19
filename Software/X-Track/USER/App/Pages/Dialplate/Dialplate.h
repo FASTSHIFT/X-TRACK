@@ -10,6 +10,7 @@ public:
     Dialplate();
     virtual ~Dialplate();
 
+    virtual void onCustomAttrConfig();
     virtual void onViewLoad();
     virtual void onViewDidLoad();
     virtual void onViewWillAppear();
@@ -19,17 +20,16 @@ public:
     virtual void onViewDidUnload();
 
 private:
-    DialplateView View;
-    DialplateModel Model;
-
-    lv_group_t* group;
-
     void Update();
     void AttachEvent(lv_obj_t* obj);
-
-    lv_task_t* task;
     static void TaskUpdate(lv_task_t* task);
     static void EventHandler(lv_obj_t* obj, lv_event_t event);
+
+private:
+    DialplateView View;
+    DialplateModel Model;
+    lv_group_t* group;
+    lv_task_t* task;  
 };
 
 #endif

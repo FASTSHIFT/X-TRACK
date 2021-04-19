@@ -4,6 +4,7 @@
 static ButtonEvent EncoderPush(5000);
 
 static volatile int32_t EncoderDiff = 0;
+static bool EncoderDiffDisable = false;
 
 static void Buzz_Handler(int dir)
 {
@@ -36,6 +37,11 @@ static void Buzz_Handler(int dir)
 
 static void Encoder_EventHandler()
 {
+    if(EncoderDiffDisable)
+    {
+        return;
+    }
+    
     int dir = (digitalRead(ENCODER_B_PIN) == LOW ? -1 : +1);
     EncoderDiff += dir;
     Buzz_Handler(dir);
@@ -43,7 +49,15 @@ static void Encoder_EventHandler()
 
 static void Encoder_PushHandler(ButtonEvent* btn, int event)
 {
-    if(event == ButtonEvent::EVENT_LONG_PRESSED)
+    if(event == ButtonEvent::EVENT_PRESSED)
+    {
+        EncoderDiffDisable = true;
+    }
+    else if(event == ButtonEvent::EVENT_RELEASED)
+    {
+        EncoderDiffDisable = false;
+    }
+    else if(event == ButtonEvent::EVENT_LONG_PRESSED)
     {
         HAL::Audio_PlayMusic("Shutdown");
         HAL::Power_Shutdown();

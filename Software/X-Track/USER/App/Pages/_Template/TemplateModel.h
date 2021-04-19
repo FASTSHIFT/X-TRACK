@@ -6,8 +6,8 @@
 class TemplateModel
 {
 public:
-	uint32_t TickSave;
-	uint32_t GetData();
+    uint32_t TickSave;
+    uint32_t GetData();
 private:
 
 };

@@ -29,7 +29,7 @@ class PageFactory {
 public:
     virtual PageBase* CreatePage(const char* name)
     {
-        return NULL;
+        return nullptr;
     };
 };
 

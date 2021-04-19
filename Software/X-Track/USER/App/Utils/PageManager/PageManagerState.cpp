@@ -165,6 +165,12 @@ PageBase::State_t PageManager::StateDidDisappearExecute(PageBase* base)
 PageBase::State_t PageManager::StateUnloadExecute(PageBase* base)
 {
     PM_LOG_INFO("Page(%s) state unload", base->Name);
+    if (base->root == nullptr)
+    {
+        PM_LOG_WARN("Page is loaded!");
+        goto Exit;
+    }
+
     if (base->priv.Stash.ptr != nullptr && base->priv.Stash.size != 0)
     {
         PM_LOG_INFO("Page(%s) free stash(0x%p)[%d]", base->Name, base->priv.Stash.ptr, base->priv.Stash.size);
@@ -174,6 +180,9 @@ PageBase::State_t PageManager::StateUnloadExecute(PageBase* base)
     }
     lv_obj_del(base->root);
     base->root = nullptr;
+    base->priv.IsCacheEnable = false;
     base->onViewDidUnload();
+
+Exit:
     return PageBase::PAGE_STATE_IDLE;
 }

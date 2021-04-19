@@ -1,4 +1,4 @@
-#include "LiveMap.h"
+ #include "LiveMap.h"
 
 #define MAP_TILE_SIZE 256
 #define MAP_TILE_POS(pos) ((pos) - ((pos) % MAP_TILE_SIZE))
@@ -15,13 +15,11 @@ LiveMap::~LiveMap()
 
 void LiveMap::onViewLoad()
 {
-    lv_obj_set_style_local_value_str(root, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, "LOADING...");
-
+    Model.Init();
     View.Create(root);
     AttachEvent(root);
     AttachEvent(View.ui.sliderLevel);
     AttachEvent(View.ui.map.cont);
-    AttachEvent(View.ui.btnInfo);
     AttachEvent(View.ui.btnBack);
 
     group = lv_group_create();
@@ -29,8 +27,9 @@ void LiveMap::onViewLoad()
     lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), group);
 
     lv_group_add_obj(group, View.ui.sliderLevel);
-    lv_group_add_obj(group, View.ui.btnInfo);
     lv_group_add_obj(group, View.ui.btnBack);
+
+    lv_group_focus_obj(View.ui.btnBack);
 
     Model.mapConv.SetLevel(15);
     Model.mapConv.SetRootName("S:MAP/Mapinfos");
@@ -45,7 +44,8 @@ void LiveMap::onViewDidLoad()
 
 void LiveMap::onViewWillAppear()
 {
-    
+    StatusBar_SetStyle(STATUS_BAR_STYLE_BLACK);
+    SportInfo_Update();
 }
 
 void LiveMap::onViewDidAppear()
@@ -64,6 +64,7 @@ void LiveMap::onViewWillDisappear()
 
 void LiveMap::onViewDidDisappear()
 {
+    Model.Deinit();
 }
 
 void LiveMap::onViewDidUnload()
@@ -82,6 +83,7 @@ void LiveMap::Update()
     if (lv_tick_elaps(lastUpdateTime) >= mapUpdateIntervalTime)
     {
         MapUpdate();
+        SportInfo_Update();
         lastUpdateTime = lv_tick_get();
     }
 }
@@ -89,11 +91,13 @@ void LiveMap::Update()
 void LiveMap::MapUpdate()
 {
     int level = lv_slider_get_value(View.ui.sliderLevel);
-    HAL::GPS_Info_t gpsInfo;
-    Model.GetGPSInfo(&gpsInfo);
+
     MapConv* mapConv = &(Model.mapConv);
 
     uint32_t mapX, mapY;
+
+    HAL::GPS_Info_t gpsInfo;
+    Model.GetGPS_Info(&gpsInfo);
 
     mapConv->SetLevel(level);
     mapConv->ConvertMapCoordinate(gpsInfo.longitude, gpsInfo.latitude, &mapX, &mapY);
@@ -119,29 +123,18 @@ void LiveMap::MapUpdate()
     View.SetImgArrowAngle(gpsInfo.compass);
 
     FocusMap(mapX, mapY);
+}
 
-    lv_label_set_text_fmt(
-        View.ui.labelInfo,
-        "satel:%d\n"
-        "lng: %lf\n"
-        "lat:%lf\n"
-        "alt: %0.2f\n"
-        "compass: %0.1f\n"
-        "spd: %0.2fkm/h\n"
-        "%02d:%02d:%02d\n"
-        "Batt: %d%%\n"
-        "Steps: %d",
-        gpsInfo.satellites,
-        gpsInfo.longitude,
-        gpsInfo.latitude,
-        gpsInfo.altitude,
-        gpsInfo.compass,
-        gpsInfo.speed,
-        gpsInfo.clock.hour,
-        gpsInfo.clock.min,
-        gpsInfo.clock.sec,
-        HAL::Power_GetBattUsage(),
-        HAL::IMU_GetSteps()
+void LiveMap::SportInfo_Update()
+{
+    lv_label_set_text_fmt(View.ui.sportInfo.labelSpeed, "%02d", (int)Model.sportStatusInfo.speedKph);
+
+    lv_label_set_text_fmt(View.ui.sportInfo.labelTrip, "%0.1f km", Model.sportStatusInfo.singleDistance / 1000);
+
+    char buf[16];
+    lv_label_set_text(
+        View.ui.sportInfo.labelTime,
+        DataProc::ConvTime(Model.sportStatusInfo.singleTime, buf, sizeof(buf))
     );
 }
 
@@ -163,18 +156,9 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
         }
     }
 
-    if (obj == instance->View.ui.btnInfo)
-    {
-        if (event == LV_EVENT_CLICKED)
-        {
-            lv_obj_t* label = instance->View.ui.labelInfo;
-            lv_obj_set_hidden(label, !lv_obj_get_hidden(label));
-        }
-    }
-
     if (obj == instance->View.ui.btnBack)
     {
-        if (event == LV_EVENT_CLICKED)
+        if (event == LV_EVENT_SHORT_CLICKED)
         {
             lv_event_send(instance->root, LV_EVENT_LEAVE, instance);
         }
@@ -200,8 +184,6 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
             int moveOffsetX = oriX - instance->contLastX;
             int moveOffsetY = oriY - instance->contLastY;
 
-            //LV_LOG_USER("moveOffset = (%d, %d)", moveOffsetX, moveOffsetY);
-
             int mapCenter_lastX = MAP_TILE_POS(instance->mapFocusX);
             int mapCenter_lastY = MAP_TILE_POS(instance->mapFocusY);
 
@@ -210,9 +192,7 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
 
             int mapCenter_X = MAP_TILE_POS(instance->mapFocusX);
             int mapCenter_Y = MAP_TILE_POS(instance->mapFocusY);
-
-            //LV_LOG_USER("mapCenter offset = (%d, %d)", mapCenter_X - mapCenter_lastX, mapCenter_Y - mapCenter_lastY);
-
+       
             instance->LoadMap(instance->mapFocusX, instance->mapFocusY);
             lv_obj_set_pos(
                 contMap,
@@ -230,8 +210,6 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
 
 void LiveMap::LoadMap(uint32_t x, uint32_t y)
 {
-    //LV_LOG_USER("LoadMap = (%d, %d)", x, y);
-
     char path[128];
     MapConv* mapConv = &(Model.mapConv);
     const int mapOffset[3] = { -MAP_TILE_SIZE, 0, MAP_TILE_SIZE };
@@ -240,7 +218,6 @@ void LiveMap::LoadMap(uint32_t x, uint32_t y)
     {
         mapConv->ConvertMapPath(x + mapOffset[i % 3], y + mapOffset[i / 3], path, sizeof(path));
         lv_img_set_src(View.ui.map.imgMap[i], path);
-        //LV_LOG_USER("#MapPath = %s", path);
     }
 }
 
@@ -248,5 +225,5 @@ void LiveMap::FocusMap(uint32_t x, uint32_t y)
 {
     lv_coord_t centerOffsetX = MAP_TILE_SIZE / 2 - x % MAP_TILE_SIZE;
     lv_coord_t centerOffsetY = MAP_TILE_SIZE / 2 - y % MAP_TILE_SIZE;
-    lv_obj_align(View.ui.map.cont, NULL, LV_ALIGN_CENTER, centerOffsetX, centerOffsetY);
+    lv_obj_align(View.ui.map.cont, nullptr, LV_ALIGN_CENTER, centerOffsetX, centerOffsetY);
 }

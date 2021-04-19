@@ -2,13 +2,13 @@
 #include "Display/Display.h"
 #include "HAL/HAL.h"
 
-void setup()
+static void setup()
 {
     HAL::HAL_Init();
     Display_Init();
 }
 
-void loop()
+static void loop()
 {
     HAL::HAL_Update();
     lv_task_handler();

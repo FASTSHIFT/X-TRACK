@@ -10,10 +10,9 @@ static TinyGPSPlus gps;
 void HAL::GPS_Init()
 {
     GPS_SERIAL.begin(9600);
-    DEBUG_SERIAL.print("TinyGPS++ library v. ");
-    DEBUG_SERIAL.println(TinyGPSPlus::libraryVersion());
-    DEBUG_SERIAL.println("by Mikal Hart");
-    DEBUG_SERIAL.println();
+    DEBUG_SERIAL.print("GPS: TinyGPS++ library v. ");
+    DEBUG_SERIAL.print(TinyGPSPlus::libraryVersion());
+    DEBUG_SERIAL.println(" by Mikal Hart");
 }
 
 void HAL::GPS_Update()
@@ -38,31 +37,39 @@ void HAL::GPS_Update()
 #endif
 }
 
-bool HAL::GPS_GetInfo(HAL::GPS_Info_t* info)
+bool HAL::GPS_GetInfo(GPS_Info_t* info)
 {
-    if(!gps.location.isValid())
-    {
-        info->longitude = 116.391332;
-        info->latitude = 39.907415;
-        info->altitude = 53.0f;
-        info->speed = 0.0f;
-        info->clock.hour = gps.time.hour();
-        info->clock.min = gps.time.minute();
-        info->clock.sec = gps.time.second();
-        info->compass = 0.0f;
-    }
-    else
+    bool retval = false;
+    memset(info, 0, sizeof(GPS_Info_t));
+    
+    if(gps.location.isValid())
     {
         info->longitude = gps.location.lng();
         info->latitude = gps.location.lat();
         info->altitude = gps.altitude.meters();
         info->speed = gps.speed.kmph();
-        info->satellites = 0;
-        Clock_GetValue(&info->clock);
         info->compass = gps.course.deg();
+        retval = true;
+    }
+    else
+    {
+        info->longitude = 116.391332;
+        info->latitude = 39.907415;
+        info->altitude = 53.0f;
     }
 
+    info->clock.year = gps.date.year();
+    info->clock.month = gps.date.month();
+    info->clock.day = gps.date.day();
+    info->clock.hour = (gps.time.hour() + 8) % 24;
+    info->clock.min = gps.time.minute();
+    info->clock.sec = gps.time.second();
     info->satellites = gps.satellites.value();
     
-    return true;
+    return retval;
+}
+
+bool GPS_LocationIsValid()
+{
+    return gps.location.isValid();
 }

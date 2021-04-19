@@ -26,19 +26,21 @@ private:
     uint32_t mapFocusX, mapFocusY;
     int32_t contLastX, contLastY;
 
-    void Update();
-    void MapUpdate();
-    void AttachEvent(lv_obj_t* obj);
-
-    void LoadMap(uint32_t x, uint32_t y);
-    void FocusMap(uint32_t x, uint32_t y);
-
     lv_task_t* taskUpdate;
     lv_group_t* group;
     uint32_t lastUpdateTime;
     uint16_t mapUpdateIntervalTime;
+
+private:
+    void Update();
+    void MapUpdate();
+    void SportInfo_Update();
+    void AttachEvent(lv_obj_t* obj);
+    void LoadMap(uint32_t x, uint32_t y);
+    void FocusMap(uint32_t x, uint32_t y);
     static void TaskUpdate(lv_task_t* task);
     static void EventHandler(lv_obj_t* obj, lv_event_t event);
+
 };
 
 #endif

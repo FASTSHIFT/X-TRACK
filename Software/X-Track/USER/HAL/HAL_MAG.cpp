@@ -5,7 +5,7 @@ static LIS3MDL mag;
 
 void HAL::MAG_Init()
 {
-    Serial.print("MAG init...");
+    Serial.print("MAG: init...");
     Serial.println(mag.init() ? "success" : "failed");
 
     mag.enableDefault();

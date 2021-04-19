@@ -186,7 +186,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -336,7 +336,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>LIBRARY_VERSION,ARDUINO=111</Define>
               <Undefine></Undefine>
-              <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER;..\Libraries\SdFat\src;..\Simulator\LVGL.Simulator</IncludePath>
+              <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER;..\Libraries\SdFat\src;..\Simulator\LVGL.Simulator;..\USER\App</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -552,6 +552,194 @@
               <FileName>Page.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Pages\Page.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>StatusBar</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>StatusBar.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\StatusBar\StatusBar.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>StatusBar.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\StatusBar\StatusBar.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Common/DataPorc</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>DataProc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DataProc.h</FilePath>
+            </File>
+            <File>
+              <FileName>DataProc.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DataProc.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_Clock.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_Clock.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_GPS.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_GPS.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_Power.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_Power.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_SportStatus.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_SportStatus.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -953,6 +1141,28 @@
         </Group>
         <Group>
           <GroupName>Resource/Font</GroupName>
+          <Files>
+            <File>
+              <FileName>font_bahnschrift_13.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Font\font_bahnschrift_13.c</FilePath>
+            </File>
+            <File>
+              <FileName>font_bahnschrift_17.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Font\font_bahnschrift_17.c</FilePath>
+            </File>
+            <File>
+              <FileName>font_bahnschrift_32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Font\font_bahnschrift_32.c</FilePath>
+            </File>
+            <File>
+              <FileName>font_bahnschrift_65.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Font\font_bahnschrift_65.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>Resource/Image</GroupName>
@@ -966,6 +1176,46 @@
               <FileName>img_src_gps_pin.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\App\Resource\Image\img_src_gps_pin.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_alarm.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_battery.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_battery.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_locate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_locate.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_origin_point.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_origin_point.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_satellite.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_satellite.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_stop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_stop.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_trip.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_trip.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1161,11 +1411,6 @@
               <FilePath>..\USER\App\Utils\PageManager\PageFactory.h</FilePath>
             </File>
             <File>
-              <FileName>PageManager.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManager.cpp</FilePath>
-            </File>
-            <File>
               <FileName>PageManager.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\PageManager\PageManager.h</FilePath>
@@ -1174,6 +1419,11 @@
               <FileName>PageManagerBase.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\PageManager\PageManagerBase.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PageManagerRouter.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\PageManager\PageManagerRouter.cpp</FilePath>
             </File>
             <File>
               <FileName>PageManagerDrag.cpp</FileName>
@@ -1199,6 +1449,120 @@
               <FileName>ResourceManager.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\PageManager\ResourceManager.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/DataCenter</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>Account.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\Account.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Account.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\Account.h</FilePath>
+            </File>
+            <File>
+              <FileName>DataCenter.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\DataCenter.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DataCenter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\DataCenter.h</FilePath>
+            </File>
+            <File>
+              <FileName>DataCenterLog.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\DataCenterLog.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/Filters</GroupName>
+          <Files>
+            <File>
+              <FileName>Filters.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\Filters\Filters.c</FilePath>
+            </File>
+            <File>
+              <FileName>Filters.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\Filters.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1473,9 +1837,9 @@
               <FilePath>..\Libraries\TonePlayer\TonePlayer.cpp</FilePath>
             </File>
             <File>
-              <FileName>Filters.c</FileName>
+              <FileName>PingPongBuffer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Libraries\Filters\Filters.c</FilePath>
+              <FilePath>..\Libraries\PingPongBuffer\PingPongBuffer.c</FilePath>
             </File>
           </Files>
         </Group>

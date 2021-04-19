@@ -23,13 +23,16 @@ static uint16_t Power_ADCValue = 0;
 void HAL::Power_Init()
 {
     /*电源使能保持*/
+    Serial.println("Power: Waiting...");
     pinMode(POWER_EN_PIN, OUTPUT);
+    digitalWrite(POWER_EN_PIN, LOW);
     delay(1000);
     digitalWrite(POWER_EN_PIN, HIGH);
+    Serial.println("Power: ON");
     
     /*电池检测*/
     pinMode(BAT_DET_PIN, INPUT_ANALOG_DMA);
-    pinMode(BAT_CHG_DET_PIN, INPUT_PULLUP);
+    pinMode(BAT_CHG_DET_PIN, INPUT_PULLDOWN);
     
 //    Power_SetAutoLowPowerTimeout(5 * 60);
 //    Power_HandleTimeUpdate();
@@ -109,7 +112,7 @@ void HAL::Power_Update()
     }
 }
 
-uint8_t HAL::Power_GetBattUsage()
+void HAL::Power_GetInfo(Power_Info_t* info)
 {
     int voltage = map(
         Power_ADCValue,
@@ -127,10 +130,8 @@ uint8_t HAL::Power_GetBattUsage()
         0, 100
     );
     
-    return usage;
+    info->usage = usage;
+    info->isCharging = digitalRead(BAT_CHG_DET_PIN);
+    info->voltage = voltage;
 }
 
-bool HAL::Power_GetBattIsCharging()
-{
-    return !digitalRead(BAT_CHG_DET_PIN);
-}

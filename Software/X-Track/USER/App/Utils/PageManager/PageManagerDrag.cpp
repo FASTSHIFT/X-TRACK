@@ -27,6 +27,8 @@
 #  define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #endif // !constrain
 
+static lv_signal_cb_t lv_obj_origin_signal_cb = nullptr;
+
 lv_res_t PageManager::onRootSignal(lv_obj_t* obj, lv_signal_t signal, void* param)
 {
     PageBase::root_ext_attr_t ext_attr;
@@ -35,7 +37,7 @@ lv_res_t PageManager::onRootSignal(lv_obj_t* obj, lv_signal_t signal, void* para
     PageBase* base = ext_attr.base;
     PageManager* manager = base->Manager;
 
-    lv_res_t res = manager->lv_obj_signal_cb(obj, signal, param);
+    lv_res_t res = lv_obj_origin_signal_cb(obj, signal, param);
 
     if (res != LV_RES_OK)
         return res;
@@ -120,9 +122,9 @@ void PageManager::onRootAnimFinish(lv_anim_t* a)
 
 void PageManager::RootEnableDrag(lv_obj_t* root, lv_drag_dir_t drag_dir)
 {
-    if (lv_obj_signal_cb == nullptr)
+    if (lv_obj_origin_signal_cb == nullptr)
     {
-        lv_obj_signal_cb = lv_obj_get_signal_cb(root);
+        lv_obj_origin_signal_cb = lv_obj_get_signal_cb(root);
     }
     lv_obj_set_signal_cb(root, onRootSignal);
     lv_obj_set_drag(root, true);

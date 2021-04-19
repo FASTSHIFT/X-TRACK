@@ -12,7 +12,7 @@ void HAL::SD_Init()
     pinMode(SD_CD_PIN, INPUT_PULLUP);
     if(digitalRead(SD_CD_PIN))
     {
-        Serial.println("SD CARD was not insert");
+        Serial.println("SD: CARD was not insert");
         return;
     }
 #endif
@@ -21,7 +21,7 @@ void HAL::SD_Init()
 
     if(!SD_IsReady)
     {
-        Serial.println("SD CARD ERROR");
+        Serial.println("SD: CARD ERROR");
     }
 }
 
@@ -36,7 +36,6 @@ void HAL::SD_Update()
     
     if(isInsert != SD_LastState)
     {
-        delay(100);
         if(isInsert)
         {
             SD_Init();

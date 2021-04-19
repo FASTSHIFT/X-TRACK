@@ -23,6 +23,15 @@
 #include "PageManager.h"
 #include "PageManagerLog.h"
 
+static void lv_obj_set_opa_scale(lv_obj_t* obj, lv_anim_value_t opa_scale)
+{
+    lv_obj_set_style_local_bg_opa(obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, (lv_opa_t)opa_scale);
+}
+static lv_anim_value_t lv_obj_get_opa_scale(lv_obj_t* obj)
+{
+    return lv_obj_get_style_bg_opa(obj, LV_OBJ_PART_MAIN);
+}
+
 static const PageManager::LoadAnimAttr_t LoadAnimAttrArr[PageManager::LOAD_ANIM_MAX] =
 {
     /* LOAD_ANIM_GLOBAL */
@@ -147,8 +156,8 @@ static const PageManager::LoadAnimAttr_t LoadAnimAttrArr[PageManager::LOAD_ANIM_
 
     /* LOAD_ANIM_FADE_ON */
     {
-        (PageManager::lv_anim_setter_t)PageManager::lv_obj_set_opa_scale,
-        (PageManager::lv_anim_getter_t)PageManager::lv_obj_get_opa_scale,
+        (PageManager::lv_anim_setter_t)lv_obj_set_opa_scale,
+        (PageManager::lv_anim_getter_t)lv_obj_get_opa_scale,
 
         /*Enter*/
         LV_OPA_TRANSP, LV_OPA_COVER, //Push
@@ -161,14 +170,13 @@ static const PageManager::LoadAnimAttr_t LoadAnimAttrArr[PageManager::LOAD_ANIM_
 };
 
 PageManager::PageManager(PageFactory* factory)
+    : Factory(factory)
+    , PrevNode(nullptr)
+    , CurrentNode(nullptr)
 {
-    Factory = factory;
     _lv_ll_init(&PagePool_LL, sizeof(PageBasePtr_t));
     _lv_ll_init(&PageStack_LL, sizeof(PageBasePtr_t));
 
-    CurrentNode = nullptr;
-    PrevNode = nullptr;
-    lv_obj_signal_cb = nullptr;
     memset(&AnimState, 0, sizeof(AnimState));
     AnimState.LoadAnimAttr_Grp = LoadAnimAttrArr;
 
@@ -177,8 +185,8 @@ PageManager::PageManager(PageFactory* factory)
 
 PageManager::~PageManager()
 {
-    _lv_ll_clear(&PagePool_LL);
     _lv_ll_clear(&PageStack_LL);
+    _lv_ll_clear(&PagePool_LL);
 }
 
 PageBase* PageManager::FindPage(lv_ll_t* ll, const char* name)
@@ -233,6 +241,8 @@ PageBase* PageManager::Install(const char* className, const char* appName)
     base->UserData = nullptr;
     memset(&base->priv, 0, sizeof(base->priv));
 
+    base->onCustomAttrConfig();
+
     if (appName == nullptr)
     {
         PM_LOG_WARN("appName has not set");
@@ -285,7 +295,7 @@ bool PageManager::Register(PageBase* base, const char* name)
         PM_LOG_ERROR("Page(%s) was multi registered", name);
         return false;
     }
-        
+
     base->Manager = this;
     base->Name = name;
 
@@ -336,8 +346,38 @@ PageBase* PageManager::GetStackTop()
     return *top;
 }
 
-void PageManager::SetStackClear()
+void PageManager::SetStackClear(bool keepBottom)
 {
+    while (1)
+    {
+        PageBasePtr_t* top = GetStackTopPtr();
+
+        if (top == nullptr)
+        {
+            PM_LOG_INFO("Page stack is empty, breaking...");
+            break;
+        }
+
+        PageBasePtr_t* topAfter = (PageBasePtr_t*)_lv_ll_get_prev(&PageStack_LL, top);
+
+        if (topAfter == nullptr)
+        {
+            if (keepBottom)
+            {
+                PrevNode = *top;
+                PM_LOG_INFO("Keep page stack bottom(%s), breaking...", (*top)->Name);;
+                break;
+            }
+            else
+            {
+                PrevNode = nullptr;
+            }
+        }
+
+        FourceUnload(*top);
+        _lv_ll_remove(&PageStack_LL, top);
+    }
+    PM_LOG_INFO("Stack clear done");
 }
 
 PageBase* PageManager::GetStackTopAfter()

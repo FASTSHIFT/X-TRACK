@@ -34,6 +34,6 @@ void HAL::HAL_Init()
 
 void HAL::HAL_Update()
 {
-    SD_Update();
+    __IntervalExecute(SD_Update(), 500);
     GPS_Update();
 }

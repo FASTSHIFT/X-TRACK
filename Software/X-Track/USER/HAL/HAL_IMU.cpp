@@ -5,7 +5,7 @@ static LSM6DSM imu;
 
 void HAL::IMU_Init()
 {
-    Serial.print("IMU init...");
+    Serial.print("IMU: init...");
     Serial.println(imu.Init() ? "success" : "failed");
 }
 

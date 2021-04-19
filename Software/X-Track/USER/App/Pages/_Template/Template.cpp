@@ -9,6 +9,12 @@ Template::~Template()
 
 }
 
+void Template::onCustomAttrConfig()
+{
+    SetCustomCacheEnable(true);
+    SetCustomLoadAnimType(PageManager::LOAD_ANIM_FADE_ON);
+}
+
 void Template::onViewLoad()
 {
     View.Create(root);
@@ -78,9 +84,13 @@ void Template::EventHandler(lv_obj_t* obj, lv_event_t event)
 {
     Template* instance = (Template*)obj->user_data;
 
-    if (event == LV_EVENT_CLICKED || event == LV_EVENT_LEAVE)
+    if (obj == instance->root)
     {
-        if (obj == instance->root)
+        if (event == LV_EVENT_LONG_PRESSED || event == LV_EVENT_LEAVE)
+        {
+            instance->Manager->GoHome();
+        }
+        if (event == LV_EVENT_SHORT_CLICKED)
         {
             instance->Manager->Pop();
         }

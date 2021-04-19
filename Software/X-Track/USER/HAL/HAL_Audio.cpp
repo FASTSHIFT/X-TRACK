@@ -49,181 +49,6 @@ static void Tone_Callback(uint32_t freq, uint16_t volume)
     HAL::Buzz_Tone(freq);
 }
 
-#define ASTR_T_TIME 180
-#define ASTR_S_TIME 20
-static const TonePlayer::MusicNode_t Music_Astronomia[] = 
-{
-    /*1-1*/
-    {M4, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M4, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M4, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M4, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M6, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M6, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M6, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M6, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    
-    /*1-2*/
-    {M5, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M5, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M5, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {M5, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H1, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H1, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H1, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H1, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    
-    /*1-3*/
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    {H2, ASTR_T_TIME},
-    {0, ASTR_S_TIME},
-    
-    /*1-4*/
-    {M5, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {M1, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {M6, ASTR_T_TIME},
-    
-    /*2-1*/
-    {M5, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    
-    /*2-2*/
-    {M5, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    
-    /*2-3*/
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    
-    /*2-4*/
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {M6, ASTR_T_TIME},
-    
-    /*3-1*/
-    {M5, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    
-    /*3-2*/
-    {M5, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {M3, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    
-    /*3-3*/
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {0, ASTR_T_TIME},
-    {M2, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    
-    /*3-4*/
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {H3, ASTR_T_TIME},
-    {H4, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    {M4, ASTR_T_TIME},
-    
-    /*4-1*/
-    {M6, ASTR_T_TIME},
-    {M6, ASTR_T_TIME},
-    {M6, ASTR_T_TIME},
-    {M6, ASTR_T_TIME},
-    {M5, ASTR_T_TIME},
-    {M5, ASTR_T_TIME},
-    {M5, ASTR_T_TIME},
-    {M5, ASTR_T_TIME},
-    
-    /*4-2*/
-    {H1, ASTR_T_TIME},
-    {H1, ASTR_T_TIME},
-    {H1, ASTR_T_TIME},
-    {H1, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-    
-    /*4-3*/
-    {H2, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-    {H2, ASTR_T_TIME},
-};
-
 /*¿ª»úÒô*/
 static const TonePlayer::MusicNode_t Music_StartUp[] =
 {
@@ -338,7 +163,6 @@ static const MusicList_t MusicList[] =
     ADD_MUSIC(DeviceInsert),
     ADD_MUSIC(DevicePullout),
     ADD_MUSIC(NoOperationWarning),
-    ADD_MUSIC(Astronomia)
 };
 
 void HAL::Audio_Init()
@@ -353,13 +177,15 @@ void HAL::Audio_Update()
 
 bool HAL::Audio_PlayMusic(const char* name)
 {
+    bool retval = false;
     for(int i = 0; i < __Sizeof(MusicList); i++)
     {
         if(strcmp(name, MusicList[i].name) == 0)
         {
             player.Play(MusicList[i].mc, MusicList[i].length);
-            return true;
+            retval = true;
+            break;
         }
     }
-    return false;
+    return retval;
 }

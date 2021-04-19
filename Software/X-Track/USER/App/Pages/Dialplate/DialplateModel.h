@@ -1,20 +1,37 @@
 #ifndef __DIALPLATE_MODEL_H
 #define __DIALPLATE_MODEL_H
 
-#include "lvgl/lvgl.h"
-#include "../../Common/HAL/HAL.h"
+#include "Common/DataProc/DataProc.h"
 
 class DialplateModel
 {
 public:
-    float GetSpeed()
-    {
-        HAL::GPS_Info_t gpsInfo;
-        HAL::GPS_GetInfo(&gpsInfo);
-        return gpsInfo.speed;
-    }
-private:
+    HAL::SportStatus_Info_t sportStatusInfo;
 
+public:
+    void Init();
+    void Deinit();
+    inline float GetSpeed()
+    {
+        return sportStatusInfo.speedKph;
+    }
+    
+    inline float GetAvgSpeed()
+    {
+        return sportStatusInfo.speedAvgKph;
+    }
+
+private:
+    Account* account;
+
+private:
+    static int Callback(
+        Account* pub,
+        Account* sub,
+        int msgType,
+        void* data_p,
+        uint32_t size
+    );
 };
 
 #endif

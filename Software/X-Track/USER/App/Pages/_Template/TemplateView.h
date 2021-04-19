@@ -5,12 +5,13 @@
 
 class TemplateView {
 public:
+    void Create(lv_obj_t* par);
+
+public:
     struct {
         lv_obj_t* labelTitle;
         lv_obj_t* labelTick;
     }ui;
-
-    void Create(lv_obj_t* par);
 
 private:
     

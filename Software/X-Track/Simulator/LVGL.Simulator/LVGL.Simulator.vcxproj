@@ -19,11 +19,14 @@
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
       <DisableSpecificWarnings>4214;4244;4013;4018;4090;4100;4127;4267;4389;4701;4702;</DisableSpecificWarnings>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Default</LanguageStandard>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\USER\App;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\USER\App\App.h" />
+    <ClInclude Include="..\..\USER\App\Common\DataProc\DataProc.h" />
     <ClInclude Include="..\..\USER\App\Common\HAL\HAL.h" />
+    <ClInclude Include="..\..\USER\App\Common\HAL\HAL_Def.h" />
     <ClInclude Include="..\..\USER\App\Pages\AppFactory.h" />
     <ClInclude Include="..\..\USER\App\Pages\Dialplate\Dialplate.h" />
     <ClInclude Include="..\..\USER\App\Pages\Dialplate\DialplateModel.h" />
@@ -32,10 +35,15 @@
     <ClInclude Include="..\..\USER\App\Pages\LiveMap\LiveMapModel.h" />
     <ClInclude Include="..\..\USER\App\Pages\LiveMap\LiveMapView.h" />
     <ClInclude Include="..\..\USER\App\Pages\Page.h" />
+    <ClInclude Include="..\..\USER\App\Pages\StatusBar\StatusBar.h" />
     <ClInclude Include="..\..\USER\App\Pages\_Template\Template.h" />
     <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateModel.h" />
     <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateView.h" />
     <ClInclude Include="..\..\USER\App\Resource\ResourcePool.h" />
+    <ClInclude Include="..\..\USER\App\Utils\DataCenter\Account.h" />
+    <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenter.h" />
+    <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenterLog.h" />
+    <ClInclude Include="..\..\USER\App\Utils\Filters\Filters.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
@@ -145,6 +153,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\USER\App\App.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DataProc.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Clock.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_GPS.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Power.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Clock.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp" />
@@ -156,18 +170,34 @@
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMap.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMapModel.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMapView.cpp" />
+    <ClCompile Include="..\..\USER\App\Pages\StatusBar\StatusBar.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\_Template\Template.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateModel.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateView.cpp" />
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_13.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_17.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_32.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_65.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_alarm.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_battery.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_pin.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_locate.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_menu.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_origin_point.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_satellite.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_stop.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_trip.c" />
     <ClCompile Include="..\..\USER\App\Resource\ResourcePool.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\DataCenter\Account.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\DataCenter\DataCenter.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\Filters\Filters.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_theme_custom.c" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
-    <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManager.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManagerRouter.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManagerBase.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManagerDrag.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PageManagerState.cpp" />

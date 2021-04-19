@@ -13,9 +13,11 @@ public:
         lv_color_t color;
     } Param_t;
 
+public:
     Template();
     virtual ~Template();
 
+    virtual void onCustomAttrConfig();
     virtual void onViewLoad();
     virtual void onViewDidLoad();
     virtual void onViewWillAppear();
@@ -25,15 +27,15 @@ public:
     virtual void onViewDidUnload();
 
 private:
-    TemplateView View;
-    TemplateModel Model;
-
     void Update();
     void AttachEvent(lv_obj_t* obj);
-
-    lv_task_t* task;
     static void TaskUpdate(lv_task_t* task);
     static void EventHandler(lv_obj_t* obj, lv_event_t event);
+
+private:
+    TemplateView View;
+    TemplateModel Model;
+    lv_task_t* task;
 };
 
 #endif

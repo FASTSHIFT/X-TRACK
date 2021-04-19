@@ -27,42 +27,8 @@
 #include "PageFactory.h"
 
 class PageManager {
-    typedef PageBase* PageBasePtr_t;
 
 public:
-    PageManager(PageFactory* factory = nullptr);
-    ~PageManager();
-
-    PageBase* Install(const char* className, const char* appName);
-    bool Uninstall(const char* appName);
-    bool Register(PageBase* base, const char* name);
-    bool Unregister(const char* name);
-  
-    PageBase* Push(const char* name, const PageBase::Stash_t* stash = nullptr);
-    PageBase* Pop(const PageBase::Stash_t* stash = nullptr);
-    PageBase* Back(const PageBase::Stash_t* stash = nullptr)
-    {
-        return Pop(stash);
-    }
-    PageBase* Replace(const char* name, const PageBase::Stash_t* stash = nullptr);
-    void SwitchTo(PageBase* base, const PageBase::Stash_t* stash = nullptr);
-    PageBase::State_t GetState()
-    {
-        return CurrentNode->priv.State;
-    }
-
-    PageBase* FindPage(lv_ll_t* ll, const char* name);
-    PageBasePtr_t* FindPagePtr(lv_ll_t* ll, const char* name);
-    PageBase* FindPageInPool(const char* name);
-    PageBase* FindPageInStack(const char* name);
-    PageBasePtr_t* GetStackTopPtr();
-    PageBase* GetStackTop();
-    PageBase* GetStackTopAfter();
-    void SetStackClear();
-    int GetStackLength();
-    void GetStackPages(const char* buff, size_t len);
-    const char* GetPrevNodeName();
-
     typedef enum {
         LOAD_ANIM_GLOBAL = 0,
         LOAD_ANIM_NONE,
@@ -101,37 +67,101 @@ public:
         lv_anim_value_t PopExitEnd;
     }LoadAnimAttr_t;
 
+private:
+    typedef PageBase* PageBasePtr_t;
+
+public:
+    PageManager(PageFactory* factory = nullptr);
+    ~PageManager();
+
+    /* Loader */
+    PageBase* Install(const char* className, const char* appName);
+    bool Uninstall(const char* appName);
+    bool Register(PageBase* base, const char* name);
+    bool Unregister(const char* name);
+  
+    /* Router */
+    PageBase* Push(const char* name, const PageBase::Stash_t* stash = nullptr);
+    PageBase* Pop(const PageBase::Stash_t* stash = nullptr);
+    void GoHome();
+
+    /* Global Anim */
+    void SetGlobalLoadAnimType(
+        LoadAnim_t anim = LOAD_ANIM_OVER_LEFT, 
+        uint16_t time = 500, 
+        lv_anim_path_cb_t path = lv_anim_path_ease_out
+    );
+
+private:
+    /* Page Pool */
+    PageBase* FindPageInPool(const char* name);
+    PageBase* FindPage(lv_ll_t* ll, const char* name);
+    PageBasePtr_t* FindPagePtr(lv_ll_t* ll, const char* name);
+
+    /* Page Stack */
+    PageBase* FindPageInStack(const char* name);
+    PageBase* GetStackTop();
+    PageBase* GetStackTopAfter();
+    PageBasePtr_t* GetStackTopPtr();
+    void SetStackClear(bool keepBottom = true);
+
+    /* Switch */
+    void SwitchTo(PageBase* base, const PageBase::Stash_t* stash = nullptr);
+    bool FourceUnload(PageBase* base);
+    const char* GetPrevNodeName();
+
+    /* Anim */
     bool GetIsOverAnim(LoadAnim_t anim)
     {
         return (anim >= LOAD_ANIM_OVER_LEFT && anim <= LOAD_ANIM_OVER_BOTTOM);
     }
-
     bool GetIsMoveAnim(LoadAnim_t anim)
     {
         return (anim >= LOAD_ANIM_MOVE_LEFT && anim <= LOAD_ANIM_MOVE_BOTTOM);
     }
-
-    void SetGlobalLoadAnimType(LoadAnim_t anim = LOAD_ANIM_OVER_LEFT, uint16_t time = 500, lv_anim_path_cb_t path = lv_anim_path_ease_out);
     void AnimDefaultInit(lv_anim_t* a);
-
     const LoadAnimAttr_t* GetCurrentLoadAnimAttr()
     {
         return &(AnimState.LoadAnimAttr_Grp[AnimState.TypeCurrent]);
     }
-
     LoadAnim_t GetCurrentLoadAnimType()
     {
         return AnimState.TypeCurrent;
     }
 
-    static void lv_obj_set_opa_scale(lv_obj_t* obj, lv_anim_value_t opa_scale);
-    static lv_anim_value_t lv_obj_get_opa_scale(lv_obj_t* obj);
+    /* Root */
+    static lv_res_t onRootSignal(lv_obj_t* obj, lv_signal_t signal, void* param);
+    static void onRootAnimFinish(lv_anim_t* a);
+    static void RootAsyncCall(void* user_data);
+    void RootEnableDrag(lv_obj_t* root, lv_drag_dir_t drag_dir);
+    static void RootGetDragPredict(lv_coord_t* x, lv_coord_t* y);
+
+    /* Switch */
+    static void onSwitchAnimFinish(lv_anim_t* a);
+    void SwitchAnimCreate(PageBase* base);
+    void SwitchAnimTypeUpdate(PageBase* base);
+    bool SwitchReqCheck();
+    bool SwitchAnimStateCheck();
+
+    /* State */
+    PageBase::State_t StateLoadExecute(PageBase* base);
+    PageBase::State_t StateWillAppearExecute(PageBase* base);
+    PageBase::State_t StateDidAppearExecute(PageBase* base);
+    PageBase::State_t StateWillDisappearExecute(PageBase* base);
+    PageBase::State_t StateDidDisappearExecute(PageBase* base);
+    PageBase::State_t StateUnloadExecute(PageBase* base);
+    void StateUpdate(PageBase* base);
+    PageBase::State_t GetState()
+    {
+        return CurrentNode->priv.State;
+    }
     
 private:
     PageFactory* Factory;
 
     lv_ll_t PagePool_LL;
     lv_ll_t PageStack_LL;
+
     PageBase* PrevNode;
     PageBase* CurrentNode;
 
@@ -145,26 +175,6 @@ private:
         bool IsPushing;
         const LoadAnimAttr_t* LoadAnimAttr_Grp;
     }AnimState;
-
-    static lv_res_t onRootSignal(lv_obj_t* obj, lv_signal_t signal, void* param);
-    static void onRootAnimFinish(lv_anim_t* a);
-    static void RootAsyncCall(void* user_data);
-    void RootEnableDrag(lv_obj_t* root, lv_drag_dir_t drag_dir);
-    static void RootGetDragPredict(lv_coord_t* x, lv_coord_t* y);
-    lv_signal_cb_t lv_obj_signal_cb;
-
-    static void onSwitchAnimFinish(lv_anim_t* a);
-    void SwitchAnimCreate(PageBase* base);
-    void SwitchAnimTypeUpdate(PageBase* base);
-    bool SwitchReqCheck();
-
-    PageBase::State_t StateLoadExecute(PageBase* base);
-    PageBase::State_t StateWillAppearExecute(PageBase* base);
-    PageBase::State_t StateDidAppearExecute(PageBase* base);
-    PageBase::State_t StateWillDisappearExecute(PageBase* base);
-    PageBase::State_t StateDidDisappearExecute(PageBase* base);
-    PageBase::State_t StateUnloadExecute(PageBase* base);
-    void StateUpdate(PageBase* base);
 };
 
 #endif
