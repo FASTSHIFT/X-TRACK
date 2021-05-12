@@ -25,6 +25,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include "PingPongBuffer/PingPongBuffer.h"
 #include "lvgl/lvgl.h"
 
 class DataCenter;
@@ -32,33 +33,68 @@ class DataCenter;
 class Account
 {
 public:
-    typedef int (*DataCallback_t)(
-        Account* pub,
-        Account* sub,
-        int msgType,
-        void* data_p,
-        uint32_t size
-    );
+    typedef enum {
+        EVENT_NONE,
+        EVENT_PUB_PUBLISH,
+        EVENT_SUB_PULL,
+        EVENT_NOTIFY,
+        _EVENT_LAST
+    }EventCode_t;
+
+    typedef enum {
+        ERROR_NONE = 0,
+        ERROR_UNKNOW = -1,
+        ERROR_SIZE_MISMATCH = -2,
+        ERROR_UNSUPPORTED_REQUEST = -3,
+        ERROR_NO_CALLBACK = -4,
+        ERROR_NO_CACHE = -5,
+        ERROR_NO_COMMITED = -6,
+        ERROR_NOT_FOUND = -7,
+        ERROR_PARAM_ERROR = -8
+    }ErrorCode_t;
+
+    typedef struct {
+        EventCode_t event;
+        Account* tran;
+        Account* recv;
+        void* data_p;
+        uint32_t size;
+    }EventParam_t;
+
+    typedef int (*EventCallback_t)(EventParam_t* param);
     typedef void (*TimerCallback_t)(Account* account);
 
 public:
-    Account(const char* id, DataCenter* center, void* userData = nullptr);
+    Account(
+        const char* id, 
+        DataCenter* center, 
+        uint32_t bufSize = 0, 
+        void* userData = nullptr
+    );
     ~Account();
 
     /* 关注 */
-    bool Subscribe(const char* pubID, DataCallback_t callback);
+    Account* Subscribe(const char* pubID);
 
     /* 取关 */
     bool Unsubscribe(const char* pubID);
 
+    /* 提交 */
+    bool Commit(const void* data_p, uint32_t size);
+
     /* 推送 */
-    int Publish(int msgType, const void* data_p, uint32_t size);
+    int Publish();
 
-    /* 催更 */
-    int Pull(const char* pubID, int msgType, void* data, uint32_t size);
+    /* 拉取 */
+    int Pull(const char* pubID, void* data_p, uint32_t size);
+    int Pull(Account* pub, void* data_p, uint32_t size);
 
-    /* UP催更入口 */
-    void SetPullCallback(DataCallback_t callback);
+    /* 私信 */
+    int Notify(const char* pubID, const void* data_p, uint32_t size);
+    int Notify(Account* pub, const void* data_p, uint32_t size);
+
+    /* 事件回调 */
+    void SetEventCallback(EventCallback_t callback);
 
     /* 定时上报 */
     void SetTimerCallback(TimerCallback_t callback, uint32_t intervalTime);
@@ -79,15 +115,17 @@ public:
 
     struct
     {
-        DataCallback_t subscribeCallback;  /* UP推送 */
-        DataCallback_t pullCallback;       /* 粉丝催更 */
+        EventCallback_t eventCallback;  /* 事件 */
 
-        lv_task_t* task;
+        lv_timer_t* timer;
         TimerCallback_t timerCallback;
+
+        PingPongBuffer_t BufferManager;
+        uint32_t BufferSize;
     } priv;
-        
+
 private:
-    static void TimerCallbackHandler(lv_task_t* task);
+    static void TimerCallbackHandler(lv_timer_t* task);
 };
 
 #endif

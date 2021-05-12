@@ -3,15 +3,22 @@
 
 static DataCenter dataCenter("Bilibili");
 
+#define DP_REG(NodeName) \
+do{\
+    extern void DP_##NodeName##_Register(DataCenter* center);\
+    DP_##NodeName##_Register(&dataCenter);\
+}while(0)
+
 DataCenter* DataProc::Center()
 {
     return &dataCenter;
 }
 
-void DataProc::Init()
+void DataProc_Init()
 {
-    Clock_Init(&dataCenter);
-    GPS_Init(&dataCenter);
-    Power_Init(&dataCenter);
-    SportStatus_Init(&dataCenter);
+    DP_REG(Clock);
+    DP_REG(GPS);
+    DP_REG(Power);
+    DP_REG(SportStatus);
+    DP_REG(Recorder);
 }

@@ -23,8 +23,6 @@ void HAL::HAL_Init()
     MAG_Init();
     Audio_Init();
     SD_Init();
-    
-    ADC_DMA_Init();
    
     Audio_PlayMusic("StartUp");
     

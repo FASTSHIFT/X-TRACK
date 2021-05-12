@@ -1,6 +1,9 @@
 #include "StatusBar.h"
 #include "Common/DataProc/DataProc.h"
 
+#define BATT_USAGE_HEIGHT (lv_obj_get_height(ui.battery.img) - 6)
+#define BATT_USAGE_WIDTH  (lv_obj_get_width(ui.battery.img) - 4)
+
 static Account* actStatusBar;
 
 struct
@@ -13,6 +16,7 @@ struct
         lv_obj_t* label;
     } satellite;
 
+    lv_obj_t* labelRec;
     lv_obj_t* labelClock;
 
     struct
@@ -21,108 +25,190 @@ struct
         lv_obj_t* objUsage;
         lv_obj_t* label;
     } battery;
+} ui;
 
-} StatusBar;
+static void RecorderDraw_Update(DataProc::Recorder_State_t state)
+{
+    lv_obj_t* label = ui.labelRec;
+    switch (state)
+    {
+    case DataProc::RECORDER_STOP:
+        if (lv_obj_has_flag(label, LV_OBJ_FLAG_HIDDEN))
+        {
+            lv_obj_clear_flag(label, LV_OBJ_FLAG_HIDDEN);
+            lv_obj_set_style_text_color(label, lv_color_white(), 0);
+        }
+        break;
+    case DataProc::RECORDER_PAUSE:
+        lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_YELLOW), 0);
+        break;
+    case DataProc::RECORDER_START:
+        if (!lv_obj_has_flag(label, LV_OBJ_FLAG_HIDDEN))
+        {
+            lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
+        }
+        break;
+    default:
+        break;
+    }
+}
 
-#define BATT_USAGE_HEIGHT (lv_obj_get_height(StatusBar.battery.img) - 6)
-#define BATT_USAGE_WIDTH  (lv_obj_get_width(StatusBar.battery.img) - 4)
-
-static void StatusBar_Update(lv_task_t* task)
+static void StatusBar_Update(lv_timer_t* timer)
 {
     /* satellite */
-    HAL::GPS_Info_t gpsInfo;
-    actStatusBar->Pull("GPS", 0, &gpsInfo, sizeof(gpsInfo));
-    lv_label_set_text_fmt(StatusBar.satellite.label, "%d", gpsInfo.satellites);
+    HAL::GPS_Info_t gps;
+    actStatusBar->Pull("GPS", &gps, sizeof(gps));
+    lv_label_set_text_fmt(ui.satellite.label, "%d", gps.satellites);
+
+    /* recorder */
+    DataProc::Recorder_Info_t rec;
+    actStatusBar->Pull("Recorder", &rec, sizeof(rec));
+    //RecorderDraw_Update(rec.state);
 
     /* clock */
     HAL::Clock_Info_t clock;
-    actStatusBar->Pull("Clock", 0, &clock, sizeof(clock));
-    lv_label_set_text_fmt(StatusBar.labelClock, "%02d:%02d", clock.hour, clock.min);
+    actStatusBar->Pull("Clock", &clock, sizeof(clock));
+    lv_label_set_text_fmt(ui.labelClock, "%02d:%02d", clock.hour, clock.min);
 
     /* battery */
     HAL::Power_Info_t power;
-    actStatusBar->Pull("Power", 0, &power, sizeof(power));
-    lv_label_set_text_fmt(StatusBar.battery.label, "%d%%", power.usage);
-    lv_coord_t h = MAP(power.usage, 0, 100, 0, BATT_USAGE_HEIGHT);
-    lv_obj_set_height(StatusBar.battery.objUsage, h);
+    actStatusBar->Pull("Power", &power, sizeof(power));
+    lv_label_set_text_fmt(ui.battery.label, "%d", power.usage);
+    //lv_obj_set_height(ui.battery.objUsage, h);
+    bool Is_BattCharging = power.isCharging;
+    lv_obj_t* contBatt = ui.battery.objUsage;
+    static bool Is_BattChargingAnimActive = false;
+    if(Is_BattCharging)
+    {
+        if(!Is_BattChargingAnimActive)
+        {
+            lv_anim_t a;
+            lv_anim_init(&a);
+            lv_anim_set_var(&a, contBatt);
+            lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_height);
+            lv_anim_set_values(&a, 0, BATT_USAGE_HEIGHT);
+            lv_anim_set_time(&a, 1000);
+            lv_anim_set_repeat_delay(&a, 200);
+            lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE);
+            lv_anim_start(&a);
+            Is_BattChargingAnimActive = true;
+        }
+    }
+    else
+    {
+        if(Is_BattChargingAnimActive)
+        {
+            lv_anim_del(contBatt, (lv_anim_exec_xcb_t)lv_obj_set_height);
+            Is_BattChargingAnimActive = false;
+        }
+        lv_coord_t height = MAP(power.usage, 0, 100, 0, BATT_USAGE_HEIGHT);
+        lv_obj_set_height(contBatt, height);
+    }
 }
 
 static lv_obj_t* StatusBar_Create(lv_obj_t* par)
 {
-    lv_obj_t* cont = lv_cont_create(par, nullptr);
-    lv_obj_reset_style_list(cont, LV_CONT_PART_MAIN);
-    lv_obj_set_style_local_bg_color(cont, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
-    lv_cont_set_fit2(cont, LV_FIT_PARENT, LV_FIT_NONE);
-    lv_obj_set_height(cont, 23);
-    StatusBar.cont = cont;
+    lv_obj_t* cont = lv_obj_create(par);    
+    lv_obj_remove_style_all(cont);
+
+    lv_obj_set_size(cont, LV_HOR_RES, 22);
+
+    /* style1 */
+    lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cont, lv_color_hex(0x333333), LV_STATE_DEFAULT);
+
+    /* style2 */
+    lv_obj_set_style_bg_opa(cont, LV_OPA_60, LV_STATE_USER_1);
+    lv_obj_set_style_bg_color(cont, lv_color_black(), LV_STATE_USER_1);
+    lv_obj_set_style_shadow_color(cont, lv_color_black(), LV_STATE_USER_1);
+    lv_obj_set_style_shadow_width(cont, 10, LV_STATE_USER_1);
+
+    static lv_style_transition_dsc_t tran;
+    static const lv_style_prop_t prop[] = { LV_STYLE_BG_COLOR, LV_STYLE_OPA, LV_STYLE_PROP_INV };
+    lv_style_transition_dsc_init(
+        &tran,
+        prop,
+        lv_anim_path_ease_out,
+        200,
+        0
+    );
+    lv_obj_set_style_transition(cont, &tran, LV_STATE_USER_1);
+
+    ui.cont = cont;
 
     static lv_style_t style;
     lv_style_init(&style);
-    lv_style_set_text_color(&style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-    lv_style_set_text_font(&style, LV_STATE_DEFAULT, Resource.GetFont("bahnschrift_13"));
+    lv_style_set_text_color(&style, lv_color_white());
+    lv_style_set_text_font(&style, Resource.GetFont("bahnschrift_13"));
 
     /* satellite */
-    lv_obj_t* img = lv_img_create(cont, nullptr);
+    lv_obj_t* img = lv_img_create(cont);
     lv_img_set_src(img, Resource.GetImage("satellite"));
-    lv_obj_align(img, nullptr, LV_ALIGN_IN_LEFT_MID, 14, 0);
-    StatusBar.satellite.img = img;
+    lv_obj_align(img, LV_ALIGN_LEFT_MID, 14, 0);
+    ui.satellite.img = img;
 
-    lv_obj_t* label = lv_label_create(cont, nullptr);
-    lv_obj_add_style(label, LV_LABEL_PART_MAIN, &style);
-    lv_obj_align(label, StatusBar.satellite.img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+    lv_obj_t* label = lv_label_create(cont);
+    lv_obj_add_style(label, &style, 0);
+    lv_obj_align_to(label, ui.satellite.img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
     lv_label_set_text(label, "0");
-    StatusBar.satellite.label = label;
+    ui.satellite.label = label;
+
+    /* recorder */
+    label = lv_label_create(cont);
+    lv_obj_add_style(label, &style, 0);
+    lv_obj_align_to(label, ui.satellite.img, LV_ALIGN_OUT_RIGHT_MID, 30, 0);
+    lv_label_set_text(label, "REC*");
+    lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
+    ui.labelRec = label;
 
     /* clock */
-    label = lv_label_create(cont, nullptr);
-    lv_obj_add_style(label, LV_LABEL_PART_MAIN, &style);
+    label = lv_label_create(cont);
+    lv_obj_add_style(label, &style, 0);
     lv_label_set_text(label, "00:00");
-    lv_obj_align(label, nullptr, LV_ALIGN_CENTER, 0, 0);
-    lv_obj_set_auto_realign(label, true);
-    StatusBar.labelClock = label;
+    lv_obj_center(label);
+    ui.labelClock = label;
 
     /* battery */
-    img = lv_img_create(cont, nullptr);
+    img = lv_img_create(cont);
     lv_img_set_src(img, Resource.GetImage("battery"));
-    lv_obj_align(img, nullptr, LV_ALIGN_IN_RIGHT_MID, -40, 0);
-    StatusBar.battery.img = img;
+    lv_obj_align(img, LV_ALIGN_RIGHT_MID, -30, 0);
+    lv_obj_update_layout(img);
+    ui.battery.img = img;
 
-    lv_obj_t* obj = lv_obj_create(img, nullptr);
-    lv_obj_reset_style_list(obj, LV_OBJ_PART_MAIN);
-    lv_obj_set_style_local_bg_color(obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-    lv_obj_set_style_local_bg_opa(obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_COVER);
+    lv_obj_t* obj = lv_obj_create(img);
+    lv_obj_remove_style_all(obj);
+    lv_obj_set_style_bg_color(obj, lv_color_white(), 0);
+    lv_obj_set_style_bg_opa(obj, LV_OPA_COVER, 0);
+    lv_obj_set_style_opa(obj, LV_OPA_COVER, 0);
     lv_obj_set_size(obj, BATT_USAGE_WIDTH, BATT_USAGE_HEIGHT);
-    lv_obj_align(obj, nullptr, LV_ALIGN_IN_BOTTOM_MID, 0, -2);
-    lv_obj_set_auto_realign(obj, true);
-    StatusBar.battery.objUsage = obj;
+    lv_obj_align(obj, LV_ALIGN_BOTTOM_MID, 0, -2);
+    ui.battery.objUsage = obj;
 
-    label = lv_label_create(cont, nullptr);
-    lv_obj_add_style(label, LV_LABEL_PART_MAIN, &style);
-    lv_obj_align(label, StatusBar.battery.img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+    label = lv_label_create(cont);
+    lv_obj_add_style(label, &style, 0);
+    lv_obj_align_to(label, ui.battery.img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
     lv_label_set_text(label, "100%");
-    StatusBar.battery.label = label;
+    ui.battery.label = label;
 
-    StatusBar_SetStyle(STATUS_BAR_STYLE_TRANSP);
+    StatusBar::SetStyle(StatusBar::STYLE_TRANSP);
 
-    lv_task_t* task = lv_task_create(StatusBar_Update, 1000, LV_TASK_PRIO_MID, nullptr);
-    lv_task_ready(task);
+    lv_timer_t* timer = lv_timer_create(StatusBar_Update, 1000, nullptr);
+    lv_timer_ready(timer);
 
-    return StatusBar.cont;
+    return ui.cont;
 }
 
-void StatusBar_SetStyle(StatusBar_Style_t style)
+void StatusBar::SetStyle(Style_t style)
 {
-    lv_obj_t* cont = StatusBar.cont;
-    if (style == STATUS_BAR_STYLE_TRANSP)
+    lv_obj_t* cont = ui.cont;
+    if (style == STYLE_TRANSP)
     {
-        lv_obj_set_style_local_bg_opa(cont, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_TRANSP);
-        lv_obj_set_style_local_shadow_width(cont, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 0);
+        lv_obj_add_state(cont, LV_STATE_DEFAULT);
+        lv_obj_clear_state(cont, LV_STATE_USER_1);
     }
-    else if (style == STATUS_BAR_STYLE_BLACK)
+    else if (style == STYLE_BLACK)
     {
-        lv_obj_set_style_local_bg_opa(cont, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_OPA_60);
-        lv_obj_set_style_local_shadow_color(cont, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_BLACK);
-        lv_obj_set_style_local_shadow_width(cont, LV_CONT_PART_MAIN, LV_STATE_DEFAULT, 10);
+        lv_obj_add_state(cont, LV_STATE_USER_1);
     }
     else
     {
@@ -130,23 +216,24 @@ void StatusBar_SetStyle(StatusBar_Style_t style)
     }
 }
 
-void StatusBar_Init(lv_obj_t* par)
+void StatusBar::Init(lv_obj_t* par)
 {
     StatusBar_Create(par);
 
     actStatusBar = new Account("StatusBar", DataProc::Center());
-    actStatusBar->Subscribe("GPS", nullptr);
-    actStatusBar->Subscribe("Power", nullptr);
-    actStatusBar->Subscribe("Clock", nullptr);
+    actStatusBar->Subscribe("GPS");
+    actStatusBar->Subscribe("Power");
+    actStatusBar->Subscribe("Clock");
+    actStatusBar->Subscribe("Recorder");
 }
 
-void StatusBar_AppearAnimStart(bool playback)
+void StatusBar::AppearAnimStart(bool playback)
 {
 #define ANIM_DEF(start_time, obj, attr, start, end) \
     {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out}
 
     lv_anim_timeline_t anim_timeline[] = {
-        ANIM_DEF(1000, StatusBar.cont, y, -lv_obj_get_height(StatusBar.cont), 0),
+        ANIM_DEF(1000, ui.cont, y, -lv_obj_get_height(ui.cont), 0),
     };
 
     lv_anim_timeline_start(anim_timeline, ARRAY_SIZE(anim_timeline), playback);

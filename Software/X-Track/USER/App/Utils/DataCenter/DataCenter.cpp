@@ -25,6 +25,8 @@
 #include <string.h>
 #include <algorithm>
 
+#define DC_USE_AUTO_CLOSE 0
+
 DataCenter::DataCenter(const char* name)
 {
     Name = name;
@@ -32,14 +34,19 @@ DataCenter::DataCenter(const char* name)
 
 DataCenter::~DataCenter()
 {
+#if DC_USE_AUTO_CLOSE
     DC_LOG_INFO("DataCenter[%s] closing...", Name);
-    for(auto iter : AccountPool)
+    while (!AccountPool.empty())
     {
-        Account* account = iter;
+        Account* account = AccountPool.back();
+        
         DC_LOG_INFO("Delete: %s", account->ID);
         delete account;
+
+        AccountPool.pop_back();
     }
     DC_LOG_INFO("DataCenter[%s] closed.", Name);
+#endif
 }
 
 Account* DataCenter::SearchAccount(const char* id)

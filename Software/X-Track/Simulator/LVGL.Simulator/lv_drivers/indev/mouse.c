@@ -60,7 +60,7 @@ bool mouse_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
     /*Store the collected data*/
     data->point.x = last_x;
     data->point.y = last_y;
-    data->state = left_button_down ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
+    data->state = left_button_down ? LV_INDEV_STATE_PRESSED : LV_INDEV_STATE_RELEASED;
 
     return false;
 }

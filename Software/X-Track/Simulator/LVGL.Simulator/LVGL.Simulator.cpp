@@ -12,6 +12,9 @@
 
 #include "resource.h"
 
+#include "App.h"
+#include "Utils/Filters/LowpassFilter.h"
+
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
 #pragma warning(push)
@@ -22,9 +25,9 @@
 #endif
 
 #include "lvgl/lvgl.h"
-#include "lv_examples/lv_examples.h"
+#include "lv_examples/lv_demo.h"
 #include "lv_drivers/win32drv/win32drv.h"
-#include "../../USER/App/App.h"
+#include "lv_fs_interface/lv_fs_interface.h"
 #include "lv_fs_if/lv_fs_if.h"
 
 #if _MSC_VER >= 1200
@@ -35,13 +38,15 @@
 int main()
 {
     lv_init();
+
     lv_fs_if_init();
+    //lv_fs_interface_init();
 
     if (!lv_win32_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
-        LV_HOR_RES_MAX,
-        LV_VER_RES_MAX,
+        240,
+        240,
         LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
     {
         return -1;
@@ -55,6 +60,8 @@ int main()
      */
 
     App_Init();
+    //lv_demo_keypad_encoder();
+    //lv_example_flex_3();
     //lv_demo_widgets();
     //lv_demo_benchmark();
     //lv_demo_keypad_encoder();
@@ -89,8 +96,8 @@ int main()
 
     while (!lv_win32_quit_signal)
     {
-        lv_task_handler();
-        Sleep(10);
+        lv_timer_handler();
+        Sleep(1);
     }
 
     return 0;

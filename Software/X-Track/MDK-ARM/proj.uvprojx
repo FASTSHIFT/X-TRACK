@@ -556,7 +556,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>StatusBar</GroupName>
+          <GroupName>Pages/StatusBar</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -717,6 +717,11 @@
               <FilePath>..\USER\App\Common\DataProc\DataProc.h</FilePath>
             </File>
             <File>
+              <FileName>DataProc_Def.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DataProc_Def.h</FilePath>
+            </File>
+            <File>
               <FileName>DataProc.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DataProc.cpp</FilePath>
@@ -740,6 +745,11 @@
               <FileName>DP_SportStatus.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_SportStatus.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_Recorder.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_Recorder.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1217,6 +1227,16 @@
               <FileType>1</FileType>
               <FilePath>..\USER\App\Resource\Image\img_src_trip.c</FilePath>
             </File>
+            <File>
+              <FileName>img_src_pause.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_pause.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_start.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_start.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1236,11 +1256,6 @@
               <FileName>lv_obj_ext_func.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>lv_theme_custom.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_theme_custom.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1416,29 +1431,34 @@
               <FilePath>..\USER\App\Utils\PageManager\PageManager.h</FilePath>
             </File>
             <File>
-              <FileName>PageManagerBase.cpp</FileName>
+              <FileName>PM_Anim.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManagerBase.cpp</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PM_Anim.cpp</FilePath>
             </File>
             <File>
-              <FileName>PageManagerRouter.cpp</FileName>
+              <FileName>PM_Base.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManagerRouter.cpp</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PM_Base.cpp</FilePath>
             </File>
             <File>
-              <FileName>PageManagerDrag.cpp</FileName>
+              <FileName>PM_Drag.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManagerDrag.cpp</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PM_Drag.cpp</FilePath>
             </File>
             <File>
-              <FileName>PageManagerLog.h</FileName>
+              <FileName>PM_Log.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManagerLog.h</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PM_Log.h</FilePath>
             </File>
             <File>
-              <FileName>PageManagerState.cpp</FileName>
+              <FileName>PM_Router.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManagerState.cpp</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PM_Router.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PM_State.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\PageManager\PM_State.cpp</FilePath>
             </File>
             <File>
               <FileName>ResourceManager.cpp</FileName>
@@ -1549,20 +1569,70 @@
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\DataCenter\DataCenterLog.h</FilePath>
             </File>
+            <File>
+              <FileName>PingPongBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>PingPongBuffer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Utils/Filters</GroupName>
           <Files>
             <File>
-              <FileName>Filters.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\Filters\Filters.c</FilePath>
-            </File>
-            <File>
               <FileName>Filters.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\Filters\Filters.h</FilePath>
+            </File>
+            <File>
+              <FileName>FilterBase.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\FilterBase.h</FilePath>
+            </File>
+            <File>
+              <FileName>HysteresisFilter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\HysteresisFilter.h</FilePath>
+            </File>
+            <File>
+              <FileName>LowpassFilter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\LowpassFilter.h</FilePath>
+            </File>
+            <File>
+              <FileName>MedianFilter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\MedianFilter.h</FilePath>
+            </File>
+            <File>
+              <FileName>MedianQueueFilter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\MedianQueueFilter.h</FilePath>
+            </File>
+            <File>
+              <FileName>SlidingFilter.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\Filters\SlidingFilter.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/GPX</GroupName>
+          <Files>
+            <File>
+              <FileName>GPX.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\GPX\GPX.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>GPX.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\GPX\GPX.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1570,9 +1640,9 @@
           <GroupName>Basic</GroupName>
           <Files>
             <File>
-              <FileName>SysConfig.h</FileName>
+              <FileName>Config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\Basic\SysConfig.h</FilePath>
+              <FilePath>..\USER\Basic\Config.h</FilePath>
             </File>
             <File>
               <FileName>CommonMacro.h</FileName>
@@ -1653,57 +1723,6 @@
               <FileName>HAL_SD_CARD.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_SD_CARD.cpp</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>2</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>--cpp11</MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
             </File>
             <File>
               <FileName>HAL_Buzz.cpp</FileName>
@@ -1724,122 +1743,6 @@
               <FileName>HAL_AHRS.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_AHRS.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>lv_port</GroupName>
-          <Files>
-            <File>
-              <FileName>lv_port_disp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\Display\lv_port\lv_port_disp.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>lv_port_indev.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\Display\lv_port\lv_port_indev.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_sdfat.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\Display\lv_port\lv_fs_sdfat.cpp</FilePath>
-              <FileOption>
-                <CommonProperty>
-                  <UseCPPCompiler>2</UseCPPCompiler>
-                  <RVCTCodeConst>0</RVCTCodeConst>
-                  <RVCTZI>0</RVCTZI>
-                  <RVCTOtherData>0</RVCTOtherData>
-                  <ModuleSelection>0</ModuleSelection>
-                  <IncludeInBuild>2</IncludeInBuild>
-                  <AlwaysBuild>2</AlwaysBuild>
-                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
-                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
-                  <PublicsOnly>2</PublicsOnly>
-                  <StopOnExitCode>11</StopOnExitCode>
-                  <CustomArgument></CustomArgument>
-                  <IncludeLibraryModules></IncludeLibraryModules>
-                  <ComprImg>1</ComprImg>
-                </CommonProperty>
-                <FileArmAds>
-                  <Cads>
-                    <interw>2</interw>
-                    <Optim>0</Optim>
-                    <oTime>2</oTime>
-                    <SplitLS>2</SplitLS>
-                    <OneElfS>2</OneElfS>
-                    <Strict>2</Strict>
-                    <EnumInt>2</EnumInt>
-                    <PlainCh>2</PlainCh>
-                    <Ropi>2</Ropi>
-                    <Rwpi>2</Rwpi>
-                    <wLevel>0</wLevel>
-                    <uThumb>2</uThumb>
-                    <uSurpInc>2</uSurpInc>
-                    <uC99>2</uC99>
-                    <uGnu>2</uGnu>
-                    <useXO>2</useXO>
-                    <v6Lang>0</v6Lang>
-                    <v6LangP>0</v6LangP>
-                    <vShortEn>2</vShortEn>
-                    <vShortWch>2</vShortWch>
-                    <v6Lto>2</v6Lto>
-                    <v6WtE>2</v6WtE>
-                    <v6Rtti>2</v6Rtti>
-                    <VariousControls>
-                      <MiscControls>--cpp11</MiscControls>
-                      <Define></Define>
-                      <Undefine></Undefine>
-                      <IncludePath></IncludePath>
-                    </VariousControls>
-                  </Cads>
-                </FileArmAds>
-              </FileOption>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Libraries</GroupName>
-          <Files>
-            <File>
-              <FileName>Adafruit_GFX.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\Adafruit_GFX_Library\Adafruit_GFX.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Adafruit_ST7789.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\Adafruit_ST7789\Adafruit_ST7789.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>LIS3MDL.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\LIS3MDL\LIS3MDL.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>LSM6DSM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\LSM6DSM\LSM6DSM.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>TinyGPS++.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\TinyGPSPlus\src\TinyGPS++.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ButtonEvent.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\ButtonEvent\ButtonEvent.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>TonePlayer.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\TonePlayer\TonePlayer.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>PingPongBuffer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\PingPongBuffer\PingPongBuffer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1923,542 +1826,577 @@
             <File>
               <FileName>lv_disp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_core\lv_disp.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_disp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_event.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_event.c</FilePath>
             </File>
             <File>
               <FileName>lv_group.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_core\lv_group.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_group.c</FilePath>
             </File>
             <File>
               <FileName>lv_indev.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_core\lv_indev.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_indev.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_indev_scroll.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_indev_scroll.c</FilePath>
             </File>
             <File>
               <FileName>lv_obj.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_core\lv_obj.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_class.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj_class.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_draw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj_draw.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_pos.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj_pos.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_scroll.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj_scroll.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_style.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj_style.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_obj_tree.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_obj_tree.c</FilePath>
             </File>
             <File>
               <FileName>lv_refr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_core\lv_refr.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_style.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_core\lv_style.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_arc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_arc.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_blend.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_blend.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_img.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_img.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_label.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_label.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_line.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_line.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_mask.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_mask.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_rect.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_rect.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_draw_triangle.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_draw_triangle.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_img_buf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_img_buf.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_img_cache.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_img_cache.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_img_decoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_draw\lv_img_decoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_dejavu_16_persian_hebrew.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_dejavu_16_persian_hebrew.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_fmt_txt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_fmt_txt.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_loader.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_loader.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_8.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_8.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_10.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_10.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_12.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_12.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_12_subpx.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_12_subpx.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_14.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_14.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_16.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_16.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_18.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_18.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_20.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_20.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_22.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_22.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_24.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_24.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_26.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_26.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_28.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_28.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_28_compressed.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_28_compressed.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_30.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_30.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_32.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_34.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_34.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_36.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_36.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_38.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_38.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_40.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_40.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_42.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_42.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_44.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_44.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_46.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_46.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_48.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_montserrat_48.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_simsun_16_cjk.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_simsun_16_cjk.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_unscii_8.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_unscii_8.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_unscii_16.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_font\lv_font_unscii_16.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_hal_disp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_hal\lv_hal_disp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_hal_indev.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_hal\lv_hal_indev.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_hal_tick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_hal\lv_hal_tick.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_anim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_anim.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_area.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_area.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_async.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_async.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_bidi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_bidi.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_color.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_color.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_debug.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_fs.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_gc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_gc.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_ll.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_ll.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_log.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_log.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_math.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_math.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_mem.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_printf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_printf.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_task.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_task.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_templ.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_templ.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_txt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_txt.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_txt_ap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_txt_ap.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_misc\lv_utils.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_refr.c</FilePath>
             </File>
             <File>
               <FileName>lv_theme.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_themes\lv_theme.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\core\lv_theme.c</FilePath>
             </File>
             <File>
-              <FileName>lv_theme_empty.c</FileName>
+              <FileName>lv_draw_arc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_themes\lv_theme_empty.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_arc.c</FilePath>
             </File>
             <File>
-              <FileName>lv_theme_material.c</FileName>
+              <FileName>lv_draw_blend.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_themes\lv_theme_material.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_blend.c</FilePath>
             </File>
             <File>
-              <FileName>lv_theme_mono.c</FileName>
+              <FileName>lv_draw_img.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_themes\lv_theme_mono.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_img.c</FilePath>
             </File>
             <File>
-              <FileName>lv_theme_template.c</FileName>
+              <FileName>lv_draw_label.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_themes\lv_theme_template.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_label.c</FilePath>
             </File>
             <File>
-              <FileName>lv_arc.c</FileName>
+              <FileName>lv_draw_line.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_arc.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_line.c</FilePath>
             </File>
             <File>
-              <FileName>lv_bar.c</FileName>
+              <FileName>lv_draw_mask.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_bar.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_mask.c</FilePath>
             </File>
             <File>
-              <FileName>lv_btn.c</FileName>
+              <FileName>lv_draw_rect.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_btn.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_rect.c</FilePath>
             </File>
             <File>
-              <FileName>lv_btnmatrix.c</FileName>
+              <FileName>lv_draw_triangle.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_btnmatrix.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_triangle.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_img_buf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_img_buf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_img_cache.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_img_cache.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_img_decoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_img_decoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_flex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\layouts\flex\lv_flex.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_grid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\layouts\grid\lv_grid.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_theme_basic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\themes\basic\lv_theme_basic.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_theme_default.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\themes\default\lv_theme_default.c</FilePath>
             </File>
             <File>
               <FileName>lv_calendar.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_calendar.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\calendar\lv_calendar.c</FilePath>
             </File>
             <File>
-              <FileName>lv_canvas.c</FileName>
+              <FileName>lv_calendar_header_arrow.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_canvas.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\calendar\lv_calendar_header_arrow.c</FilePath>
             </File>
             <File>
-              <FileName>lv_chart.c</FileName>
+              <FileName>lv_calendar_header_dropdown.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_chart.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\calendar\lv_calendar_header_dropdown.c</FilePath>
             </File>
             <File>
-              <FileName>lv_checkbox.c</FileName>
+              <FileName>lv_colorwheel.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_checkbox.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_cont.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_cont.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_cpicker.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_cpicker.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_dropdown.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_dropdown.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_gauge.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_gauge.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_img.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_img.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\colorwheel\lv_colorwheel.c</FilePath>
             </File>
             <File>
               <FileName>lv_imgbtn.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_imgbtn.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\imgbtn\lv_imgbtn.c</FilePath>
             </File>
             <File>
               <FileName>lv_keyboard.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_keyboard.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_label.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_label.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\keyboard\lv_keyboard.c</FilePath>
             </File>
             <File>
               <FileName>lv_led.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_led.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_line.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_line.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_linemeter.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_linemeter.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\led\lv_led.c</FilePath>
             </File>
             <File>
               <FileName>lv_list.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_list.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\list\lv_list.c</FilePath>
             </File>
             <File>
               <FileName>lv_msgbox.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_msgbox.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_objmask.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_objmask.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_objx_templ.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_objx_templ.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_page.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_page.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_roller.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_roller.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_slider.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_slider.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\msgbox\lv_msgbox.c</FilePath>
             </File>
             <File>
               <FileName>lv_spinbox.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_spinbox.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\spinbox\lv_spinbox.c</FilePath>
             </File>
             <File>
               <FileName>lv_spinner.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_spinner.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_switch.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_switch.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_table.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_table.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\spinner\lv_spinner.c</FilePath>
             </File>
             <File>
               <FileName>lv_tabview.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_tabview.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_textarea.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_textarea.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\tabview\lv_tabview.c</FilePath>
             </File>
             <File>
               <FileName>lv_tileview.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_tileview.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\tileview\lv_tileview.c</FilePath>
             </File>
             <File>
               <FileName>lv_win.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\lv_widgets\lv_win.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\win\lv_win.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_extra.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\lv_extra.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_dejavu_16_persian_hebrew.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_dejavu_16_persian_hebrew.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_fmt_txt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_fmt_txt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_loader.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_loader.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_8.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_8.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_10.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_10.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_12.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_12.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_12_subpx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_12_subpx.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_14.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_14.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_16.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_18.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_18.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_20.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_22.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_22.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_24.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_24.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_26.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_26.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_28.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_28.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_28_compressed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_28_compressed.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_30.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_30.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_32.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_34.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_34.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_36.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_36.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_38.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_38.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_40.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_40.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_42.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_42.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_44.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_44.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_46.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_46.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_montserrat_48.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_montserrat_48.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_simsun_16_cjk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_simsun_16_cjk.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_unscii_8.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_unscii_8.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_unscii_16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\font\lv_font_unscii_16.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_hal_disp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\hal\lv_hal_disp.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_hal_indev.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\hal\lv_hal_indev.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_hal_tick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\hal\lv_hal_tick.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_anim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_anim.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_area.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_area.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_async.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_async.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bidi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_bidi.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_color.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_color.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_fs.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_gc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_gc.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_ll.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_ll.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_log.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_math.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_printf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_printf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_style.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_style.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_templ.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_templ.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_tlsf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_tlsf.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_txt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_txt.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_txt_ap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_txt_ap.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_arc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_arc.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_bar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_bar.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_btn.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_btn.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_btnmatrix.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_btnmatrix.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_canvas.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_canvas.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_checkbox.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_checkbox.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_dropdown.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_dropdown.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_img.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_img.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_label.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_label.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_line.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_line.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_objx_templ.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_objx_templ.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_roller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_roller.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_slider.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_slider.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_switch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_switch.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_table.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_table.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_textarea.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\widgets\lv_textarea.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_chart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\chart\lv_chart.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_meter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\meter\lv_meter.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>lv_examaple</GroupName>
+          <GroupName>lv_examples</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -2466,7 +2404,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>0</IncludeInBuild>
+              <IncludeInBuild>2</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>
@@ -2530,14 +2468,14 @@
           </GroupOption>
           <Files>
             <File>
+              <FileName>lv_demo_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_demo_conf.h</FilePath>
+            </File>
+            <File>
               <FileName>lv_demo_benchmark.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_demo_widgets.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\lv_demo_widgets.c</FilePath>
             </File>
             <File>
               <FileName>lv_demo_keypad_encoder.c</FileName>
@@ -2545,49 +2483,129 @@
               <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.c</FilePath>
             </File>
             <File>
-              <FileName>img_cogwheel_alpha16.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\img_cogwheel_alpha16.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_argb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\img_cogwheel_argb.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_chroma_keyed.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\img_cogwheel_chroma_keyed.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_indexed16.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\img_cogwheel_indexed16.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_rgb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\img_cogwheel_rgb.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_hand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\img_hand.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_font_montserrat_12_compr_az.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\lv_font_montserrat_12_compr_az.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_12_compr_az.c</FilePath>
             </File>
             <File>
               <FileName>lv_font_montserrat_16_compr_az.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\lv_font_montserrat_16_compr_az.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_16_compr_az.c</FilePath>
             </File>
             <File>
               <FileName>lv_font_montserrat_28_compr_az.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\assets\lv_font_montserrat_28_compr_az.c</FilePath>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_28_compr_az.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_demo_stress.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\lv_demo_stress.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_clothes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\assets\img_clothes.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_demo_widgets_avatar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\assets\img_demo_widgets_avatar.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_lvgl_logo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\assets\img_lvgl_logo.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_demo_widgets.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\lv_demo_widgets.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_alpha16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_alpha16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_argb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_argb.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_chroma_keyed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_chroma_keyed.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_indexed16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_indexed16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_cogwheel_rgb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_rgb.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lv_port</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_port_disp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\Display\lv_port\lv_port_disp.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lv_port_indev.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\Display\lv_port\lv_port_indev.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lv_fs_sdfat.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\Display\lv_port\lv_fs_sdfat.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Libraries</GroupName>
+          <Files>
+            <File>
+              <FileName>Adafruit_GFX.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\Adafruit_GFX_Library\Adafruit_GFX.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Adafruit_ST7789.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\Adafruit_ST7789\Adafruit_ST7789.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LIS3MDL.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\LIS3MDL\LIS3MDL.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>LSM6DSM.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\LSM6DSM\LSM6DSM.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TinyGPS++.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\TinyGPSPlus\src\TinyGPS++.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ButtonEvent.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\ButtonEvent\ButtonEvent.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TonePlayer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\TonePlayer\TonePlayer.cpp</FilePath>
             </File>
           </Files>
         </Group>

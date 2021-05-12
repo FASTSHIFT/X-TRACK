@@ -23,13 +23,9 @@
 #ifndef __RESOURCE_MANAGER_H
 #define __RESOURCE_MANAGER_H
 
-#include "lvgl/lvgl.h"
+#include <vector>
 
 class ResourceManager {
-    typedef struct {
-        const char* name;
-        void* ptr;
-    }ResourceNode_t;
 
 public:
     ResourceManager();
@@ -39,10 +35,22 @@ public:
     bool RemoveResource(const char* name);
     void* GetResource(const char* name);
     void SetDefault(void* ptr);
+
 private:
-    lv_ll_t ResourceList;
+    typedef struct ResourceNode {
+        const char* name;
+        void* ptr;
+
+        bool operator==(const struct ResourceNode n) const
+        {
+            return (this->name == n.name && this->ptr == n.ptr);
+        }
+    }ResourceNode_t;
+
+private:
+    std::vector<ResourceNode_t> NodePool;
     void* DefaultPtr;
-    ResourceNode_t* SearchNode(const char* name);
+    bool SearchNode(const char* name, ResourceNode_t* node);
 };
 
 #endif

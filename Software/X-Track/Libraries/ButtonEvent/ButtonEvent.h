@@ -13,6 +13,8 @@
   * @Upgrade 2021.3.22  添加EVENT_SHORT_CLICKED和EVENT_PRESSING
                         整理命名，优化不必要的标志位
                         EventMonitor()形参使用bool类型，去除NoPressState统一状态
+  * @Upgrade 2021.5.12  添加EventType.inc,更优雅的 枚举+字符串 自动生成方式
+                        FuncCallBack_t -> FuncCallback_t
   ******************************************************************************
   * @attention
   * 需要提供一个精确到毫秒级的系统时钟，用户需要在ButtonEvent.cpp里定义ButtonEvent_Millis
@@ -27,7 +29,9 @@
 
 class ButtonEvent
 {
-    typedef void(*FuncCallBack_t)(ButtonEvent*, int);
+private:
+    typedef void(*FuncCallback_t)(ButtonEvent*, int);
+
 public:
     ButtonEvent(
         uint16_t longPressTime = 500,
@@ -37,43 +41,29 @@ public:
 
     typedef enum
     {
-        EVENT_NONE,
-        EVENT_PRESSED,
-        EVENT_PRESSING,
-        EVENT_LONG_PRESSED,
-        EVENT_LONG_PRESSED_REPEAT,
-        EVENT_RELEASED,
-        EVENT_CHANGED,
-        EVENT_CLICKED,
-        EVENT_SHORT_CLICKED,
-        EVENT_DOUBLE_CLICKED,
-        _EVENT_MAX
+#       define EVENT_DEF(evt) evt
+#       include "EventType.inc"
+#       undef EVENT_DEF
+        _EVENT_LAST
     } Event_t;
 
     const char* GetEventString(uint16_t event)
     {
-        const char* eventStr[_EVENT_MAX] =
+        const char* eventStr[_EVENT_LAST] =
         {
-            "EVENT_NONE",
-            "EVENT_PRESSED",
-            "EVENT_PRESSING",
-            "EVENT_LONG_PRESSED",
-            "EVENT_LONG_PRESSED_REPEAT",
-            "EVENT_RELEASED",
-            "EVENT_CHANGED",
-            "EVENT_CLICKED",
-            "EVENT_SHORT_CLICKED",
-            "EVENT_DOUBLE_CLICKED"
+#         define EVENT_DEF(evt) #evt
+#         include "EventType.inc"
+#         undef EVENT_DEF
         };
-        
-        return (event < _EVENT_MAX) ? eventStr[event] : "_EVENT_NOT_FOUND";
+
+        return (event < _EVENT_LAST) ? eventStr[event] : "EVENT_NOT_FOUND";
     }
 
     bool IsPressed;
     bool IsClicked;
     bool IsLongPressed;
 
-    void EventAttach(FuncCallBack_t function);
+    void EventAttach(FuncCallback_t function);
     void EventMonitor(bool isPress);
 
     inline uint16_t GetClickCnt()
@@ -106,7 +96,8 @@ public:
         return NowState;
     };
 
-private:
+
+    private:
     typedef enum
     {
         STATE_NO_PRESS,
@@ -114,6 +105,7 @@ private:
         STATE_LONG_PRESS
     } State_t;
 
+private:
     State_t NowState;
     uint16_t LongPressTimeCfg;
     uint16_t LongPressRepeatTimeCfg;
@@ -123,7 +115,7 @@ private:
     uint32_t LastClickTime;
     uint16_t ClickCnt;
     bool IS_LongPressed;
-    FuncCallBack_t EventCallbackFunc;
+    FuncCallback_t EventCallbackFunc;
 
     uint32_t GetTickElaps(uint32_t prevTick);
 };

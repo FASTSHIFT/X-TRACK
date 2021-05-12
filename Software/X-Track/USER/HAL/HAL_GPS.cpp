@@ -1,15 +1,16 @@
 #include "HAL.h"
 #include "TinyGPSPlus/src/TinyGPS++.h"
 
-static TinyGPSPlus gps;
-
 #define DEBUG_SERIAL           Serial
 #define GPS_SERIAL             Serial2
 #define GPS_USE_TRANSPARENT    0
 
+static TinyGPSPlus gps;
+
 void HAL::GPS_Init()
 {
     GPS_SERIAL.begin(9600);
+
     DEBUG_SERIAL.print("GPS: TinyGPS++ library v. ");
     DEBUG_SERIAL.print(TinyGPSPlus::libraryVersion());
     DEBUG_SERIAL.println(" by Mikal Hart");
@@ -41,7 +42,7 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 {
     bool retval = false;
     memset(info, 0, sizeof(GPS_Info_t));
-    
+
     if(gps.location.isValid())
     {
         info->longitude = gps.location.lng();
@@ -65,11 +66,16 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     info->clock.min = gps.time.minute();
     info->clock.sec = gps.time.second();
     info->satellites = gps.satellites.value();
-    
+
     return retval;
 }
 
-bool GPS_LocationIsValid()
+bool HAL::GPS_LocationIsValid()
 {
     return gps.location.isValid();
+}
+
+double HAL::GPS_GetDistanceOffset(GPS_Info_t* info,  double preLong, double preLat)
+{
+    return gps.distanceBetween(info->latitude, info->longitude, preLat, preLong);
 }

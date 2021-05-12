@@ -31,15 +31,17 @@ static void Resource_Init()
     IMPORT_IMG(menu);
     IMPORT_IMG(origin_point);
     IMPORT_IMG(satellite);
-    IMPORT_IMG(stop);
     IMPORT_IMG(trip);
+    IMPORT_IMG(start);
+    IMPORT_IMG(pause);
+    IMPORT_IMG(stop);
 }
 
 } /* extern "C" */
 
 void ResourcePool::Init()
 {
-    Font_.SetDefault(&lv_font_montserrat_14);
+    Font_.SetDefault((void*)&lv_font_montserrat_14);
 
     Resource_Init();
 }

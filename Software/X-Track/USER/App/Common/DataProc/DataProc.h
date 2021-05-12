@@ -3,20 +3,18 @@
 
 #include "Utils/DataCenter/DataCenter.h"
 #include "../HAL/HAL_Def.h"
+#include "DataProc_Def.h"
+
+void DataProc_Init();
 
 namespace DataProc
 {
     
 DataCenter* Center();
-void Init();
 uint32_t GetTick();
 uint32_t GetTickElaps(uint32_t prevTick);
 const char* ConvTime(uint64_t ms, char* buf, uint16_t len);
 
-Account* Clock_Init(DataCenter* center);
-Account* GPS_Init(DataCenter* center);
-Account* Power_Init(DataCenter* center);
-Account* SportStatus_Init(DataCenter* center);
 }
 
 #endif

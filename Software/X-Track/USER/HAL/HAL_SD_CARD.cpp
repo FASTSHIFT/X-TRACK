@@ -1,28 +1,31 @@
 #include "HAL.h"
 #include "SdFat.h"
 
-SdFat SD(&SPI_2);
+static SdFat SD(&SPI_2);
 
 static bool SD_IsReady = false;
-static bool SD_LastState = true;
 
-void HAL::SD_Init()
+bool HAL::SD_Init()
 {
-#ifdef SD_CD_PIN
-    pinMode(SD_CD_PIN, INPUT_PULLUP);
-    if(digitalRead(SD_CD_PIN))
+    bool retval = true;
+
+    pinMode(CONFIG_SD_CD_PIN, INPUT_PULLUP);
+    if(digitalRead(CONFIG_SD_CD_PIN))
     {
         Serial.println("SD: CARD was not insert");
-        return;
+        retval = false;
     }
-#endif
 
-    SD_IsReady = SD.begin(SD_CS_PIN, SD_SCK_MHZ(30));
+    retval = SD.begin(CONFIG_SD_CS_PIN, SD_SCK_MHZ(30));
 
-    if(!SD_IsReady)
+    if(!retval)
     {
         Serial.println("SD: CARD ERROR");
     }
+    
+    SD_IsReady = retval;
+    
+    return retval;
 }
 
 bool HAL::SD_GetReady()
@@ -30,21 +33,21 @@ bool HAL::SD_GetReady()
     return SD_IsReady;
 }
 
+static void SD_Check(bool isInsert)
+{
+    if(isInsert)
+    {
+        bool ret = HAL::SD_Init();
+        HAL::Audio_PlayMusic(ret ? "DeviceInsert" : "Error");
+    }
+    else
+    {
+        HAL::Audio_PlayMusic("DevicePullout");
+    }
+}
+
 void HAL::SD_Update()
 {
-    bool isInsert = (digitalRead(SD_CD_PIN) == LOW);
-    
-    if(isInsert != SD_LastState)
-    {
-        if(isInsert)
-        {
-            SD_Init();
-            Audio_PlayMusic("DeviceInsert");
-        }
-        else
-        {
-            Audio_PlayMusic("DevicePullout");
-        }
-        SD_LastState = isInsert;
-    }
+    bool isInsert = (digitalRead(CONFIG_SD_CD_PIN) == LOW);
+    __ValueMonitor(isInsert, SD_Check(isInsert));
 }

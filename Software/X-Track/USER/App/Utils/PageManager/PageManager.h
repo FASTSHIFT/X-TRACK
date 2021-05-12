@@ -25,13 +25,13 @@
 
 #include "PageBase.h"
 #include "PageFactory.h"
+#include <vector>
+#include <stack>
 
 class PageManager {
-
 public:
     typedef enum {
         LOAD_ANIM_GLOBAL = 0,
-        LOAD_ANIM_NONE,
         LOAD_ANIM_OVER_LEFT,
         LOAD_ANIM_OVER_RIGHT,
         LOAD_ANIM_OVER_TOP,
@@ -41,34 +41,40 @@ public:
         LOAD_ANIM_MOVE_TOP,
         LOAD_ANIM_MOVE_BOTTOM,
         LOAD_ANIM_FADE_ON,
-        LOAD_ANIM_MAX
+        LOAD_ANIM_NONE,
+        LOAD_ANIM_MAX = LOAD_ANIM_NONE
     } LoadAnim_t;
 
+    typedef enum {
+        ROOT_DRAG_DIR_NONE,
+        ROOT_DRAG_DIR_HOR,
+        ROOT_DRAG_DIR_VER,
+    }RootDragDir_t;
+
     typedef lv_anim_exec_xcb_t lv_anim_setter_t;
-    typedef lv_anim_value_t(*lv_anim_getter_t)(void*);
+    typedef lv_coord_t(*lv_anim_getter_t)(void*);
+
     typedef struct {
-        lv_anim_setter_t anim_setter;
-        lv_anim_getter_t anim_getter;
+        /* 作为被进入方 */
+        struct {
+            lv_coord_t start;
+            lv_coord_t end;
+        }enter;
 
-        /*在Push动作时，作为被进入方*/
-        lv_anim_value_t PushEnterStart;
-        lv_anim_value_t PushEnterEnd;
+        /* 作为被退出方 */
+        struct {
+            lv_coord_t start;
+            lv_coord_t end;
+        }exit;
+    }AnimValue_t;
 
-        /*在Pop动作时，作为被进入方*/
-        lv_anim_value_t PopEnterStart;
-        lv_anim_value_t PopEnterEnd;
-
-        /*在Push动作时，作为被退出方*/
-        lv_anim_value_t PushExitStart;
-        lv_anim_value_t PushExitEnd;
-
-        /*在Pop动作时，作为被退出方*/
-        lv_anim_value_t PopExitStart;
-        lv_anim_value_t PopExitEnd;
+    typedef struct {
+        lv_anim_setter_t setter;
+        lv_anim_getter_t getter;
+        RootDragDir_t dragDir;
+        AnimValue_t push;
+        AnimValue_t pop;
     }LoadAnimAttr_t;
-
-private:
-    typedef PageBase* PageBasePtr_t;
 
 public:
     PageManager(PageFactory* factory = nullptr);
@@ -83,7 +89,8 @@ public:
     /* Router */
     PageBase* Push(const char* name, const PageBase::Stash_t* stash = nullptr);
     PageBase* Pop(const PageBase::Stash_t* stash = nullptr);
-    void GoHome();
+    bool BackHome();
+    const char* GetPagePrevName();
 
     /* Global Anim */
     void SetGlobalLoadAnimType(
@@ -95,48 +102,43 @@ public:
 private:
     /* Page Pool */
     PageBase* FindPageInPool(const char* name);
-    PageBase* FindPage(lv_ll_t* ll, const char* name);
-    PageBasePtr_t* FindPagePtr(lv_ll_t* ll, const char* name);
 
     /* Page Stack */
     PageBase* FindPageInStack(const char* name);
     PageBase* GetStackTop();
     PageBase* GetStackTopAfter();
-    PageBasePtr_t* GetStackTopPtr();
     void SetStackClear(bool keepBottom = true);
-
-    /* Switch */
-    void SwitchTo(PageBase* base, const PageBase::Stash_t* stash = nullptr);
     bool FourceUnload(PageBase* base);
-    const char* GetPrevNodeName();
 
     /* Anim */
-    bool GetIsOverAnim(LoadAnim_t anim)
+    bool GetLoadAnimAttr(uint8_t anim, LoadAnimAttr_t* attr);
+    bool GetIsOverAnim(uint8_t anim)
     {
         return (anim >= LOAD_ANIM_OVER_LEFT && anim <= LOAD_ANIM_OVER_BOTTOM);
     }
-    bool GetIsMoveAnim(LoadAnim_t anim)
+    bool GetIsMoveAnim(uint8_t anim)
     {
         return (anim >= LOAD_ANIM_MOVE_LEFT && anim <= LOAD_ANIM_MOVE_BOTTOM);
     }
     void AnimDefaultInit(lv_anim_t* a);
-    const LoadAnimAttr_t* GetCurrentLoadAnimAttr()
+    bool GetCurrentLoadAnimAttr(LoadAnimAttr_t* attr)
     {
-        return &(AnimState.LoadAnimAttr_Grp[AnimState.TypeCurrent]);
+        return GetLoadAnimAttr(GetCurrentLoadAnimType(), attr);
     }
     LoadAnim_t GetCurrentLoadAnimType()
     {
-        return AnimState.TypeCurrent;
+        return (LoadAnim_t)AnimState.Current.Type;
     }
 
     /* Root */
-    static lv_res_t onRootSignal(lv_obj_t* obj, lv_signal_t signal, void* param);
+    static void onRootDragEvent(lv_event_t* event);
     static void onRootAnimFinish(lv_anim_t* a);
-    static void RootAsyncCall(void* user_data);
-    void RootEnableDrag(lv_obj_t* root, lv_drag_dir_t drag_dir);
+    static void onRootAsyncLeave(void* base);
+    void RootEnableDrag(lv_obj_t* root);
     static void RootGetDragPredict(lv_coord_t* x, lv_coord_t* y);
 
     /* Switch */
+    void SwitchTo(PageBase* base, bool isPushAct, const PageBase::Stash_t* stash = nullptr);
     static void onSwitchAnimFinish(lv_anim_t* a);
     void SwitchAnimCreate(PageBase* base);
     void SwitchAnimTypeUpdate(PageBase* base);
@@ -153,27 +155,25 @@ private:
     void StateUpdate(PageBase* base);
     PageBase::State_t GetState()
     {
-        return CurrentNode->priv.State;
+        return PageCurrent->priv.State;
     }
     
 private:
     PageFactory* Factory;
 
-    lv_ll_t PagePool_LL;
-    lv_ll_t PageStack_LL;
+    std::vector<PageBase*> PagePool;
+    std::stack<PageBase*> PageStack;
 
-    PageBase* PrevNode;
-    PageBase* CurrentNode;
+    PageBase* PagePrev;
+    PageBase* PageCurrent;
 
     struct {
         bool IsSwitchReq;
         bool IsBusy;
-        LoadAnim_t TypeCurrent;
-        LoadAnim_t TypeGlobal;
-        uint16_t Time;
-        lv_anim_path_cb_t Path;
         bool IsPushing;
-        const LoadAnimAttr_t* LoadAnimAttr_Grp;
+
+        PageBase::AnimAttr_t Current;
+        PageBase::AnimAttr_t Global;
     }AnimState;
 };
 

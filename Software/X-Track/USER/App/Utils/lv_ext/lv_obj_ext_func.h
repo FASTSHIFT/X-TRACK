@@ -8,12 +8,11 @@
 #define LV_ANIM_EXEC(attr)      (lv_anim_exec_xcb_t)lv_obj_set_##attr
 
 bool lv_obj_del_safe(lv_obj_t** obj);
-void lv_obj_set_opa_scale(lv_obj_t* obj, lv_opa_t opa);
-lv_opa_t lv_obj_get_opa_scale(lv_obj_t* obj);
+void lv_obj_set_opa_scale(lv_obj_t* obj, lv_coord_t opa);
+lv_coord_t lv_obj_get_opa_scale(lv_obj_t* obj);
 void lv_label_set_text_add(lv_obj_t * label, const char * text);
 lv_coord_t lv_obj_get_x_center(lv_obj_t * obj);
 lv_coord_t lv_obj_get_y_center(lv_obj_t * obj);
-void lv_table_set_align(lv_obj_t * table, lv_label_align_t align);
 void lv_obj_add_anim(
     lv_obj_t * obj, lv_anim_t * a,
     lv_anim_exec_xcb_t exec_cb, 

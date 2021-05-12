@@ -45,7 +45,7 @@ typedef struct {
     float totalDistance;
     uint64_t singleTime;
     float singleDistance;
-    uint32_t singleKcal;
+    float singleCalorie;
     uint32_t lastTick;
 }SportStatus_Info_t;
 

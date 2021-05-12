@@ -37,7 +37,7 @@ static void Delay(uint32_t ms)
 
 static void Reboot()
 {
-    while(digitalRead(ENCODER_PUSH_PIN) == HIGH)
+    while(digitalRead(CONFIG_ENCODER_PUSH_PIN) == HIGH)
     {
         Delay(1000);
     }
@@ -72,7 +72,11 @@ static void DisplayError_SetReports(const char* report)
 void DisplayFault_Init(SCREEN_CLASS* scr)
 {
     screen = scr;
-    cm_backtrace_init(SYS_FIRMWARE_NAME, SYS_HARDWARE_VERSION, SYS_SOFTWARE_VERSION" "__DATE__);
+    cm_backtrace_init(
+        CONFIG_FIRMWARE_NAME,
+        CONFIG_HARDWARE_VERSION,
+        CONFIG_SOFTWARE_VERSION" "__DATE__
+    );
     
     screen->setTextWrap(true);
     screen->setTextSize(1);

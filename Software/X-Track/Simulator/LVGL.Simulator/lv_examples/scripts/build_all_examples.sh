@@ -18,7 +18,7 @@ cd ..
 echo "<html><body><h1>Choose an example:</h1><ul>" > $OBJS_DIR/index.html
 cat $OBJS_DIR/../scripts/examples.txt | while read -r example_name; do
   echo "-- Building $example_name ..."
-  make -j4 CHOSEN_DEMO=$example_name NO_GIT_HASH=1 || exit 1
+  make -j4 CCACHE=ccache CHOSEN_DEMO=$example_name NO_GIT_HASH=1 || exit 1
   rm -rf $OBJS_DIR/$example_name
   cp -a build $OBJS_DIR/$example_name
   ex_py_name=$(find ../../src -name ${example_name}.py)

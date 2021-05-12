@@ -38,43 +38,6 @@ class PageManager;
 
 class PageBase {
 public:
-    virtual ~PageBase() {}
-
-    virtual void onCustomAttrConfig() {}
-    virtual void onViewLoad() {}
-    virtual void onViewDidLoad() {}
-    virtual void onViewWillAppear() {}
-    virtual void onViewDidAppear() {}
-    virtual void onViewWillDisappear() {}
-    virtual void onViewDidDisappear() {}
-    virtual void onViewDidUnload() {}
-    
-    void SetCustomCacheEnable(bool en)
-    {
-        SetCustomAutoCacheEnable(false);
-        priv.CacheEnableReq = en;
-    }
-
-    void SetCustomAutoCacheEnable(bool en)
-    {
-        priv.DisableAutoCacheReq = !en;
-    }
-
-    void SetCustomLoadAnimType(uint8_t animType)
-    {
-        priv.Anim.Type = animType;
-    }
-
-    lv_obj_t* root;
-    typedef struct {
-        PageBase* base;
-    }root_ext_attr_t;
-
-    PageManager* Manager;
-    const char* Name;
-    uint16_t ID;
-    void* UserData;
-
     typedef enum {
         PAGE_STATE_IDLE,
         PAGE_STATE_LOAD,
@@ -92,19 +55,69 @@ public:
         uint32_t size;
     }Stash_t;
 
+    typedef struct {
+        uint8_t Type;
+        uint16_t Time;
+        lv_anim_path_cb_t Path;
+    }AnimAttr_t;
+
+public:
+    lv_obj_t* root;
+    PageManager* Manager;
+    const char* Name;
+    uint16_t ID;
+    void* UserData;
+
     struct {
-        bool CacheEnableReq;
-        bool DisableAutoCacheReq;
-        bool IsDisableAutoCache; 
-        bool IsCacheEnable;
+        bool ReqEnableCache;
+        bool ReqDisableAutoCache;
+
+        bool IsDisableAutoCache;
+        bool IsCached;
+
+        Stash_t Stash;
+        State_t State;
+
         struct {
             bool IsEnter;
             bool IsBusy;
-            uint8_t Type;
-        }Anim;  
-        Stash_t Stash;
-        State_t State;
+            AnimAttr_t Attr;
+        }Anim;
     }priv;
+
+public:
+    virtual ~PageBase() {}
+
+    virtual void onCustomAttrConfig() {}
+    virtual void onViewLoad() {}
+    virtual void onViewDidLoad() {}
+    virtual void onViewWillAppear() {}
+    virtual void onViewDidAppear() {}
+    virtual void onViewWillDisappear() {}
+    virtual void onViewDidDisappear() {}
+    virtual void onViewDidUnload() {}
+    
+    void SetCustomCacheEnable(bool en)
+    {
+        SetCustomAutoCacheEnable(false);
+        priv.ReqEnableCache = en;
+    }
+
+    void SetCustomAutoCacheEnable(bool en)
+    {
+        priv.ReqDisableAutoCache = !en;
+    }
+
+    void SetCustomLoadAnimType(
+        uint8_t animType,
+        uint16_t time = 500,
+        lv_anim_path_cb_t path = lv_anim_path_ease_out
+    )
+    {
+        priv.Anim.Attr.Type = animType;
+        priv.Anim.Attr.Time = time;
+        priv.Anim.Attr.Path = path;
+    }
 };
 
 #endif // ! __PAGE_BASE_H

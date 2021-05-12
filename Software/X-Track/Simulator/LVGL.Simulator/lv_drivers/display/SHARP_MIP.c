@@ -22,15 +22,15 @@
  *      EXTCOMIN waveform (for example with mcu pwm output),
  *      see datasheet pages 8-12 for details
  *
- *  VDB size : (LV_VER_RES / X) * (2 + LV_HOR_RES / 8) + 2 bytes, structure :
+ *  draw_buf size : (LV_VER_RES / X) * (2 + LV_HOR_RES / 8) + 2 bytes, structure :
  *      [FRAME_HEADER (1 byte)] [GATE_ADDR (1 byte )] [LINE_DATA (LV_HOR_RES / 8 bytes)]  1st  line
  *      [DUMMY        (1 byte)] [GATE_ADDR (1 byte )] [LINE_DATA (LV_HOR_RES / 8 bytes)]  2nd  line
  *      ...........................................................................................
  *      [DUMMY        (1 byte)] [GATE_ADDR (1 byte )] [LINE_DATA (LV_HOR_RES / 8 bytes)]  last line
  *      [DUMMY                             (2 bytes)]
  *
- *  Since extra bytes (dummy, addresses, header) are stored in VDB, we need to use
- *  an "oversized" VDB. Buffer declaration in "lv_port_disp.c" becomes for example :
+ *  Since extra bytes (dummy, addresses, header) are stored in draw_buf, we need to use
+ *  an "oversized" draw_buf. Buffer declaration in "lv_port_disp.c" becomes for example :
  *      static lv_disp_buf_t disp_buf;
  *      static uint8_t buf[(LV_VER_RES_MAX / X) * (2 + (LV_HOR_RES_MAX / 8)) + 2];
  *      lv_disp_buf_init(&disp_buf, buf, NULL, LV_VER_RES_MAX * LV_HOR_RES_MAX / X);
@@ -79,7 +79,7 @@ static bool_t com_output_state = false;
  **********************/
 
 /*
- * Return the VDB byte index corresponding to the pixel
+ * Return the draw_buf byte index corresponding to the pixel
  * relatives coordinates (x, y) in the area.
  * The area is rounded to a whole screen line.
  */
@@ -87,7 +87,7 @@ static bool_t com_output_state = false;
 
 /*
  * Return the byte bitmask of a pixel bit corresponding
- * to VDB arrangement (8 pixels per byte on lines).
+ * to draw_buf arrangement (8 pixels per byte on lines).
  */
 #define PIXIDX(x)     SHARP_MIP_REV_BYTE(1 << ((x) & 7))
 
@@ -114,17 +114,17 @@ void sharp_mip_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_
   uint16_t  buf_h    = (act_y2 - act_y1 + 1);                   /*Number of buffer lines*/
   uint16_t  buf_size = buf_h * (2 + SHARP_MIP_HOR_RES / 8) + 2; /*Buffer size in bytes  */
 
-  /* Set lines to flush dummy byte & gate address in VDB*/
+  /* Set lines to flush dummy byte & gate address in draw_buf*/
   for(uint16_t act_y = 0 ; act_y < buf_h ; act_y++) {
     buf[BUFIDX(0, act_y) - 1] = SHARP_MIP_REV_BYTE((act_y1 + act_y + 1));
     buf[BUFIDX(0, act_y) - 2] = 0;
   }
 
-  /* Set last dummy two bytes in VDB */
+  /* Set last dummy two bytes in draw_buf */
   buf[BUFIDX(0, buf_h) - 1] = 0;
   buf[BUFIDX(0, buf_h) - 2] = 0;
 
-  /* Set frame header in VDB */
+  /* Set frame header in draw_buf */
   buf[0] = SHARP_MIP_HEADER         |
            SHARP_MIP_UPDATE_RAM_FLAG;
 
@@ -142,9 +142,9 @@ void sharp_mip_set_px(lv_disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t buf_w,
   (void) opa;
 
   if (lv_color_to1(color) != 0) {
-    buf[BUFIDX(x, y)] |=  PIXIDX(x);  /*Set VDB pixel bit to 1 for other colors than BLACK*/
+    buf[BUFIDX(x, y)] |=  PIXIDX(x);  /*Set draw_buf pixel bit to 1 for other colors than BLACK*/
   } else {
-    buf[BUFIDX(x, y)] &= ~PIXIDX(x);  /*Set VDB pixel bit to 0 for BLACK color*/
+    buf[BUFIDX(x, y)] &= ~PIXIDX(x);  /*Set draw_buf pixel bit to 0 for BLACK color*/
   }
 }
 

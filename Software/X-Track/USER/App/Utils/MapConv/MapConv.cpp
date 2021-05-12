@@ -36,13 +36,13 @@ MapConv::MapConv()
     : EarthRadius(6378137)
     , LongitudeMin(-180.0)
     , LongitudeMax(180.0)
-    , LongitudeCalibration(0.00610)
     , LatitudeMin(-85.05112878)
     , LatitudeMax(85.05112878)
-    , LatitudeCalibration(0.00130)
     , MapLevelMax(15)
     , MapLevelMin(3)
     , MapTileSize(256)
+    , MapX_Calibration(0)
+    , MapY_Calibration(0)
 {
     MapLevel = 15;
     MapKeyRootName = "MAP/MapInfos";
@@ -103,11 +103,11 @@ void MapConv::ConvertMapCoordinate(
     uint32_t* mapX, uint32_t* mapY
 )
 {
-    longitude += LongitudeCalibration;
-    latitude += LatitudeCalibration;
-
     longitude = constrain(longitude, LongitudeMin, LongitudeMax);
     latitude = constrain(latitude, LatitudeMin, LatitudeMax);
+
+    longitude += MapX_Calibration;
+    latitude += MapY_Calibration;
 
     double x = (longitude + 180.0) / 360.0;
     double sinLatitude = sin(latitude * PI / 180.0);

@@ -61,7 +61,7 @@ uint32_t ButtonEvent::GetTickElaps(uint32_t prevTick)
   * @param  function: 回调函数指针
   * @retval 无
   */
-void ButtonEvent::EventAttach(FuncCallBack_t function)
+void ButtonEvent::EventAttach(FuncCallback_t function)
 {
     EventCallbackFunc = function;
 }

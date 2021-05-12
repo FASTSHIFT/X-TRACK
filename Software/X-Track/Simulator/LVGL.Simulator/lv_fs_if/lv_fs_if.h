@@ -10,17 +10,22 @@
 extern "C" {
 #endif
 
-/*********************
- *      INCLUDES
- *********************/
-#include "lvgl/lvgl.h"
-
- /*File system interface*/
+/*File system interface*/
 #define LV_USE_FS_IF	1
 #if LV_USE_FS_IF
 #  define LV_FS_IF_FATFS    '\0'
-#  define LV_FS_IF_PC       'S'
+#  define LV_FS_IF_PC       '/'
+#  define LV_FS_IF_POSIX    '\0'
 #endif  /*LV_USE_FS_IF*/
+
+/*********************
+ *      INCLUDES
+ *********************/
+#if LV_LVGL_H_INCLUDE_SIMPLE
+#include <lvgl.h>
+#else
+#include <lvgl/lvgl.h>
+#endif
 
 #if LV_USE_FS_IF
 

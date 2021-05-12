@@ -49,7 +49,7 @@ typedef struct {
 #if MONITOR_DOUBLE_BUFFERED
     uint32_t * tft_fb_act;
 #else
-    uint32_t tft_fb[LV_HOR_RES_MAX * LV_VER_RES_MAX];
+    uint32_t * tft_fb;
 #endif
 }monitor_t;
 
@@ -61,8 +61,8 @@ static void window_update(monitor_t * m);
 int quit_filter(void * userdata, SDL_Event * event);
 static void monitor_sdl_clean_up(void);
 static void monitor_sdl_init(void);
-static void sdl_event_handler(lv_task_t * t);
-static void monitor_sdl_refr(lv_task_t * t);
+static void sdl_event_handler(lv_timer_t * t);
+static void monitor_sdl_refr(lv_timer_t * t);
 
 /***********************
  *   GLOBAL PROTOTYPES
@@ -95,7 +95,7 @@ static volatile bool sdl_quit_qry = false;
 void monitor_init(void)
 {
     monitor_sdl_init();
-    lv_task_create(sdl_event_handler, 10, LV_TASK_PRIO_HIGH, NULL);
+    lv_timer_create(sdl_event_handler, 10, NULL);
 }
 
 /**
@@ -224,7 +224,7 @@ void monitor_flush2(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t
  * It initializes SDL, handles drawing and the mouse.
  */
 
-static void sdl_event_handler(lv_task_t * t)
+static void sdl_event_handler(lv_timer_t * t)
 {
     (void)t;
 
@@ -271,7 +271,7 @@ static void sdl_event_handler(lv_task_t * t)
  * It initializes SDL, handles drawing and the mouse.
  */
 
-static void monitor_sdl_refr(lv_task_t * t)
+static void monitor_sdl_refr(lv_timer_t * t)
 {
     (void)t;
 
@@ -356,6 +356,7 @@ static void window_create(monitor_t * m)
 #if MONITOR_DOUBLE_BUFFERED
     SDL_UpdateTexture(m->texture, NULL, m->tft_fb_act, MONITOR_HOR_RES * sizeof(uint32_t));
 #else
+    m->tft_fb = (uint32_t *)malloc(sizeof(uint32_t) * MONITOR_HOR_RES * MONITOR_VER_RES);
     memset(m->tft_fb, 0x44, MONITOR_HOR_RES * MONITOR_VER_RES * sizeof(uint32_t));
 #endif
 

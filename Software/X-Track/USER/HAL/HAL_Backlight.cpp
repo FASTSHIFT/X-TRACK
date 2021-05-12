@@ -20,7 +20,7 @@ static void Backlight_AnimCallback(void * obj, int16_t brightness)
 void HAL::Backlight_Init()
 {
     /*PWM初始化，1000级，20KHz频率*/
-    PWM_Init(SCREEN_BLK_PIN, 1000, 20000);
+    PWM_Init(CONFIG_SCREEN_BLK_PIN, 1000, 20000);
     Backlight_SetValue(0);
 }
 
@@ -36,11 +36,7 @@ void HAL::Backlight_SetGradual(uint16_t target, uint16_t time)
     lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)Backlight_AnimCallback);
     lv_anim_set_values(&a, Backlight_GetValue(), target);
     lv_anim_set_time(&a, time);
-    
-    lv_anim_path_t path;
-    lv_anim_path_init(&path);
-    lv_anim_path_set_cb(&path, lv_anim_path_ease_out);
-    lv_anim_set_path(&a, &path);
+    lv_anim_set_path_cb(&a, lv_anim_path_ease_out);
     
     lv_anim_start(&a);
 }
@@ -52,7 +48,10 @@ void HAL::Backlight_SetGradual(uint16_t target, uint16_t time)
   */
 uint16_t HAL::Backlight_GetValue()
 {
-    return timer_get_compare(PIN_MAP[SCREEN_BLK_PIN].TIMx, PIN_MAP[SCREEN_BLK_PIN].TimerChannel);
+    return timer_get_compare(
+        PIN_MAP[CONFIG_SCREEN_BLK_PIN].TIMx, 
+        PIN_MAP[CONFIG_SCREEN_BLK_PIN].TimerChannel
+    );
 }
 
 /**
@@ -63,7 +62,7 @@ uint16_t HAL::Backlight_GetValue()
 void HAL::Backlight_SetValue(int16_t val)
 {
     __LimitValue(val, 0, 1000);
-    analogWrite(SCREEN_BLK_PIN, val);
+    analogWrite(CONFIG_SCREEN_BLK_PIN, val);
 }
 
 /**

@@ -30,7 +30,7 @@ void MAG_Init();
 void MAG_Update();
 
 /*SD*/
-void SD_Init();
+bool SD_Init();
 void SD_Update();
 bool SD_GetReady();
 
@@ -55,6 +55,7 @@ void GPS_Init();
 void GPS_Update();
 bool GPS_GetInfo(GPS_Info_t* info);
 bool GPS_LocationIsValid();
+double GPS_GetDistanceOffset(GPS_Info_t* info, double preLong, double preLat);
 
 /*Buzzer*/
 void Buzz_init();

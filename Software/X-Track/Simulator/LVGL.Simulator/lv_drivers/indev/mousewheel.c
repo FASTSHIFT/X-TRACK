@@ -25,7 +25,7 @@
  *  STATIC VARIABLES
  **********************/
 static int16_t enc_diff = 0;
-static lv_indev_state_t state = LV_INDEV_STATE_REL;
+static lv_indev_state_t state = LV_INDEV_STATE_RELEASED;
 
 /**********************
  *      MACROS
@@ -80,12 +80,12 @@ void mousewheel_handler(SDL_Event * event)
             break;
         case SDL_MOUSEBUTTONDOWN:
             if(event->button.button == SDL_BUTTON_MIDDLE) {
-                state = LV_INDEV_STATE_PR;
+                state = LV_INDEV_STATE_PRESSED;
             }
             break;
         case SDL_MOUSEBUTTONUP:
             if(event->button.button == SDL_BUTTON_MIDDLE) {
-                state = LV_INDEV_STATE_REL;
+                state = LV_INDEV_STATE_RELEASED;
             }
             break;
         default:

@@ -1,0 +1,19 @@
+C
+^
+
+Simple Roller 
+""""""""""""""""
+
+.. lv_example:: widgets/roller/lv_example_roller_1
+  :language: c
+  
+Styling the roller
+""""""""""""""""""
+
+.. lv_example:: widgets/roller/lv_example_roller_2
+  :language: c
+
+MicroPython
+^^^^^^^^^^^
+
+No examples yet.

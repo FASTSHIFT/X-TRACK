@@ -13,7 +13,7 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "../../lv_examples.h"
+#include "../../lv_demo.h"
 
 #if LV_USE_DEMO_MUSIC
 

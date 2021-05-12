@@ -72,6 +72,7 @@ class HardwareSerial : public Stream
 public:
     HardwareSerial(USART_Type *USARTx);
     void IRQHandler();
+    USART_Type *getUSART() { return USARTx; };
     void begin(uint32_t BaudRate);
     void begin(uint32_t BaudRate, SERIAL_Config Config);
     void begin(uint32_t BaudRate, SERIAL_Config Config, uint8_t PreemptionPriority, uint8_t SubPriority);

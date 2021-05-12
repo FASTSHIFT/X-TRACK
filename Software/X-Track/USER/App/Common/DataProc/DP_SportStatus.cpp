@@ -2,31 +2,50 @@
 #include "Utils/Filters/Filters.h"
 #include "../HAL/HAL.h"
 
+#ifndef ABS
+#  define ABS(x) (((x)>0)?(x):-(x))
+#endif
+
 /* SportStatus */
 static HAL::SportStatus_Info_t sportStatusInfo;
-static MedianQueueFilter_TypeDef speedFilter;
 
-static int SportStatus_Callback(
-    Account* pub,
-    Account* sub,
-    int msgType, 
-    void* data_p, 
-    uint32_t size
-)
+//static Filter::MedianQueue<float, 3> speedFilter;
+
+static int onEvent(Account::EventParam_t* param)
 {
-    if (size != sizeof(sportStatusInfo))
+    if (param->event != Account::EVENT_SUB_PULL)
     {
-        return -1;
+        return Account::ERROR_UNSUPPORTED_REQUEST;
     }
 
-    memcpy(data_p, &sportStatusInfo, size);
+    if (param->size != sizeof(sportStatusInfo))
+    {
+        return Account::ERROR_SIZE_MISMATCH;
+    }
+
+    memcpy(param->data_p, &sportStatusInfo, param->size);
     return 0;
+}
+
+static double SportStatus_GetRealDistance(HAL::GPS_Info_t* gpsInfo, double dist)
+{
+    static double preLongitude;
+    static double preLatitude;
+
+    double offset = HAL::GPS_GetDistanceOffset(gpsInfo, preLongitude, preLatitude);
+
+    preLongitude = gpsInfo->longitude;
+    preLatitude = gpsInfo->latitude;
+
+    double realDist = ABS(offset - dist) < 100 ? offset : dist;
+
+    return realDist;
 }
 
 static void SportStatus_Update(Account* account)
 {
     HAL::GPS_Info_t gpsInfo;
-    account->Pull("GPS", 0, &gpsInfo, sizeof(gpsInfo));
+    account->Pull("GPS", &gpsInfo, sizeof(gpsInfo));
 
     uint32_t timeElaps = DataProc::GetTickElaps(sportStatusInfo.lastTick);
 
@@ -34,7 +53,7 @@ static void SportStatus_Update(Account* account)
 
     if (gpsInfo.satellites >= 3)
     {
-        float spd = MedianQueueFilter_GetNext(&speedFilter, gpsInfo.speed * 100) / 100.0f;
+        float spd = gpsInfo.speed;//speedFilter.GetNext(gpsInfo.speed);
         speedKph = spd > 1 ? spd : 0;
     }
     else
@@ -48,6 +67,8 @@ static void SportStatus_Update(Account* account)
         sportStatusInfo.totalTime += timeElaps;
         float dist = speedKph / 3.6f * timeElaps / 1000;
 
+        dist = SportStatus_GetRealDistance(&gpsInfo, dist);
+
         sportStatusInfo.singleDistance += dist;
         sportStatusInfo.totalDistance += dist;
 
@@ -59,27 +80,23 @@ static void SportStatus_Update(Account* account)
         float meterPerSec = sportStatusInfo.singleDistance * 1000 / sportStatusInfo.totalTime;
         sportStatusInfo.speedAvgKph = meterPerSec * 3.6f;
 
-        uint32_t kcal = speedKph * 65 * 1.05f * sportStatusInfo.singleTime / 1000 / 3600;
-        sportStatusInfo.singleKcal += kcal;
+        float calorie = speedKph * 65 * 1.05f * timeElaps / 1000 / 3600;
+        sportStatusInfo.singleCalorie += calorie;
     }
 
     sportStatusInfo.speedKph = speedKph;
 
     sportStatusInfo.lastTick = DataProc::GetTick();
-    account->Publish(0, &sportStatusInfo, sizeof(sportStatusInfo));
+    account->Commit(&sportStatusInfo, sizeof(sportStatusInfo));
+    account->Publish();
 }
 
-Account* DataProc::SportStatus_Init(DataCenter* center)
+void DP_SportStatus_Register(DataCenter* center)
 {
-    Account* account = new Account("SportStatus", center);
-    account->Subscribe("GPS", SportStatus_Callback);
-    sportStatusInfo.lastTick = GetTick();
-    
-    #define SPD_BUF_SIZE 3
-    static int32_t spdBuf[SPD_BUF_SIZE];
-    static int32_t spdSortBuf[SPD_BUF_SIZE];
-    MedianQueueFilter_Init(&speedFilter, spdBuf, spdSortBuf, SPD_BUF_SIZE);
+    Account* account = new Account("SportStatus", center, sizeof(HAL::SportStatus_Info_t));
+    account->Subscribe("GPS");
+    sportStatusInfo.lastTick = DataProc::GetTick();
     
     account->SetTimerCallback(SportStatus_Update, 500);
-    return account;
+    account->SetEventCallback(onEvent);
 }

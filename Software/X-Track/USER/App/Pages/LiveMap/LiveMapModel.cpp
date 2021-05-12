@@ -2,32 +2,38 @@
 
 void LiveMapModel::Init()
 {
-    account = new Account("LiveMapModel", DataProc::Center(), this);
-    account->Subscribe("GPS", nullptr);
-    account->Subscribe("SportStatus", Callback);
+    mapConv.SetMapCalibration(0.00610, 0.00130);
+    //mapConv.SetMapCalibration(0.00495, -0.0033);
+
+    account = new Account("LiveMapModel", DataProc::Center(), 0, this);
+    account->Subscribe("GPS");
+    account->Subscribe("SportStatus");
+    account->SetEventCallback(onEvent);
 }
 
 void LiveMapModel::Deinit()
 {
-    delete account;
+    if (account)
+    {
+        delete account;
+        account = nullptr;
+    }
 }
 
-int LiveMapModel::Callback(
-    Account* pub,
-    Account* sub,
-    int msgType,
-    void* data_p,
-    uint32_t size
-)
+int LiveMapModel::onEvent(Account::EventParam_t* param)
 {
-    LiveMapModel* instance = (LiveMapModel*)sub->UserData;
+    if (param->event != Account::EVENT_PUB_PUBLISH)
+    {
+        return Account::ERROR_UNSUPPORTED_REQUEST;
+    }
 
-    if (size != sizeof(HAL::SportStatus_Info_t))
+    LiveMapModel* instance = (LiveMapModel*)param->recv->UserData;
+
+    if (param->size != sizeof(HAL::SportStatus_Info_t))
     {
         return -1;
     }
-    memcpy(&(instance->sportStatusInfo), data_p, size);
-
+    memcpy(&(instance->sportStatusInfo), param->data_p, param->size);
 
     return 0;
 }

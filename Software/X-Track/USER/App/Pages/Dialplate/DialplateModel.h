@@ -6,6 +6,13 @@
 class DialplateModel
 {
 public:
+    typedef enum {
+        REC_STOP = DataProc::RECORDER_STOP,
+        REC_START = DataProc::RECORDER_START,
+        REC_PAUSE = DataProc::RECORDER_PAUSE,       
+    }RecCtrl_t;
+
+public:
     HAL::SportStatus_Info_t sportStatusInfo;
 
 public:
@@ -21,17 +28,13 @@ public:
         return sportStatusInfo.speedAvgKph;
     }
 
+    void RecorderCtrl(RecCtrl_t ctrl);
+
 private:
     Account* account;
 
 private:
-    static int Callback(
-        Account* pub,
-        Account* sub,
-        int msgType,
-        void* data_p,
-        uint32_t size
-    );
+    static int onEvent(Account::EventParam_t*param);
 };
 
 #endif

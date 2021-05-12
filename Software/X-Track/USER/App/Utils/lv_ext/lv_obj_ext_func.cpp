@@ -17,14 +17,14 @@ bool lv_obj_del_safe(lv_obj_t** obj)
     return ret;
 }
 
-void lv_obj_set_opa_scale(lv_obj_t* obj, lv_opa_t opa)
+void lv_obj_set_opa_scale(lv_obj_t* obj, lv_coord_t opa)
 {
-    lv_obj_set_style_local_opa_scale(obj, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, opa);
+    lv_obj_set_style_bg_opa(obj, (lv_opa_t)opa, LV_PART_MAIN);
 }
 
-lv_opa_t lv_obj_get_opa_scale(lv_obj_t* obj)
+lv_coord_t lv_obj_get_opa_scale(lv_obj_t* obj)
 {
-    return lv_obj_get_style_opa_scale(obj, LV_OBJ_PART_MAIN);
+    return lv_obj_get_style_bg_opa(obj, LV_PART_MAIN);
 }
 
 /**
@@ -59,25 +59,6 @@ lv_coord_t lv_obj_get_x_center(lv_obj_t * obj)
 lv_coord_t lv_obj_get_y_center(lv_obj_t * obj)
 {
     return (obj->coords.y2 + obj->coords.y1) / 2;
-}
-
-/**
-  * @brief  设置table对象的所有成员的对齐方式
-  * @param  table:对象地址
-  * @param  align:对其方式
-  * @retval 无
-  */
-void lv_table_set_align(lv_obj_t * table, lv_label_align_t align)
-{
-    uint16_t col = lv_table_get_col_cnt(table);
-    uint16_t row = lv_table_get_row_cnt(table);
-    for(uint16_t i = 0; i < col; i++)
-    {
-        for(uint16_t j = 0; j < row; j++)
-        {
-            lv_table_set_cell_align(table, j, i, align);
-        }
-    }
 }
 
 /**
@@ -136,12 +117,8 @@ void lv_obj_add_anim(
     /*Time to wait before starting the animation [ms]*/
     lv_anim_set_delay(a, delay);
 
-    lv_anim_path_t path;
-    lv_anim_path_init(&path);
-    lv_anim_path_set_cb(&path, path_cb);
-
     /*Set the path in an animation*/
-    lv_anim_set_path(a, &path);
+    lv_anim_set_path_cb(a, path_cb);
 
     /*Set a callback to call when animation is ready.*/
     lv_anim_set_ready_cb(a, ready_cb);
@@ -165,7 +142,7 @@ lv_indev_t* lv_get_indev(lv_indev_type_t type)
             break;
         }
 
-        if (cur_indev->driver.type == type) {
+        if (cur_indev->driver->type == type) {
             return cur_indev;
         }
     }

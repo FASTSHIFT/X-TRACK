@@ -38,6 +38,14 @@ public:
     }MapTile_t;
 
     void SetLevel(int level);
+    void SetLevelUp()
+    {
+        SetLevel(GetLevel() + 1);
+    }
+    void SetLevelDown()
+    {
+        SetLevel(GetLevel() - 1);
+    }
     void SetRootName(const char* rootName)
     {
         MapKeyRootName = rootName;
@@ -46,10 +54,10 @@ public:
     {
         MapKeyFileName = fileName;
     }
-    void SetCalibration(double longitudeCab, double latitudeCab)
+    void SetMapCalibration(double x, double y)
     {
-        LongitudeCalibration = longitudeCab;
-        LatitudeCalibration = latitudeCab;
+        MapX_Calibration = x;
+        MapY_Calibration = y;
     }
     int GetMapInfo(
         double longitude, double latitude,
@@ -80,15 +88,15 @@ private:
 
     const double LongitudeMin;
     const double LongitudeMax;
-    double LongitudeCalibration;
 
     const double LatitudeMin;
     const double LatitudeMax;
-    double LatitudeCalibration;
 
     const int MapLevelMax;
     const int MapLevelMin;
     const uint16_t MapTileSize;
+    double MapX_Calibration;
+    double MapY_Calibration;
 
     int MapLevel;
     const char* MapKeyRootName;

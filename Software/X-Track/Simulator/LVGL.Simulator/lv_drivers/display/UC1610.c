@@ -82,7 +82,7 @@ static uint8_t cmd_buf[12];
  *      MACROS
  **********************/
 
-/* Return the byte bitmask of a pixel color corresponding to VDB arrangement */
+/* Return the byte bitmask of a pixel color corresponding to draw_buf arrangement */
 #define PIXIDX(y, c)	((c) << (((y) & 3) << 1))
 
 /**********************
@@ -165,7 +165,7 @@ void uc1610_flush_cb(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_
   LV_DRV_DISP_SPI_WR_ARRAY(cmd_buf, 10);
   LV_DRV_DISP_SPI_CS(1);
 
-  /*Flush VDB on display memory*/
+  /*Flush draw_buf on display memory*/
   LV_DRV_DISP_CMD_DATA(UC1610_DATA_MODE);
   LV_DRV_DISP_SPI_CS(0);
   LV_DRV_DISP_SPI_WR_ARRAY(buf, buf_size);

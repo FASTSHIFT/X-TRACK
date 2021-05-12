@@ -7,20 +7,19 @@ typedef enum{
     GPS_STATUS_CONNECT,
 }GPS_Status_t;
 
-static int GPS_Callback(
-    Account* pub,
-    Account* sub,
-    int msgType,
-    void* data_p,
-    uint32_t size
-)
+static int GPS_Callback(Account::EventParam_t* param)
 {
-    if (size != sizeof(HAL::GPS_Info_t))
+    if (param->event != Account::EVENT_SUB_PULL)
     {
-        return -1;
+        return Account::ERROR_UNSUPPORTED_REQUEST;
     }
 
-    HAL::GPS_GetInfo((HAL::GPS_Info_t*)data_p);
+    if (param->size != sizeof(HAL::GPS_Info_t))
+    {
+        return Account::ERROR_SIZE_MISMATCH;
+    }
+
+    HAL::GPS_GetInfo((HAL::GPS_Info_t*)param->data_p);
 
     return 0;
 }
@@ -72,10 +71,9 @@ static void GPS_Update(Account* account)
     }
 }
 
-Account* DataProc::GPS_Init(DataCenter* center)
+void DP_GPS_Register(DataCenter* center)
 {
-    Account* account = new Account("GPS", center);
-    account->SetPullCallback(GPS_Callback);
+    Account* account = new Account("GPS", center, sizeof(HAL::GPS_Info_t));
+    account->SetEventCallback(GPS_Callback);
     account->SetTimerCallback(GPS_Update, 500);
-    return account;
 }

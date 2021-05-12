@@ -24,13 +24,27 @@
 #include "DataCenter.h"
 #include "DataCenterLog.h"
 
-Account::Account(const char* id, DataCenter* center, void* userData)
+Account::Account(
+    const char* id,
+    DataCenter* center,
+    uint32_t bufSize,
+    void* userData
+)
 {
     memset(&priv, 0, sizeof(priv));
 
     ID = id;
     Center = center;
     UserData = userData;
+
+    if (bufSize != 0)
+    {
+        uint8_t* buf0 = new uint8_t[bufSize];
+        uint8_t* buf1 = new uint8_t[bufSize];
+        PingPongBuffer_Init(&priv.BufferManager, buf0, buf1);
+    }
+
+    priv.BufferSize = bufSize;
 
     Center->AddAccount(this);
 
@@ -42,9 +56,9 @@ Account::~Account()
     DC_LOG_INFO("Account[%s] deleting...", ID);
 
     /* 删除定时刷新任务 */
-    if (priv.task)
+    if (priv.timer)
     {
-        lv_task_del(priv.task);
+        lv_timer_del(priv.timer);
         DC_LOG_INFO("Account[%s] task deleted", ID);
     }
 
@@ -67,13 +81,13 @@ Account::~Account()
     DC_LOG_INFO("Account[%s] deleted", ID);
 }
 
-bool Account::Subscribe(const char* pubID, DataCallback_t callback)
+Account* Account::Subscribe(const char* pubID)
 {
     /* 不允许订阅自己 */
     if (strcmp(pubID, ID) == 0)
     {
         DC_LOG_ERROR("Account[%s] try to subscribe to it itself", ID);
-        return false;
+        return nullptr;
     }
 
     /* 是否重复关注 */
@@ -81,7 +95,7 @@ bool Account::Subscribe(const char* pubID, DataCallback_t callback)
     if(pub != nullptr)
     {
         DC_LOG_ERROR("Multi subscribe pub[%s]", pubID);
-        return false;
+        return nullptr;
     }
 
     /* B站是否有号 */
@@ -89,10 +103,8 @@ bool Account::Subscribe(const char* pubID, DataCallback_t callback)
     if (pub == nullptr)
     {
         DC_LOG_ERROR("pub[%s] was not found", pubID);
-        return false;
+        return nullptr;
     }
-
-    priv.subscribeCallback = callback;
 
     /* 将UP加至我的关注列表 */
     publishers.push_back(pub);
@@ -102,7 +114,7 @@ bool Account::Subscribe(const char* pubID, DataCallback_t callback)
 
     DC_LOG_INFO("sub[%s] subscribed pub[%s]", ID, pubID);
 
-    return true;
+    return pub;
 }
 
 bool Account::Unsubscribe(const char* pubID)
@@ -124,27 +136,64 @@ bool Account::Unsubscribe(const char* pubID)
     return true;
 }
 
-int Account::Publish(int msgType, const void* data_p, uint32_t size)
+bool Account::Commit(const void* data_p, uint32_t size)
 {
-    int retval = -1;
+    if (!size || size != priv.BufferSize)
+    {
+        DC_LOG_ERROR("pub[%s] has not cache", ID);
+        return false;
+    }
+
+    void* wBuf;
+    PingPongBuffer_GetWriteBuf(&priv.BufferManager, &wBuf);
+
+    memcpy(wBuf, data_p, size);
+
+    PingPongBuffer_SetWriteDone(&priv.BufferManager);
+
+    DC_LOG_INFO("pub[%s] commit data(0x%p)[%d] >> data(0x%p)[%d] done", 
+        ID, data_p, size, wBuf, size);
+
+    return true;
+}
+
+int Account::Publish()
+{
+    int retval = ERROR_UNKNOW;
+
+    if (priv.BufferSize == 0)
+    {
+        DC_LOG_ERROR("pub[%s] has not cache", ID);
+        return ERROR_NO_CACHE;
+    }
+
+    void* rBuf;
+    if (!PingPongBuffer_GetReadBuf(&priv.BufferManager, &rBuf))
+    {
+        DC_LOG_WARN("pub[%s] data was not commit", ID);
+        return ERROR_NO_COMMITED;
+    }
+
+    EventParam_t param;
+    param.event = EVENT_PUB_PUBLISH;
+    param.tran = this;
+    param.recv = nullptr;
+    param.data_p = rBuf;
+    param.size = priv.BufferSize;
 
     /* 向粉丝推送消息 */
     for(auto iter : subscribers)
     {
         Account* sub = iter;
-        DataCallback_t callback = sub->priv.subscribeCallback;
+        EventCallback_t callback = sub->priv.eventCallback;
 
-        DC_LOG_INFO("pub[%s] push >> T:%d data(0x%p)[%d] >> sub[%s]...",
-            ID, msgType, data_p, size, sub->ID);
+        DC_LOG_INFO("pub[%s] push >> data(0x%p)[%d] >> sub[%s]...", 
+            ID, param.data_p, param.size, sub->ID);
+
         if (callback != nullptr)
         {
-            int ret = callback(
-                this,
-                sub,
-                msgType, 
-                (void*)data_p, 
-                size
-            );
+            param.recv = sub;
+            int ret = callback(&param);
 
             DC_LOG_INFO("push done: %d", ret);
             retval = ret;
@@ -154,54 +203,139 @@ int Account::Publish(int msgType, const void* data_p, uint32_t size)
             DC_LOG_WARN("sub[%s] not register callback", sub->ID);
         }
     }
+
+    PingPongBuffer_SetReadDone(&priv.BufferManager);
+
     return retval;
 }
 
-int Account::Pull(const char* pubID, int msgType, void* data_p, uint32_t size)
+int Account::Pull(const char* pubID, void* data_p, uint32_t size)
 {
-    int retval = -1;
-
-    /* 我是否有关注这个UP */
     Account* pub = Center->Find(&publishers, pubID);
     if (pub == nullptr)
     {
         DC_LOG_ERROR("sub[%s] was not subscribe pub[%s]", ID, pubID);
-        return false;
+        return ERROR_NOT_FOUND;
+    }
+    return Pull(pub, data_p, size);
+}
+
+int Account::Pull(Account* pub, void* data_p, uint32_t size)
+{
+    int retval = ERROR_UNKNOW;
+
+    if (pub == nullptr)
+    {
+        return ERROR_NOT_FOUND;
     }
 
-    DataCallback_t callback = pub->priv.pullCallback;
+    DC_LOG_INFO("sub[%s] pull << data(0x%p)[%d] << pub[%s] ...",
+        ID, data_p, size, pub->ID);
+
+    EventCallback_t callback = pub->priv.eventCallback;
     if (callback != nullptr)
     {
-        DC_LOG_INFO("sub[%s] pull << T:%d data(0x%p)[%d] << pub[%s] ...",
-            ID, msgType, data_p, size, pub->ID);
+        EventParam_t param;
+        param.event = EVENT_SUB_PULL;
+        param.tran = this;
+        param.recv = pub;
+        param.data_p = data_p;
+        param.size = size;
 
-        int ret = callback(
-            pub,
-            this,
-            msgType, 
-            data_p, 
-            size
-        );
+        int ret = callback(&param);
 
         DC_LOG_INFO("pull done: %d", ret);
         retval = ret;
     }
     else
     {
-        DC_LOG_WARN("pub[%s] not register pull callback", pub->ID);
+        DC_LOG_INFO("pub[%s] not registed pull callback, read commit cache...", pub->ID);
+
+        if (pub->priv.BufferSize == size)
+        {
+            void* rBuf;
+            if (PingPongBuffer_GetReadBuf(&pub->priv.BufferManager, &rBuf))
+            {
+                memcpy(data_p, rBuf, size);
+                PingPongBuffer_SetWriteDone(&pub->priv.BufferManager);
+                DC_LOG_INFO("read done");
+                retval = 0;
+            }
+            else
+            {
+                DC_LOG_WARN("pub[%s] data was not commit!", pub->ID);
+            }
+        }
+        else
+        {
+            DC_LOG_ERROR(
+                "Data size pub[%s]:%d != sub[%s]:%d",
+                pub->ID,
+                pub->priv.BufferSize,
+                this->ID,
+                size
+            );
+        }
     }
 
     return retval;
 }
 
-void Account::SetPullCallback(DataCallback_t callback)
+int Account::Notify(const char* pubID, const void* data_p, uint32_t size)
 {
-    priv.pullCallback = callback;
+    Account* pub = Center->Find(&publishers, pubID);
+    if (pub == nullptr)
+    {
+        DC_LOG_ERROR("sub[%s] was not subscribe pub[%s]", ID, pubID);
+        return ERROR_NOT_FOUND;
+    }
+    return Notify(pub, data_p, size);
 }
 
-void Account::TimerCallbackHandler(lv_task_t* task)
+int Account::Notify(Account* pub, const void* data_p, uint32_t size)
 {
-    Account* instance = (Account*)(task->user_data);
+    int retval = ERROR_UNKNOW;
+
+    if (pub == nullptr)
+    {
+        return ERROR_NOT_FOUND;
+    }
+
+    DC_LOG_INFO("sub[%s] notify >> data(0x%p)[%d] >> pub[%s] ...",
+        ID, data_p, size, pub->ID);
+
+    EventCallback_t callback = pub->priv.eventCallback;
+    if (callback != nullptr)
+    {
+        EventParam_t param;
+        param.event = EVENT_NOTIFY;
+        param.tran = this;
+        param.recv = pub;
+        param.data_p = (void*)data_p;
+        param.size = size;
+
+        int ret = callback(&param);
+
+        DC_LOG_INFO("send done: %d", ret);
+        retval = ret;
+    }
+    else
+    {
+        DC_LOG_WARN("pub[%s] not register callback", pub->ID);
+        retval = ERROR_NO_CALLBACK;
+    }
+
+    return retval;
+}
+
+void Account::SetEventCallback(EventCallback_t callback)
+{
+    priv.eventCallback = callback;
+}
+
+void Account::TimerCallbackHandler(lv_timer_t* timer)
+{
+    Account* instance = (Account*)(timer->user_data);
     TimerCallback_t callback = instance->priv.timerCallback;
     if(callback)
     {
@@ -210,23 +344,23 @@ void Account::TimerCallbackHandler(lv_task_t* task)
 }
 
 void Account::SetTimerCallback(TimerCallback_t callback, uint32_t intervalTime)
-{
-    priv.timerCallback = callback;
-    
-    if(priv.task)
+{   
+    if(priv.timer)
     {
-        lv_task_del(priv.task);
+        lv_timer_del(priv.timer);
+        priv.timer = nullptr;
     }
+
+    priv.timerCallback = callback;
     
     if(callback == nullptr)
     {
         return;
     }
     
-    priv.task = lv_task_create(
+    priv.timer = lv_timer_create(
         TimerCallbackHandler,
         intervalTime,
-        LV_TASK_PRIO_MID,
         this
     );
 }

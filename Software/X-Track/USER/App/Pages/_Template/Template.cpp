@@ -12,7 +12,7 @@ Template::~Template()
 void Template::onCustomAttrConfig()
 {
     SetCustomCacheEnable(true);
-    SetCustomLoadAnimType(PageManager::LOAD_ANIM_FADE_ON);
+    SetCustomLoadAnimType(PageManager::LOAD_ANIM_OVER_BOTTOM, 1000, lv_anim_path_bounce);
 }
 
 void Template::onViewLoad()
@@ -33,13 +33,13 @@ void Template::onViewDidLoad()
 void Template::onViewWillAppear()
 {
     Param_t param;
-    param.color = LV_COLOR_WHITE;
+    param.color = lv_color_white();
     param.time = 1000;
 
     PAGE_STASH_POP(param);
 
-    lv_obj_set_style_local_bg_color(root, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, param.color);
-    task = lv_task_create(TaskUpdate, param.time, LV_TASK_PRIO_MID, this);
+    lv_obj_set_style_bg_color(root, param.color, LV_PART_MAIN);
+    timer = lv_timer_create(onTimerUpdate, param.time, this);
 }
 
 void Template::onViewDidAppear()
@@ -54,7 +54,7 @@ void Template::onViewWillDisappear()
 
 void Template::onViewDidDisappear()
 {
-    lv_task_del(task);
+    lv_timer_del(timer);
 }
 
 void Template::onViewDidUnload()
@@ -64,33 +64,31 @@ void Template::onViewDidUnload()
 
 void Template::AttachEvent(lv_obj_t* obj)
 {
-    lv_obj_set_user_data(obj, this);
-    lv_obj_set_event_cb(obj, EventHandler);
+    obj->user_data = this;
+    lv_obj_add_event_cb(obj, onEvent, LV_EVENT_ALL, this);
 }
 
 void Template::Update()
 {
-    lv_label_set_text_fmt(View.ui.labelTick, "tick = %d\nsave = %d", Model.GetData(), Model.TickSave);
+    lv_label_set_text_fmt(View.ui.labelTick, "tick = %d save = %d", Model.GetData(), Model.TickSave);
 }
 
-void Template::TaskUpdate(lv_task_t* task)
+void Template::onTimerUpdate(lv_timer_t* timer)
 {
-    Template* instance = (Template*)task->user_data;
+    Template* instance = (Template*)timer->user_data;
 
     instance->Update();
 }
 
-void Template::EventHandler(lv_obj_t* obj, lv_event_t event)
+void Template::onEvent(lv_event_t* event)
 {
+    lv_obj_t* obj = event->target;
+    lv_event_code_t code = event->code;
     Template* instance = (Template*)obj->user_data;
 
     if (obj == instance->root)
     {
-        if (event == LV_EVENT_LONG_PRESSED || event == LV_EVENT_LEAVE)
-        {
-            instance->Manager->GoHome();
-        }
-        if (event == LV_EVENT_SHORT_CLICKED)
+        if (code == LV_EVENT_SHORT_CLICKED || code == LV_EVENT_LEAVE)
         {
             instance->Manager->Pop();
         }

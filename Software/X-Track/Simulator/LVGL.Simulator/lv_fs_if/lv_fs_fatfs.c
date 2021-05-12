@@ -20,29 +20,23 @@
  *      TYPEDEFS
  **********************/
 
-/* Create a type to store the required data about your file.*/
-typedef  FIL file_t;
-
-/*Similarly to `file_t` create a type for directory reading too */
-typedef  DIR dir_t;
-
 /**********************
  *  STATIC PROTOTYPES
  **********************/
 static void fs_init(void);
 
-static lv_fs_res_t fs_open (lv_fs_drv_t * drv, void * file_p, const char * path, lv_fs_mode_t mode);
+static void * fs_open (lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode);
 static lv_fs_res_t fs_close (lv_fs_drv_t * drv, void * file_p);
 static lv_fs_res_t fs_read (lv_fs_drv_t * drv, void * file_p, void * buf, uint32_t btr, uint32_t * br);
 static lv_fs_res_t fs_write(lv_fs_drv_t * drv, void * file_p, const void * buf, uint32_t btw, uint32_t * bw);
-static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos);
+static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos, lv_fs_whence_t whence);
 static lv_fs_res_t fs_size (lv_fs_drv_t * drv, void * file_p, uint32_t * size_p);
 static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p);
 static lv_fs_res_t fs_remove (lv_fs_drv_t * drv, const char *path);
 static lv_fs_res_t fs_trunc (lv_fs_drv_t * drv, void * file_p);
 static lv_fs_res_t fs_rename (lv_fs_drv_t * drv, const char * oldname, const char * newname);
 static lv_fs_res_t fs_free (lv_fs_drv_t * drv, uint32_t * total_p, uint32_t * free_p);
-static lv_fs_res_t fs_dir_open (lv_fs_drv_t * drv, void * dir_p, const char *path);
+static void * fs_dir_open (lv_fs_drv_t * drv, const char *path);
 static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn);
 static lv_fs_res_t fs_dir_close (lv_fs_drv_t * drv, void * dir_p);
 
@@ -74,7 +68,6 @@ void lv_fs_if_fatfs_init(void)
 	lv_fs_drv_init(&fs_drv);
 
     /*Set up fields...*/
-    fs_drv.file_size = sizeof(file_t);
     fs_drv.letter = LV_FS_IF_FATFS;
     fs_drv.open_cb = fs_open;
     fs_drv.close_cb = fs_close;
@@ -88,7 +81,6 @@ void lv_fs_if_fatfs_init(void)
     fs_drv.rename_cb = fs_rename;
     fs_drv.trunc_cb = fs_trunc;
 
-    fs_drv.rddir_size = sizeof(dir_t);
     fs_drv.dir_close_cb = fs_dir_close;
     fs_drv.dir_open_cb = fs_dir_open;
     fs_drv.dir_read_cb = fs_dir_read;
@@ -115,7 +107,7 @@ static void fs_init(void)
  * @param mode read: FS_MODE_RD, write: FS_MODE_WR, both: FS_MODE_RD | FS_MODE_WR
  * @return LV_FS_RES_OK or any error from lv_fs_res_t enum
  */
-static lv_fs_res_t fs_open (lv_fs_drv_t * drv, void * file_p, const char * path, lv_fs_mode_t mode)
+static void * fs_open (lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
 {
     uint8_t flags = 0;
 
@@ -123,13 +115,16 @@ static lv_fs_res_t fs_open (lv_fs_drv_t * drv, void * file_p, const char * path,
     else if(mode == LV_FS_MODE_RD) flags = FA_READ;
     else if(mode == (LV_FS_MODE_WR | LV_FS_MODE_RD)) flags = FA_READ | FA_WRITE | FA_OPEN_ALWAYS;
 
-    FRESULT res = f_open(file_p, path, flags);
+    FIL * f = lv_mem_alloc(sizeof(FIL));
+    if(f == NULL) return NULL;
+
+    FRESULT res = f_open(f, path, flags);
 
     if(res == FR_OK) {
-    	f_lseek(file_p, 0);
-    	return LV_FS_RES_OK;
+    	f_lseek(f, 0);
+    	return f;
     } else {
-    	return LV_FS_RES_UNKNOWN;
+    	return NULL;
     }
 }
 
@@ -185,11 +180,13 @@ static lv_fs_res_t fs_write(lv_fs_drv_t * drv, void * file_p, const void * buf, 
  * @param drv pointer to a driver where this function belongs
  * @param file_p pointer to a file_t variable. (opened with lv_ufs_open )
  * @param pos the new position of read write pointer
+ * @param whence only LV_SEEK_SET is supported
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv_fs_res_t enum
  */
-static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos)
+static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos, lv_fs_whence_t whence)
 {
+    LV_UNUSED(whence);
     f_lseek(file_p, pos);
     return LV_FS_RES_OK;
 }
@@ -203,7 +200,7 @@ static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos)
  */
 static lv_fs_res_t fs_size (lv_fs_drv_t * drv, void * file_p, uint32_t * size_p)
 {
-	(*size_p) = f_size(((file_t *)file_p));
+	(*size_p) = f_size((FIL *)file_p);
     return LV_FS_RES_OK;
 }
 
@@ -217,7 +214,7 @@ static lv_fs_res_t fs_size (lv_fs_drv_t * drv, void * file_p, uint32_t * size_p)
  */
 static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p)
 {
-	*pos_p = f_tell(((file_t *)file_p));
+	*pos_p = f_tell(((FIL *)file_p));
     return LV_FS_RES_OK;
 }
 
@@ -290,11 +287,17 @@ static lv_fs_res_t fs_free (lv_fs_drv_t * drv, uint32_t * total_p, uint32_t * fr
  * @param path path to a directory
  * @return LV_FS_RES_OK or any error from lv_fs_res_t enum
  */
-static lv_fs_res_t fs_dir_open (lv_fs_drv_t * drv, void * dir_p, const char *path)
+static void * fs_dir_open (lv_fs_drv_t * drv, const char *path)
 {
-    FRESULT res = f_opendir(dir_p, path);
-    if(res == FR_OK) return LV_FS_RES_OK;
-    else return LV_FS_RES_UNKNOWN;
+    DIR * d = lv_mem_alloc(sizeof(DIR));
+    if(d == NULL) return NULL;
+
+    FRESULT res = f_opendir(d, path);
+    if(res !== FR_OK) {
+        lv_mem_free(d);
+        d = NULL;
+    }
+    return d;
 }
 
 /**

@@ -21,61 +21,68 @@
  * SOFTWARE.
  */
 #include "ResourceManager.h"
-#include "PageManagerLog.h"
+#include "PM_Log.h"
+#include <algorithm>
+#include <string.h>
 
 ResourceManager::ResourceManager()
 {
-    _lv_ll_init(&ResourceList, sizeof(ResourceNode_t));
     DefaultPtr = nullptr;
 }
 
 ResourceManager::~ResourceManager()
 {
-    _lv_ll_clear(&ResourceList);
 }
 
-ResourceManager::ResourceNode_t* ResourceManager::SearchNode(const char* name)
+bool ResourceManager::SearchNode(const char* name, ResourceNode_t* node)
 {
-    void* i;
-    _LV_LL_READ(ResourceList, i)
+    for(auto iter : NodePool)
     {
-        ResourceNode_t* node = (ResourceNode_t*)i;
-        if (strcmp(name, node->name) == 0)
+        if (strcmp(name, iter.name) == 0)
         {
-            return node;
+            *node = iter;
+            return true;
         }
     }
-    return nullptr;
+    return false;
 }
 
 bool ResourceManager::AddResource(const char* name, void* ptr)
 {
-    if (SearchNode(name) != nullptr)
+    ResourceNode_t node;
+    if (SearchNode(name, &node))
     {
         PM_LOG_WARN("Resource: %s was register", name);
         return false;
     }
 
-    ResourceNode_t* node = (ResourceNode_t*)_lv_ll_ins_tail(&ResourceList);
-    node->name = name;
-    node->ptr = ptr;
+    node.name = name;
+    node.ptr = ptr;
+    NodePool.push_back(node);
 
-    PM_LOG_INFO("Resource: %s[0x%p] add success", node->name, node->ptr);
+    PM_LOG_INFO("Resource: %s[0x%p] add success", node.name, node.ptr);
 
     return true;
 }
 
 bool ResourceManager::RemoveResource(const char* name)
 {
-    ResourceNode_t* node = SearchNode(name);
-
-    if (node == nullptr)
+    ResourceNode_t node;
+    if(!SearchNode(name, &node))
     {
         PM_LOG_ERROR("Resource: %s was not found", name);
         return false;
     }
-    
-    _lv_ll_remove(&ResourceList, node);
+
+    auto iter = std::find(NodePool.begin(), NodePool.end(), node);
+
+    if (iter == NodePool.end())
+    {
+        PM_LOG_ERROR("Resource: %s was not found", name);
+        return false;
+    }
+
+    NodePool.erase(iter);
 
     PM_LOG_INFO("Resource: %s remove success", name);
 
@@ -84,17 +91,17 @@ bool ResourceManager::RemoveResource(const char* name)
 
 void* ResourceManager::GetResource(const char* name)
 {
-    ResourceNode_t* node = SearchNode(name);
-
-    if (node == nullptr)
+    ResourceNode_t node;
+        
+    if(!SearchNode(name, &node))
     {
         PM_LOG_WARN("Resource: %s was not found, return default[0x%p]", name, DefaultPtr);
         return DefaultPtr;
     }
 
-    PM_LOG_INFO("Resource: %s[0x%p] was found", name, node->ptr);
+    PM_LOG_INFO("Resource: %s[0x%p] was found", name, node.ptr);
 
-    return node->ptr;
+    return node.ptr;
 }
 
 void ResourceManager::SetDefault(void* ptr)

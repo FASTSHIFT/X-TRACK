@@ -2,20 +2,26 @@
 #include "Utils/Filters/Filters.h"
 #include "../HAL/HAL.h"
 
-static int Power_Callback(
-    Account* pub,
-    Account* sub,
-    int msgType,
-    void* data_p,
-    uint32_t size
-)
+static Filter::Hysteresis<int> usageFilter(2);
+
+static int onEvent(Account::EventParam_t* param)
 {
-    if (size != sizeof(HAL::Power_Info_t))
+    if (param->event != Account::EVENT_SUB_PULL)
+    {
+        return Account::ERROR_UNSUPPORTED_REQUEST;
+    }
+
+    if (param->size != sizeof(HAL::Power_Info_t))
     {
         return -1;
     }
 
-    HAL::Power_GetInfo((HAL::Power_Info_t*)data_p);
+    HAL::Power_Info_t powerInfo;
+    HAL::Power_GetInfo(&powerInfo);
+    
+    powerInfo.usage = usageFilter.GetNext(powerInfo.usage);
+
+    memcpy(param->data_p, &powerInfo, param->size);
 
     return 0;
 }
@@ -31,14 +37,11 @@ static void Power_Update(Account* account)
         HAL::Audio_PlayMusic(info.isCharging ? "BattChargeStart" : "BattChargeEnd");
         lastStatus = info.isCharging;
     }
-    
-    
 }
 
-Account* DataProc::Power_Init(DataCenter* center)
+void DP_Power_Register(DataCenter* center)
 {
-    Account* account = new Account("Power", center);
-    account->SetPullCallback(Power_Callback);
+    Account* account = new Account("Power", center, sizeof(HAL::Power_Info_t));
+    account->SetEventCallback(onEvent);
     account->SetTimerCallback(Power_Update, 500);
-    return account;
 }

@@ -4,7 +4,6 @@
 #define MAP_TILE_POS(pos) ((pos) - ((pos) % MAP_TILE_SIZE))
 
 LiveMap::LiveMap()
-    : mapUpdateIntervalTime(1000)
 {
 }
 
@@ -13,28 +12,28 @@ LiveMap::~LiveMap()
 
 }
 
+void LiveMap::onCustomAttrConfig()
+{
+}
+
 void LiveMap::onViewLoad()
 {
-    Model.Init();
     View.Create(root);
     AttachEvent(root);
-    AttachEvent(View.ui.sliderLevel);
     AttachEvent(View.ui.map.cont);
-    AttachEvent(View.ui.btnBack);
+    AttachEvent(View.ui.zoom.btnInfo);
+    AttachEvent(View.ui.zoom.slider);
 
     group = lv_group_create();
+    lv_group_add_obj(group, View.ui.zoom.slider);
+    lv_group_add_obj(group, View.ui.zoom.btnInfo);
+    lv_group_focus_obj(View.ui.zoom.btnInfo);
 
     lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), group);
 
-    lv_group_add_obj(group, View.ui.sliderLevel);
-    lv_group_add_obj(group, View.ui.btnBack);
-
-    lv_group_focus_obj(View.ui.btnBack);
-
     Model.mapConv.SetLevel(15);
-    Model.mapConv.SetRootName("S:MAP/Mapinfos");
-    lv_slider_set_value(View.ui.sliderLevel, Model.mapConv.GetLevel(), LV_ANIM_OFF);
-    lv_obj_set_hidden(View.ui.map.cont, true);
+    Model.mapConv.SetRootName("/MAP/Mapinfos");
+    lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
 }
 
 void LiveMap::onViewDidLoad()
@@ -44,22 +43,24 @@ void LiveMap::onViewDidLoad()
 
 void LiveMap::onViewWillAppear()
 {
-    StatusBar_SetStyle(STATUS_BAR_STYLE_BLACK);
-    SportInfo_Update();
+    Model.Init();
+    StatusBar::SetStyle(StatusBar::STYLE_BLACK);
+    SportInfoUpdate();
+    lv_obj_clear_flag(View.ui.labelInfo, LV_OBJ_FLAG_HIDDEN);
 }
 
 void LiveMap::onViewDidAppear()
 {
-    taskUpdate = lv_task_create(TaskUpdate, 100, LV_TASK_PRIO_MID, this);
-    lv_obj_set_style_local_value_str(root, LV_OBJ_PART_MAIN, LV_STATE_DEFAULT, "");
-    MapUpdate();
-    lv_obj_set_hidden(View.ui.map.cont, false);
+    timer = lv_timer_create(onTimerUpdate, 100, this);
+    lastMapUpdateTime = 0;
+    lv_obj_clear_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(View.ui.labelInfo, LV_OBJ_FLAG_HIDDEN);
 }
 
 void LiveMap::onViewWillDisappear()
 {
-    lv_task_del(taskUpdate);
-    lv_obj_set_hidden(View.ui.map.cont, true);
+    lv_timer_del(timer);
+    lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
 }
 
 void LiveMap::onViewDidDisappear()
@@ -74,45 +75,47 @@ void LiveMap::onViewDidUnload()
 
 void LiveMap::AttachEvent(lv_obj_t* obj)
 {
-    lv_obj_set_user_data(obj, this);
-    lv_obj_set_event_cb(obj, EventHandler);
+    obj->user_data = this;
+    lv_obj_add_event_cb(obj, onEvent, LV_EVENT_ALL, this);
 }
 
 void LiveMap::Update()
 {
-    if (lv_tick_elaps(lastUpdateTime) >= mapUpdateIntervalTime)
+    if (lv_tick_elaps(lastMapUpdateTime) >= 1000)
     {
         MapUpdate();
-        SportInfo_Update();
-        lastUpdateTime = lv_tick_get();
+        SportInfoUpdate();
+        lastMapUpdateTime = lv_tick_get();
     }
+}
+
+void LiveMap::MapUpdateWait(uint32_t ms)
+{
+    lastMapUpdateTime = lv_tick_get() - 1000 + ms;
 }
 
 void LiveMap::MapUpdate()
 {
-    int level = lv_slider_get_value(View.ui.sliderLevel);
-
-    MapConv* mapConv = &(Model.mapConv);
-
-    uint32_t mapX, mapY;
-
     HAL::GPS_Info_t gpsInfo;
     Model.GetGPS_Info(&gpsInfo);
 
-    mapConv->SetLevel(level);
+    MapConv* mapConv = &(Model.mapConv);
+    mapConv->SetLevel(lv_slider_get_value(View.ui.zoom.slider));
+    
+    uint32_t mapX, mapY;
     mapConv->ConvertMapCoordinate(gpsInfo.longitude, gpsInfo.latitude, &mapX, &mapY);
 
     LoadMap(mapX, mapY);
-    mapLocalX = mapX;
-    mapLocalY = mapY;
-    mapFocusX = mapX;
-    mapFocusY = mapY;
+    mapPos.localX = mapX;
+    mapPos.localY = mapY;
+    mapPos.focusX = mapX;
+    mapPos.focusY = mapY;
 
-    contLastX = lv_obj_get_x(View.ui.map.cont);
-    contLastY = lv_obj_get_y(View.ui.map.cont);
+    mapPos.contLastX = lv_obj_get_x(View.ui.map.cont);
+    mapPos.contLastY = lv_obj_get_y(View.ui.map.cont);
 
-    int map0_X = MAP_TILE_POS(mapFocusX) - MAP_TILE_SIZE;
-    int map0_Y = MAP_TILE_POS(mapFocusY) - MAP_TILE_SIZE;
+    int map0_X = MAP_TILE_POS(mapPos.focusX) - MAP_TILE_SIZE;
+    int map0_Y = MAP_TILE_POS(mapPos.focusY) - MAP_TILE_SIZE;
 
     lv_obj_t* img = View.ui.map.imgArrow;
     lv_obj_set_pos(
@@ -125,7 +128,7 @@ void LiveMap::MapUpdate()
     FocusMap(mapX, mapY);
 }
 
-void LiveMap::SportInfo_Update()
+void LiveMap::SportInfoUpdate()
 {
     lv_label_set_text_fmt(View.ui.sportInfo.labelSpeed, "%02d", (int)Model.sportStatusInfo.speedKph);
 
@@ -138,72 +141,44 @@ void LiveMap::SportInfo_Update()
     );
 }
 
-void LiveMap::TaskUpdate(lv_task_t* task)
+void LiveMap::onTimerUpdate(lv_timer_t* timer)
 {
-    LiveMap* instance = (LiveMap*)task->user_data;
+    LiveMap* instance = (LiveMap*)timer->user_data;
     instance->Update();
 }
 
-void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
+void LiveMap::onEvent(lv_event_t* event)
 {
+    lv_obj_t* obj = event->target;
+    lv_event_code_t code = event->code;
     LiveMap* instance = (LiveMap*)obj->user_data;
 
-    if (obj == instance->root)
+    if (code == LV_EVENT_LEAVE || code == LV_EVENT_LONG_PRESSED)
     {
-        if (event == LV_EVENT_LEAVE)
-        {
-            instance->Manager->Pop();
-        }
-    }
-
-    if (obj == instance->View.ui.btnBack)
-    {
-        if (event == LV_EVENT_SHORT_CLICKED)
-        {
-            lv_event_send(instance->root, LV_EVENT_LEAVE, instance);
-        }
-    }
-
-    if (obj == instance->View.ui.sliderLevel)
-    {
-        if (event == LV_EVENT_VALUE_CHANGED)
-        {
-            instance->lastUpdateTime = lv_tick_get() - (instance->mapUpdateIntervalTime - 50);
-        }
+        instance->Manager->Pop();
+        return;
     }
 
     if (obj == instance->View.ui.map.cont)
     {
-        if (event == LV_EVENT_RELEASED)
+        if (code == LV_EVENT_RELEASED)
         {
-            lv_obj_t* contMap = instance->View.ui.map.cont;
+            instance->ReCalibrateMapCont();
+        }
+    }
 
-            lv_coord_t oriX = lv_obj_get_x(contMap);
-            lv_coord_t oriY = lv_obj_get_y(contMap);
+    if (obj == instance->View.ui.zoom.btnInfo)
+    {
+        if (code == LV_EVENT_SHORT_CLICKED)
+        {
+        }
+    }
 
-            int moveOffsetX = oriX - instance->contLastX;
-            int moveOffsetY = oriY - instance->contLastY;
-
-            int mapCenter_lastX = MAP_TILE_POS(instance->mapFocusX);
-            int mapCenter_lastY = MAP_TILE_POS(instance->mapFocusY);
-
-            instance->mapFocusX -= moveOffsetX;
-            instance->mapFocusY -= moveOffsetY;
-
-            int mapCenter_X = MAP_TILE_POS(instance->mapFocusX);
-            int mapCenter_Y = MAP_TILE_POS(instance->mapFocusY);
-       
-            instance->LoadMap(instance->mapFocusX, instance->mapFocusY);
-            lv_obj_set_pos(
-                contMap,
-                oriX + (mapCenter_X - mapCenter_lastX), 
-                oriY + (mapCenter_Y - mapCenter_lastY)
-            );
-            lv_obj_set_pos(
-                instance->View.ui.map.imgArrow, 
-                instance->mapLocalX - (mapCenter_X - MAP_TILE_SIZE), 
-                instance->mapLocalY - (mapCenter_Y - MAP_TILE_SIZE)
-            );
+    if (obj == instance->View.ui.zoom.slider)
+    {
+        if (code == LV_EVENT_VALUE_CHANGED)
+        {
+            instance->MapUpdateWait(200);
         }
     }
 }
@@ -211,7 +186,7 @@ void LiveMap::EventHandler(lv_obj_t* obj, lv_event_t event)
 void LiveMap::LoadMap(uint32_t x, uint32_t y)
 {
     char path[128];
-    MapConv* mapConv = &(Model.mapConv);
+    MapConv* mapConv = &Model.mapConv;
     const int mapOffset[3] = { -MAP_TILE_SIZE, 0, MAP_TILE_SIZE };
 
     for (int i = 0; i < ARRAY_SIZE(View.ui.map.imgMap); i++)
@@ -225,5 +200,37 @@ void LiveMap::FocusMap(uint32_t x, uint32_t y)
 {
     lv_coord_t centerOffsetX = MAP_TILE_SIZE / 2 - x % MAP_TILE_SIZE;
     lv_coord_t centerOffsetY = MAP_TILE_SIZE / 2 - y % MAP_TILE_SIZE;
-    lv_obj_align(View.ui.map.cont, nullptr, LV_ALIGN_CENTER, centerOffsetX, centerOffsetY);
+    lv_obj_align(View.ui.map.cont, LV_ALIGN_CENTER, centerOffsetX, centerOffsetY);
+}
+
+void LiveMap::ReCalibrateMapCont()
+{
+    lv_obj_t* contMap = View.ui.map.cont;
+
+    lv_coord_t oriX = lv_obj_get_x(contMap);
+    lv_coord_t oriY = lv_obj_get_y(contMap);
+
+    int moveOffsetX = oriX - mapPos.contLastX;
+    int moveOffsetY = oriY - mapPos.contLastY;
+
+    int mapCenter_lastX = MAP_TILE_POS(mapPos.focusX);
+    int mapCenter_lastY = MAP_TILE_POS(mapPos.focusY);
+
+    mapPos.focusX -= moveOffsetX;
+    mapPos.focusY -= moveOffsetY;
+
+    int mapCenter_X = MAP_TILE_POS(mapPos.focusX);
+    int mapCenter_Y = MAP_TILE_POS(mapPos.focusY);
+
+    LoadMap(mapPos.focusX, mapPos.focusY);
+    lv_obj_set_pos(
+        contMap,
+        oriX + (mapCenter_X - mapCenter_lastX),
+        oriY + (mapCenter_Y - mapCenter_lastY)
+    );
+    lv_obj_set_pos(
+        View.ui.map.imgArrow,
+        mapPos.localX - (mapCenter_X - MAP_TILE_SIZE),
+        mapPos.localY - (mapCenter_Y - MAP_TILE_SIZE)
+    );
 }

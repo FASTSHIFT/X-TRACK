@@ -50,13 +50,12 @@ void HardwareSerial::IRQHandler()
             _rx_buffer[_rx_buffer_head] = c;
             _rx_buffer_head = i;
         }
-
-        if(USART_Function)
-        {
-            USART_Function();
-        }
-
         USART_ClearITPendingBit(USARTx, USART_INT_RDNE);
+    }
+    
+    if(USART_Function != NULL)
+    {
+        USART_Function();
     }
 }
 

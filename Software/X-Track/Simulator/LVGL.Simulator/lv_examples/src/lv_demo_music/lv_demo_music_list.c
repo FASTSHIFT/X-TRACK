@@ -79,7 +79,7 @@ lv_obj_t * _lv_demo_music_list_create(lv_obj_t * parent)
     lv_style_set_text_color(&style_time, LV_STATE_DEFAULT, lv_color_hex(0xffffff));
 
     /*Create an empty white main container*/
-    list = lv_page_create(parent, NULL);
+    list = lv_page_create(parent);
     lv_obj_set_size(list, LV_HOR_RES, LV_VER_RES - LV_DEMO_LIST_CTRL_OVERLAP);
     lv_obj_set_y(list, LV_DEMO_LIST_CTRL_OVERLAP);
     lv_obj_clean_style_list(list, LV_PAGE_PART_BG);

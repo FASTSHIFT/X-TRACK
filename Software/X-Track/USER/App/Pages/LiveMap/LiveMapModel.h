@@ -16,20 +16,14 @@ public:
     void Deinit();
     void GetGPS_Info(HAL::GPS_Info_t* info)
     {
-        account->Pull("GPS", 0, info, sizeof(HAL::GPS_Info_t));
+        account->Pull("GPS", info, sizeof(HAL::GPS_Info_t));
     }
 
 private:
     Account* account;
 
 private:
-    static int Callback(
-        Account* pub,
-        Account* sub,
-        int msgType,
-        void* data_p,
-        uint32_t size
-    );
+    static int onEvent(Account::EventParam_t* param);
 };
 
 #endif

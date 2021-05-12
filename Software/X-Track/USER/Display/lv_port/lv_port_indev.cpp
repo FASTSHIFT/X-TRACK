@@ -11,7 +11,7 @@
  *********************/
 #include "lv_port_indev.h"
 #include "Arduino.h"
-#include "Basic/SysConfig.h"
+#include "Basic/Config.h"
 #include "HAL/HAL.h"
 
 /*********************
@@ -45,7 +45,7 @@ static lv_indev_t * encoder_indev;
 
 void lv_port_indev_init(void)
 {
-    lv_indev_drv_t indev_drv;
+    static lv_indev_drv_t indev_drv;
 
     /*------------------
      * Encoder

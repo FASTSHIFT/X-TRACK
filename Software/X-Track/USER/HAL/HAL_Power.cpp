@@ -10,10 +10,65 @@ static uint16_t Power_AutoLowPowerTimeout = 60;
 /*自动关机功能使能*/
 static bool Power_AutoLowPowerEnable = false;
 
-static uint16_t Power_ADCValue = 0;
+static volatile uint16_t Power_ADCValue = 0;
 
-#define BATT_MAX_VOLTAGE 4100
-#define BATT_MIN_VOLTAGE 3300
+#define BATT_MAX_VOLTAGE    4100
+#define BATT_MIN_VOLTAGE    3300
+
+#define POWER_ADC           ADC1
+
+static void Power_ADC_Init()
+{
+    RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_ADC1, ENABLE);
+    RCC_ADCCLKConfig(RCC_APB2CLK_Div8);
+
+    ADC_Reset(POWER_ADC);
+    
+    ADC_InitType ADC_InitStructure;
+    ADC_StructInit(&ADC_InitStructure);
+    ADC_InitStructure.ADC_Mode = ADC_Mode_Independent;
+    ADC_InitStructure.ADC_ScanMode = DISABLE;
+    ADC_InitStructure.ADC_ContinuousMode = DISABLE;
+    ADC_InitStructure.ADC_ExternalTrig = ADC_ExternalTrig_None;
+    ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+    ADC_InitStructure.ADC_NumOfChannel = 1;
+    ADC_Init(POWER_ADC, &ADC_InitStructure);
+    
+    ADC_ClearFlag(POWER_ADC, ADC_FLAG_EC);
+    
+    ADC_INTConfig(POWER_ADC, ADC_INT_EC, ENABLE);
+    NVIC_EnableIRQ(ADC1_2_IRQn);
+
+    ADC_Ctrl(POWER_ADC, ENABLE);
+    ADC_RstCalibration(POWER_ADC);
+    while(ADC_GetResetCalibrationStatus(POWER_ADC));
+    ADC_StartCalibration(POWER_ADC);
+    while(ADC_GetCalibrationStatus(POWER_ADC));
+}
+
+static void Power_ADC_TrigUpdate()
+{
+    ADC_RegularChannelConfig(
+        POWER_ADC, 
+        PIN_MAP[CONFIG_BAT_DET_PIN].ADC_Channel, 
+        1, 
+        ADC_SampleTime_41_5
+    );
+    ADC_SoftwareStartConvCtrl(POWER_ADC, ENABLE);
+}
+
+extern "C"{
+
+void ADC1_2_IRQHandler(void)
+{
+    if(ADC_GetINTStatus(POWER_ADC, ADC_INT_EC) != RESET)
+    {
+        Power_ADCValue = ADC_GetConversionValue(POWER_ADC);
+        ADC_ClearINTPendingBit(POWER_ADC, ADC_INT_EC);
+    }
+}
+
+}
 
 /**
   * @brief  电源初始化
@@ -24,15 +79,16 @@ void HAL::Power_Init()
 {
     /*电源使能保持*/
     Serial.println("Power: Waiting...");
-    pinMode(POWER_EN_PIN, OUTPUT);
-    digitalWrite(POWER_EN_PIN, LOW);
+    pinMode(CONFIG_POWER_EN_PIN, OUTPUT);
+    digitalWrite(CONFIG_POWER_EN_PIN, LOW);
     delay(1000);
-    digitalWrite(POWER_EN_PIN, HIGH);
+    digitalWrite(CONFIG_POWER_EN_PIN, HIGH);
     Serial.println("Power: ON");
     
     /*电池检测*/
-    pinMode(BAT_DET_PIN, INPUT_ANALOG_DMA);
-    pinMode(BAT_CHG_DET_PIN, INPUT_PULLDOWN);
+    Power_ADC_Init();
+    pinMode(CONFIG_BAT_DET_PIN, INPUT_ANALOG);
+    pinMode(CONFIG_BAT_CHG_DET_PIN, INPUT_PULLDOWN);
     
 //    Power_SetAutoLowPowerTimeout(5 * 60);
 //    Power_HandleTimeUpdate();
@@ -88,7 +144,7 @@ void HAL::Power_SetAutoLowPowerEnable(bool en)
 void HAL::Power_Shutdown()
 {
     Backlight_SetGradual(0, 500);
-    digitalWrite(POWER_EN_PIN, LOW);
+    digitalWrite(CONFIG_POWER_EN_PIN, LOW);
 }
 
 /**
@@ -98,7 +154,7 @@ void HAL::Power_Shutdown()
   */
 void HAL::Power_Update()
 {
-    Power_ADCValue = analogRead_DMA(BAT_DET_PIN);
+    __IntervalExecute(Power_ADC_TrigUpdate(), 1000);
     
     if(!Power_AutoLowPowerEnable)
         return;
@@ -131,7 +187,6 @@ void HAL::Power_GetInfo(Power_Info_t* info)
     );
     
     info->usage = usage;
-    info->isCharging = digitalRead(BAT_CHG_DET_PIN);
+    info->isCharging = (usage == 100 ? false : digitalRead(CONFIG_BAT_CHG_DET_PIN));
     info->voltage = voltage;
 }
-

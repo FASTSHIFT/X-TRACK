@@ -42,7 +42,7 @@ static void Encoder_EventHandler()
         return;
     }
     
-    int dir = (digitalRead(ENCODER_B_PIN) == LOW ? -1 : +1);
+    int dir = (digitalRead(CONFIG_ENCODER_B_PIN) == LOW ? -1 : +1);
     EncoderDiff += dir;
     Buzz_Handler(dir);
 }
@@ -66,11 +66,11 @@ static void Encoder_PushHandler(ButtonEvent* btn, int event)
 
 void HAL::Encoder_Init()
 {
-    pinMode(ENCODER_A_PIN, INPUT_PULLUP);
-    pinMode(ENCODER_B_PIN, INPUT_PULLUP);
-    pinMode(ENCODER_PUSH_PIN, INPUT_PULLUP);
+    pinMode(CONFIG_ENCODER_A_PIN, INPUT_PULLUP);
+    pinMode(CONFIG_ENCODER_B_PIN, INPUT_PULLUP);
+    pinMode(CONFIG_ENCODER_PUSH_PIN, INPUT_PULLUP);
     
-    attachInterrupt(ENCODER_A_PIN, Encoder_EventHandler, FALLING);
+    attachInterrupt(CONFIG_ENCODER_A_PIN, Encoder_EventHandler, FALLING);
     
     EncoderPush.EventAttach(Encoder_PushHandler);
 }
@@ -89,5 +89,17 @@ int32_t HAL::Encoder_GetDiff()
 
 bool HAL::Encoder_GetIsPush()
 {
-    return (digitalRead(ENCODER_PUSH_PIN) == LOW);
+    static bool isFirststRelease = false;
+    bool isPressed = (digitalRead(CONFIG_ENCODER_PUSH_PIN) == LOW);
+    
+    if(!isFirststRelease)
+    {
+        if(!isPressed)
+        {
+            isFirststRelease = true;
+        }
+        return false;
+    }
+    
+    return isPressed;
 }

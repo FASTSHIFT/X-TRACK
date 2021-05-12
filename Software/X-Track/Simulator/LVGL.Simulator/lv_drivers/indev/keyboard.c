@@ -69,10 +69,10 @@ void keyboard_handler(SDL_Event * event)
     switch(event->type) {
         case SDL_KEYDOWN:                       /*Button press*/
             last_key = event->key.keysym.sym;   /*Save the pressed key*/
-            state = LV_INDEV_STATE_PR;          /*Save the key is pressed now*/
+            state = LV_INDEV_STATE_PRESSED;          /*Save the key is pressed now*/
             break;
         case SDL_KEYUP:                         /*Button release*/
-            state = LV_INDEV_STATE_REL;         /*Save the key is released but keep the last key*/
+            state = LV_INDEV_STATE_RELEASED;         /*Save the key is released but keep the last key*/
             break;
         default:
             break;
@@ -122,6 +122,12 @@ static uint32_t keycode_to_ascii(uint32_t sdl_key)
         case SDLK_KP_ENTER:
         case '\r':
             return LV_KEY_ENTER;
+
+        case SDLK_PAGEDOWN:
+            return LV_KEY_NEXT;
+
+        case SDLK_PAGEUP:
+            return LV_KEY_PREV;
 
         default:
             return sdl_key;

@@ -3,14 +3,19 @@
 
 #include "../Page.h"
 
-typedef enum {
-    STATUS_BAR_STYLE_TRANSP,
-    STATUS_BAR_STYLE_BLACK,
-    STATUS_BAR_STYLE_MAX
-}StatusBar_Style_t;
+namespace StatusBar {
 
-void StatusBar_Init(lv_obj_t* par);
-void StatusBar_SetStyle(StatusBar_Style_t style);
-void StatusBar_AppearAnimStart(bool playback = false);
+typedef enum {
+    STYLE_TRANSP,
+    STYLE_BLACK,
+    STYLE_MAX
+}Style_t;
+
+void Init(lv_obj_t* par);
+void SetStyle(Style_t style);
+void AppearAnimStart(bool playback = false);
+
+}
+
 
 #endif

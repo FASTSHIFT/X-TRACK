@@ -29,13 +29,13 @@ public:
 private:
     void Update();
     void AttachEvent(lv_obj_t* obj);
-    static void TaskUpdate(lv_task_t* task);
-    static void EventHandler(lv_obj_t* obj, lv_event_t event);
+    static void onTimerUpdate(lv_timer_t* timer);
+    static void onEvent(lv_event_t* event);
 
 private:
     TemplateView View;
     TemplateModel Model;
-    lv_task_t* task;
+    lv_timer_t* timer;
 };
 
 #endif

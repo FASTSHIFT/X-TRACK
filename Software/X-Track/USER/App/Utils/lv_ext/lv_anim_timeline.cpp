@@ -19,10 +19,6 @@ static void lv_anim_timeline_add(const lv_anim_timeline_t* anim_timeline, bool p
         delay = playtime - (delay + time);
     }
 
-    lv_anim_path_t path;
-    lv_anim_path_init(&path);
-    lv_anim_path_set_cb(&path, anim_timeline->path_cb);
-
     lv_anim_t a;
     lv_anim_init(&a);
     lv_anim_set_var(&a, obj);
@@ -30,7 +26,7 @@ static void lv_anim_timeline_add(const lv_anim_timeline_t* anim_timeline, bool p
     lv_anim_set_exec_cb(&a, exec_cb);
     lv_anim_set_time(&a, time);
     lv_anim_set_values(&a, start, end);
-    lv_anim_set_path(&a, &path);
+    lv_anim_set_path_cb(&a, anim_timeline->path_cb);
 
     lv_anim_start(&a);
 }

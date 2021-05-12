@@ -8,9 +8,9 @@ void lv_label_anim_effect_init(
     uint16_t anim_time
 )
 {
-    lv_obj_t * label = lv_label_create(cont, label_copy);
+    lv_obj_t * label = lv_label_create(cont);
     effect->y_offset = (lv_obj_get_height(cont) - lv_obj_get_height(label_copy)) / 2 + 1;
-    lv_obj_align(label, label_copy, LV_ALIGN_OUT_BOTTOM_MID, 0, effect->y_offset);
+    lv_obj_align_to(label, label_copy, LV_ALIGN_OUT_BOTTOM_MID, 0, effect->y_offset);
     effect->label_1 = label_copy;
     effect->label_2 = label;
 
@@ -21,11 +21,7 @@ void lv_label_anim_effect_init(
     lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_y);
     lv_anim_set_time(&a, anim_time);
     lv_anim_set_delay(&a, 0);
-
-    lv_anim_path_t path;
-    lv_anim_path_init(&path);
-    lv_anim_path_set_cb(&path, lv_anim_path_ease_in_out);
-    lv_anim_set_path(&a, &path);
+    lv_anim_set_path_cb(&a, lv_anim_path_ease_in_out);
 
     effect->anim_now = a;
     effect->anim_next = a;
@@ -58,7 +54,7 @@ void lv_label_anim_effect_check_value(lv_label_anim_effect_t * effect, uint8_t v
         lv_label_set_text_fmt(next_label, "%d", value);
         effect->value_last = value;
         /*对齐*/
-        lv_obj_align(next_label, now_label, LV_ALIGN_OUT_TOP_MID, 0, -effect->y_offset);
+        lv_obj_align_to(next_label, now_label, LV_ALIGN_OUT_TOP_MID, 0, -effect->y_offset);
         /*计算需要的Y偏移量*/
         lv_coord_t y_offset = abs(lv_obj_get_y(now_label) - lv_obj_get_y(next_label));
 

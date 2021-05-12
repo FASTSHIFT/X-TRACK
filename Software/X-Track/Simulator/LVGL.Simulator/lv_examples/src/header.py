@@ -1,5 +1,8 @@
 #!/opt/bin/lv_micropython -i
-import sys
+try:
+  import sys
+except ImportError:
+  import usys as sys
 # JS requires a special import 
 if sys.platform == 'javascript':
   import utime as time

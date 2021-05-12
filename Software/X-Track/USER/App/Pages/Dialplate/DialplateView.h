@@ -23,9 +23,15 @@ public:
         
         struct {
             lv_obj_t* cont;
-            SubInfo_t infoGrp[4];
-            lv_obj_t* btnGrp[3];
+            SubInfo_t labelInfoGrp[4];
         }bottomInfo;
+
+        struct {
+            lv_obj_t* cont;
+            lv_obj_t* btnMap;
+            lv_obj_t* btnRec;
+            lv_obj_t* btnMenu;
+        }btnCont;
     }ui;
 
     void Create(lv_obj_t* root);
@@ -35,7 +41,8 @@ private:
     void TopInfo_Create(lv_obj_t* par);
     void BottomInfo_Create(lv_obj_t* par);
     void SubInfoGrp_Create(lv_obj_t* par, SubInfo_t* info, const char* unitText);
-    lv_obj_t* Btn_Create(lv_obj_t* par, lv_color_t color, const void* img_src);
+    void BtnCont_Create(lv_obj_t* par);
+    lv_obj_t* Btn_Create(lv_obj_t* par, const void* img_src, lv_coord_t x_ofs);
 };
 
 #endif // !__VIEW_H

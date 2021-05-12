@@ -21,27 +21,25 @@ const char* DataProc::ConvTime(uint64_t ms, char* buf, uint16_t len)
     return buf;
 }
 
-static int Clock_Callback(
-    Account* pub,
-    Account* sub,
-    int msgType,
-    void* data_p,
-    uint32_t size
-)
+static int onEvent(Account::EventParam_t* param)
 {
-    if (size != sizeof(HAL::Clock_Info_t))
+    if (param->event != Account::EVENT_SUB_PULL)
     {
-        return -1;
+        return Account::ERROR_UNSUPPORTED_REQUEST;
     }
 
-    HAL::Clock_GetInfo((HAL::Clock_Info_t*)data_p);
+    if (param->size != sizeof(HAL::Clock_Info_t))
+    {
+        return Account::ERROR_SIZE_MISMATCH;
+    }
+
+    HAL::Clock_GetInfo((HAL::Clock_Info_t*)param->data_p);
 
     return 0;
 }
 
-Account* DataProc::Clock_Init(DataCenter* center)
+void DP_Clock_Register(DataCenter* center)
 {
-    Account* account = new Account("Clock", DataProc::Center());
-    account->SetPullCallback(Clock_Callback);
-    return account;
+    Account* account = new Account("Clock", DataProc::Center(), sizeof(HAL::Clock_Info_t));
+    account->SetEventCallback(onEvent);
 }

@@ -8,9 +8,14 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     memset(info, 0, sizeof(GPS_Info_t));
 
     info->satellites = 10;
+
     info->longitude = 116.391332;
     info->latitude = 39.907415;
     info->altitude = 53.0f;
+
+    /*info->longitude = 117.789509;
+    info->latitude = 26.405395;
+    info->altitude = 150;*/
 
     Clock_GetInfo(&info->clock);
 
@@ -22,4 +27,9 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 void HAL::GPS_Update()
 {
 
+}
+
+double HAL::GPS_GetDistanceOffset(GPS_Info_t* info, double preLong, double preLat)
+{
+    return 10;
 }
