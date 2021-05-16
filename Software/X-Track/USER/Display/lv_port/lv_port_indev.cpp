@@ -27,7 +27,7 @@
  **********************/
 
 static void encoder_init(void);
-static bool encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
+static void encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
 
 /**********************
  *  STATIC VARIABLES
@@ -86,7 +86,7 @@ static void encoder_init(void)
 }
 
 /* Will be called by the library to read the encoder */
-static bool encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
+static void encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 {
     static bool lastState;
     data->enc_diff = HAL::Encoder_GetDiff();
@@ -100,9 +100,6 @@ static bool encoder_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
         HAL::Buzz_Tone(isPush ? 500 : 700, 20);
         lastState = isPush;
     }
-
-    /*Return `false` because we are not buffering and no more data to read*/
-    return false;
 }
 
 #else /* Enable this file at the top */

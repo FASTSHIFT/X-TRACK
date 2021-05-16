@@ -212,16 +212,30 @@ static inline void lv_scr_load(lv_obj_t * scr)
 #endif
 
 /**
- * Same as Android's DIP. (Different name is chosen to avoid mistype between LV_DPI and LV_DIP)
- * 1 dip is 1 px on a 160 DPI screen
- * 1 dip is 2 px on a 320 DPI screen
- * https://stackoverflow.com/questions/2025282/what-is-the-difference-between-px-dip-dp-and-sp
+ * Scale the given number of pixels (a distance or size) relative to a 160 DPI display
+ * considering the DPI of the default display.
+ * It ensures that e.g. `lv_dpx(100)` will have the same physical size regardless to the
+ * DPI of the display.
+ * @param n     the number of pixels to scale
+ * @return      `n x current_dpi/160`
  */
-#define LV_DPX(n)   (n == 0 ? 0 :LV_MAX((( lv_disp_get_dpi(NULL) * (n) + 80) / 160), 1)) /*+80 for rounding*/
-
 static inline lv_coord_t lv_dpx(lv_coord_t n)
 {
     return LV_DPX(n);
+}
+
+/**
+ * Scale the given number of pixels (a distance or size) relative to a 160 DPI display
+ * considering the DPI of the given display.
+ * It ensures that e.g. `lv_dpx(100)` will have the same physical size regardless to the
+ * DPI of the display.
+ * @param obj   an display whose dpi should be considered
+ * @param n     the number of pixels to scale
+ * @return      `n x current_dpi/160`
+ */
+static inline lv_coord_t lv_disp_dpx(const lv_disp_t * disp, lv_coord_t n)
+{
+    return _LV_DPX_CALC(lv_disp_get_dpi(disp), n);
 }
 
 #ifdef __cplusplus

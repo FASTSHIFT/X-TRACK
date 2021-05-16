@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file lv_demo_conf.h
  * Configuration file for v8.0.0
  *
@@ -41,6 +41,8 @@
 
 /*Stress test for LVGL*/
 #define LV_USE_DEMO_STRESS      0
+
+#define LV_USE_DEMO_MUSIC       0
 
 #define LV_USE_COMPONENT_EXAMPLES   0
 

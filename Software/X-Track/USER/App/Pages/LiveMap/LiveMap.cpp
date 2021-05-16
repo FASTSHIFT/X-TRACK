@@ -21,15 +21,12 @@ void LiveMap::onViewLoad()
     View.Create(root);
     AttachEvent(root);
     AttachEvent(View.ui.map.cont);
-    AttachEvent(View.ui.zoom.btnInfo);
     AttachEvent(View.ui.zoom.slider);
 
     group = lv_group_create();
-    lv_group_add_obj(group, View.ui.zoom.slider);
-    lv_group_add_obj(group, View.ui.zoom.btnInfo);
-    lv_group_focus_obj(View.ui.zoom.btnInfo);
-
     lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), group);
+    lv_group_add_obj(group, View.ui.zoom.slider);
+    lv_group_set_editing(group, View.ui.zoom.slider);
 
     Model.mapConv.SetLevel(15);
     Model.mapConv.SetRootName("/MAP/Mapinfos");
@@ -87,6 +84,10 @@ void LiveMap::Update()
         SportInfoUpdate();
         lastMapUpdateTime = lv_tick_get();
     }
+    else if (lv_tick_elaps(lastContShowTime) >= 3000)
+    {
+        lv_obj_add_state(View.ui.zoom.cont, LV_STATE_USER_1);
+    }
 }
 
 void LiveMap::MapUpdateWait(uint32_t ms)
@@ -99,8 +100,11 @@ void LiveMap::MapUpdate()
     HAL::GPS_Info_t gpsInfo;
     Model.GetGPS_Info(&gpsInfo);
 
+    int32_t zoomVal = lv_slider_get_value(View.ui.zoom.slider);
+    lv_label_set_text_fmt(View.ui.zoom.labelInfo, "%d%%", lv_map(zoomVal, 3, 15, 0, 100));
+
     MapConv* mapConv = &(Model.mapConv);
-    mapConv->SetLevel(lv_slider_get_value(View.ui.zoom.slider));
+    mapConv->SetLevel(zoomVal);
     
     uint32_t mapX, mapY;
     mapConv->ConvertMapCoordinate(gpsInfo.longitude, gpsInfo.latitude, &mapX, &mapY);
@@ -153,7 +157,7 @@ void LiveMap::onEvent(lv_event_t* event)
     lv_event_code_t code = event->code;
     LiveMap* instance = (LiveMap*)obj->user_data;
 
-    if (code == LV_EVENT_LEAVE || code == LV_EVENT_LONG_PRESSED)
+    if (code == LV_EVENT_LEAVE)
     {
         instance->Manager->Pop();
         return;
@@ -167,18 +171,17 @@ void LiveMap::onEvent(lv_event_t* event)
         }
     }
 
-    if (obj == instance->View.ui.zoom.btnInfo)
-    {
-        if (code == LV_EVENT_SHORT_CLICKED)
-        {
-        }
-    }
-
     if (obj == instance->View.ui.zoom.slider)
     {
         if (code == LV_EVENT_VALUE_CHANGED)
         {
+            lv_obj_clear_state(instance->View.ui.zoom.cont, LV_STATE_USER_1);
+            instance->lastContShowTime = lv_tick_get();
             instance->MapUpdateWait(200);
+        }
+        else if (code == LV_EVENT_CLICKED)
+        {
+            instance->Manager->Pop();
         }
     }
 }

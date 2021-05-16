@@ -8,14 +8,14 @@ namespace HAL {
 /*Clock*/
 typedef struct
 {
-    uint8_t hour;
-    uint8_t min;
-    uint8_t sec;
-    uint16_t ms;
     uint16_t year;
-    uint8_t  month;
-    uint8_t  day;
-    uint8_t  week;
+    uint8_t month;
+    uint8_t day;
+    uint8_t week;
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t second;
+    uint16_t millisecond;
 } Clock_Info_t;
 
 /*GPS*/

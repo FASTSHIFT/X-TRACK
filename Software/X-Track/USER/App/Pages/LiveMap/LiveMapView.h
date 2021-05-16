@@ -8,9 +8,7 @@ public:
     struct {
         lv_obj_t* labelInfo;
 
-        lv_style_t styleNor;
-        lv_style_t stylePr;
-        lv_style_t styleFocus;
+        lv_style_t styleCont;
         lv_style_t styleLabel;
 
         struct {
@@ -21,7 +19,7 @@ public:
 
         struct {
             lv_obj_t* cont;
-            lv_obj_t* btnInfo;
+            lv_obj_t* labelInfo;
             lv_obj_t* slider;
         }zoom;
 

@@ -14,8 +14,8 @@ void HAL::Clock_Init()
         info.day,
         Clock_GetWeekString(info.week),
         info.hour,
-        info.min,
-        info.sec
+        info.minute,
+        info.second
     );
 }
 
@@ -27,9 +27,9 @@ void HAL::Clock_GetInfo(Clock_Info_t* info)
     info->day = calendar.w_date;
     info->week = calendar.week;
     info->hour = calendar.hour;
-    info->min = calendar.min;
-    info->sec = calendar.sec;
-    info->ms = 0;
+    info->minute = calendar.min;
+    info->second = calendar.sec;
+    info->millisecond = 0;
 }
 
 void HAL::Clock_SetInfo(const Clock_Info_t* info)
@@ -39,8 +39,8 @@ void HAL::Clock_SetInfo(const Clock_Info_t* info)
         info->month,
         info->day,
         info->hour,
-        info->min,
-        info->sec
+        info->minute,
+        info->second
     );
 }
 

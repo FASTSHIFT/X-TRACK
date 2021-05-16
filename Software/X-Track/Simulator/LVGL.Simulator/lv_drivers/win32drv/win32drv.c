@@ -81,15 +81,15 @@ static void lv_win32_display_driver_rounder_callback(
     lv_disp_drv_t* disp_drv,
     lv_area_t* area);
 
-static bool lv_win32_mouse_driver_read_callback(
+static void lv_win32_mouse_driver_read_callback(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data);
 
-static bool lv_win32_keyboard_driver_read_callback(
+static void lv_win32_keyboard_driver_read_callback(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data);
 
-static bool lv_win32_mousewheel_driver_read_callback(
+static void lv_win32_mousewheel_driver_read_callback(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data);
 
@@ -449,7 +449,7 @@ static void lv_win32_display_driver_rounder_callback(
     area->y2 = disp_drv->ver_res - 1;
 }
 
-static bool lv_win32_mouse_driver_read_callback(
+static void lv_win32_mouse_driver_read_callback(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data)
 {
@@ -459,10 +459,9 @@ static bool lv_win32_mouse_driver_read_callback(
         g_mouse_pressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
     data->point.x = GET_X_LPARAM(g_mouse_value) / WIN32DRV_MONITOR_ZOOM;
     data->point.y = GET_Y_LPARAM(g_mouse_value) / WIN32DRV_MONITOR_ZOOM;
-    return false;
 }
 
-static bool lv_win32_keyboard_driver_read_callback(
+static void lv_win32_keyboard_driver_read_callback(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data)
 {
@@ -521,11 +520,9 @@ static bool lv_win32_keyboard_driver_read_callback(
 
         break;
     }
-
-    return false;
 }
 
-static bool lv_win32_mousewheel_driver_read_callback(
+static void lv_win32_mousewheel_driver_read_callback(
     lv_indev_drv_t* indev_drv,
     lv_indev_data_t* data)
 {
@@ -535,8 +532,6 @@ static bool lv_win32_mousewheel_driver_read_callback(
         g_mousewheel_pressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL);
     data->enc_diff = g_mousewheel_value;
     g_mousewheel_value = 0;
-
-    return false;
 }
 
 static LRESULT CALLBACK lv_win32_window_message_callback(

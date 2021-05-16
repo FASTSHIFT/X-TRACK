@@ -25,31 +25,31 @@ extern "C" {
 
 struct _lv_obj_t;
 
-/** Design results*/
+/** Cover check results*/
 typedef enum {
-    LV_DRAW_RES_COVER,       /**< Returned on `LV_DRAW_COVER_CHK` if the areas is fully covered*/
-    LV_DRAW_RES_NOT_COVER,   /**< Returned on `LV_DRAW_COVER_CHK` if the areas is not covered*/
-    LV_DRAW_RES_MASKED,      /**< Returned on `LV_DRAW_COVER_CHK` if the areas is masked out (children also not cover)*/
-}lv_draw_res_t;
+    LV_COVER_RES_COVER,
+    LV_COVER_RES_NOT_COVER,
+    LV_COVER_RES_MASKED,
+}lv_cover_res_t;
 
 typedef struct
 {
-    lv_area_t * draw_area;
-    const lv_area_t * clip_area;
-    lv_draw_rect_dsc_t * rect_dsc;
-    lv_draw_label_dsc_t * label_dsc;
-    lv_draw_line_dsc_t * line_dsc;
-    lv_draw_img_dsc_t *  img_dsc;
-    lv_draw_arc_dsc_t *  arc_dsc;
-    const lv_point_t * p1;
-    const lv_point_t * p2;
-    lv_coord_t radius;
-    char text[16];
-    int32_t value;
-    uint32_t id;
-    uint32_t part;
-    const void * sub_part_ptr;
-}lv_obj_draw_dsc_t;
+    const lv_area_t * clip_area;        /**< The current clip area, required if you need to draw something in the event*/
+    lv_area_t * draw_area;              /**< The area of the part being drawn*/
+    lv_draw_rect_dsc_t * rect_dsc;      /**< A draw descriptor that can be modified to changed what LVGL will draw. Set only for rectangle-like parts*/
+    lv_draw_label_dsc_t * label_dsc;    /**< A draw descriptor that can be modified to changed what LVGL will draw. Set only for text-like parts*/
+    lv_draw_line_dsc_t * line_dsc;      /**< A draw descriptor that can be modified to changed what LVGL will draw. Set only for line-like parts*/
+    lv_draw_img_dsc_t *  img_dsc;       /**< A draw descriptor that can be modified to changed what LVGL will draw. Set only for image-like parts*/
+    lv_draw_arc_dsc_t *  arc_dsc;       /**< A draw descriptor that can be modified to changed what LVGL will draw. Set only for arc-like parts*/
+    const lv_point_t * p1;              /**< A point calculated during drawing. E.g. a point of chart or the center of an arc.*/
+    const lv_point_t * p2;              /**< A point calculated during drawing. E.g. a point of chart.*/
+    char text[16];                      /**< A text calculated during drawing. Can be modified. E.g. tick labels on a chart axis.*/
+    uint32_t part;                      /**< The current part for which the event is sent*/
+    uint32_t id;                        /**< The index of the part. E.g. a button's index on button matrix or table cell index.*/
+    lv_coord_t radius;                  /**< E.g. the radius of an arc (not the corner radius).*/
+    int32_t value;                      /**< A value calculated during drawing. E.g. Chart's tick line value.*/
+    const void * sub_part_ptr;          /**< A pointer the identifies something in the part. E.g. chart series. */
+}lv_obj_draw_part_dsc_t;
 
 /**********************
  * GLOBAL PROTOTYPES
@@ -118,7 +118,7 @@ lv_coord_t lv_obj_calculate_ext_draw_size(struct _lv_obj_t * obj, uint32_t part)
  * @param dsc pointer to a descriptor. Later it should be passed as parameter to an `LV_EEVNT_DRAW_PART_BEGIN/END` event.
  * @param clip_area the current clip area of the drawing
  */
-void lv_obj_draw_dsc_init(lv_obj_draw_dsc_t * dsc, const lv_area_t * clip_area);
+void lv_obj_draw_dsc_init(lv_obj_draw_part_dsc_t * dsc, const lv_area_t * clip_area);
 
 /**
  * Send a 'LV_EVENT_REFR_EXT_DRAW_SIZE' Call the ancestor's event handler to the object to refresh the value of the extended draw size.

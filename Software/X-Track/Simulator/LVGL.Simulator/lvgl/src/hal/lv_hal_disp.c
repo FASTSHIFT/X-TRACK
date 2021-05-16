@@ -32,6 +32,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+static lv_obj_tree_walk_res_t invalidate_layout_cb(lv_obj_t * obj, void * user_data);
 
 /**********************
  *  STATIC VARIABLES
@@ -193,6 +194,8 @@ void lv_disp_drv_update(lv_disp_t * disp, lv_disp_drv_t * new_drv)
     disp->inv_p = 0;
     if(disp->act_scr != NULL) lv_obj_invalidate(disp->act_scr);
 
+    lv_obj_tree_walk(NULL, invalidate_layout_cb, NULL);
+
     if(disp->driver->drv_update_cb) disp->driver->drv_update_cb(disp->driver);
 }
 
@@ -302,7 +305,7 @@ bool lv_disp_get_antialiasing(lv_disp_t * disp)
  * @param disp pointer to a display (NULL to use the default display)
  * @return dpi of the display
  */
-lv_coord_t lv_disp_get_dpi(lv_disp_t * disp)
+lv_coord_t lv_disp_get_dpi(const lv_disp_t * disp)
 {
     if(disp == NULL) disp = lv_disp_get_default();
     if(disp == NULL) return LV_DPI_DEF;  /*Do not return 0 because it might be a divider*/
@@ -389,3 +392,10 @@ lv_disp_rot_t lv_disp_get_rotation(lv_disp_t * disp)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+
+static lv_obj_tree_walk_res_t invalidate_layout_cb(lv_obj_t * obj, void * user_data)
+{
+    LV_UNUSED(user_data);
+    lv_obj_mark_layout_as_dirty(obj);
+    return LV_OBJ_TREE_WALK_NEXT;
+}

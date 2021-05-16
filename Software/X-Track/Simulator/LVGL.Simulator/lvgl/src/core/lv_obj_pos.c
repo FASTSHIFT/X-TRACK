@@ -140,7 +140,7 @@ bool lv_obj_refr_size(lv_obj_t * obj)
 
         lv_coord_t minh = lv_obj_get_style_min_height(obj, LV_PART_MAIN);
         lv_coord_t maxh = lv_obj_get_style_max_height(obj, LV_PART_MAIN);
-        h = lv_clamp_width(h, minh, maxh, parent_h);
+        h = lv_clamp_height(h, minh, maxh, parent_h);
     }
 
     /*calc_auto_size set the scroll x/y to 0 so revert the original value*/
@@ -370,8 +370,10 @@ void lv_obj_align_to(lv_obj_t * obj, const lv_obj_t * base, lv_align_t align, lv
     lv_coord_t x = 0;
     lv_coord_t y = 0;
     lv_obj_t * parent = lv_obj_get_parent(obj);
-    lv_coord_t pleft = lv_obj_get_style_pad_left(parent, LV_PART_MAIN);
-    lv_coord_t ptop = lv_obj_get_style_pad_top(parent, LV_PART_MAIN);
+
+    lv_coord_t border_width = lv_obj_get_style_border_width(parent, LV_PART_MAIN);
+    lv_coord_t pleft = lv_obj_get_style_pad_left(parent, LV_PART_MAIN) + border_width;
+    lv_coord_t ptop = lv_obj_get_style_pad_top(parent, LV_PART_MAIN) + border_width;
     switch(align) {
     case LV_ALIGN_CENTER:
         x = lv_obj_get_content_width(base) / 2 - lv_obj_get_width(obj) / 2;
@@ -590,21 +592,21 @@ void lv_obj_get_content_coords(const lv_obj_t * obj, lv_area_t * area)
 
 }
 
-lv_coord_t lv_obj_get_self_width(struct _lv_obj_t * obj)
+lv_coord_t lv_obj_get_self_width(const lv_obj_t * obj)
 {
     lv_point_t p = {0, LV_COORD_MIN};
-    lv_event_send((lv_obj_t * )obj, LV_EVENT_REFR_SELF_SIZE, &p);
+    lv_event_send((lv_obj_t * )obj, LV_EVENT_GET_SELF_SIZE, &p);
     return p.x;
 }
 
-lv_coord_t lv_obj_get_self_height(struct _lv_obj_t * obj)
+lv_coord_t lv_obj_get_self_height(const lv_obj_t * obj)
 {
     lv_point_t p = {LV_COORD_MIN, 0};
-    lv_event_send((lv_obj_t * )obj, LV_EVENT_REFR_SELF_SIZE, &p);
+    lv_event_send((lv_obj_t * )obj, LV_EVENT_GET_SELF_SIZE, &p);
     return p.y;
 }
 
-bool lv_obj_refresh_self_size(struct _lv_obj_t * obj)
+bool lv_obj_refresh_self_size(lv_obj_t * obj)
 {
     lv_coord_t w_set = lv_obj_get_style_width(obj, LV_PART_MAIN);
     lv_coord_t h_set = lv_obj_get_style_height(obj, LV_PART_MAIN);
@@ -890,9 +892,9 @@ bool lv_obj_hit_test(lv_obj_t * obj, const lv_point_t * point)
     if(lv_obj_has_flag(obj, LV_OBJ_FLAG_ADV_HITTEST)) {
         lv_hit_test_info_t hit_info;
         hit_info.point = point;
-        hit_info.result = true;
+        hit_info.res = true;
         lv_event_send(obj, LV_EVENT_HIT_TEST, &hit_info);
-        return hit_info.result;
+        return hit_info.res;
     }
 
     return res;

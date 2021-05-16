@@ -63,8 +63,8 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     info->clock.month = gps.date.month();
     info->clock.day = gps.date.day();
     info->clock.hour = (gps.time.hour() + 8) % 24;
-    info->clock.min = gps.time.minute();
-    info->clock.sec = gps.time.second();
+    info->clock.minute = gps.time.minute();
+    info->clock.second = gps.time.second();
     info->satellites = gps.satellites.value();
 
     return retval;

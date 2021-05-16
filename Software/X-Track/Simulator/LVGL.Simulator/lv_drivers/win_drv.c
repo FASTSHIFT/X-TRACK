@@ -34,7 +34,7 @@ static void do_register(void);
 static void win_drv_flush(lv_disp_t *drv, lv_area_t *area, const lv_color_t * color_p);
 static void win_drv_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color);
 static void win_drv_map(int32_t x1, int32_t y1, int32_t x2, int32_t y2, const lv_color_t * color_p);
-static bool win_drv_read(lv_indev_t *drv, lv_indev_data_t * data);
+static void win_drv_read(lv_indev_t *drv, lv_indev_data_t * data);
 static void msg_handler(void *param);
 
 static COLORREF lv_color_to_colorref(const lv_color_t color);
@@ -65,7 +65,7 @@ static int mouse_x, mouse_y;
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
-const char g_szClassName[] = "LittlevGL";
+const char g_szClassName[] = "LVGL";
 
 HWND windrv_init(void)
 {
@@ -107,7 +107,7 @@ HWND windrv_init(void)
     hwnd = CreateWindowEx(
         WS_EX_CLIENTEDGE,
         g_szClassName,
-        "LittlevGL Simulator",
+        "LVGL Simulator",
         WINDOW_STYLE,
         CW_USEDEFAULT, CW_USEDEFAULT, winrect.right, winrect.bottom,
         NULL, NULL, GetModuleHandle(NULL), NULL);
@@ -132,34 +132,16 @@ HWND windrv_init(void)
 
 static void do_register(void)
 {
-        /*-----------------------------
-     * Create a buffer for drawing
-     *----------------------------*/
-
-    /* LittlevGL requires a buffer where it draw the objects. The buffer's has to be greater than 1 display row
-     *
-     * There are three buffering configurations:
-     * 1. Create ONE buffer some rows: LittlevGL will draw the display's content here and writes it to your display
-     * 2. Create TWO buffer some rows: LittlevGL will draw the display's content to a buffer and writes it your display.
-     *                                 You should use DMA to write the buffer's content to the display.
-     *                                 It will enable LittlevGL to draw the next part of the screen to the other buffer while
-     *                                 the data is being sent form the first buffer. It makes rendering and flushing parallel.
-     * 3. Create TWO screen buffer: Similar to 2) but the buffer have to be screen sized. When LittlevGL is ready it will give the
-     *                              whole frame to display. This way you only need to change the frame buffer's address instead of
-     *                              copying the pixels.
-     * */
-
-    /* Example for 1) */
-    static lv_disp_buf_t disp_buf_1;
-    static lv_color_t buf1_1[WINDOW_HOR_RES * 10];                      /*A buffer for 10 rows*/
-    lv_disp_buf_init(&disp_buf_1, buf1_1, NULL, WINDOW_HOR_RES * 10);   /*Initialize the display buffer*/
+    static lv_disp_draw_buf_t disp_buf_1;
+    static lv_color_t buf1_1[WINDOW_HOR_RES * 100];                      /*A buffer for 10 rows*/
+    lv_disp_draw_buf_init(&disp_draw_buf_1, buf1_1, NULL, WINDOW_HOR_RES * 100);   /*Initialize the display buffer*/
 
 
     /*-----------------------------------
-     * Register the display in LittlevGL
+     * Register the display in LVGLGL
      *----------------------------------*/
 
-    lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
+    static lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
     lv_disp_drv_init(&disp_drv);                    /*Basic initialization*/
 
     /*Set up the functions to access to your display*/
@@ -172,11 +154,11 @@ static void do_register(void)
     disp_drv.flush_cb = win_drv_flush;
 
     /*Set a display buffer*/
-    disp_drv.buffer = &disp_buf_1;
+    disp_drv.draw_buf = &disp_buf_1;
 
     /*Finally register the driver*/
     lv_windows_disp = lv_disp_drv_register(&disp_drv);
-    lv_indev_drv_t indev_drv;
+    static lv_indev_drv_t indev_drv;
     lv_indev_drv_init(&indev_drv);
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     indev_drv.read_cb = win_drv_read;
@@ -205,12 +187,11 @@ static void msg_handler(void *param)
     }
 }
 
- static bool win_drv_read(lv_indev_t *drv, lv_indev_data_t * data)
+ static void win_drv_read(lv_indev_t *drv, lv_indev_data_t * data)
 {
     data->state = mouse_pressed ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
     data->point.x = mouse_x;
     data->point.y = mouse_y;
-    return false;
 }
 
  static void on_paint(void)

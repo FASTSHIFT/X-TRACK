@@ -157,7 +157,7 @@ static void lv_checkbox_event(const lv_obj_class_t * class_p, lv_event_t * e)
     if (code == LV_EVENT_PRESSED || code == LV_EVENT_RELEASED) {
        lv_obj_invalidate(obj);
     }
-    else if (code == LV_EVENT_REFR_SELF_SIZE) {
+    else if (code == LV_EVENT_GET_SELF_SIZE) {
         lv_point_t * p = lv_event_get_param(e);
         lv_checkbox_t * cb = (lv_checkbox_t *)obj;
 
@@ -234,7 +234,7 @@ static void lv_checkbox_draw(lv_event_t * e)
     marker_area_transf.y1 -= transf_h;
     marker_area_transf.y2 += transf_h;
 
-    lv_obj_draw_dsc_t obj_draw_dsc;
+    lv_obj_draw_part_dsc_t obj_draw_dsc;
     lv_obj_draw_dsc_init(&obj_draw_dsc, clip_area);
     obj_draw_dsc.rect_dsc = &indic_dsc;
     obj_draw_dsc.draw_area = &marker_area_transf;

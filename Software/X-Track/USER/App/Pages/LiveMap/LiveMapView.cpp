@@ -32,16 +32,12 @@ void LiveMapView::Style_Create()
         return;
     }
 
-    lv_style_init(&ui.styleNor);
-    lv_style_set_bg_color(&ui.styleNor, lv_color_hex(0x1a1a1a));
-    lv_style_set_bg_opa(&ui.styleNor, LV_OPA_60);
-    lv_style_set_radius(&ui.styleNor, 6);
-
-    lv_style_init(&ui.stylePr);
-    lv_style_set_bg_opa(&ui.stylePr, LV_OPA_30);
-
-    lv_style_init(&ui.styleFocus);
-    lv_style_set_bg_color(&ui.styleFocus, lv_palette_main(LV_PALETTE_BLUE));
+    lv_style_init(&ui.styleCont);
+    lv_style_set_bg_color(&ui.styleCont, lv_color_black());
+    lv_style_set_bg_opa(&ui.styleCont, LV_OPA_60);
+    lv_style_set_radius(&ui.styleCont, 6);
+    lv_style_set_shadow_width(&ui.styleCont, 10);
+    lv_style_set_shadow_color(&ui.styleCont, lv_color_black());
 
     lv_style_init(&ui.styleLabel);
     lv_style_set_text_font(&ui.styleLabel, Resource.GetFont("bahnschrift_17"));
@@ -76,45 +72,36 @@ void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
-    lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, 0);
-    lv_obj_set_size(cont, 23, 100);
-    lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(
-        cont,
-        LV_FLEX_ALIGN_SPACE_EVENLY, 
-        LV_FLEX_ALIGN_CENTER,
-        LV_FLEX_ALIGN_SPACE_EVENLY
-    );
-    lv_obj_align(cont, LV_ALIGN_TOP_LEFT, 10, 30);
+    lv_obj_add_style(cont, &ui.styleCont, 0);
+    lv_obj_set_style_opa(cont, LV_OPA_COVER, 0);
+    lv_obj_set_size(cont, 45, 30);
+    lv_obj_set_pos(cont, lv_obj_get_style_width(par, 0) - 40, 40);
     ui.zoom.cont = cont;
 
-    lv_obj_t* btn = lv_btn_create(cont);
-    lv_obj_remove_style_all(btn);
-    lv_obj_set_size(btn, 23, 23);
-    lv_obj_add_style(btn, &ui.styleNor, 0);
-    lv_obj_add_style(btn, &ui.stylePr, LV_STATE_PRESSED);
-    lv_obj_add_style(btn, &ui.styleFocus, LV_STATE_FOCUSED);
-    lv_obj_t* label = lv_label_create(btn);
-    lv_label_set_text(label, "i");
+    static const lv_style_prop_t prop[] = {
+        LV_STYLE_X,
+        LV_STYLE_OPA,
+        LV_STYLE_PROP_INV
+    };
+    static lv_style_transition_dsc_t tran;
+    lv_style_transition_dsc_init(&tran, prop, lv_anim_path_ease_out, 200, 0, nullptr);
+    lv_obj_set_style_x(cont, lv_obj_get_style_width(par, 0), LV_STATE_USER_1);
+    lv_obj_set_style_opa(cont, LV_OPA_TRANSP, LV_STATE_USER_1);
+    lv_obj_add_state(cont, LV_STATE_USER_1);
+    lv_obj_set_style_transition(cont, &tran, LV_STATE_USER_1);
+    lv_obj_set_style_transition(cont, &tran, 0);
+
+
+    lv_obj_t* label = lv_label_create(cont);
     lv_obj_add_style(label, &ui.styleLabel, 0);
-    lv_obj_center(label);
-    ui.zoom.btnInfo = btn;
+    lv_obj_align(label, LV_ALIGN_CENTER, -2, 0);
+    lv_label_set_text(label, "--");
+    ui.zoom.labelInfo = label;
 
     lv_obj_t* slider = lv_slider_create(cont);
-    lv_slider_set_range(slider, 3, 15);
-    lv_slider_set_value(slider, 15, LV_ANIM_OFF);
     lv_obj_remove_style_all(slider);
-    lv_obj_set_size(slider, 10, 40);
-    lv_obj_add_style(slider, &ui.styleNor, 0);
-    
-    lv_obj_set_style_bg_color(slider, lv_color_black(), LV_PART_KNOB);
-    lv_obj_set_style_bg_opa(slider, LV_OPA_70, LV_PART_KNOB);
-    lv_obj_set_style_radius(slider, 5, LV_PART_KNOB);
-    lv_obj_set_style_pad_hor(slider, 5, LV_PART_KNOB);
-
-    lv_obj_add_style(slider, &ui.stylePr, LV_PART_KNOB | LV_STATE_PRESSED);
-    lv_obj_add_style(slider, &ui.styleFocus, LV_PART_KNOB | LV_STATE_FOCUSED);
-
+    lv_slider_set_range(slider, 3, 15);
+    lv_slider_set_value(slider, 15, LV_ANIM_OFF);   
     ui.zoom.slider = slider;
 }
 
@@ -123,14 +110,10 @@ void LiveMapView::SportInfo_Create(lv_obj_t* par)
     /* cont */
     lv_obj_t* obj = lv_obj_create(par);
     lv_obj_remove_style_all(obj);
+    lv_obj_add_style(obj, &ui.styleCont, 0);
     lv_obj_set_size(obj, 159, 66);
-    lv_obj_align(obj, LV_ALIGN_BOTTOM_LEFT, -10, 10);
-
-    lv_obj_set_style_bg_color(obj, lv_color_black(), 0);
-    lv_obj_set_style_bg_opa(obj, LV_OPA_60, 0);
-    lv_obj_set_style_radius(obj, 10, 0);
-    lv_obj_set_style_shadow_width(obj, 10, 0);
-    lv_obj_set_style_shadow_color(obj, lv_color_black(), 0);
+    lv_obj_align(obj, LV_ALIGN_BOTTOM_LEFT, -10, 10); 
+    lv_obj_set_style_radius(obj, 10, 0);    
     ui.sportInfo.cont = obj;
 
     /* speed */

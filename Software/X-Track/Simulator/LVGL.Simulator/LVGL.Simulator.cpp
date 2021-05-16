@@ -27,7 +27,6 @@
 #include "lvgl/lvgl.h"
 #include "lv_examples/lv_demo.h"
 #include "lv_drivers/win32drv/win32drv.h"
-#include "lv_fs_interface/lv_fs_interface.h"
 #include "lv_fs_if/lv_fs_if.h"
 
 #if _MSC_VER >= 1200
@@ -40,7 +39,6 @@ int main()
     lv_init();
 
     lv_fs_if_init();
-    //lv_fs_interface_init();
 
     if (!lv_win32_init(
         GetModuleHandleW(NULL),
@@ -64,6 +62,7 @@ int main()
     //lv_example_flex_3();
     //lv_demo_widgets();
     //lv_demo_benchmark();
+    //lv_demo_music();
     //lv_demo_keypad_encoder();
     //lv_demo_printer();
     //lv_demo_stress();

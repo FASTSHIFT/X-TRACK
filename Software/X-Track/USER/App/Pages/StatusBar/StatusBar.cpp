@@ -1,8 +1,8 @@
 #include "StatusBar.h"
 #include "Common/DataProc/DataProc.h"
 
-#define BATT_USAGE_HEIGHT (lv_obj_get_height(ui.battery.img) - 6)
-#define BATT_USAGE_WIDTH  (lv_obj_get_width(ui.battery.img) - 4)
+#define BATT_USAGE_HEIGHT (lv_obj_get_style_height(ui.battery.img, 0) - 6)
+#define BATT_USAGE_WIDTH  (lv_obj_get_style_width(ui.battery.img, 0) - 4)
 
 static Account* actStatusBar;
 
@@ -68,7 +68,7 @@ static void StatusBar_Update(lv_timer_t* timer)
     /* clock */
     HAL::Clock_Info_t clock;
     actStatusBar->Pull("Clock", &clock, sizeof(clock));
-    lv_label_set_text_fmt(ui.labelClock, "%02d:%02d", clock.hour, clock.min);
+    lv_label_set_text_fmt(ui.labelClock, "%02d:%02d", clock.hour, clock.minute);
 
     /* battery */
     HAL::Power_Info_t power;
@@ -101,7 +101,7 @@ static void StatusBar_Update(lv_timer_t* timer)
             lv_anim_del(contBatt, (lv_anim_exec_xcb_t)lv_obj_set_height);
             Is_BattChargingAnimActive = false;
         }
-        lv_coord_t height = MAP(power.usage, 0, 100, 0, BATT_USAGE_HEIGHT);
+        lv_coord_t height = lv_map(power.usage, 0, 100, 0, BATT_USAGE_HEIGHT);
         lv_obj_set_height(contBatt, height);
     }
 }
@@ -130,7 +130,8 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
         prop,
         lv_anim_path_ease_out,
         200,
-        0
+        0,
+        nullptr
     );
     lv_obj_set_style_transition(cont, &tran, LV_STATE_USER_1);
 
@@ -172,7 +173,8 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     img = lv_img_create(cont);
     lv_img_set_src(img, Resource.GetImage("battery"));
     lv_obj_align(img, LV_ALIGN_RIGHT_MID, -30, 0);
-    lv_obj_update_layout(img);
+    lv_img_t* img_ext = (lv_img_t*)img;
+    lv_obj_set_size(img, img_ext->w, img_ext->h);
     ui.battery.img = img;
 
     lv_obj_t* obj = lv_obj_create(img);

@@ -47,17 +47,14 @@ void mousewheel_init(void)
  * Get encoder (i.e. mouse wheel) ticks difference and pressed state
  * @param indev_drv pointer to the related input device driver
  * @param data store the read data here
- * @return false: all ticks and button state are handled
  */
-bool mousewheel_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
+void mousewheel_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 {
     (void) indev_drv;      /*Unused*/
 
     data->state = state;
     data->enc_diff = enc_diff;
     enc_diff = 0;
-
-    return false;       /*No more data to read so return false*/
 }
 
 /**

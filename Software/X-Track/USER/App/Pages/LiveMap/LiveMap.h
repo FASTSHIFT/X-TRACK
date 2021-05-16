@@ -30,6 +30,7 @@ private:
     }mapPos;  
 
     uint32_t lastMapUpdateTime;
+    uint32_t lastContShowTime;
 
     lv_timer_t* timer;
     lv_group_t* group;

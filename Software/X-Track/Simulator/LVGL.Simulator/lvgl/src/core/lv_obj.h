@@ -174,25 +174,6 @@ typedef struct _lv_obj_t {
     uint16_t w_layout   :1;
 }lv_obj_t;
 
-
-typedef struct {
-    const lv_point_t * point;
-    bool result;
-} lv_hit_test_info_t;
-
-/**
- * Used as the event parameter of ::LV_EVENT_COVER_CHECK to check if an area is covered by the object or not.
- * `res` should be set like this:
- *   - If there is a draw mask on the object set to ::LV_DRAW_RES_MASKED
- *   - If there is no draw mask but the object simply not covers the area and `res` is not set to ::LV_DRAW_RES_MASKED set to ::LV_DRAW_RES_NOT_COVER
- *     E.g. `if(cover == false && info->res != LV_DRAW_RES_MASKED) info->res = LV_DRAW_RES_NOT_COVER;`
- *   - If the area is fully covered by the object leave `res` unchanged.
- */
-typedef struct {
-    lv_draw_res_t res;              /**< Set to ::LV_DRAW_RES_NOT_COVER or ::LV_DRAW_RES_MASKED. */
-    const lv_area_t * area;         /**< The area to check */
-} lv_cover_check_info_t;
-
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
@@ -378,6 +359,20 @@ const lv_obj_class_t * lv_obj_get_class(const lv_obj_t * obj);
  * @return          true: valid
  */
 bool lv_obj_is_valid(const lv_obj_t * obj);
+
+/**
+ * Scale the given number of pixels (a distance or size) relative to a 160 DPI display
+ * considering the DPI of the `obj`'s display.
+ * It ensures that e.g. `lv_dpx(100)` will have the same physical size regardless to the
+ * DPI of the display.
+ * @param obj   an object whose display's dpi should be considered
+ * @param n     the number of pixels to scale
+ * @return      `n x current_dpi/160`
+ */
+static inline lv_coord_t lv_obj_dpx(const lv_obj_t * obj, lv_coord_t n)
+{
+    return _LV_DPX_CALC(lv_disp_get_dpi(lv_obj_get_disp(obj)), n);
+}
 
 /**********************
  *      MACROS

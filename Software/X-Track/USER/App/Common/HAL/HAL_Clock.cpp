@@ -13,9 +13,9 @@ void HAL::Clock_GetInfo(Clock_Info_t* info)
     info->day = t->tm_mday;
     info->week = t->tm_wday;
     info->hour = t->tm_hour;
-    info->min = t->tm_min;
-    info->sec = t->tm_sec;
-    info->ms = t->tm_sec;
+    info->minute = t->tm_min;
+    info->second = t->tm_sec;
+    info->millisecond = t->tm_sec;
 }
 
 void HAL::Clock_SetInfo(const Clock_Info_t* info)

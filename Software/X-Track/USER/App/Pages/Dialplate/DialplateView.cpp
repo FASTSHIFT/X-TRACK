@@ -151,7 +151,8 @@ lv_obj_t* DialplateView::Btn_Create(lv_obj_t* par, const void* img_src, lv_coord
         prop,
         lv_anim_path_ease_out,
         200,
-        0
+        0,
+        nullptr
     );
     lv_obj_set_style_transition(obj, &tran, LV_STATE_PRESSED);
     lv_obj_set_style_transition(obj, &tran, LV_STATE_FOCUSED);
