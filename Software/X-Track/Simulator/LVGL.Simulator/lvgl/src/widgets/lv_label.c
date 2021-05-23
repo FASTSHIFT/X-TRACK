@@ -290,6 +290,10 @@ void lv_label_get_letter_pos(const lv_obj_t * obj, uint32_t char_id, lv_point_t 
 
     const char * txt         = lv_label_get_text(obj);
     lv_text_align_t align = lv_obj_get_style_text_align(obj, LV_PART_MAIN);
+    if(align == LV_TEXT_ALIGN_AUTO) {
+       if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) == LV_BASE_DIR_RTL) align = LV_TEXT_ALIGN_RIGHT;
+       else align = LV_TEXT_ALIGN_LEFT;
+    }
 
     if(txt[0] == '\0') {
         pos->y = 0;
@@ -359,7 +363,7 @@ void lv_label_get_letter_pos(const lv_obj_t * obj, uint32_t char_id, lv_point_t 
 
         bool is_rtl;
         uint32_t visual_char_pos = _lv_bidi_get_visual_pos(&txt[line_start], &mutable_bidi_txt, new_line_start - line_start,
-                                                           lv_obj_get_base_dir(obj), line_char_id, &is_rtl);
+                                    lv_obj_get_style_base_dir(obj, LV_PART_MAIN), line_char_id, &is_rtl);
         bidi_txt = mutable_bidi_txt;
         if(is_rtl) visual_char_pos++;
 
@@ -424,6 +428,10 @@ uint32_t lv_label_get_letter_on(const lv_obj_t * obj, lv_point_t * pos_in)
     if(lv_obj_get_style_width(obj, LV_PART_MAIN) == LV_SIZE_CONTENT && !obj->w_layout) flag |= LV_TEXT_FLAG_FIT;
 
     lv_text_align_t align = lv_obj_get_style_text_align(obj, LV_PART_MAIN);
+    if(align == LV_TEXT_ALIGN_AUTO) {
+       if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) == LV_BASE_DIR_RTL) align = LV_TEXT_ALIGN_RIGHT;
+       else align = LV_TEXT_ALIGN_LEFT;
+    }
 
     /*Search the line of the index letter*/;
     while(txt[line_start] != '\0') {
@@ -447,7 +455,7 @@ uint32_t lv_label_get_letter_on(const lv_obj_t * obj, lv_point_t * pos_in)
     bidi_txt = lv_mem_buf_get(new_line_start - line_start + 1);
     uint32_t txt_len = new_line_start - line_start;
     if(new_line_start > 0 && txt[new_line_start - 1] == '\0' && txt_len > 0) txt_len--;
-    _lv_bidi_process_paragraph(txt + line_start, bidi_txt, txt_len, lv_obj_get_base_dir(obj), NULL, 0);
+    _lv_bidi_process_paragraph(txt + line_start, bidi_txt, txt_len, lv_obj_get_style_base_dir(obj, LV_PART_MAIN), NULL, 0);
 #else
     bidi_txt = (char *)txt + line_start;
 #endif
@@ -472,11 +480,11 @@ uint32_t lv_label_get_letter_on(const lv_obj_t * obj, lv_point_t * pos_in)
 
     if(new_line_start > 0) {
         while(i + line_start < new_line_start) {
-            /*Get the current letter.*/
-            uint32_t letter = _lv_txt_encoded_next(bidi_txt, &i);
-
-            /*Get the next letter too for kerning*/
-            uint32_t letter_next = _lv_txt_encoded_next(&bidi_txt[i], NULL);
+            /*Get the current letter and the next letter for kerning*/
+            /*Be careful 'i' already points to the next character*/
+            uint32_t letter;
+            uint32_t letter_next;
+            _lv_txt_encoded_letter_next_2(bidi_txt, &letter, &letter_next, &i);
 
             /*Handle the recolor command*/
             if((flag & LV_TEXT_FLAG_RECOLOR) != 0) {
@@ -507,7 +515,7 @@ uint32_t lv_label_get_letter_on(const lv_obj_t * obj, lv_point_t * pos_in)
     else {
         bool is_rtl;
         logical_pos = _lv_bidi_get_logical_pos(&txt[line_start], NULL,
-                                               txt_len, lv_obj_get_base_dir(obj), cid, &is_rtl);
+                                               txt_len, lv_obj_get_style_base_dir(obj, LV_PART_MAIN), cid, &is_rtl);
         if(is_rtl) logical_pos++;
     }
 	lv_mem_buf_release(bidi_txt);
@@ -535,6 +543,11 @@ bool lv_label_is_char_under_pos(const lv_obj_t * obj, lv_point_t * pos)
     lv_coord_t letter_space = lv_obj_get_style_text_letter_space(obj, LV_PART_MAIN);
     lv_coord_t letter_height    = lv_font_get_line_height(font);
     lv_text_align_t align = lv_obj_get_style_text_align(obj, LV_PART_MAIN);
+    if(align == LV_TEXT_ALIGN_AUTO) {
+       if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) == LV_BASE_DIR_RTL) align = LV_TEXT_ALIGN_RIGHT;
+       else align = LV_TEXT_ALIGN_LEFT;
+    }
+
     lv_coord_t y             = 0;
     lv_text_flag_t flag       = LV_TEXT_FLAG_NONE;
 
@@ -575,12 +588,9 @@ bool lv_label_is_char_under_pos(const lv_obj_t * obj, lv_point_t * pos)
 
     if(new_line_start > 0) {
         while(i <= new_line_start - 1) {
-            /*Get the current letter
-             *Be careful 'i' already points to the next character*/
-            letter = _lv_txt_encoded_next(txt, &i);
-
-            /*Get the next letter for kerning*/
-            letter_next = _lv_txt_encoded_next(&txt[i], NULL);
+            /*Get the current letter and the next letter for kerning*/
+            /*Be careful 'i' already points to the next character*/
+            _lv_txt_encoded_letter_next_2(txt, &letter, &letter_next, &i);
 
             /*Handle the recolor command*/
             if((flag & LV_TEXT_FLAG_RECOLOR) != 0) {
@@ -663,7 +673,7 @@ void lv_label_ins_text(lv_obj_t * obj, uint32_t pos, const char * txt)
     LV_ASSERT_MALLOC(bidi_buf);
     if(bidi_buf == NULL) return;
 
-    _lv_bidi_process(txt, bidi_buf, lv_obj_get_base_dir(obj));
+    _lv_bidi_process(txt, bidi_buf, lv_obj_get_style_base_dir(obj, LV_PART_MAIN));
     _lv_txt_ins(label->text, pos, bidi_buf);
 
     lv_mem_buf_release(bidi_buf);
@@ -784,12 +794,6 @@ static void lv_label_event(const lv_obj_class_t * class_p, lv_event_t * e)
         self_size->x = LV_MAX(self_size->x, size.x);
         self_size->y = LV_MAX(self_size->y, size.y);
     }
-    else if(code == LV_EVENT_BASE_DIR_CHANGED) {
-#if LV_USE_BIDI
-        lv_label_t * label = (lv_label_t *)obj;
-        if(label->static_txt == 0) lv_label_set_text(obj, NULL);
-#endif
-    }
     else if(code == LV_EVENT_DRAW_MAIN) {
         draw_main(e);
     }
@@ -806,6 +810,10 @@ static void draw_main(lv_event_t * e)
     lv_obj_get_content_coords(obj, &txt_coords);
 
     lv_text_align_t align = lv_obj_get_style_text_align(obj, LV_PART_MAIN);
+    if(align == LV_TEXT_ALIGN_AUTO) {
+       if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) == LV_BASE_DIR_RTL) align = LV_TEXT_ALIGN_RIGHT;
+       else align = LV_TEXT_ALIGN_LEFT;
+    }
     lv_text_flag_t flag = LV_TEXT_FLAG_NONE;
     if(label->recolor != 0) flag |= LV_TEXT_FLAG_RECOLOR;
     if(label->expand != 0) flag |= LV_TEXT_FLAG_EXPAND;
@@ -929,12 +937,12 @@ static void lv_label_refr_text(lv_obj_t * obj)
         if(size.x > lv_area_get_width(&txt_coords)) {
 #if LV_USE_BIDI
             int32_t start, end;
-            lv_bidi_dir_t base_dir = lv_obj_get_base_dir(obj);
+            lv_base_dir_t base_dir = lv_obj_get_style_base_dir(obj, LV_PART_MAIN);
 
-            if (base_dir == LV_BIDI_DIR_AUTO)
+            if (base_dir == LV_BASE_DIR_AUTO)
                 base_dir = _lv_bidi_detect_base_dir(label->text);
 
-            if(base_dir == LV_BIDI_DIR_RTL) {
+            if(base_dir == LV_BASE_DIR_RTL) {
                 start = lv_area_get_width(&txt_coords) - size.x;
                 end = 0;
             }
@@ -1028,12 +1036,12 @@ static void lv_label_refr_text(lv_obj_t * obj)
         if(size.x > lv_area_get_width(&txt_coords)) {
 #if LV_USE_BIDI
             int32_t start, end;
-            lv_bidi_dir_t base_dir = lv_obj_get_base_dir(obj);
+            lv_base_dir_t base_dir = lv_obj_get_style_base_dir(obj, LV_PART_MAIN);
 
-            if (base_dir == LV_BIDI_DIR_AUTO)
+            if (base_dir == LV_BASE_DIR_AUTO)
                 base_dir = _lv_bidi_detect_base_dir(label->text);
 
-            if(base_dir == LV_BIDI_DIR_RTL) {
+            if(base_dir == LV_BASE_DIR_RTL) {
                 start = -size.x - lv_font_get_glyph_width(font, ' ', ' ') * LV_LABEL_WAIT_CHAR_COUNT;
                 end = 0;
             }

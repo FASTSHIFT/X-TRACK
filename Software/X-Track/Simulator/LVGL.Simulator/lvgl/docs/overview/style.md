@@ -104,7 +104,7 @@ The following predefined parts exist in LVGL:
 - `LV_PART_CUSTOM_FIRST` Custom parts can be added from here.
 
 
-For example a [Slider](/widgets/slider) has three parts:
+For example a [Slider](/widgets/core/slider) has three parts:
 - Background
 - Indiactor
 - Knob
@@ -177,18 +177,18 @@ lv_obj_add_style(btn, &btn_red, LV_STATE_PRESSED);  /*Overwrite only a some col
 ```
 
 ### Remove styles
-To remove all styles from an object use `lv_obj_reove_style_all(obj)`.
+To remove all styles from an object use `lv_obj_remove_style_all(obj)`.
 
-To remove specific styles use `lv_obj_remoev_style(obj, style, selector)`. This function will remove `style` only if the `selector` matches with the `selector` used in `lv_obj_add_style`. 
+To remove specific styles use `lv_obj_remove_style(obj, style, selector)`. This function will remove `style` only if the `selector` matches with the `selector` used in `lv_obj_add_style`. 
 `style` can be `NULL` to check only the `selector` and remove all matching styles. The `selector` can use the `LV_STATE_ANY` and `LV_PART_ANY` values to remove the style with any state or part.
 
 
 ### Report style changes
-If a style - which is already assigned to object - changes (i.e. one of it's property is set to a new value) the objects using that style should be notified. There are 3 options to do this:
-1. If you know that the changed properties can be applied by a simple (e.g. color or opacity changes) redraw just call `lv_obj_invalidate(obj)`, `lv_obj_invalideate(lv_scr_act())`. 
-2. If something more complex change happened on a style and you know which object(s) are affected by that style call `lv_obj_refresh_style(obj, part, property)`. 
+If a style which is already assigned to object changes (i.e. a property is added or changed) the objects using that style should be notified. There are 3 options to do this:
+1. If you know that the changed properties can be applied by a simple redraw (e.g. color or opacity changes) just call `lv_obj_invalidate(obj)` or `lv_obj_invalideate(lv_scr_act())`. 
+2. If more complex style properties were changed or added, and you know which object(s) are affected by that style call `lv_obj_refresh_style(obj, part, property)`. 
 To refresh all parts and properties use `lv_obj_refresh_style(obj, LV_PART_ANY, LV_STYLE_PROP_ANY)`.
-3. No make LVGL check all object whether thy use the style and refresh them use `lv_obj_report_style_change(&style)`. If `style` is `NULL` all object's will be notified.
+3. No make LVGL check all object whether they use the style and refresh them call `lv_obj_report_style_change(&style)`. If `style` is `NULL` all object's will be notified about the style change.
 
 ### Get a property's value on an object
 To get a final value of property - considering cascading, inheritance, local styles and transitions (see below) - get functions like this can be used: 
@@ -203,7 +203,7 @@ lv_color_t color = lv_obj_get_style_bg_color(btn, LV_PART_MAIN);
 Besides "normal" styles, the objects can store local styles too. This concept is similar to inline styles in CSS (e.g. `<div style="color:red">`) with some modification. 
 
 So local styles are like normal styles but they can't be shared among other objects. If used, local styles are allocated automatically, and freed when the object is deleted.
-They are usuful to add local customization to the object.
+They are useful to add local customization to the object.
 
 Unlike in CSS, in LVGL local styles can be assigned to states (*pseudo-classes*) and parts (pseudo-elements).
 
@@ -327,19 +327,17 @@ void new_theme_apply_cb(lv_theme_t * th, lv_obj_t * obj)
 ## API
 ```eval_rst
 
-.. doxygenfile:: lv_obj_style.h
-  :project: lvgl
-  
-.. doxygenfile:: lv_obj_style_dec.h
-  :project: lvgl
-  
 .. doxygenfile:: lv_style.h
-  :project: lvgl
-  
-.. doxygenfile:: lv_style_dec.h
   :project: lvgl
 
 .. doxygenfile:: lv_theme.h
   :project: lvgl
+
+.. doxygenfile:: lv_obj_style_gen.h
+  :project: lvgl
+  
+.. doxygenfile:: lv_style_gen.h
+  :project: lvgl
+  
 
 ```

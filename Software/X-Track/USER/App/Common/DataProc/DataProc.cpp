@@ -21,4 +21,6 @@ void DataProc_Init()
     DP_REG(Power);
     DP_REG(SportStatus);
     DP_REG(Recorder);
+    DP_REG(IMU);
+    DP_REG(MAG);
 }

@@ -91,9 +91,11 @@ void lv_example_meter_4(void);
 void lv_example_msgbox_1(void);
 
 void lv_example_obj_1(void);
+void lv_example_obj_2(void);
 
 void lv_example_roller_1(void);
 void lv_example_roller_2(void);
+void lv_example_roller_3(void);
 
 void lv_example_slider_1(void);
 void lv_example_slider_2(void);

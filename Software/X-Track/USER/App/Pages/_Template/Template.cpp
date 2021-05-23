@@ -82,9 +82,9 @@ void Template::onTimerUpdate(lv_timer_t* timer)
 
 void Template::onEvent(lv_event_t* event)
 {
-    lv_obj_t* obj = event->target;
-    lv_event_code_t code = event->code;
-    Template* instance = (Template*)obj->user_data;
+    lv_obj_t* obj = lv_event_get_target(event);
+    lv_event_code_t code = lv_event_get_code(event);
+    Template* instance = (Template*)lv_obj_get_user_data(obj);
 
     if (obj == instance->root)
     {

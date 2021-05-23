@@ -13,7 +13,7 @@
 #include "resource.h"
 
 #include "App.h"
-#include "Utils/Filters/LowpassFilter.h"
+#include "Common/HAL/HAL.h"
 
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
@@ -25,9 +25,11 @@
 #endif
 
 #include "lvgl/lvgl.h"
+#include "lvgl/examples/lv_examples.h"
 #include "lv_examples/lv_demo.h"
 #include "lv_drivers/win32drv/win32drv.h"
 #include "lv_fs_if/lv_fs_if.h"
+
 
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
@@ -58,6 +60,7 @@ int main()
      */
 
     App_Init();
+    //lv_example_scroll_2();
     //lv_demo_keypad_encoder();
     //lv_example_flex_3();
     //lv_demo_widgets();
@@ -96,6 +99,8 @@ int main()
     while (!lv_win32_quit_signal)
     {
         lv_timer_handler();
+        HAL::IMU_Update();
+        HAL::MAG_Update();
         Sleep(1);
     }
 

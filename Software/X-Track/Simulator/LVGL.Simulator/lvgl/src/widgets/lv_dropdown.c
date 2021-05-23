@@ -489,6 +489,11 @@ void lv_dropdown_open(lv_obj_t * dropdown_obj)
     }
 
     lv_text_align_t align = lv_obj_get_style_text_align(label, LV_PART_MAIN);
+    if(align == LV_TEXT_ALIGN_AUTO) {
+       if(lv_obj_get_style_base_dir(label, LV_PART_MAIN) == LV_BASE_DIR_RTL) align = LV_TEXT_ALIGN_RIGHT;
+       else align = LV_TEXT_ALIGN_LEFT;
+    }
+
     switch(align) {
     default:
     case LV_TEXT_ALIGN_LEFT:
@@ -749,7 +754,7 @@ static void draw_main(lv_event_t * e)
 
     bool symbol_to_left = false;
     if(dropdown->dir == LV_DIR_LEFT) symbol_to_left = true;
-    if(lv_obj_get_base_dir(obj) == LV_BIDI_DIR_RTL) symbol_to_left = true;
+    if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) == LV_BASE_DIR_RTL) symbol_to_left = true;
 
     if(dropdown->symbol) {
         lv_img_src_t symbol_type = lv_img_src_get_type(dropdown->symbol);

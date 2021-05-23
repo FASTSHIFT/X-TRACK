@@ -43,7 +43,7 @@ static int Recorder_GetFileName(char* buf, uint32_t size)
     int ret = snprintf(
         buf,
         size,
-        "/Track/TRACK_%04d-%02d-%02d_%02d-%02d-%02d.gpx",
+        "/Track/TRK_%04d%02d%02d_%02d%02d%02d.gpx",
         clock.year,
         clock.month,
         clock.day,

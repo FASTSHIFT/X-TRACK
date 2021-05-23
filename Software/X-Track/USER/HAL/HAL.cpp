@@ -4,8 +4,6 @@ static void HAL_InterrputUpdate()
 {
     HAL::Power_Update();
     HAL::Encoder_Update();
-    //HAL::IMU_Update();
-    //HAL::MAG_Update();
     HAL::Audio_Update();
 }
 
@@ -30,8 +28,15 @@ void HAL::HAL_Init()
     TIM_Cmd(TIM4, ENABLE);
 }
 
+static void HAL_SensorUpdate()
+{
+    HAL::IMU_Update();
+    HAL::MAG_Update();
+}
+
 void HAL::HAL_Update()
 {
     __IntervalExecute(SD_Update(), 500);
+    __IntervalExecute(HAL_SensorUpdate(), 20);
     GPS_Update();
 }

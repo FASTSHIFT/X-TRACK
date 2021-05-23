@@ -73,24 +73,16 @@ typedef enum {
     /** Other events*/
     LV_EVENT_DELETE,              /**< Object is being deleted*/
     LV_EVENT_CHILD_CHANGED,       /**< Child was removed/added*/
-    LV_EVENT_SIZE_CHANGED,       /**< Object coordinates/size have changed*/
+    LV_EVENT_SIZE_CHANGED,        /**< Object coordinates/size have changed*/
     LV_EVENT_STYLE_CHANGED,       /**< Object's style has changed*/
-    LV_EVENT_BASE_DIR_CHANGED,    /**< The base dir has changed*/
+    LV_EVENT_LAYOUT_CHANGED,      /**< The children position has changed due to a layout recalculation*/
     LV_EVENT_GET_SELF_SIZE,       /**< Get the internal size of a widget*/
 
     _LV_EVENT_LAST                /** Number of default events*/
 }lv_event_code_t;
 
-
-typedef struct _lv_event_t {
-    struct _lv_obj_t * target;
-    struct _lv_obj_t * current_target;
-    lv_event_code_t code;
-    void * user_data;
-    void * param;
-    struct _lv_event_t * prev;
-    uint8_t deleted :1;
-}lv_event_t;
+struct _lv_event_t;
+typedef struct _lv_event_t lv_event_t;
 
 /**
  * @brief Event callback.

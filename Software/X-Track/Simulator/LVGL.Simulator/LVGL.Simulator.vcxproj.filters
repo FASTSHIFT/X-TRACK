@@ -343,6 +343,9 @@
     <Filter Include="lvgl\src\extra\widgets\meter">
       <UniqueIdentifier>{5dee73ba-3c85-46f6-adf2-020b4ea27f92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Pages\SystemInfos">
+      <UniqueIdentifier>{455f63df-c798-4e22-b9d7-b162bf754056}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -848,6 +851,15 @@
     </ClInclude>
     <ClInclude Include="lvgl\src\extra\widgets\meter\lv_meter.h">
       <Filter>lvgl\src\extra\widgets\meter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfos.h">
+      <Filter>App\Pages\SystemInfos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfosModel.h">
+      <Filter>App\Pages\SystemInfos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfosView.h">
+      <Filter>App\Pages\SystemInfos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1565,9 +1577,6 @@
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp">
       <Filter>App\Common\HAL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Power.cpp">
       <Filter>App\Common\HAL</Filter>
     </ClCompile>
@@ -1723,6 +1732,51 @@
     </ClCompile>
     <ClCompile Include="lvgl\src\extra\widgets\meter\lv_meter.c">
       <Filter>lvgl\src\extra\widgets\meter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_battery_info.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_bicycle.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_compass.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gyroscope.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_map_location.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_storage.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_system_info.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_time_info.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\SystemInfos\SystemInfos.cpp">
+      <Filter>App\Pages\SystemInfos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\SystemInfos\SystemInfosModel.cpp">
+      <Filter>App\Pages\SystemInfos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\SystemInfos\SystemInfosView.cpp">
+      <Filter>App\Pages\SystemInfos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_IMU.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_MAG.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp">
+      <Filter>App\Common\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_MAG.cpp">
+      <Filter>App\Common\HAL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

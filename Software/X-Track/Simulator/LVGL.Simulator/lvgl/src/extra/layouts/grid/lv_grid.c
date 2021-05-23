@@ -76,8 +76,8 @@ lv_style_prop_t LV_STYLE_GRID_COLUMN_DSC_ARRAY;
 lv_style_prop_t LV_STYLE_GRID_COLUMN_ALIGN;
 lv_style_prop_t LV_STYLE_GRID_ROW_DSC_ARRAY;
 lv_style_prop_t LV_STYLE_GRID_ROW_ALIGN;
-lv_style_prop_t LV_STYLE_GRID_CELL_COL_POS;
-lv_style_prop_t LV_STYLE_GRID_CELL_COL_SPAN;
+lv_style_prop_t LV_STYLE_GRID_CELL_COLUMN_POS;
+lv_style_prop_t LV_STYLE_GRID_CELL_COLUMN_SPAN;
 lv_style_prop_t LV_STYLE_GRID_CELL_X_ALIGN;
 lv_style_prop_t LV_STYLE_GRID_CELL_ROW_POS;
 lv_style_prop_t LV_STYLE_GRID_CELL_ROW_SPAN;
@@ -107,8 +107,8 @@ void lv_grid_init(void)
 
     LV_STYLE_GRID_CELL_ROW_SPAN = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
     LV_STYLE_GRID_CELL_ROW_POS = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
-    LV_STYLE_GRID_CELL_COL_SPAN = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
-    LV_STYLE_GRID_CELL_COL_POS = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
+    LV_STYLE_GRID_CELL_COLUMN_SPAN = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
+    LV_STYLE_GRID_CELL_COLUMN_POS = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
     LV_STYLE_GRID_CELL_X_ALIGN = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
     LV_STYLE_GRID_CELL_Y_ALIGN = lv_style_register_prop() | LV_STYLE_PROP_LAYOUT_REFR;
 }
@@ -182,6 +182,8 @@ static void grid_update(lv_obj_t * cont, void * user_data)
         lv_obj_refr_size(cont);
     }
 
+    lv_event_send(cont, LV_EVENT_LAYOUT_CHANGED, NULL);
+
     LV_TRACE_LAYOUT("finished");
 }
 
@@ -204,7 +206,7 @@ static void calc(struct _lv_obj_t * cont, _lv_grid_calc_t * calc_out)
     lv_coord_t col_gap = lv_obj_get_style_pad_column(cont, LV_PART_MAIN);
     lv_coord_t row_gap = lv_obj_get_style_pad_row(cont, LV_PART_MAIN);
 
-    bool rev = lv_obj_get_base_dir(cont) == LV_BIDI_DIR_RTL ? true : false;
+    bool rev = lv_obj_get_style_base_dir(cont, LV_PART_MAIN) == LV_BASE_DIR_RTL ? true : false;
 
     lv_coord_t w_set = lv_obj_get_style_width(cont, LV_PART_MAIN);
     lv_coord_t h_set = lv_obj_get_style_height(cont, LV_PART_MAIN);
@@ -399,7 +401,7 @@ static void item_repos(lv_obj_t * item, _lv_grid_calc_t * c, item_repos_hint_t *
 
 
     /*If the item has RTL base dir switch start and end*/
-    if(lv_obj_get_base_dir(item) == LV_BIDI_DIR_RTL) {
+    if(lv_obj_get_style_base_dir(item, LV_PART_MAIN) == LV_BASE_DIR_RTL) {
         if(col_align == LV_GRID_ALIGN_START) col_align = LV_GRID_ALIGN_END;
         else if(col_align == LV_GRID_ALIGN_END) col_align = LV_GRID_ALIGN_START;
     }

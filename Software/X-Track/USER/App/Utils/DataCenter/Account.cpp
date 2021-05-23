@@ -42,6 +42,7 @@ Account::Account(
         uint8_t* buf0 = new uint8_t[bufSize];
         uint8_t* buf1 = new uint8_t[bufSize];
         PingPongBuffer_Init(&priv.BufferManager, buf0, buf1);
+        DC_LOG_INFO("Account[%s] buffer[%d] created", ID, bufSize);
     }
 
     priv.BufferSize = bufSize;
@@ -257,7 +258,7 @@ int Account::Pull(Account* pub, void* data_p, uint32_t size)
             if (PingPongBuffer_GetReadBuf(&pub->priv.BufferManager, &rBuf))
             {
                 memcpy(data_p, rBuf, size);
-                PingPongBuffer_SetWriteDone(&pub->priv.BufferManager);
+                PingPongBuffer_SetReadDone(&pub->priv.BufferManager);
                 DC_LOG_INFO("read done");
                 retval = 0;
             }

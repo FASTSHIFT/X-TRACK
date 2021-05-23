@@ -23,10 +23,6 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
-#define CONFIG_FIRMWARE_NAME    "X-Track"    //固件名称
-#define CONFIG_SOFTWARE_VERSION "v0.4"       //软件版本
-#define CONFIG_HARDWARE_VERSION "v1.0"       //硬件版本
-
 #define NULL_PIN                PD0
 
 /* Screen */

@@ -32,15 +32,15 @@
 
 void PageManager::onRootDragEvent(lv_event_t* event)
 {
-    lv_obj_t* root = event->target;
-    PageBase* base = (PageBase*)root->user_data;
+    lv_obj_t* root = lv_event_get_target(event);
+    PageBase* base = (PageBase*)lv_obj_get_user_data(root);
     
     if (base == nullptr)
     {
         return;
     }
 
-    lv_event_code_t eventCode = event->code;
+    lv_event_code_t eventCode = lv_event_get_code(event);
     PageManager* manager = base->Manager;
     LoadAnimAttr_t animAttr;
 

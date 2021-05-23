@@ -100,7 +100,7 @@ void lv_btnmatrix_set_map(lv_obj_t * obj, const char * map[])
     allocate_btn_areas_and_controls(obj, map);
     btnm->map_p = map;
 
-    lv_bidi_dir_t base_dir = lv_obj_get_base_dir(obj);
+    lv_base_dir_t base_dir = lv_obj_get_style_base_dir(obj, LV_PART_MAIN);
 
     /*Set size and positions of the buttons*/
     lv_coord_t pleft = lv_obj_get_style_pad_left(obj, LV_PART_MAIN);
@@ -156,17 +156,21 @@ void lv_btnmatrix_set_map(lv_obj_t * obj, const char * map[])
         for(btn = 0; btn < btn_cnt; btn++, btn_tot_i++, txt_tot_i++) {
             uint32_t btn_u = get_button_width(btnm->ctrl_bits[btn_tot_i]);
 
-            lv_coord_t btn_x1 = pleft + (max_w_no_gap * row_unit_cnt) / unit_cnt + btn * pcol;
-            lv_coord_t btn_x2 = pleft + (max_w_no_gap * (row_unit_cnt + btn_u)) / unit_cnt + btn * pcol - 1;
+            lv_coord_t btn_x1 = (max_w_no_gap * row_unit_cnt) / unit_cnt + btn * pcol;
+            lv_coord_t btn_x2 = (max_w_no_gap * (row_unit_cnt + btn_u)) / unit_cnt + btn * pcol - 1;
 
             /*If RTL start from the right*/
-            if(base_dir == LV_BIDI_DIR_RTL) {
+            if(base_dir == LV_BASE_DIR_RTL) {
                 lv_coord_t tmp = btn_x1;
                 btn_x1 = btn_x2;
                 btn_x2 = tmp;
+
                 btn_x1 = max_w - btn_x1;
                 btn_x2 = max_w - btn_x2;
             }
+
+            btn_x1 += pleft;
+            btn_x2 += pleft;
 
             lv_area_set(&btnm->button_areas[btn_tot_i], btn_x1, row_y1, btn_x2, row_y2);
 
@@ -547,7 +551,9 @@ static void lv_btnmatrix_event(const lv_obj_class_t * class_p, lv_event_t * e)
         }
         else if(c == LV_KEY_LEFT) {
             if(btnm->btn_id_sel == LV_BTNMATRIX_BTN_NONE) btnm->btn_id_sel = 0;
-            if(btnm->btn_id_sel > 0) btnm->btn_id_sel--;
+
+            if(btnm->btn_id_sel == 0) btnm->btn_id_sel = btnm->btn_cnt - 1;
+            else if(btnm->btn_id_sel > 0) btnm->btn_id_sel--;
 
             while(button_is_hidden(btnm->ctrl_bits[btnm->btn_id_sel]) || button_is_inactive(btnm->ctrl_bits[btnm->btn_id_sel])) {
                 if(btnm->btn_id_sel > 0) btnm->btn_id_sel--;

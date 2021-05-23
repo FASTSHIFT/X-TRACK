@@ -20,6 +20,7 @@ void App_Init(void)
     manager.Install("Template",  "Pages/_Template");
     manager.Install("LiveMap",   "Pages/LiveMap");
     manager.Install("Dialplate", "Pages/Dialplate");
+    manager.Install("SystemInfos", "Pages/SystemInfos");
     
     manager.SetGlobalLoadAnimType(PageManager::LOAD_ANIM_OVER_TOP, 500);
     

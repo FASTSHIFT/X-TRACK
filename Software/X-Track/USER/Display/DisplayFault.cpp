@@ -23,6 +23,7 @@
 #include "Display/Display.h"
 #include "cm_backtrace/cm_backtrace.h"
 #include "Adafruit_GFX_Library/Fonts/FreeMono12pt7b.h"
+#include "App/Version.h"
 
 static SCREEN_CLASS* screen = NULL;
 
@@ -73,9 +74,9 @@ void DisplayFault_Init(SCREEN_CLASS* scr)
 {
     screen = scr;
     cm_backtrace_init(
-        CONFIG_FIRMWARE_NAME,
-        CONFIG_HARDWARE_VERSION,
-        CONFIG_SOFTWARE_VERSION" "__DATE__
+        VERSION_FIRMWARE_NAME,
+        VERSION_HARDWARE,
+        VERSION_SOFTWARE" "__DATE__
     );
     
     screen->setTextWrap(true);

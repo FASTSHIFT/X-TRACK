@@ -149,7 +149,7 @@ bool LSM6DSM::Init(uint8_t addr)
     SoftReset();
     delay(50);
 
-    ConfigAcc(ACC_ODR_416_HZ, ACC_SCALE_4_G);
+    ConfigAcc(ACC_ODR_52_HZ, ACC_SCALE_4_G);
     ConfigGyr(GYR_POWER_DOWN, GYR_SCALE_500_DPS);
     //LSM6DSMSetScale(ACC_SCALE_4_G, GYR_SCALE_500_DPS);
     //LSM6DSMSetODR(ACC_ODR_416_HZ, GYR_POWER_DOWN);

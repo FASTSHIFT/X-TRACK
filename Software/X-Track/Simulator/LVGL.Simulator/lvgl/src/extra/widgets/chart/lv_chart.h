@@ -35,7 +35,7 @@ LV_EXPORT_CONST_INT(LV_CHART_POINT_NONE);
 enum {
     LV_CHART_TYPE_NONE     = 0x00, /**< Don't draw the series*/
     LV_CHART_TYPE_LINE     = 0x01, /**< Connect the points with lines*/
-    LV_CHART_TYPE_BAR   = 0x02, /**< Draw columns*/
+    LV_CHART_TYPE_BAR      = 0x02, /**< Draw columns*/
 };
 typedef uint8_t lv_chart_type_t;
 
@@ -72,9 +72,12 @@ typedef struct {
 } lv_chart_series_t;
 
 typedef struct {
-    lv_point_t point;
+    lv_point_t pos;
+    uint16_t point_id;
     lv_color_t color;
+    lv_chart_series_t * ser;
     lv_dir_t dir;
+    uint8_t pos_set:1;  /*1: pos is set; 0: point_id is set*/
 } lv_chart_cursor_t;
 
 typedef struct {
@@ -111,7 +114,7 @@ extern const lv_obj_class_t lv_chart_class;
 
 /**
  * Create a chart objects
- * @param parent    pointer to an object, it will be the parent of the new button
+ * @param parent    pointer to an object, it will be the parent of the new chart
  * @return          pointer to the created chart
  */
 lv_obj_t * lv_chart_create(lv_obj_t * parent);
@@ -124,7 +127,7 @@ lv_obj_t * lv_chart_create(lv_obj_t * parent);
 void lv_chart_set_type(lv_obj_t * obj, lv_chart_type_t type);
 /**
  * Set the number of points on a data line on a chart
- * @param obj       pointer r to chart object
+ * @param obj       pointer to a chart object
  * @param cnt       new number of points on the data lines
  */
 void lv_chart_set_point_count(lv_obj_t * obj, uint16_t cnt);
@@ -218,7 +221,7 @@ uint16_t lv_chart_get_point_count(const lv_obj_t * obj);
 uint16_t lv_chart_get_x_start_point(const lv_obj_t * obj, lv_chart_series_t * ser);
 
 /**
- * Get the position of point of the an index relative to the chart.
+ * Get the position of a point to the chart.
  * @param chart     pointer to a chart object
  * @param ser       pointer to series
  * @param id        the index.
@@ -304,10 +307,18 @@ lv_chart_cursor_t  * lv_chart_add_cursor(lv_obj_t * obj, lv_color_t color, lv_di
  * Set the coordinate of the cursor with respect to the paddings
  * @param obj       pointer to a chart object
  * @param cursor    pointer to the cursor
- * @param point     the new coordinate of cursor relative to paddings of the background
+ * @param pos       the new coordinate of cursor relative the the chart
  */
-void lv_chart_set_cursor_point(lv_obj_t * chart, lv_chart_cursor_t * cursor, lv_point_t * point);
+void lv_chart_set_cursor_pos(lv_obj_t * chart, lv_chart_cursor_t * cursor, lv_point_t * pos);
 
+/**
+ * Stick the cursor to a point
+ * @param obj       pointer to a chart object
+ * @param cursor    pointer to the cursor
+ * @param ser       pointer to a series
+ * @param point_id  the point's index or  `LV_CHART_POINT_NONE` to not assign to any points.
+ */
+void lv_chart_set_cursor_point(lv_obj_t * chart, lv_chart_cursor_t * cursor, lv_chart_series_t * ser, uint16_t point_id);
 
 /**
  * Get the coordinate of the cursor with respect to the paddings

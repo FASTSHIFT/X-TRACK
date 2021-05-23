@@ -190,7 +190,8 @@ void lv_roller_set_visible_row_count(lv_obj_t * obj, uint8_t row_cnt)
 
     const lv_font_t * font = lv_obj_get_style_text_font(obj, LV_PART_MAIN);
     lv_coord_t line_space = lv_obj_get_style_text_line_space(obj, LV_PART_MAIN);
-    lv_obj_set_height(obj, (lv_font_get_line_height(font) + line_space) * row_cnt);
+    lv_coord_t border_width = lv_obj_get_style_border_width(obj, LV_PART_MAIN);
+    lv_obj_set_height(obj, (lv_font_get_line_height(font) + line_space) * row_cnt + 2 * border_width);
 }
 
 /*=====================
@@ -573,6 +574,11 @@ static void refr_position(lv_obj_t * obj, lv_anim_enable_t anim_en)
     if(label == NULL) return;
 
     lv_text_align_t align = lv_obj_get_style_text_align(label, LV_PART_MAIN);
+    if(align == LV_TEXT_ALIGN_AUTO) {
+        if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) == LV_BASE_DIR_RTL) align = LV_TEXT_ALIGN_RIGHT;
+        else align = LV_TEXT_ALIGN_LEFT;
+    }
+
     switch(align) {
     case LV_TEXT_ALIGN_CENTER:
         lv_obj_set_x(label, (lv_obj_get_content_width(obj) - lv_obj_get_width(label)) / 2);

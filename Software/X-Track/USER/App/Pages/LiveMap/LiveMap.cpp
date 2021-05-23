@@ -101,7 +101,6 @@ void LiveMap::MapUpdate()
     Model.GetGPS_Info(&gpsInfo);
 
     int32_t zoomVal = lv_slider_get_value(View.ui.zoom.slider);
-    lv_label_set_text_fmt(View.ui.zoom.labelInfo, "%d%%", lv_map(zoomVal, 3, 15, 0, 100));
 
     MapConv* mapConv = &(Model.mapConv);
     mapConv->SetLevel(zoomVal);
@@ -153,9 +152,9 @@ void LiveMap::onTimerUpdate(lv_timer_t* timer)
 
 void LiveMap::onEvent(lv_event_t* event)
 {
-    lv_obj_t* obj = event->target;
-    lv_event_code_t code = event->code;
-    LiveMap* instance = (LiveMap*)obj->user_data;
+    lv_obj_t* obj = lv_event_get_target(event);
+    lv_event_code_t code = lv_event_get_code(event);
+    LiveMap* instance = (LiveMap*)lv_obj_get_user_data(obj);
 
     if (code == LV_EVENT_LEAVE)
     {
@@ -175,6 +174,9 @@ void LiveMap::onEvent(lv_event_t* event)
     {
         if (code == LV_EVENT_VALUE_CHANGED)
         {
+            int32_t zoomVal = lv_slider_get_value(obj);
+            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d%%", lv_map(zoomVal, 3, 15, 0, 100));
+
             lv_obj_clear_state(instance->View.ui.zoom.cont, LV_STATE_USER_1);
             instance->lastContShowTime = lv_tick_get();
             instance->MapUpdateWait(200);

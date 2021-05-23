@@ -19,6 +19,8 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 
     Clock_GetInfo(&info->clock);
 
+    info->hour_utc = info->clock.hour;
+
     info->speed = rand() % 60;
 
     return true;

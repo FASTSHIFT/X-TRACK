@@ -23,7 +23,6 @@ void I2C_Scan(bool startScan);
 /*IMU*/
 void IMU_Init();
 void IMU_Update();
-int16_t IMU_GetSteps();
     
 /*MAG*/
 void MAG_Init();

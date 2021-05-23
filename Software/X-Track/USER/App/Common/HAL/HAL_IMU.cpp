@@ -1,6 +1,9 @@
 #include "HAL.h"
+#include <stdlib.h>
 
-int16_t HAL::IMU_GetSteps()
+extern void DP_IMU_Commit(const void* data, uint32_t size);
+
+void HAL::IMU_Update()
 {
     static int16_t steps;
     steps++;
@@ -8,5 +11,16 @@ int16_t HAL::IMU_GetSteps()
     {
         steps = 0;
     }
-    return steps;
+
+    IMU_Info_t imu;
+    imu.steps = steps;
+
+    imu.ax = rand() % 1000 - 500;
+    imu.ay = rand() % 1000 - 500;
+    imu.az = rand() % 1000 - 500;
+    imu.gx = rand() % 1000 - 500;
+    imu.gy = rand() % 1000 - 500;
+    imu.gz = rand() % 1000 - 500;
+
+    DP_IMU_Commit(&imu, sizeof(imu));
 }

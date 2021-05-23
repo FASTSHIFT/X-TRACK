@@ -39,7 +39,7 @@ typedef struct {
     lv_coord_t ofs_x;
     lv_coord_t ofs_y;
     lv_opa_t opa;
-    lv_bidi_dir_t bidi_dir;
+    lv_base_dir_t bidi_dir;
     lv_text_flag_t flag;
     lv_text_align_t align :2;
     lv_text_decor_t decor : 3;
@@ -51,7 +51,7 @@ typedef struct {
  * all the previous characters needs to be checked to calculate the positions.
  * This structure stores an earlier (e.g. at -1000 px) coordinate and the index of that line.
  * Therefore the calculations can start from here.*/
-typedef struct {
+typedef struct _lv_draw_label_hint_t {
     /** Index of the line at `y` coordinate*/
     int32_t line_start;
 

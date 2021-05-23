@@ -751,6 +751,16 @@
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_Recorder.cpp</FilePath>
             </File>
+            <File>
+              <FileName>DP_IMU.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_IMU.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_MAG.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_MAG.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -958,6 +968,110 @@
               <FileName>LiveMapView.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Pages\LiveMap\LiveMapView.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Page/SystemInfos</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>SystemInfos.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\SystemInfos\SystemInfos.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SystemInfos.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\SystemInfos\SystemInfos.h</FilePath>
+            </File>
+            <File>
+              <FileName>SystemInfosModel.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\SystemInfos\SystemInfosModel.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SystemInfosModel.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\SystemInfos\SystemInfosModel.h</FilePath>
+            </File>
+            <File>
+              <FileName>SystemInfosView.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Pages\SystemInfos\SystemInfosView.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SystemInfosView.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Pages\SystemInfos\SystemInfosView.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1236,6 +1350,46 @@
               <FileName>img_src_start.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\App\Resource\Image\img_src_start.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_battery_info.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_battery_info.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_bicycle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_bicycle.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_compass.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_compass.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_gyroscope.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_gyroscope.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_map_location.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_map_location.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_storage.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_system_info.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_system_info.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_time_info.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_time_info.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2393,6 +2547,16 @@
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\meter\lv_meter.c</FilePath>
             </File>
+            <File>
+              <FileName>lv_span.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\span\lv_span.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_animimg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\animimg\lv_animimg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2404,7 +2568,7 @@
               <RVCTZI>0</RVCTZI>
               <RVCTOtherData>0</RVCTOtherData>
               <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>2</IncludeInBuild>
+              <IncludeInBuild>0</IncludeInBuild>
               <AlwaysBuild>2</AlwaysBuild>
               <GenerateAssemblyFile>2</GenerateAssemblyFile>
               <AssembleAssemblyFile>2</AssembleAssemblyFile>

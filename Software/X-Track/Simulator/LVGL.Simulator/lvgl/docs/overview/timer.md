@@ -5,7 +5,7 @@
 # Timers
 
 LVGL has a built-in timer system. You can register a function to have it be called periodically. The timers are handled and called in `lv_timer_handler()`, which needs to be called periodically every few milliseconds.
-See [Porting](/porting/timer-handler) for more information.
+See [Porting](/porting/task-handler) for more information.
 
 The timers are non-preemptive, which means a timer cannot interrupt another timer. Therefore, you can call any LVGL related function in a timer.
 
@@ -52,7 +52,7 @@ You can modify some parameters of the timers later:
 
 ## Repeat count
 
-You can make a timer repat only a given times with `lv_timer_set_repeat_count(timer, count)`. The timer will automatically be deleted after being called the defined times. Set the ount to `-1` to repeat infinitly. 
+You can make a timer repat only a given times with `lv_timer_set_repeat_count(timer, count)`. The timer will automatically be deleted after being called the defined times. Set the count to `-1` to repeat infinitly. 
 
 
 ## Measure idle time
