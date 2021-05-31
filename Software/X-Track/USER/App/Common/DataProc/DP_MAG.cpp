@@ -3,12 +3,12 @@
 
 static Account* account;
 
-void DP_MAG_Commit(const void* data, uint32_t size)
+void DataProc::MAG_Commit(HAL::MAG_Info_t* info)
 {
-    account->Commit(data, size);
+    account->Commit(info, sizeof(HAL::MAG_Info_t));
 }
 
-void DP_MAG_Register(DataCenter* center)
+void DP_MAG_Init(Account* act)
 {
-    account = new Account("MAG", DataProc::Center(), sizeof(HAL::MAG_Info_t));
+    account = act;
 }

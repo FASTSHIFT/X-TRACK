@@ -38,8 +38,7 @@ static int onEvent(Account::EventParam_t* param)
     return 0;
 }
 
-void DP_Clock_Register(DataCenter* center)
+void DP_Clock_Init(Account* act)
 {
-    Account* account = new Account("Clock", DataProc::Center(), sizeof(HAL::Clock_Info_t));
-    account->SetEventCallback(onEvent);
+    act->SetEventCallback(onEvent);
 }

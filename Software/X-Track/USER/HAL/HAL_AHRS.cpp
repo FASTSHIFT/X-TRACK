@@ -1,5 +1,7 @@
 #include "HAL.h"
+extern "C" {
 #include <math.h>
+}
 
 static void MahonyAHRSupdate(
     float gx, float gy, float gz,

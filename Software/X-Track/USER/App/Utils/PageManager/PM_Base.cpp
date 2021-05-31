@@ -24,8 +24,6 @@
 #include "PM_Log.h"
 #include <algorithm>
 
-
-
 PageManager::PageManager(PageFactory* factory)
     : Factory(factory)
     , PagePrev(nullptr)

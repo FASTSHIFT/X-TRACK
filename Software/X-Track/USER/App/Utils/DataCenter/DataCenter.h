@@ -29,6 +29,7 @@ class DataCenter
 {
 public:
     const char* Name;
+    Account AccountMain;
 
 public:
     DataCenter(const char* name);
@@ -43,7 +44,7 @@ public:
     uint32_t GetAccountLen();
 
 private:
-    std::vector<Account*> AccountPool;
+    std::vector<Account*> AccountPool;   
 };
 
 #endif

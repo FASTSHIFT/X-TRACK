@@ -1,7 +1,6 @@
 #include "HAL.h"
 #include <stdlib.h>
-
-extern void DP_IMU_Commit(const void* data, uint32_t size);
+#include "Common/DataProc/DataProc.h"
 
 void HAL::IMU_Update()
 {
@@ -22,5 +21,5 @@ void HAL::IMU_Update()
     imu.gy = rand() % 1000 - 500;
     imu.gz = rand() % 1000 - 500;
 
-    DP_IMU_Commit(&imu, sizeof(imu));
+    DataProc::IMU_Commit(&imu);
 }

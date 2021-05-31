@@ -2,7 +2,7 @@
 > https://github.com/FASTSHIFT/X-TRACK
 
 ## [v0.1] - 2021-3-21
-* 1.框架搭建完成，全新MPV架构
+* 1.框架搭建完成，全新MVP(Model-View-Presenter)架构
 * 2.更新3D Model，门板完美安装
 * 3.修复串口缓冲队列过载导致GPS解析连续失败的BUG
 * 4.添加长按开机功能
@@ -81,3 +81,24 @@
 * 5.修复DataCenter缓冲区读取释放BUG
 * 6.添加Version.h存放版本信息
 * 7.HAL::GPS_Info_t添加hour_utc成员
+
+## [v0.6] - 2021-5-31
+* 1.更新lvgl
+* 2.添加App_Uninit()，绑定关机事件
+* 3.添加DP_LIST.inc，更优雅的数据处理节点注册方式
+* 4.添加IMU/MAG_Commit，向数据中心提交数据
+* 5.添加StorageService数据储存服务，使用JSON格式储存数据
+* 6.添加ArduinoJson解析库
+* 7.运动数据处理节点 sportStatusInfo -> sportStatus，添加储存绑定
+* 8.去除HAL::AHRS
+* 9.GPS在未定位成功时，经纬度海拔统一置零
+* 10.HAL::Power添加关机事件回调
+* 11.CONTROLLER -> PRESENTER
+* 12.添加StartUp页面，展示开机动画
+* 13.LiveMap地图页面，在未定位成功时的默认位置为天安门
+* 14.StatusBar状态栏，函数AppearAnimStart -> Appear 
+* 15.解决SystemInfos页面在自动管理Cache时退出页面造成的Crash
+* 16.修复MAG数据显示的bug
+* 17.DataCenter添加主账户AccountMain，自动订阅所有的子节点，用于发送通知
+* 18.PageManager在删除root时需要使用异步删除lv_obj_del_async()，在root动画生命周期结束后删除
+* 19.降低GPS和Sensor的数据更新频率，分别为5Hz和1Hz

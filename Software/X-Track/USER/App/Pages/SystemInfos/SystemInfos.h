@@ -1,5 +1,5 @@
-#ifndef __SYSTEM_INFOS_CONTROLLER_H
-#define __SYSTEM_INFOS_CONTROLLER_H
+#ifndef __SYSTEM_INFOS_PRESENTER_H
+#define __SYSTEM_INFOS_PRESENTER_H
 
 #include "SystemInfosView.h"
 #include "SystemInfosModel.h"

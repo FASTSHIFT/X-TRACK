@@ -11,10 +11,14 @@
    - In `extra` we can have a lot and specific widgets
    - Good place for contributions
 
-### Removed objects
-- `lv_cont` layout features are moved to `lv_obj`
-- `lv_page` scroll features are moved to `lv_obj`
+### Widget changes
+- `lv_cont` removed, layout features are moved to `lv_obj`
+- `lv_page` removed, scroll features are moved to `lv_obj`
 - `lv_objmask` the same can be achieved by events
+- `lv_meter` added as the unioin of `lv_linemeter` and `lv_gauge`
+- `lv_span` new widget mimicing HTML `<span>`
+- `lv_animing` new widget for simple slideshow animations
+- \+ many minor changes and improvements
 
 ### New scrolling
 - Support "elastic" scrolling when scrolled in
@@ -43,7 +47,7 @@
 - `disp_drv->full_refresh = 1` makes always the whole display redraw. 
 - `hor_res` and `ver_res` need to be set in `disp_drv`
 - `indev_read_cb` returns `void`. To indicate that there is more that to read set `data->continue_reading = 1` in the `read_cb`
-.
+
 ### Other changes
 - Remove the copy parameter from create functions
 - Simplified File system interface API
@@ -61,7 +65,7 @@
 
 ### Migrating from v7 to v8
 - First and foremost, create a new `lv_conf.h` based on `lv_conf_template.h`.
-- To try the new version it suggested using a simulator project and see the examples.
+- To try the new version it's recommended to use a simulator project and see the examples.
 - When migrating your project to v8
   - Update the drivers are described above
   - Update the styles
@@ -70,7 +74,7 @@
   - Use `lv_obj` instead of `lv_page`
   - The other parts are mainly minor renames and refactoring. See the functions' documentation for descriptions. 
 
-## v7.11.0
+## v7.11.0 (16.03.2021)
 
 ### New features
 - Add better screen orientation management with software rotation support
@@ -80,9 +84,9 @@
 - fix(gauge) fix needle invalidation
 - fix(bar) correct symmetric handling for vertical sliders
 
-## v7.10.1 (Planned for 16.02.2021)
+## v7.10.1 (16.02.2021)
 
-### Bugfixes
+### Bugfixes 
 - fix(draw) overlap outline with background to prevent aliasing artifacts
 - fix(indev) clear the indev's `act_obj` in `lv_indev_reset`
 - fix(text) fix out of bounds read in `_lv_txt_get_width`
@@ -91,7 +95,7 @@
 - fix(delete) delete animation after the children are deleted
 - fix(gauge) consider paddings for needle images
 
-## v7.10.0
+## v7.10.0 (02.02.2021)
 
 ### New features
 - feat(indev) allow input events to be passed to disabled objects
@@ -100,7 +104,7 @@
 ### Bugfixes
 - fix(btnmatrix) fix lv_btnmatrix_get_active_btn_text() when used in a group
 
-## v7.9.1
+## v7.9.1 (19.01.2021)
 
 ### Bugfixes
 - fix(cpicker) fix division by zero
@@ -111,7 +115,7 @@
 - fix(draw_rect) fix draw pattern stack-use-after-scope error
 
 
-## v7.9.0 
+## v7.9.0 (05.01.2021)
 
 ### New features
 - feat(chart) add lv_chart_remove_series and lv_chart_hide_series
@@ -131,7 +135,7 @@
 - fix(layout) stop layout after recursion threshold is reached
 - fix(gauge) fix redraw with image needle
 
-## v7.8.1
+## v7.8.1 (15.12.2020)
 
 ### Bugfixes
 - fix(lv_scr_load_anim) fix when multiple screen are loaded at tsame time with delay

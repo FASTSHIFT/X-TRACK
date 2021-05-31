@@ -84,7 +84,6 @@ typedef struct {
     } type_data;
 }lv_meter_indicator_t;
 
-
 /*Data of line meter*/
 typedef struct {
     lv_obj_t obj;

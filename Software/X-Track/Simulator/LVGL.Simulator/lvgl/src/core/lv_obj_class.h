@@ -41,7 +41,6 @@ typedef enum {
     LV_OBJ_CLASS_GROUP_DEF_FALSE,
 }lv_obj_class_group_def_t;
 
-
 typedef void (*lv_obj_class_event_cb_t)(struct _lv_obj_class_t * class_p, struct _lv_event_t * e);
 /**
  * Describe the common methods of every object.

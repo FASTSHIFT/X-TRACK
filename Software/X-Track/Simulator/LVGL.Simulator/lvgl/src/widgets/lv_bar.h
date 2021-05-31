@@ -42,7 +42,7 @@ typedef struct {
     int32_t anim_start;
     int32_t anim_end;
     int32_t anim_state;
-} lv_bar_anim_t;
+} _lv_bar_anim_t;
 
 typedef struct {
     lv_obj_t obj;
@@ -51,8 +51,8 @@ typedef struct {
     int32_t max_value;          /**< Maximum value of the bar*/
     int32_t start_value;        /**< Start value of the bar*/
     lv_area_t indic_area;       /**< Save the indicator area. Might be used by derived types*/
-    lv_bar_anim_t cur_value_anim;
-    lv_bar_anim_t start_value_anim;
+    _lv_bar_anim_t cur_value_anim;
+    _lv_bar_anim_t start_value_anim;
     lv_bar_mode_t mode : 2;     /**< Type of bar*/
 }lv_bar_t;
 

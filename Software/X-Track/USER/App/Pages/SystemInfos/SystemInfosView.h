@@ -67,8 +67,8 @@ public:
     void SetSystem(
         const char* sysVer,
         const char* lvglVer,
-        const char* compile,
-        const char* bootTime
+        const char* bootTime,
+        const char* compile
     );
 
     void SetScrollToY(lv_obj_t* obj, lv_coord_t y, lv_anim_enable_t en);

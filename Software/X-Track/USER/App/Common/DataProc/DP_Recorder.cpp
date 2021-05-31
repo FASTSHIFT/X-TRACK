@@ -159,11 +159,10 @@ static int onEvent(Account::EventParam_t* param)
     return retval;
 }
 
-void DP_Recorder_Register(DataCenter* center)
+void DP_Recorder_Init(Account* act)
 {
-    Account* account = new Account("Recorder", center);
-    account->Subscribe("GPS");
-    account->Subscribe("Clock");
-    account->SetEventCallback(onEvent);
-    actRecorder = account;
+    act->Subscribe("GPS");
+    act->Subscribe("Clock");
+    act->SetEventCallback(onEvent);
+    actRecorder = act;
 }

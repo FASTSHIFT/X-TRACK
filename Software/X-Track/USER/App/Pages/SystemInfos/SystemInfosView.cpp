@@ -40,10 +40,10 @@ void SystemInfosView::Create(lv_obj_t* root)
         "GPS",
         "map_location",
 
-        "Lat\n"
-        "Lng\n"
-        "Alt\n"
-        "UTC\n\n"
+        "Latitude\n"
+        "Longitude\n"
+        "Altitude\n"
+        "UTC Time\n\n"
         "Course\n"
         "Speed"
     );
@@ -55,7 +55,7 @@ void SystemInfosView::Create(lv_obj_t* root)
         "MAG",
         "compass",
 
-        "Dir\n"
+        "Compass\n"
         "X\n"
         "Y\n"
         "Z"
@@ -118,10 +118,10 @@ void SystemInfosView::Create(lv_obj_t* root)
         "System",
         "system_info",
 
-        "X-TRACK\n"
+        "Firmware\n"
         "LVGL\n"
-        "Compile\n\n"
-        "Boot time"
+        "SysTick\n"
+        "Compile\n\n\n"   
     );
 
     Group_Init();
@@ -289,7 +289,7 @@ void SystemInfosView::SetSport(
         ui.sport.labelData,
         "%0.2fkm\n"
         "%s\n"
-        "%0.2fkm/h",
+        "%0.1fkm/h",
         trip,
         time,
         maxSpd
@@ -312,7 +312,7 @@ void SystemInfosView::SetGPS(
         "%0.2fm\n"
         "%s\n"
         "%0.1f deg\n"
-        "%0.2fkm/h",
+        "%0.1fkm/h",
         lat,
         lng,
         alt,
@@ -331,7 +331,7 @@ void SystemInfosView::SetMAG(
 {
     lv_label_set_text_fmt(
         ui.mag.labelData,
-        "%0.2f deg\n"
+        "%0.1f deg\n"
         "%d\n"
         "%d\n"
         "%d",
@@ -400,8 +400,8 @@ void SystemInfosView::SetStorage(
 void SystemInfosView::SetSystem(
     const char* sysVer,
     const char* lvglVer,
-    const char* compile,
-    const char* bootTime
+    const char* bootTime,
+    const char* compile  
 )
 {
     lv_label_set_text_fmt(
@@ -412,7 +412,7 @@ void SystemInfosView::SetSystem(
         "%s",
         sysVer,
         lvglVer,
-        compile,
-        bootTime
+        bootTime,
+        compile
     );
 }

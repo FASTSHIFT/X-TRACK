@@ -534,8 +534,6 @@ static void style_init(void)
     lv_style_set_border_side(&styles->list_btn, LV_BORDER_SIDE_BOTTOM);
     lv_style_set_pad_all(&styles->list_btn, PAD_SMALL);
     lv_style_set_pad_column(&styles->list_btn, PAD_SMALL);
-    lv_style_set_flex_flow(&styles->list_btn, LV_FLEX_FLOW_ROW);
-    lv_style_set_layout(&styles->list_btn, LV_LAYOUT_FLEX);
 
     style_init_reset(&styles->list_item_grow);
     lv_style_set_transform_width(&styles->list_item_grow, PAD_DEF);
@@ -815,13 +813,15 @@ static void theme_apply(lv_theme_t * th, lv_obj_t * obj)
         lv_obj_add_style(obj, &styles->card, 0);
         lv_obj_add_style(obj, &styles->pad_small, 0);
         lv_obj_add_style(obj, &styles->transition_delayed, 0);
-        lv_obj_add_style(obj, &styles->pressed, LV_STATE_PRESSED);
         lv_obj_add_style(obj, &styles->transition_normal, LV_STATE_PRESSED);
+        lv_obj_add_style(obj, &styles->pressed, LV_STATE_PRESSED);
         lv_obj_add_style(obj, &styles->outline_primary, LV_STATE_FOCUS_KEY);
         lv_obj_add_style(obj, &styles->outline_secondary, LV_STATE_EDITED);
+        lv_obj_add_style(obj, &styles->transition_normal, LV_PART_INDICATOR);
     }
     else if(lv_obj_check_type(obj, &lv_dropdownlist_class)) {
         lv_obj_add_style(obj, &styles->card, 0);
+        lv_obj_add_style(obj, &styles->clip_corner, 0);
         lv_obj_add_style(obj, &styles->line_space_large, 0);
         lv_obj_add_style(obj, &styles->dropdown_list, 0);
         lv_obj_add_style(obj, &styles->scrollbar, LV_PART_SCROLLBAR);

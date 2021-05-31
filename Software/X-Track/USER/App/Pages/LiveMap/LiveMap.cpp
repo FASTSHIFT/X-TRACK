@@ -44,6 +44,7 @@ void LiveMap::onViewWillAppear()
     StatusBar::SetStyle(StatusBar::STYLE_BLACK);
     SportInfoUpdate();
     lv_obj_clear_flag(View.ui.labelInfo, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_fade_in(root, 250, 0);
 }
 
 void LiveMap::onViewDidAppear()
@@ -58,6 +59,7 @@ void LiveMap::onViewWillDisappear()
 {
     lv_timer_del(timer);
     lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_fade_out(root, 250, 250);
 }
 
 void LiveMap::onViewDidDisappear()
@@ -175,7 +177,7 @@ void LiveMap::onEvent(lv_event_t* event)
         if (code == LV_EVENT_VALUE_CHANGED)
         {
             int32_t zoomVal = lv_slider_get_value(obj);
-            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d%%", lv_map(zoomVal, 3, 15, 0, 100));
+            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d/13", zoomVal - 2);
 
             lv_obj_clear_state(instance->View.ui.zoom.cont, LV_STATE_USER_1);
             instance->lastContShowTime = lv_tick_get();

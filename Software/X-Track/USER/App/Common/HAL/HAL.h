@@ -41,7 +41,11 @@ uint16_t Power_GetAutoLowPowerTimeout();
 void Power_SetAutoLowPowerEnable(bool en);
 void Power_Shutdown();
 void Power_Update();
+void Power_EventMonitor();
 void Power_GetInfo(Power_Info_t* info);
+
+typedef void(*Power_CallbackFunction_t)(void);
+void Power_SetEventCallback(Power_CallbackFunction_t callback);
 
 /*Clock*/
 void Clock_Init();
@@ -71,10 +75,6 @@ bool Encoder_GetIsPush();
 void Audio_Init();
 void Audio_Update();
 bool Audio_PlayMusic(const char* name);
-
-/*AHRS*/
-void AHRS_Update();
-void AHRS_GetInfo(AHRS_Info_t* info);
 
 }
 

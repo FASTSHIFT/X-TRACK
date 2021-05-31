@@ -127,9 +127,6 @@
     <Filter Include="lvgl\examples\widgets\msgbox">
       <UniqueIdentifier>{da739660-13c2-46c8-be6f-d735c6108bf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lvgl\examples\widgets\obj">
-      <UniqueIdentifier>{040d2b64-6602-4173-83c0-60fb9608c212}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lvgl\examples\widgets\roller">
       <UniqueIdentifier>{335ef939-ca2f-4fcf-b428-e89d6e099c43}</UniqueIdentifier>
     </Filter>
@@ -345,6 +342,15 @@
     </Filter>
     <Filter Include="App\Pages\SystemInfos">
       <UniqueIdentifier>{455f63df-c798-4e22-b9d7-b162bf754056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Pages\StartUp">
+      <UniqueIdentifier>{a9f7a372-994a-40ce-ad80-ef374e6e28fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\ArduinoJson">
+      <UniqueIdentifier>{bc0b8967-981c-4e35-b927-8868332b09ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\StorageService">
+      <UniqueIdentifier>{a04192f2-5d2c-4d9d-bf0c-a8a4f1f539f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -861,6 +867,21 @@
     <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfosView.h">
       <Filter>App\Pages\SystemInfos</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUp.h">
+      <Filter>App\Pages\StartUp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUpModel.h">
+      <Filter>App\Pages\StartUp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUpView.h">
+      <Filter>App\Pages\StartUp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\ArduinoJson\ArduinoJson.h">
+      <Filter>App\Utils\ArduinoJson</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h">
+      <Filter>App\Utils\StorageService</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c">
@@ -1123,9 +1144,6 @@
     </ClCompile>
     <ClCompile Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_1.c">
       <Filter>lvgl\examples\widgets\msgbox</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\examples\widgets\obj\lv_example_obj_1.c">
-      <Filter>lvgl\examples\widgets\obj</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\examples\widgets\roller\lv_example_roller_1.c">
       <Filter>lvgl\examples\widgets\roller</Filter>
@@ -1778,6 +1796,24 @@
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_MAG.cpp">
       <Filter>App\Common\HAL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_agencyb_36.c">
+      <Filter>App\Resource\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUp.cpp">
+      <Filter>App\Pages\StartUp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUpModel.cpp">
+      <Filter>App\Pages\StartUp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUpView.cpp">
+      <Filter>App\Pages\StartUp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Storage.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp">
+      <Filter>App\Utils\StorageService</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md">
@@ -2269,12 +2305,6 @@
     <None Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_2.py">
       <Filter>lvgl\examples\widgets\msgbox</Filter>
     </None>
-    <None Include="lvgl\examples\widgets\obj\index.rst">
-      <Filter>lvgl\examples\widgets\obj</Filter>
-    </None>
-    <None Include="lvgl\examples\widgets\obj\lv_example_obj_1.py">
-      <Filter>lvgl\examples\widgets\obj</Filter>
-    </None>
     <None Include="lvgl\examples\widgets\roller\index.rst">
       <Filter>lvgl\examples\widgets\roller</Filter>
     </None>
@@ -2485,6 +2515,9 @@
     <None Include="lvgl\README.md">
       <Filter>lvgl</Filter>
     </None>
+    <None Include="..\..\USER\App\Common\DataProc\DP_LIST.inc">
+      <Filter>App\Common\DataProc</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="lv_examples">
@@ -2645,9 +2678,6 @@
       <Filter>lv_examples\src\lv_demo_music\assets</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_top.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\lv_demo_music_font_16_bold.c">
       <Filter>lv_examples\src\lv_demo_music\assets</Filter>
     </ClCompile>
     <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music.c">

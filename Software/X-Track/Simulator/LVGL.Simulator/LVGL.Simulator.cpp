@@ -104,5 +104,7 @@ int main()
         Sleep(1);
     }
 
+    App_Uninit();
+
     return 0;
 }

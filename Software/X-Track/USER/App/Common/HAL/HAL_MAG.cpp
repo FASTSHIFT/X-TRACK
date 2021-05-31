@@ -1,7 +1,6 @@
 #include "HAL.h"
 #include <stdlib.h>
-
-extern void DP_MAG_Commit(const void* data, uint32_t size);
+#include "Common/DataProc/DataProc.h"
 
 void HAL::MAG_Update()
 {
@@ -10,5 +9,5 @@ void HAL::MAG_Update()
     mag.y = rand() % 1000 - 500;
     mag.z = rand() % 1000 - 500;
 
-    DP_MAG_Commit(&mag, sizeof(mag));
+    DataProc::MAG_Commit(&mag);
 }

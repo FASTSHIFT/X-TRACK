@@ -42,7 +42,7 @@ Account::Account(
         uint8_t* buf0 = new uint8_t[bufSize];
         uint8_t* buf1 = new uint8_t[bufSize];
         PingPongBuffer_Init(&priv.BufferManager, buf0, buf1);
-        DC_LOG_INFO("Account[%s] buffer[%d] created", ID, bufSize);
+        DC_LOG_INFO("Account[%s] cached %d x2 bytes", ID, bufSize);
     }
 
     priv.BufferSize = bufSize;

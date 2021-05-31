@@ -1,5 +1,5 @@
-#ifndef __LIVEMAP_CONTROLLER_H
-#define __LIVEMAP_CONTROLLER_H
+#ifndef __LIVEMAP_PRESENTER_H
+#define __LIVEMAP_PRESENTER_H
 
 #include "LiveMapView.h"
 #include "LiveMapModel.h"

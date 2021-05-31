@@ -62,7 +62,6 @@ typedef struct _lv_disp_draw_buf_t{
     volatile uint32_t last_part         : 1; /*1: the last part of the current area is being rendered*/
 } lv_disp_draw_buf_t;
 
-
 typedef enum {
     LV_DISP_ROT_NONE = 0,
     LV_DISP_ROT_90,
@@ -145,7 +144,7 @@ typedef struct _lv_disp_drv_t {
  */
 typedef struct _lv_disp_t {
     /**< Driver to the display*/
-    lv_disp_drv_t * driver;
+    struct _lv_disp_drv_t * driver;
 
     /**< A timer which periodically checks the dirty areas and refreshes them*/
     lv_timer_t * refr_timer;

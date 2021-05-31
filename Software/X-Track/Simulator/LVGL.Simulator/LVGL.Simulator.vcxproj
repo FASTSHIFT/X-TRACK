@@ -57,11 +57,11 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ProgramDatabase</DebugInformationFormat>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ProgramDatabase</DebugInformationFormat>
@@ -81,6 +81,9 @@
     <ClInclude Include="..\..\USER\App\Pages\LiveMap\LiveMapModel.h" />
     <ClInclude Include="..\..\USER\App\Pages\LiveMap\LiveMapView.h" />
     <ClInclude Include="..\..\USER\App\Pages\Page.h" />
+    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUp.h" />
+    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUpModel.h" />
+    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUpView.h" />
     <ClInclude Include="..\..\USER\App\Pages\StatusBar\StatusBar.h" />
     <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfos.h" />
     <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfosModel.h" />
@@ -89,6 +92,7 @@
     <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateModel.h" />
     <ClInclude Include="..\..\USER\App\Pages\_Template\TemplateView.h" />
     <ClInclude Include="..\..\USER\App\Resource\ResourcePool.h" />
+    <ClInclude Include="..\..\USER\App\Utils\ArduinoJson\ArduinoJson.h" />
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\Account.h" />
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenter.h" />
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenterLog.h" />
@@ -110,6 +114,7 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PageManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
+    <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\dtostrf.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WCharacter.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WString.h" />
@@ -249,6 +254,7 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Power.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Recorder.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Storage.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Clock.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp" />
@@ -262,6 +268,9 @@
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMap.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMapModel.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\LiveMap\LiveMapView.cpp" />
+    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUp.cpp" />
+    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUpModel.cpp" />
+    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUpView.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\StatusBar\StatusBar.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\SystemInfos\SystemInfos.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\SystemInfos\SystemInfosModel.cpp" />
@@ -269,6 +278,7 @@
     <ClCompile Include="..\..\USER\App\Pages\_Template\Template.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateModel.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\_Template\TemplateView.cpp" />
+    <ClCompile Include="..\..\USER\App\Resource\Font\font_agencyb_36.c" />
     <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_13.c" />
     <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_17.c" />
     <ClCompile Include="..\..\USER\App\Resource\Font\font_bahnschrift_32.c" />
@@ -308,6 +318,7 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_State.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\WString\dtostrf.c" />
     <ClCompile Include="..\..\USER\App\Utils\WString\WString.cpp" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c" />
@@ -397,7 +408,6 @@
     <ClCompile Include="lvgl\examples\widgets\meter\lv_example_meter_3.c" />
     <ClCompile Include="lvgl\examples\widgets\meter\lv_example_meter_4.c" />
     <ClCompile Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_1.c" />
-    <ClCompile Include="lvgl\examples\widgets\obj\lv_example_obj_1.c" />
     <ClCompile Include="lvgl\examples\widgets\roller\lv_example_roller_1.c" />
     <ClCompile Include="lvgl\examples\widgets\roller\lv_example_roller_2.c" />
     <ClCompile Include="lvgl\examples\widgets\slider\lv_example_slider_1.c" />
@@ -547,6 +557,7 @@
     <ClCompile Include="lv_fs_if\lv_fs_posix.c" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\USER\App\Common\DataProc\DP_LIST.inc" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\config.yml" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\dev-discussion.md" />
@@ -710,8 +721,6 @@
     <None Include="lvgl\examples\widgets\msgbox\index.rst" />
     <None Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_1.py" />
     <None Include="lvgl\examples\widgets\msgbox\lv_example_msgbox_2.py" />
-    <None Include="lvgl\examples\widgets\obj\index.rst" />
-    <None Include="lvgl\examples\widgets\obj\lv_example_obj_1.py" />
     <None Include="lvgl\examples\widgets\roller\index.rst" />
     <None Include="lvgl\examples\widgets\roller\lv_example_roller_1.py" />
     <None Include="lvgl\examples\widgets\slider\index.rst" />
@@ -823,7 +832,6 @@
     <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_slider_knob.c" />
     <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_bottom.c" />
     <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_top.c" />
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\lv_demo_music_font_16_bold.c" />
     <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music.c" />
     <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music_list.c" />
     <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music_main.c" />

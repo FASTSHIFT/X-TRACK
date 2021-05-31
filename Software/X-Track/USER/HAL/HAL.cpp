@@ -37,6 +37,7 @@ static void HAL_SensorUpdate()
 void HAL::HAL_Update()
 {
     __IntervalExecute(SD_Update(), 500);
-    __IntervalExecute(HAL_SensorUpdate(), 20);
-    GPS_Update();
+    __IntervalExecute(HAL_SensorUpdate(), 1000);
+    __IntervalExecute(GPS_Update(), 200);
+    Power_EventMonitor();
 }

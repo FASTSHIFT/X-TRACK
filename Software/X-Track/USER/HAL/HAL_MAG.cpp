@@ -1,7 +1,9 @@
 #include "HAL.h"
 #include "LIS3MDL/LIS3MDL.h"
 
-extern void DP_MAG_Commit(const void* data, uint32_t size);
+namespace DataProc{
+    void MAG_Commit(HAL::MAG_Info_t* info);
+}
 
 static LIS3MDL mag;
 
@@ -24,5 +26,5 @@ void HAL::MAG_Update()
     magInfo.y = mag.m.y;
     magInfo.z = mag.m.z;
     
-    DP_MAG_Commit(&magInfo, sizeof(magInfo));
+    DataProc::MAG_Commit(&magInfo);
 }

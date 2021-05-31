@@ -20,6 +20,7 @@ typedef struct
 
 /*GPS*/
 typedef struct {
+    bool isVaild;
     double longitude;
     double latitude;
     float altitude;
@@ -48,21 +49,24 @@ typedef struct {
     int16_t steps;
 }IMU_Info_t;
 
-/*AHRS*/
-typedef struct{
-    float pitch;
-    float row;
-    float yaw;
-}AHRS_Info_t;
-
 /*SportStatus*/
 typedef struct {
     float speedKph;
     float speedMaxKph;
     float speedAvgKph;
-    uint64_t totalTime;
+
+    union {
+        uint32_t totalTimeUINT32[2];
+        uint64_t totalTime;
+    };
+    
     float totalDistance;
-    uint64_t singleTime;
+
+    union {
+        uint32_t singleTimeUINT32[2];
+        uint64_t singleTime;
+    };
+
     float singleDistance;
     float singleCalorie;
     uint32_t lastTick;

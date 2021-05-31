@@ -37,7 +37,7 @@ typedef enum {
 LV_EXPORT_CONST_INT(LV_ANIM_REPEAT_INFINITE);
 
 struct _lv_anim_t;
-struct _lv_anim_path_t;
+
 /** Get the current value during an animation*/
 typedef int32_t (*lv_anim_path_cb_t)(const struct _lv_anim_t *);
 

@@ -12,7 +12,7 @@ SystemInfos::~SystemInfos()
 
 void SystemInfos::onCustomAttrConfig()
 {
-    SetCustomCacheEnable(true);
+
 }
 
 void SystemInfos::onViewLoad()
@@ -119,16 +119,16 @@ void SystemInfos::Update()
     /* Storage */
     View.SetStorage(
         "-",
-        VERSION_SDFAT
+        VERSION_FILESYSTEM
     );
 
     /* System */
     DataProc::ConvTime(lv_tick_get(), buf, sizeof(buf));
     View.SetSystem(
-        VERSION_SOFTWARE,
+        VERSION_FIRMWARE_NAME " " VERSION_SOFTWARE,
         VERSION_LVGL,
-        VERSION_COMPILE_TIME,
-        buf
+        buf,
+        VERSION_COMPILER "\n" VERSION_COMPILE_TIME
     );
 }
 

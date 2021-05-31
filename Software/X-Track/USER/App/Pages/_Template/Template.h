@@ -1,5 +1,5 @@
-#ifndef __TEMPLATE_CONTROLLER_H
-#define __TEMPLATE_CONTROLLER_H
+#ifndef __TEMPLATE_PRESENTER_H
+#define __TEMPLATE_PRESENTER_H
 
 #include "TemplateView.h"
 #include "TemplateModel.h"

@@ -71,9 +71,8 @@ static void GPS_Update(Account* account)
     }
 }
 
-void DP_GPS_Register(DataCenter* center)
+void DP_GPS_Init(Account* account)
 {
-    Account* account = new Account("GPS", center, sizeof(HAL::GPS_Info_t));
     account->SetEventCallback(GPS_Callback);
     account->SetTimerCallback(GPS_Update, 500);
 }

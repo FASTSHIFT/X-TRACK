@@ -185,7 +185,7 @@ PageBase::State_t PageManager::StateUnloadExecute(PageBase* base)
         base->priv.Stash.ptr = nullptr;
         base->priv.Stash.size = 0;
     }
-    lv_obj_del(base->root);
+    lv_obj_del_async(base->root);
     base->root = nullptr;
     base->priv.IsCached = false;
     base->onViewDidUnload();

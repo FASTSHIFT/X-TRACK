@@ -173,7 +173,7 @@ typedef struct _lv_indev_proc_t {
 /** The main input device descriptor with driver, runtime data ('proc') and some additional
  * information*/
 typedef struct _lv_indev_t {
-    lv_indev_drv_t * driver;
+    struct _lv_indev_drv_t * driver;
     _lv_indev_proc_t proc;
     struct _lv_obj_t * cursor;     /**< Cursor for LV_INPUT_TYPE_POINTER*/
     struct _lv_group_t * group;    /**< Keypad destination group*/
@@ -191,21 +191,21 @@ typedef struct _lv_indev_t {
  * After it you can set the fields.
  * @param driver pointer to driver variable to initialize
  */
-void lv_indev_drv_init(lv_indev_drv_t * driver);
+void lv_indev_drv_init(struct _lv_indev_drv_t * driver);
 
 /**
  * Register an initialized input device driver.
  * @param driver pointer to an initialized 'lv_indev_drv_t' variable (can be local variable)
  * @return pointer to the new input device or NULL on error
  */
-lv_indev_t * lv_indev_drv_register(lv_indev_drv_t * driver);
+lv_indev_t * lv_indev_drv_register(struct _lv_indev_drv_t * driver);
 
 /**
  * Update the driver in run time.
  * @param indev pointer to a input device. (return value of `lv_indev_drv_register`)
  * @param new_drv pointer to the new driver
  */
-void lv_indev_drv_update(lv_indev_t * indev, lv_indev_drv_t * new_drv);
+void lv_indev_drv_update(lv_indev_t * indev, struct _lv_indev_drv_t * new_drv);
 
 /**
  * Get the next input device.

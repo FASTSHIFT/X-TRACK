@@ -1,9 +1,11 @@
 #include "HAL.h"
 #include "LSM6DSM/LSM6DSM.h"
 
-static LSM6DSM imu;
+namespace DataProc{
+    void IMU_Commit(HAL::IMU_Info_t* info);
+}
 
-extern void DP_IMU_Commit(const void* data, uint32_t size);
+static LSM6DSM imu;
 
 void HAL::IMU_Init()
 {
@@ -25,5 +27,5 @@ void HAL::IMU_Update()
     
     imuInfo.steps = imu.GetCurrentStep();
     
-    DP_IMU_Commit(&imuInfo, sizeof(imuInfo));
+    DataProc::IMU_Commit(&imuInfo);
 }

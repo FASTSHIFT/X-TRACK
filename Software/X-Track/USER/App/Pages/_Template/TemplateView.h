@@ -5,7 +5,7 @@
 
 class TemplateView {
 public:
-    void Create(lv_obj_t* par);
+    void Create(lv_obj_t* root);
 
 public:
     struct {

@@ -21,7 +21,7 @@
 /*********************
  *      DEFINES
  *********************/
-/*Add memory junk on alloc (0xaa) and free(0xbb) (just for testing purposes)*/
+/*memset the allocated memories to 0xaa and freed memories to 0xbb (just for testing purposes)*/
 #ifndef LV_MEM_ADD_JUNK
 #  define LV_MEM_ADD_JUNK  0
 #endif

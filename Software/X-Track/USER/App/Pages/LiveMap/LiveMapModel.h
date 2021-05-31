@@ -17,6 +17,14 @@ public:
     void GetGPS_Info(HAL::GPS_Info_t* info)
     {
         account->Pull("GPS", info, sizeof(HAL::GPS_Info_t));
+
+        /* Default location : Tian An Men */
+        if (!info->isVaild)
+        {
+            info->longitude = 116.391332;
+            info->latitude = 39.907415;
+            info->altitude = 53.0f;
+        }
     }
 
 private:

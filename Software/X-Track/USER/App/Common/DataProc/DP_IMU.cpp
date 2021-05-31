@@ -3,12 +3,12 @@
 
 static Account* account;
 
-void DP_IMU_Commit(const void* data, uint32_t size)
+void DataProc::IMU_Commit(HAL::IMU_Info_t* info)
 {
-    account->Commit(data, size);
+    account->Commit(info, sizeof(HAL::IMU_Info_t));
 }
 
-void DP_IMU_Register(DataCenter* center)
+void DP_IMU_Init(Account* act)
 {
-    account = new Account("IMU", DataProc::Center(), sizeof(HAL::IMU_Info_t));
+    account = act;
 }

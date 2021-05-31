@@ -39,9 +39,9 @@ static void Power_Update(Account* account)
     }
 }
 
-void DP_Power_Register(DataCenter* center)
+void DP_Power_Init(Account* act)
 {
-    Account* account = new Account("Power", center, sizeof(HAL::Power_Info_t));
-    account->SetEventCallback(onEvent);
-    account->SetTimerCallback(Power_Update, 500);
+    act->Subscribe("Storage");
+    act->SetEventCallback(onEvent);
+    act->SetTimerCallback(Power_Update, 500);
 }

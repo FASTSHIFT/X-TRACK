@@ -297,11 +297,11 @@ void lv_obj_allocate_spec_attr(lv_obj_t * obj)
     if(obj->spec_attr == NULL) {
         static uint32_t x = 0;
         x++;
-        obj->spec_attr = lv_mem_alloc(sizeof(lv_obj_spec_attr_t));
+        obj->spec_attr = lv_mem_alloc(sizeof(_lv_obj_spec_attr_t));
         LV_ASSERT_MALLOC(obj->spec_attr);
         if(obj->spec_attr == NULL) return;
 
-        lv_memset_00(obj->spec_attr, sizeof(lv_obj_spec_attr_t));
+        lv_memset_00(obj->spec_attr, sizeof(_lv_obj_spec_attr_t));
 
         obj->spec_attr->scroll_dir = LV_DIR_ALL;
         obj->spec_attr->scrollbar_mode = LV_SCROLLBAR_MODE_AUTO;
@@ -555,13 +555,25 @@ static lv_res_t scrollbar_init_draw_dsc(lv_obj_t * obj, lv_draw_rect_dsc_t * dsc
     }
 
 #if LV_DRAW_COMPLEX
+    dsc->shadow_opa = lv_obj_get_style_shadow_opa(obj, LV_PART_SCROLLBAR);
+    if(dsc->shadow_opa > LV_OPA_MIN) {
+        dsc->shadow_width = lv_obj_get_style_shadow_width(obj, LV_PART_SCROLLBAR);
+        if(dsc->shadow_width > 0) {
+            dsc->shadow_spread = lv_obj_get_style_shadow_spread(obj, LV_PART_SCROLLBAR);
+            dsc->shadow_color = lv_obj_get_style_shadow_color(obj, LV_PART_SCROLLBAR);
+        } else {
+            dsc->shadow_opa = LV_OPA_TRANSP;
+        }
+    }
+
     lv_opa_t opa = lv_obj_get_style_opa(obj, LV_PART_SCROLLBAR);
     if(opa < LV_OPA_MAX) {
         dsc->bg_opa = (dsc->bg_opa * opa) >> 8;
         dsc->border_opa = (dsc->bg_opa * opa) >> 8;
+        dsc->shadow_opa = (dsc->bg_opa * opa) >> 8;
     }
 
-    if(dsc->bg_opa != LV_OPA_TRANSP || dsc->border_opa != LV_OPA_TRANSP) {
+    if(dsc->bg_opa != LV_OPA_TRANSP || dsc->border_opa != LV_OPA_TRANSP || dsc->shadow_opa != LV_OPA_TRANSP ) {
         dsc->radius = lv_obj_get_style_radius(obj, LV_PART_SCROLLBAR);
         return LV_RES_OK;
     } else {
@@ -701,7 +713,7 @@ static void lv_obj_set_state(lv_obj_t * obj, lv_state_t new_state)
     uint32_t tsi = 0;
     uint32_t i;
     for(i = 0; i < obj->style_cnt && tsi < STYLE_TRANSITION_MAX; i++) {
-        lv_obj_style_t * obj_style = &obj->styles[i];
+        _lv_obj_style_t * obj_style = &obj->styles[i];
         lv_state_t state_act = lv_obj_style_get_selector_state(obj->styles[i].selector);
         lv_part_t part_act = lv_obj_style_get_selector_part(obj->styles[i].selector);
         if(state_act & (~new_state)) continue; /*Skip unrelated styles*/
@@ -716,7 +728,7 @@ static void lv_obj_set_state(lv_obj_t * obj, lv_state_t new_state)
         for(j = 0; tr->props[j] != 0 && tsi < STYLE_TRANSITION_MAX; j++) {
             uint32_t t;
             for(t = 0; t < tsi; t++) {
-                lv_style_selector_t selector = lv_obj_style_get_selector_state(ts[t].selector);
+                lv_style_selector_t selector = ts[t].selector;
                 lv_state_t state_ts = lv_obj_style_get_selector_state(selector);
                 lv_part_t part_ts = lv_obj_style_get_selector_part(selector);
                 if(ts[t].prop == tr->props[j] && part_ts == part_act && state_ts >= state_act) break;
@@ -744,11 +756,10 @@ static void lv_obj_set_state(lv_obj_t * obj, lv_state_t new_state)
 
     lv_mem_buf_release(ts);
 
-    if(cmp_res == _LV_STYLE_STATE_CMP_DIFF_REDRAW_MAIN) {
+    if(cmp_res == _LV_STYLE_STATE_CMP_DIFF_REDRAW) {
         lv_obj_invalidate(obj);
     }
-
-    if(cmp_res == _LV_STYLE_STATE_CMP_DIFF_LAYOUT) {
+    else if(cmp_res == _LV_STYLE_STATE_CMP_DIFF_LAYOUT) {
         lv_obj_refresh_style(obj, LV_PART_ANY, LV_STYLE_PROP_ANY);
     }
     else if(cmp_res == _LV_STYLE_STATE_CMP_DIFF_DRAW_PAD) {

@@ -31,7 +31,7 @@ void SystemInfosModel::GetSportInfo(
 {
     HAL::SportStatus_Info_t sport;
     account->Pull("SportStatus", &sport, sizeof(sport));
-    *trip = sport.totalDistance;
+    *trip = sport.totalDistance / 1000;
     DataProc::ConvTime(sport.totalTime, time, len);
     *maxSpd = sport.speedMaxKph;
 }
@@ -96,8 +96,8 @@ void SystemInfosModel::GetIMUInfo(
         imu.ay,
         imu.az,
         imu.gx,
-        imu.gx,
-        imu.gx
+        imu.gy,
+        imu.gz
     );
 }
 

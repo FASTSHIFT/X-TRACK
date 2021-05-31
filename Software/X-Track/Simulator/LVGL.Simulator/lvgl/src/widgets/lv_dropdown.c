@@ -479,6 +479,7 @@ void lv_dropdown_open(lv_obj_t * dropdown_obj)
     else if(dir == LV_DIR_LEFT)  lv_obj_align_to(dropdown->list, dropdown_obj, LV_ALIGN_OUT_LEFT_TOP, 0, 0);
     else if(dir == LV_DIR_RIGHT) lv_obj_align_to(dropdown->list, dropdown_obj, LV_ALIGN_OUT_RIGHT_TOP, 0, 0);
 
+    lv_obj_update_layout(dropdown->list);
 
     if(dropdown->dir == LV_DIR_LEFT || dropdown->dir == LV_DIR_RIGHT) {
         lv_coord_t y1 = lv_obj_get_y(dropdown->list);
@@ -654,7 +655,6 @@ static void lv_dropdown_event(const lv_obj_class_t * class_p, lv_event_t * e)
     }
     else if(code == LV_EVENT_SIZE_CHANGED) {
         lv_obj_refresh_self_size(obj);
-        if(dropdown->list) lv_dropdown_close(obj);
     }
     else if(code == LV_EVENT_GET_SELF_SIZE) {
         lv_point_t * p = lv_event_get_param(e);

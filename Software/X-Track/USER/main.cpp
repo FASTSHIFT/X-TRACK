@@ -10,9 +10,12 @@ static void setup()
     Display_Init();
     
     App_Init();
+
     //lv_demo_benchmark();
     //lv_demo_widgets();
     //lv_demo_keypad_encoder();
+    
+    HAL::Power_SetEventCallback(App_Uninit);
 }
 
 static void loop()

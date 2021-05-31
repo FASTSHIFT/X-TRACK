@@ -40,7 +40,7 @@ LV_ATTRIBUTE_FAST_MEM static void lv_draw_map(const lv_area_t * map_area, const 
                                               bool chroma_key, bool alpha_byte);
 
 static void show_error(const lv_area_t * coords, const lv_area_t * clip_area, const char * msg);
-static void draw_cleanup(lv_img_cache_entry_t * cache);
+static void draw_cleanup(_lv_img_cache_entry_t * cache);
 
 /**********************
  *  STATIC VARIABLES
@@ -235,7 +235,7 @@ LV_ATTRIBUTE_FAST_MEM static lv_res_t lv_img_draw_core(const lv_area_t * coords,
 {
     if(draw_dsc->opa <= LV_OPA_MIN) return LV_RES_OK;
 
-    lv_img_cache_entry_t * cdsc = _lv_img_cache_open(src, draw_dsc->recolor, draw_dsc->frame_id);
+    _lv_img_cache_entry_t * cdsc = _lv_img_cache_open(src, draw_dsc->recolor, draw_dsc->frame_id);
 
     if(cdsc == NULL) return LV_RES_INV;
 
@@ -649,7 +649,7 @@ static void show_error(const lv_area_t * coords, const lv_area_t * clip_area, co
     lv_draw_label(coords, clip_area, &label_dsc, msg, NULL);
 }
 
-static void draw_cleanup(lv_img_cache_entry_t * cache)
+static void draw_cleanup(_lv_img_cache_entry_t * cache)
 {
     /*Automatically close images with no caching*/
 #if LV_IMG_CACHE_DEF_SIZE == 0

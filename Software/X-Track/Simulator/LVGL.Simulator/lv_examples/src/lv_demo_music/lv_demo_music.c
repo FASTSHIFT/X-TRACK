@@ -16,7 +16,6 @@
 /*********************
  *      DEFINES
  *********************/
-#define LV_DEMO_MUSIC_AUTO_PLAY 1
 
 /**********************
  *      TYPEDEFS
@@ -46,6 +45,10 @@ static const char * title_list[] = {
     "Go Deeper",
     "Find You There",
     "Until the End",
+    "Unknown",
+    "Unknown",
+    "Unknown",
+    "Unknown",
 };
 
 static const char * artist_list[] = {
@@ -59,12 +62,21 @@ static const char * artist_list[] = {
     "Unknown artist",
     "Unknown artist",
     "Unknown artist",
+    "Unknown artist",
+    "Unknown artist",
+    "Unknown artist",
+    "Unknown artist",
+    "Unknown artist",
 };
 
 static const char * genre_list[] = {
     "Rock • 1997",
     "Drum'n bass • 2016",
     "Psy trance • 2020",
+    "Metal • 2015",
+    "Metal • 2015",
+    "Metal • 2015",
+    "Metal • 2015",
     "Metal • 2015",
     "Metal • 2015",
     "Metal • 2015",
@@ -83,6 +95,10 @@ static const uint32_t time_list[] = {
     3*60 + 33,
     1*60 + 56,
     3*60 + 31,
+    2*60 + 20,
+    2*60 + 19,
+    2*60 + 20,
+    2*60 + 19,
     2*60 + 20,
     2*60 + 19,
 };
@@ -138,9 +154,17 @@ uint32_t _lv_demo_music_get_track_length(uint32_t track_id)
 #if LV_DEMO_MUSIC_AUTO_PLAY
 static void auto_step_cb(lv_timer_t * t)
 {
+    LV_UNUSED(t);
     LV_FONT_DECLARE(lv_demo_music_font_16_bold)
     static uint32_t state = 0;
 
+#if LV_DEMO_MUSIC_LARGE
+    lv_font_t * font_small = &lv_font_montserrat_22;
+    lv_font_t * font_large = &lv_font_montserrat_32;
+#else
+    const lv_font_t * font_small = &lv_font_montserrat_12;
+    const lv_font_t * font_large = &lv_font_montserrat_16;
+#endif
     switch(state) {
     case 5:
         _lv_demo_music_album_next(true);
@@ -192,12 +216,12 @@ static void auto_step_cb(lv_timer_t * t)
           lv_obj_set_style_bg_opa(bg, LV_OPA_COVER, 0);
           lv_obj_fade_in(bg, 400, 0);
           lv_obj_t * dsc = lv_label_create(bg);
-          lv_obj_set_style_text_font(dsc, &lv_font_montserrat_14, 0);
+          lv_obj_set_style_text_font(dsc, font_small, 0);
           lv_label_set_text(dsc, "The average FPS is");
           lv_obj_align(dsc, LV_ALIGN_TOP_MID, 0, 90);
 
           lv_obj_t * num = lv_label_create(bg);
-          lv_obj_set_style_text_font(num, &lv_demo_music_font_16_bold, 0);
+          lv_obj_set_style_text_font(num, font_large, 0);
 #if LV_USE_PERF_MONITOR
           lv_label_set_text_fmt(num, "%d", lv_refr_get_fps_avg());
 #endif
@@ -205,7 +229,7 @@ static void auto_step_cb(lv_timer_t * t)
 
           lv_obj_t * attr = lv_label_create(bg);
           lv_obj_set_style_text_align(attr, LV_TEXT_ALIGN_CENTER, 0);
-          lv_obj_set_style_text_font(attr,&lv_font_montserrat_12, 0);
+          lv_obj_set_style_text_font(attr, font_small, 0);
 #if LV_DEMO_MUSIC_SQUARE
           lv_label_set_text(attr, "Copyright 2020 LVGL Kft.\nwww.lvgl.io | lvgl@lvgl.io");
 #else

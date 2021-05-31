@@ -40,24 +40,14 @@ void HAL::GPS_Update()
 
 bool HAL::GPS_GetInfo(GPS_Info_t* info)
 {
-    bool retval = false;
     memset(info, 0, sizeof(GPS_Info_t));
 
-    if(gps.location.isValid())
-    {
-        info->longitude = gps.location.lng();
-        info->latitude = gps.location.lat();
-        info->altitude = gps.altitude.meters();
-        info->speed = gps.speed.kmph();
-        info->compass = gps.course.deg();
-        retval = true;
-    }
-    else
-    {
-        info->longitude = 116.391332;
-        info->latitude = 39.907415;
-        info->altitude = 53.0f;
-    }
+    info->isVaild = gps.location.isValid();
+    info->longitude = gps.location.lng();
+    info->latitude = gps.location.lat();
+    info->altitude = gps.altitude.meters();
+    info->speed = gps.speed.kmph();
+    info->compass = gps.course.deg();
 
     info->clock.year = gps.date.year();
     info->clock.month = gps.date.month();
@@ -68,7 +58,7 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     info->clock.second = gps.time.second();
     info->satellites = gps.satellites.value();
 
-    return retval;
+    return info->isVaild;
 }
 
 bool HAL::GPS_LocationIsValid()

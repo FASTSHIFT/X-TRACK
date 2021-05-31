@@ -27,7 +27,8 @@
 
 #define DC_USE_AUTO_CLOSE 0
 
-DataCenter::DataCenter(const char* name)
+DataCenter::DataCenter(const char* name) 
+    : AccountMain(name, this)
 {
     Name = name;
 }
@@ -68,6 +69,11 @@ Account* DataCenter::Find(std::vector<Account*>* vec, const char* id)
 
 bool DataCenter::AddAccount(Account* account)
 {
+    if (account == &AccountMain)
+    {
+        return false;
+    }
+
     if (SearchAccount(account->ID) != nullptr)
     {
         DC_LOG_ERROR("Multi add Account[%s]", account->ID);
@@ -75,6 +81,8 @@ bool DataCenter::AddAccount(Account* account)
     }
 
     AccountPool.push_back(account);
+
+    AccountMain.Subscribe(account->ID);
 
     return true;
 }

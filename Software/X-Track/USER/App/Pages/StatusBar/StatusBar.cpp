@@ -4,6 +4,8 @@
 #define BATT_USAGE_HEIGHT (lv_obj_get_style_height(ui.battery.img, 0) - 6)
 #define BATT_USAGE_WIDTH  (lv_obj_get_style_width(ui.battery.img, 0) - 4)
 
+#define STATUS_BAR_HEIGHT 22
+
 static Account* actStatusBar;
 
 struct
@@ -108,10 +110,11 @@ static void StatusBar_Update(lv_timer_t* timer)
 
 static lv_obj_t* StatusBar_Create(lv_obj_t* par)
 {
-    lv_obj_t* cont = lv_obj_create(par);    
+    lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
 
-    lv_obj_set_size(cont, LV_HOR_RES, 22);
+    lv_obj_set_size(cont, LV_HOR_RES, STATUS_BAR_HEIGHT);
+    lv_obj_set_y(cont, -STATUS_BAR_HEIGHT);
 
     /* style1 */
     lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, LV_STATE_DEFAULT);
@@ -124,7 +127,12 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     lv_obj_set_style_shadow_width(cont, 10, LV_STATE_USER_1);
 
     static lv_style_transition_dsc_t tran;
-    static const lv_style_prop_t prop[] = { LV_STYLE_BG_COLOR, LV_STYLE_OPA, LV_STYLE_PROP_INV };
+    static const lv_style_prop_t prop[] =
+    {
+        LV_STYLE_BG_COLOR,
+        LV_STYLE_OPA,
+        LV_STYLE_PROP_INV
+    };
     lv_style_transition_dsc_init(
         &tran,
         prop,
@@ -229,14 +237,15 @@ void StatusBar::Init(lv_obj_t* par)
     actStatusBar->Subscribe("Recorder");
 }
 
-void StatusBar::AppearAnimStart(bool playback)
+void StatusBar::Appear(bool en)
 {
 #define ANIM_DEF(start_time, obj, attr, start, end) \
     {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out}
 
-    lv_anim_timeline_t anim_timeline[] = {
-        ANIM_DEF(1000, ui.cont, y, -lv_obj_get_height(ui.cont), 0),
+    lv_anim_timeline_t anim_timeline[] =
+    {
+        ANIM_DEF(1000, ui.cont, y, -STATUS_BAR_HEIGHT, 0),
     };
 
-    lv_anim_timeline_start(anim_timeline, ARRAY_SIZE(anim_timeline), playback);
+    lv_anim_timeline_start(anim_timeline, ARRAY_SIZE(anim_timeline), !en);
 }

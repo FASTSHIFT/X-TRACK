@@ -154,7 +154,7 @@ typedef enum {
 typedef struct {
     uint32_t last_letter;
     uint32_t last_glyph_id;
-}lv_font_fmt_txt_glyph_cache_t;
+} lv_font_fmt_txt_glyph_cache_t;
 
 /*Describe store additional data for fonts*/
 typedef struct {

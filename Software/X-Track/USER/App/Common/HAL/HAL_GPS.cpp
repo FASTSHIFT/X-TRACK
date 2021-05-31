@@ -9,9 +9,9 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 
     info->satellites = 10;
 
-    info->longitude = 116.391332;
-    info->latitude = 39.907415;
-    info->altitude = 53.0f;
+    //info->longitude = 116.391332;
+    //info->latitude = 39.907415;
+    //info->altitude = 53.0f;
 
     /*info->longitude = 117.789509;
     info->latitude = 26.405395;

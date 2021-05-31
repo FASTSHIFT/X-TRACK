@@ -13,7 +13,7 @@ typedef enum {
 
 void Init(lv_obj_t* par);
 void SetStyle(Style_t style);
-void AppearAnimStart(bool playback = false);
+void Appear(bool en);
 
 }
 

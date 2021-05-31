@@ -3,12 +3,6 @@
 
 static DataCenter dataCenter("Bilibili");
 
-#define DP_REG(NodeName) \
-do{\
-    extern void DP_##NodeName##_Register(DataCenter* center);\
-    DP_##NodeName##_Register(&dataCenter);\
-}while(0)
-
 DataCenter* DataProc::Center()
 {
     return &dataCenter;
@@ -16,11 +10,17 @@ DataCenter* DataProc::Center()
 
 void DataProc_Init()
 {
-    DP_REG(Clock);
-    DP_REG(GPS);
-    DP_REG(Power);
-    DP_REG(SportStatus);
-    DP_REG(Recorder);
-    DP_REG(IMU);
-    DP_REG(MAG);
+
+#define DP_DEF(NodeName, bufferSize)\
+    Account* act##NodeName = new Account(#NodeName, &dataCenter, bufferSize);
+#  include "DP_LIST.inc"
+#undef DP_DEF
+    
+#define DP_DEF(NodeName, bufferSize)\
+do{\
+    extern void DP_##NodeName##_Init(Account* act);\
+    DP_##NodeName##_Init(act##NodeName);\
+}while(0)
+#  include "DP_LIST.inc"
+#undef DP_DEF
 }

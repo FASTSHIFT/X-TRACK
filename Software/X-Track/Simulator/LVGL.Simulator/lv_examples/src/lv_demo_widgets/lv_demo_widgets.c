@@ -541,7 +541,7 @@ static void analytics_create(lv_obj_t * parent)
     lv_obj_add_flag(chart1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
     lv_obj_set_grid_cell(chart1, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_STRETCH, 1, 1);
     lv_chart_set_axis_tick(chart1, LV_CHART_AXIS_PRIMARY_Y, 0, 0, 5, 1, true, 80);
-    lv_chart_set_axis_tick(chart1, LV_CHART_AXIS_X, 0, 0, 12, 1, true, 50);
+    lv_chart_set_axis_tick(chart1, LV_CHART_AXIS_PRIMARY_X, 0, 0, 12, 1, true, 50);
     lv_chart_set_div_line_count(chart1, 0, 12);
     lv_chart_set_point_count(chart1, 12);
     lv_obj_add_event_cb(chart1, chart_event_cb, LV_EVENT_ALL, NULL);
@@ -586,7 +586,7 @@ static void analytics_create(lv_obj_t * parent)
 
     lv_obj_set_grid_cell(chart2, LV_GRID_ALIGN_STRETCH, 1, 1, LV_GRID_ALIGN_STRETCH, 1, 1);
     lv_chart_set_axis_tick(chart2, LV_CHART_AXIS_PRIMARY_Y, 0, 0, 5, 1, true, 80);
-    lv_chart_set_axis_tick(chart2, LV_CHART_AXIS_X, 0, 0, 12, 1, true, 50);
+    lv_chart_set_axis_tick(chart2, LV_CHART_AXIS_PRIMARY_X, 0, 0, 12, 1, true, 50);
     lv_obj_set_size(chart2, LV_PCT(100), LV_PCT(100));
     lv_chart_set_type(chart2, LV_CHART_TYPE_BAR);
     lv_chart_set_div_line_count(chart2, 6, 0);
@@ -792,7 +792,7 @@ void shop_create(lv_obj_t * parent)
 
     chart3 = lv_chart_create(panel1);
     lv_chart_set_axis_tick(chart3, LV_CHART_AXIS_PRIMARY_Y, 0, 0, 6, 1, true, 80);
-    lv_chart_set_axis_tick(chart3, LV_CHART_AXIS_X, 0, 0, 7, 1, true, 50);
+    lv_chart_set_axis_tick(chart3, LV_CHART_AXIS_PRIMARY_X, 0, 0, 7, 1, true, 50);
     lv_chart_set_type(chart3, LV_CHART_TYPE_BAR);
     lv_chart_set_div_line_count(chart3, 6, 0);
     lv_chart_set_point_count(chart3, 7);
@@ -1019,8 +1019,8 @@ static void color_changer_anim_cb(void * var, int32_t v)
 
 static void color_changer_event_cb(lv_event_t *e)
 {
-    if(e->code == LV_EVENT_CLICKED) {
-        lv_obj_t * color_cont = e->user_data;
+    if(lv_event_get_code(e) == LV_EVENT_CLICKED) {
+        lv_obj_t * color_cont = lv_event_get_user_data(e);
         if(lv_obj_get_width(color_cont) < LV_HOR_RES / 2) {
             lv_anim_t a;
             lv_anim_init(&a);
@@ -1197,8 +1197,8 @@ static void ta_event_cb(lv_event_t * e)
     else if(code == LV_EVENT_READY || code == LV_EVENT_CANCEL) {
         lv_obj_set_height(tv, LV_VER_RES);
         lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
-        lv_obj_clear_state(e->target, LV_STATE_FOCUSED);
-        lv_indev_reset(NULL, e->target);   /*To forget the last clicked object to make it focusable again*/
+        lv_obj_clear_state(ta, LV_STATE_FOCUSED);
+        lv_indev_reset(NULL, ta);   /*To forget the last clicked object to make it focusable again*/
     }
 }
 
@@ -1231,9 +1231,10 @@ static void calendar_event_cb(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * ta = lv_event_get_user_data(e);
+    lv_obj_t * obj = lv_event_get_target(e);
     if(code == LV_EVENT_VALUE_CHANGED) {
         lv_calendar_date_t d;
-        lv_calendar_get_pressed_date(e->target, &d);
+        lv_calendar_get_pressed_date(obj, &d);
         char buf[32];
         lv_snprintf(buf, sizeof(buf), "%02d.%02d.%d", d.day, d.month, d.year);
         lv_textarea_set_text(ta, buf);
@@ -1259,7 +1260,7 @@ static void slider_event_cb(lv_event_t * e)
         lv_obj_draw_part_dsc_t * dsc = lv_event_get_param(e);
         if(dsc->part == LV_PART_KNOB && lv_obj_has_state(obj, LV_STATE_PRESSED)) {
             char buf[8];
-            lv_snprintf(buf, sizeof(buf), "%d", lv_slider_get_value(e->target));
+            lv_snprintf(buf, sizeof(buf), "%d", lv_slider_get_value(obj));
 
             lv_point_t text_size;
             lv_txt_get_size(&text_size, buf, font_normal, 0, 0, LV_COORD_MAX, LV_TEXT_FLAG_NONE);
@@ -1302,8 +1303,8 @@ static void chart_event_cb(lv_event_t * e)
     else if(code == LV_EVENT_DRAW_PART_BEGIN) {
         lv_obj_draw_part_dsc_t * dsc = lv_event_get_param(e);
         /*Set the markers' text*/
-        if(dsc->part == LV_PART_TICKS && dsc->id == LV_CHART_AXIS_X) {
-            if(lv_chart_get_type(e->target) == LV_CHART_TYPE_BAR) {
+        if(dsc->part == LV_PART_TICKS && dsc->id == LV_CHART_AXIS_PRIMARY_X) {
+            if(lv_chart_get_type(obj) == LV_CHART_TYPE_BAR) {
                 const char * month[] = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"};
                 lv_snprintf(dsc->text, sizeof(dsc->text), "%s", month[dsc->value]);
             } else {
@@ -1322,9 +1323,9 @@ static void chart_event_cb(lv_event_t * e)
                 int16_t line_mask_id = lv_draw_mask_add(&line_mask_param, NULL);
 
                 /*Add a fade effect: transparent bottom covering top*/
-                lv_coord_t h = lv_obj_get_height(e->target);
+                lv_coord_t h = lv_obj_get_height(obj);
                 lv_draw_mask_fade_param_t fade_mask_param;
-                lv_draw_mask_fade_init(&fade_mask_param, &e->target->coords, LV_OPA_COVER, e->target->coords.y1 + h / 8, LV_OPA_TRANSP,e->target->coords.y2);
+                lv_draw_mask_fade_init(&fade_mask_param, &obj->coords, LV_OPA_COVER, obj->coords.y1 + h / 8, LV_OPA_TRANSP, obj->coords.y2);
                 int16_t fade_mask_id = lv_draw_mask_add(&fade_mask_param, NULL);
 
                 /*Draw a rectangle that will be affected by the mask*/
@@ -1334,13 +1335,13 @@ static void chart_event_cb(lv_event_t * e)
                 draw_rect_dsc.bg_color = dsc->line_dsc->color;
 
                 lv_area_t obj_clip_area;
-                _lv_area_intersect(&obj_clip_area, dsc->clip_area, &e->target->coords);
+                _lv_area_intersect(&obj_clip_area, dsc->clip_area, &obj->coords);
 
                 lv_area_t a;
                 a.x1 = dsc->p1->x;
                 a.x2 = dsc->p2->x - 1;
                 a.y1 = LV_MIN(dsc->p1->y, dsc->p2->y);
-                a.y2 = e->target->coords.y2;
+                a.y2 = obj->coords.y2;
                 lv_draw_rect(&a, &obj_clip_area, &draw_rect_dsc);
 
                 /*Remove the masks*/
@@ -1352,8 +1353,8 @@ static void chart_event_cb(lv_event_t * e)
 
             const lv_chart_series_t * ser = dsc->sub_part_ptr;
 
-            if(lv_chart_get_pressed_point(e->target) == dsc->id) {
-                if(lv_chart_get_type(e->target) == LV_CHART_TYPE_LINE) {
+            if(lv_chart_get_pressed_point(obj) == dsc->id) {
+                if(lv_chart_get_type(obj) == LV_CHART_TYPE_LINE) {
                     dsc->rect_dsc->outline_color = lv_color_white();
                     dsc->rect_dsc->outline_width = 2;
                 } else {
@@ -1369,10 +1370,10 @@ static void chart_event_cb(lv_event_t * e)
                 lv_txt_get_size(&text_size, buf, font_normal, 0, 0, LV_COORD_MAX, LV_TEXT_FLAG_NONE);
 
                 lv_area_t txt_area;
-                if(lv_chart_get_type(e->target) == LV_CHART_TYPE_BAR) {
+                if(lv_chart_get_type(obj) == LV_CHART_TYPE_BAR) {
                     txt_area.y2 = dsc->draw_area->y1 - LV_DPX(15);
                     txt_area.y1 = txt_area.y2 - text_size.y;
-                    if(ser == lv_chart_get_series_next(e->target, NULL)) {
+                    if(ser == lv_chart_get_series_next(obj, NULL)) {
                         txt_area.x1 = dsc->draw_area->x1 + lv_area_get_width(dsc->draw_area) / 2;
                         txt_area.x2 = txt_area.x1 + text_size.x;
                     } else {
@@ -1418,7 +1419,7 @@ static void shop_chart_event_cb(lv_event_t * e)
     if(code == LV_EVENT_DRAW_PART_BEGIN) {
         lv_obj_draw_part_dsc_t * dsc = lv_event_get_param(e);
         /*Set the markers' text*/
-        if(dsc->part == LV_PART_TICKS && dsc->id == LV_CHART_AXIS_X) {
+        if(dsc->part == LV_PART_TICKS && dsc->id == LV_CHART_AXIS_PRIMARY_X) {
             const char * month[] = {"Jan", "Febr", "March", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
             lv_snprintf(dsc->text, sizeof(dsc->text), "%s", month[dsc->value]);
         }

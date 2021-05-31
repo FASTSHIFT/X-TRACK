@@ -1,5 +1,5 @@
-#ifndef __DIALPLATE_CONTROLLER_H
-#define __DIALPLATE_CONTROLLER_H
+#ifndef __DIALPLATE_PRESENTER_H
+#define __DIALPLATE_PRESENTER_H
 
 #include "DialplateView.h"
 #include "DialplateModel.h"
