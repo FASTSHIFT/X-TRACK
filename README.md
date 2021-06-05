@@ -1,7 +1,11 @@
 # X-TRACK
-> 开源GPS自行车码表，拥有可显示实时位置的离线地图，支持记录轨迹以及导出标准GPX格式的轨迹文件。
+> 开源GPS自行车码表。
 > 
-> 全新设计的页面调度器和消息发布订阅管理框架。
+> 拥有可显示实时位置的离线地图。
+> 
+> 支持记录轨迹以及导出标准GPX格式的轨迹文件。
+> 
+> 全新设计的[页面调度](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/USER/App/Utils/PageManager)和[消息框架](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/USER/App/Utils/DataCenter)。
 
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E9%AA%91%E8%A1%8C%E6%B5%8B%E8%AF%95.jpg)
 
