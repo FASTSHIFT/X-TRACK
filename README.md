@@ -15,14 +15,15 @@
 ## 硬件配置
 * 1.主控: AT32F403ACGU7 (主频:240MHz RAM:224KB ROM:1MB)
 * 2.屏幕: ST7789 IPS 1.54inch SPI接口 240x240分辨率 60Hz刷新率
-* 3.输入设备: 旋转编码器
-* 4.RTC: MCU内置RTC时钟
-* 5.加速度计: LSM6DSM (支持硬件计步输出)
-* 6.地磁计: LIS3MDL
-* 7.GPS: ATGM336H (BDS + GPS + GLONASS + GALILEO + QZSS + SBAS)
-* 8.电池: Li-ion 3.7V 683030 700mAh
-* 9.电源管理: LP5904-3.3 + MCP73831
-* 10.外壳: 3D打印 光固化
+* 3.储存器: Micro SD CARD 32GB 
+* 4.输入设备: 旋转编码器
+* 5.RTC: MCU内置RTC时钟
+* 6.加速度计: LSM6DSM (支持硬件计步输出)
+* 7.地磁计: LIS3MDL
+* 8.GPS: ATGM336H (BDS + GPS + GLONASS + GALILEO + QZSS + SBAS)
+* 9.电池: Li-ion 3.7V 683030 700mAh
+* 10.电源管理: LP5904-3.3 + MCP73831
+* 11.外壳: 3D打印 光固化
 
 ## 功能
 * 1.支持速度、距离、时间、卡路里、航向显示
