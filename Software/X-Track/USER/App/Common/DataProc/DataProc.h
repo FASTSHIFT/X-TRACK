@@ -5,6 +5,8 @@
 #include "../HAL/HAL_Def.h"
 #include "DataProc_Def.h"
 
+#define DATA_PROC_INIT_DEF(name) void _DP_##name##_Init(Account* act)
+
 void DataProc_Init();
 
 namespace DataProc

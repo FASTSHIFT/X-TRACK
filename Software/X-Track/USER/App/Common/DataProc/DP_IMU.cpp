@@ -8,7 +8,7 @@ void DataProc::IMU_Commit(HAL::IMU_Info_t* info)
     account->Commit(info, sizeof(HAL::IMU_Info_t));
 }
 
-void DP_IMU_Init(Account* act)
+DATA_PROC_INIT_DEF(IMU)
 {
     account = act;
 }

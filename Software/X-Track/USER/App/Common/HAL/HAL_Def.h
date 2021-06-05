@@ -5,7 +5,7 @@
 
 namespace HAL {
     
-/*Clock*/
+/* Clock */
 typedef struct
 {
     uint16_t year;
@@ -18,7 +18,7 @@ typedef struct
     uint16_t millisecond;
 } Clock_Info_t;
 
-/*GPS*/
+/* GPS */
 typedef struct {
     bool isVaild;
     double longitude;
@@ -27,18 +27,17 @@ typedef struct {
     float compass;
     float speed;
     int16_t satellites;
-    uint8_t hour_utc;
     Clock_Info_t clock;
 }GPS_Info_t;
 
-/*MAG*/
+/* MAG */
 typedef struct {
     int16_t x;
     int16_t y;
     int16_t z;
 }MAG_Info_t;
 
-/*IMU*/
+/* IMU */
 typedef struct {
     int16_t ax;
     int16_t ay;
@@ -49,7 +48,7 @@ typedef struct {
     int16_t steps;
 }IMU_Info_t;
 
-/*SportStatus*/
+/* SportStatus */
 typedef struct {
     float speedKph;
     float speedMaxKph;
@@ -72,7 +71,7 @@ typedef struct {
     uint32_t lastTick;
 }SportStatus_Info_t;
 
-/*Power*/
+/* Power */
 typedef struct {
     uint16_t voltage;
     uint8_t usage;

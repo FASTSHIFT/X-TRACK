@@ -117,8 +117,8 @@ void MapConv::ConvertMapCoordinate(
     double xSize = x * mapSize + 0.5;
     double ySize = y * mapSize + 0.5;
     mapSize--;
-    *mapX = constrain(xSize, 0, mapSize);
-    *mapY = constrain(ySize, 0, mapSize);
+    *mapX = (uint32_t)constrain(xSize, 0, mapSize);
+    *mapY = (uint32_t)constrain(ySize, 0, mapSize);
 }
 
 void MapConv::ConvertMapTile(uint32_t x, uint32_t y, MapTile_t* mapTile)

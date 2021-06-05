@@ -1,5 +1,6 @@
 #include "HAL.h"
 #include <time.h>
+#include <stdio.h>
 
 void HAL::Clock_GetInfo(Clock_Info_t* info)
 {
@@ -20,5 +21,13 @@ void HAL::Clock_GetInfo(Clock_Info_t* info)
 
 void HAL::Clock_SetInfo(const Clock_Info_t* info)
 {
-
+    printf(
+        "Clock set: %04d-%02d-%02d %02d:%02d:%02d\n",
+        info->year,
+        info->month,
+        info->day,
+        info->hour,
+        info->minute,
+        info->second
+    );
 }

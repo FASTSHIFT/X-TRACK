@@ -20,7 +20,7 @@ void LiveMapModel::Deinit()
     }
 }
 
-int LiveMapModel::onEvent(Account::EventParam_t* param)
+int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
 {
     if (param->event != Account::EVENT_PUB_PUBLISH)
     {

@@ -73,6 +73,7 @@
     <ClInclude Include="..\..\USER\App\Common\DataProc\DataProc_Def.h" />
     <ClInclude Include="..\..\USER\App\Common\HAL\HAL.h" />
     <ClInclude Include="..\..\USER\App\Common\HAL\HAL_Def.h" />
+    <ClInclude Include="..\..\USER\App\Common\Music\ToneMap.h" />
     <ClInclude Include="..\..\USER\App\Pages\AppFactory.h" />
     <ClInclude Include="..\..\USER\App\Pages\Dialplate\Dialplate.h" />
     <ClInclude Include="..\..\USER\App\Pages\Dialplate\DialplateModel.h" />
@@ -115,6 +116,9 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
+    <ClInclude Include="..\..\USER\App\Utils\Time\Time.h" />
+    <ClInclude Include="..\..\USER\App\Utils\Time\TimeLib.h" />
+    <ClInclude Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\dtostrf.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WCharacter.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WString.h" />
@@ -251,16 +255,21 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_GPS.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_IMU.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_MAG.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_MusicPlayer.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Power.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Recorder.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Storage.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TzConv.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Buzz.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Clock.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_MAG.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Power.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_SD_CARD.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\AppFactory.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\Dialplate\Dialplate.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\Dialplate\DialplateModel.cpp" />
@@ -319,6 +328,9 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\Time\DateStrings.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\Time\Time.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\WString\dtostrf.c" />
     <ClCompile Include="..\..\USER\App\Utils\WString\WString.cpp" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c" />
@@ -435,6 +447,7 @@
     <ClCompile Include="lvgl\src\core\lv_obj_pos.c" />
     <ClCompile Include="lvgl\src\core\lv_obj_scroll.c" />
     <ClCompile Include="lvgl\src\core\lv_obj_style.c" />
+    <ClCompile Include="lvgl\src\core\lv_obj_style_gen.c" />
     <ClCompile Include="lvgl\src\core\lv_obj_tree.c" />
     <ClCompile Include="lvgl\src\core\lv_refr.c" />
     <ClCompile Include="lvgl\src\core\lv_theme.c" />
@@ -520,6 +533,7 @@
     <ClCompile Include="lvgl\src\misc\lv_mem.c" />
     <ClCompile Include="lvgl\src\misc\lv_printf.c" />
     <ClCompile Include="lvgl\src\misc\lv_style.c" />
+    <ClCompile Include="lvgl\src\misc\lv_style_gen.c" />
     <ClCompile Include="lvgl\src\misc\lv_templ.c" />
     <ClCompile Include="lvgl\src\misc\lv_timer.c" />
     <ClCompile Include="lvgl\src\misc\lv_tlsf.c" />
@@ -558,6 +572,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\USER\App\Common\DataProc\DP_LIST.inc" />
+    <None Include="..\..\USER\App\Common\Music\MusicCode.h" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\config.yml" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\dev-discussion.md" />

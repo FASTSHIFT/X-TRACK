@@ -8,15 +8,15 @@ namespace DataProc
 
 /* Recorder */
 typedef enum {
-    RECORDER_STOP,
-    RECORDER_START,
-    RECORDER_PAUSE,
-}Recorder_State_t;
+    RECORDER_CMD_START,
+    RECORDER_CMD_PAUSE,
+    RECORDER_CMD_CONTINUE,
+    RECORDER_CMD_STOP,
+}Recorder_Cmd_t;
 
 typedef struct {
-    Recorder_State_t state;
+    Recorder_Cmd_t cmd;
     uint16_t time;
-    uint32_t pointCnt;
 }Recorder_Info_t;
 
 /* Storage */
@@ -43,7 +43,28 @@ typedef struct {
     Storage_Type_t type;
 }Storage_Info_t;
 
-}
+#define STORAGE_VALUE_REG(act, data, dataType)\
+do{\
+    Storage_Info_t info; \
+    info.cmd = STORAGE_CMD_ADD; \
+    info.key = #data; \
+    info.value = &data; \
+    info.size = sizeof(data); \
+    info.type = dataType; \
+    act->Notify("Storage", &info, sizeof(info)); \
+}while(0)
 
+/* StatusBar */
+typedef struct {
+    bool showLabelRec;
+    const char* labelRecStr;
+}StatusBar_Info_t;
+
+/* MusicPlayer */
+typedef struct {
+    const char* music;
+}MusicPlayer_Info_t;
+
+}
 
 #endif

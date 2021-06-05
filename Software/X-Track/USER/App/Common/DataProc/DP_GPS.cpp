@@ -7,8 +7,51 @@ typedef enum{
     GPS_STATUS_CONNECT,
 }GPS_Status_t;
 
-static int GPS_Callback(Account::EventParam_t* param)
+static void onTimer(Account* account)
 {
+    HAL::GPS_Info_t gpsInfo;
+    bool isValid = GPS_GetInfo(&gpsInfo);
+
+    int satellites = gpsInfo.satellites;
+
+    static GPS_Status_t lastStatus = GPS_STATUS_DISCONNECT;
+
+    GPS_Status_t nowStatus;
+
+    if (satellites > 6)
+    {
+        nowStatus = GPS_STATUS_CONNECT;
+    }
+    else if (satellites >= 3)
+    {
+        nowStatus = GPS_STATUS_UNSTABLE;
+    }
+    else
+    {
+        nowStatus = GPS_STATUS_DISCONNECT;
+    }
+
+    if (nowStatus != lastStatus)
+    {
+        const char* music[] = {
+            "Disconnect",
+            "UnstableConnect",
+            "Connect"
+        };
+
+        HAL::Audio_PlayMusic(music[nowStatus]);
+        lastStatus = nowStatus;
+    }
+}
+
+static int onEvent(Account* account, Account::EventParam_t* param)
+{
+    if (param->event == Account::EVENT_TIMER)
+    {
+        onTimer(account);
+        return 0;
+    }
+
     if (param->event != Account::EVENT_SUB_PULL)
     {
         return Account::ERROR_UNSUPPORTED_REQUEST;
@@ -24,55 +67,8 @@ static int GPS_Callback(Account::EventParam_t* param)
     return 0;
 }
 
-static void GPS_Update(Account* account)
+DATA_PROC_INIT_DEF(GPS)
 {
-    HAL::GPS_Info_t gpsInfo;
-    bool isValid = GPS_GetInfo(&gpsInfo);
-    
-    static bool RTC_IsCalibrate = false;
-    if(!RTC_IsCalibrate)
-    {
-        if(isValid)
-        {
-            Clock_SetInfo(&gpsInfo.clock);
-            RTC_IsCalibrate = true;
-        }
-    }
-    
-    int satellites = gpsInfo.satellites;
-
-    static GPS_Status_t lastStatus = GPS_STATUS_DISCONNECT;
-    
-    GPS_Status_t nowStatus;
-
-    if(satellites > 6)
-    {
-        nowStatus = GPS_STATUS_CONNECT;
-    }
-    else if(satellites >= 3)
-    {
-        nowStatus = GPS_STATUS_UNSTABLE;
-    }
-    else
-    {
-        nowStatus = GPS_STATUS_DISCONNECT;
-    }
-    
-    if(nowStatus != lastStatus)
-    {
-        const char* music[] = {
-            "Disconnect",
-            "UnstableConnect",
-            "Connect"
-        };
-        
-        HAL::Audio_PlayMusic(music[nowStatus]);
-        lastStatus = nowStatus;
-    }
-}
-
-void DP_GPS_Init(Account* account)
-{
-    account->SetEventCallback(GPS_Callback);
-    account->SetTimerCallback(GPS_Update, 500);
+    act->SetEventCallback(onEvent);
+    act->SetTimerPeriod(500);
 }

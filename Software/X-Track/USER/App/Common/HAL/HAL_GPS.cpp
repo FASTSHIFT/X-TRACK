@@ -7,11 +7,12 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     static int angle;
     memset(info, 0, sizeof(GPS_Info_t));
 
+    info->isVaild = true;
     info->satellites = 10;
 
-    //info->longitude = 116.391332;
-    //info->latitude = 39.907415;
-    //info->altitude = 53.0f;
+    info->longitude = 116.391332;
+    info->latitude = 39.907415;
+    info->altitude = 53.0f;
 
     /*info->longitude = 117.789509;
     info->latitude = 26.405395;
@@ -19,9 +20,7 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 
     Clock_GetInfo(&info->clock);
 
-    info->hour_utc = info->clock.hour;
-
-    info->speed = rand() % 60;
+    info->speed = (rand() % 600) / 10.0f;
 
     return true;
 }

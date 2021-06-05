@@ -47,8 +47,8 @@ void SystemInfosModel::GetGPSInfo(
 {
     HAL::GPS_Info_t gps;
     account->Pull("GPS", &gps, sizeof(gps));
-    *lat = gps.latitude;
-    *lng = gps.longitude;
+    *lat = (float)gps.latitude;
+    *lng = (float)gps.longitude;
     *alt = gps.altitude;
     snprintf(
         utc, len, 
@@ -56,7 +56,7 @@ void SystemInfosModel::GetGPSInfo(
         gps.clock.year,
         gps.clock.month,
         gps.clock.day,
-        gps.hour_utc,
+        gps.clock.hour,
         gps.clock.minute,
         gps.clock.second
     );

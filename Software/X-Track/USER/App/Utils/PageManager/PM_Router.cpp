@@ -55,7 +55,7 @@ PageBase* PageManager::Push(const char* name, const PageBase::Stash_t* stash)
     return base;
 }
 
-PageBase* PageManager::Pop(const PageBase::Stash_t* stash)
+PageBase* PageManager::Pop()
 {
     if (!SwitchAnimStateCheck())
     {
@@ -84,7 +84,7 @@ PageBase* PageManager::Pop(const PageBase::Stash_t* stash)
 
     if (top != nullptr)
     {
-        SwitchTo(top, false, stash);
+        SwitchTo(top, false, nullptr);
     }
 
     return top;

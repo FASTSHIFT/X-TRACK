@@ -31,7 +31,7 @@ private:
     Account* account;
 
 private:
-    static int onEvent(Account::EventParam_t* param);
+    static int onEvent(Account* account, Account::EventParam_t* param);
 };
 
 #endif

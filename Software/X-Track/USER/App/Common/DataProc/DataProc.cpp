@@ -18,8 +18,8 @@ void DataProc_Init()
     
 #define DP_DEF(NodeName, bufferSize)\
 do{\
-    extern void DP_##NodeName##_Init(Account* act);\
-    DP_##NodeName##_Init(act##NodeName);\
+    extern void _DP_##NodeName##_Init(Account* act);\
+    _DP_##NodeName##_Init(act##NodeName);\
 }while(0)
 #  include "DP_LIST.inc"
 #undef DP_DEF

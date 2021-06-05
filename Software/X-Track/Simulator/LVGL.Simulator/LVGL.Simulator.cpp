@@ -59,6 +59,7 @@ int main()
      * item.
      */
 
+    HAL::HAL_Init();
     App_Init();
     //lv_example_scroll_2();
     //lv_demo_keypad_encoder();
@@ -99,8 +100,7 @@ int main()
     while (!lv_win32_quit_signal)
     {
         lv_timer_handler();
-        HAL::IMU_Update();
-        HAL::MAG_Update();
+        HAL::HAL_Update();
         Sleep(1);
     }
 

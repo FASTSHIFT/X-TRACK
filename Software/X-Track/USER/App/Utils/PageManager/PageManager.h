@@ -88,7 +88,7 @@ public:
   
     /* Router */
     PageBase* Push(const char* name, const PageBase::Stash_t* stash = nullptr);
-    PageBase* Pop(const PageBase::Stash_t* stash = nullptr);
+    PageBase* Pop();
     bool BackHome();
     const char* GetPagePrevName();
 

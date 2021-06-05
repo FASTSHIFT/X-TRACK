@@ -108,57 +108,80 @@ void Dialplate::onBtnClicked(lv_obj_t* btn)
     {
         Manager->Push("Pages/LiveMap");
     }
-    else if (btn == View.ui.btnCont.btnRec)
-    {
-        switch (recState)
-        {
-        case RECORD_STATE_READY:
-            Model.RecorderCtrl(Model.REC_START);
-            recState = RECORD_STATE_RUN;
-            break;
-        case RECORD_STATE_RUN:
-            Model.RecorderCtrl(Model.REC_PAUSE);
-            recState = RECORD_STATE_READY;
-            break;
-        case RECORD_STATE_PAUSE:           
-            recState = RECORD_STATE_RUN;
-            break;
-        default:
-            break;
-        }
-        updateBtnRec();
-    }
     else if (btn == View.ui.btnCont.btnMenu)
     {
         Manager->Push("Pages/SystemInfos");
     }
 }
 
-void Dialplate::onRecord()
+void Dialplate::onRecord(bool longPress)
 {
     switch (recState)
     {
+    case RECORD_STATE_READY:
+        if (longPress)
+        {
+            if (!Model.GetGPSReady())
+            {
+                LV_LOG_USER("GPS has not ready, can't start record");
+                Model.PlayMusic("Error");
+                return;
+            }
+
+            Model.PlayMusic("Connect");
+            Model.RecorderCommand(Model.REC_START);
+            SetBtnRecImgSrc("pause");
+            recState = RECORD_STATE_RUN;
+        }
+        break;
     case RECORD_STATE_RUN:
-        recState = RECORD_STATE_PAUSE;
+        if (!longPress)
+        {
+            Model.PlayMusic("UnstableConnect");
+            Model.RecorderCommand(Model.REC_PAUSE);
+            SetBtnRecImgSrc("start");
+            recState = RECORD_STATE_PAUSE;
+        }
         break;
     case RECORD_STATE_PAUSE:
-        Model.RecorderCtrl(Model.REC_STOP);
-        recState = RECORD_STATE_READY;
+        if (longPress)
+        {
+            Model.PlayMusic("NoOperationWarning");
+            SetBtnRecImgSrc("stop");
+            recState = RECORD_STATE_STOP;
+        }
+        else
+        {
+            Model.PlayMusic("Connect");
+            Model.RecorderCommand(Model.REC_CONTINUE);
+            SetBtnRecImgSrc("pause");
+            recState = RECORD_STATE_RUN;
+        }
+        break;
+    case RECORD_STATE_STOP:
+        if (longPress)
+        {
+            Model.PlayMusic("Disconnect");
+            Model.RecorderCommand(Model.REC_STOP);
+            SetBtnRecImgSrc("start");
+            recState = RECORD_STATE_READY;
+        }
+        else
+        {
+            Model.PlayMusic("Connect");
+            Model.RecorderCommand(Model.REC_CONTINUE);
+            SetBtnRecImgSrc("pause");
+            recState = RECORD_STATE_RUN;
+        }
         break;
     default:
         break;
     }
-    updateBtnRec();
 }
 
-void Dialplate::updateBtnRec()
+void Dialplate::SetBtnRecImgSrc(const char* srcName)
 {
-    const char* res[] = {
-        "start",
-        "pause",
-        "stop"
-    };
-    lv_obj_set_style_bg_img_src(View.ui.btnCont.btnRec, Resource.GetImage(res[recState]), 0);
+    lv_obj_set_style_bg_img_src(View.ui.btnCont.btnRec, Resource.GetImage(srcName), 0);
 }
 
 void Dialplate::onEvent(lv_event_t* event)
@@ -173,11 +196,15 @@ void Dialplate::onEvent(lv_event_t* event)
         instance->onBtnClicked(obj);
     }
 
-    if (code == LV_EVENT_LONG_PRESSED)
+    if (obj == instance->View.ui.btnCont.btnRec)
     {
-        if (obj == instance->View.ui.btnCont.btnRec)
+        if (code == LV_EVENT_SHORT_CLICKED)
         {
-            instance->onRecord();
+            instance->onRecord(false);
+        }
+        else if (code == LV_EVENT_LONG_PRESSED)
+        {
+            instance->onRecord(true);
         }
     }
 }

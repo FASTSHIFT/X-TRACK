@@ -26,13 +26,7 @@
 #include "lvgl/lvgl.h"
 
 #define PAGE_STASH_MAKE(data) {&(data), sizeof(data)}
-#define PAGE_STASH_POP(data)\
-do{\
-    if (priv.Stash.ptr != nullptr && priv.Stash.size == sizeof(data))\
-    {\
-        memcpy(&(data), priv.Stash.ptr, priv.Stash.size);\
-    }\
-}while(0)
+#define PAGE_STASH_POP(data)  this->GetStash(&(data), sizeof(data))
 
 class PageManager;
 
@@ -117,6 +111,19 @@ public:
         priv.Anim.Attr.Type = animType;
         priv.Anim.Attr.Time = time;
         priv.Anim.Attr.Path = path;
+    }
+
+    bool GetStash(void* ptr, uint32_t size)
+    {
+        bool retval = false;
+        if (priv.Stash.ptr != nullptr && priv.Stash.size == size)
+        {
+            memcpy(ptr, priv.Stash.ptr, priv.Stash.size);
+            //lv_mem_free(priv.Stash.ptr);
+            //priv.Stash.ptr = nullptr;
+            retval = true;
+        }
+        return retval;
     }
 };
 

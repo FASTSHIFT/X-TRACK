@@ -352,6 +352,15 @@
     <Filter Include="App\Utils\StorageService">
       <UniqueIdentifier>{a04192f2-5d2c-4d9d-bf0c-a8a4f1f539f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Utils\TonePlayer">
+      <UniqueIdentifier>{8c3f11fb-1591-47e2-94b0-5940f35acec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Common\Music">
+      <UniqueIdentifier>{cf822a00-91f5-41e8-8c2d-14b62e708670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\Time">
+      <UniqueIdentifier>{8203c2d1-eff3-4a9b-a96e-baad94dbc101}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -881,6 +890,18 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h">
       <Filter>App\Utils\StorageService</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.h">
+      <Filter>App\Utils\TonePlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Common\Music\ToneMap.h">
+      <Filter>App\Common\Music</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\Time\Time.h">
+      <Filter>App\Utils\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\Time\TimeLib.h">
+      <Filter>App\Utils\Time</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1814,6 +1835,36 @@
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp">
       <Filter>App\Utils\StorageService</Filter>
     </ClCompile>
+    <ClCompile Include="lvgl\src\core\lv_obj_style_gen.c">
+      <Filter>lvgl\src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\misc\lv_style_gen.c">
+      <Filter>lvgl\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.cpp">
+      <Filter>App\Utils\TonePlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_MusicPlayer.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Buzz.cpp">
+      <Filter>App\Common\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL.cpp">
+      <Filter>App\Common\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\Time\DateStrings.cpp">
+      <Filter>App\Utils\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\Time\Time.cpp">
+      <Filter>App\Utils\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TzConv.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_SD_CARD.cpp">
+      <Filter>App\Common\HAL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md">
@@ -2517,6 +2568,9 @@
     </None>
     <None Include="..\..\USER\App\Common\DataProc\DP_LIST.inc">
       <Filter>App\Common\DataProc</Filter>
+    </None>
+    <None Include="..\..\USER\App\Common\Music\MusicCode.h">
+      <Filter>App\Common\Music</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

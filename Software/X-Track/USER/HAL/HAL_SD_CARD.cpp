@@ -5,6 +5,8 @@ static SdFat SD(&SPI_2);
 
 static bool SD_IsReady = false;
 
+static HAL::SD_CallbackFunction_t SD_EventCallback = nullptr;
+
 /*
  * User provided date time callback function.
  * See SdFile::dateTimeCallback() for usage.
@@ -75,12 +77,28 @@ static void SD_Check(bool isInsert)
     if(isInsert)
     {
         bool ret = HAL::SD_Init();
+
+        if(ret && SD_EventCallback)
+        {
+            SD_EventCallback(true);
+        }
+
         HAL::Audio_PlayMusic(ret ? "DeviceInsert" : "Error");
     }
     else
     {
+        if(SD_EventCallback)
+        {
+            SD_EventCallback(false);
+        }
+
         HAL::Audio_PlayMusic("DevicePullout");
     }
+}
+
+void HAL::SD_SetEventCallback(SD_CallbackFunction_t callback)
+{
+    SD_EventCallback = callback;
 }
 
 void HAL::SD_Update()

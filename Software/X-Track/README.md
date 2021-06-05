@@ -102,3 +102,23 @@
 * 17.DataCenter添加主账户AccountMain，自动订阅所有的子节点，用于发送通知
 * 18.PageManager在删除root时需要使用异步删除lv_obj_del_async()，在root动画生命周期结束后删除
 * 19.降低GPS和Sensor的数据更新频率，分别为5Hz和1Hz
+
+## [v0.7] - 2021-6-5
+* 1.更新拆分STL模型文件
+* 2.TonePlayer转移至App/Utils
+* 3.在关机时自动保存正在记录的轨迹文件
+* 4.优化轨迹记录操作体验
+* 5.DataCenter合并定时器回调到AccountEvent
+* 6.AccountEvent添加Account* 参数
+* 7.添加DATA_PROC_INIT_DEF节点定义
+* 8.添加StatusBar状态栏、MusicPlayer播放器、TzConv时区转换器数据节点
+* 9.优化电池电量滤波算法 Hysteresis + MedianQueue
+* 10.转移STORAGE_VALUE_REG宏定义至DataProc_Def.h
+* 11.在SD插入时自动加载JSON系统配置文件
+* 12.添加Common/Music
+* 13.优化DataCenter和PageManager日志输出等级
+* 14.优化GPX库
+* 15.优化PAGE_STASH_POP
+* 16.去除PageManager::Pop函数的stash参数
+* 17.添加Arduino Time时间转换库
+* 18.去除GPS_Info_t的hour_utc成员，使用TzConv进行时区转换

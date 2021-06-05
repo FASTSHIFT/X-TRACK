@@ -8,7 +8,7 @@ void DataProc::MAG_Commit(HAL::MAG_Info_t* info)
     account->Commit(info, sizeof(HAL::MAG_Info_t));
 }
 
-void DP_MAG_Init(Account* act)
+DATA_PROC_INIT_DEF(MAG)
 {
     account = act;
 }

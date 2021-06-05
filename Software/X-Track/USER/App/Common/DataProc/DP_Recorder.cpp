@@ -4,7 +4,6 @@
 
 using namespace DataProc;
 
-static Account* actRecorder;
 static GPX gpx;
 static Recorder_Info_t recInfo;
 static lv_fs_file_t file;
@@ -21,8 +20,9 @@ static void Recorder_FileWriteString(const char* str)
     );
 }
 
-static void Recorder_Update(Account* account)
+static void onTimer(Account* account)
 {
+    LV_LOG_USER("Track recording...");
     HAL::GPS_Info_t gps;
     account->Pull("GPS", &gps, sizeof(gps));
 
@@ -35,10 +35,10 @@ static void Recorder_Update(Account* account)
     Recorder_FileWriteString(gpxStr.c_str());
 }
 
-static int Recorder_GetFileName(char* buf, uint32_t size)
+static int Recorder_GetFileName(Account* account, char* buf, uint32_t size)
 {
     HAL::Clock_Info_t clock;
-    actRecorder->Pull("Clock", &clock, sizeof(clock));
+    account->Pull("Clock", &clock, sizeof(clock));
 
     int ret = snprintf(
         buf,
@@ -54,12 +54,12 @@ static int Recorder_GetFileName(char* buf, uint32_t size)
     return ret;
 }
 
-static Recorder_State_t Recorder_RecStart(uint16_t time)
+static void Recorder_RecStart(Account* account, uint16_t time)
 {
     LV_LOG_USER("Track record start");
 
     char filename[128];
-    Recorder_GetFileName(filename, sizeof(filename));
+    Recorder_GetFileName(account, filename, sizeof(filename));
 
     lv_fs_res_t res = lv_fs_open(&file, filename, LV_FS_MODE_WR | LV_FS_MODE_RD);
 
@@ -79,19 +79,17 @@ static Recorder_State_t Recorder_RecStart(uint16_t time)
         Recorder_FileWriteString(gpx.getInfo().c_str());
         Recorder_FileWriteString(gpx.getTrakSegOpen().c_str());
 
-        actRecorder->SetTimerCallback(Recorder_Update, time);
+        account->SetTimerPeriod(time);
     }
     else
     {
         LV_LOG_USER("Track file open error!");
     }
-
-    return RECORDER_STOP;
 }
 
-static Recorder_State_t Recorder_RecStop()
+static void Recorder_RecStop(Account* account)
 {
-    actRecorder->SetTimerCallback(nullptr, 0);
+    account->SetTimerPeriod(0);
 
     Recorder_FileWriteString(gpx.getTrakSegClose().c_str());;
     Recorder_FileWriteString(gpx.getTrakClose().c_str());
@@ -99,30 +97,41 @@ static Recorder_State_t Recorder_RecStop()
     lv_fs_close(&file);
 
     LV_LOG_USER("Track record end");
-
-    return RECORDER_START;
 }
 
-static int onSignal(Recorder_Info_t* info)
+static int onSignal(Account* account, Recorder_Info_t* info)
 {
     int retval = 0;
 
-    switch (info->state)
+    switch (info->cmd)
     {
-    case RECORDER_START:
-        recInfo.state = Recorder_RecStart(info->time);
+    case RECORDER_CMD_START:
+        Recorder_RecStart(account, info->time);
         break;
-    case RECORDER_PAUSE:
-    case RECORDER_STOP:
-        recInfo.state = Recorder_RecStop();
+    case RECORDER_CMD_PAUSE:
+        LV_LOG_USER("Track record pause");
+        account->SetTimerEnable(false);
+        break;
+    case RECORDER_CMD_CONTINUE:
+        LV_LOG_USER("Track record continue");
+        account->SetTimerEnable(true);
+        break;
+    case RECORDER_CMD_STOP:
+        Recorder_RecStop(account);
         break;
     }
 
     return retval;
 }
 
-static int onEvent(Account::EventParam_t* param)
+static int onEvent(Account* account, Account::EventParam_t* param)
 {
+    if (param->event == Account::EVENT_TIMER)
+    {
+        onTimer(account);
+        return 0;
+    }
+
     int retval = Account::ERROR_UNKNOW;
 
     switch (param->event)
@@ -144,7 +153,7 @@ static int onEvent(Account::EventParam_t* param)
     case Account::EVENT_NOTIFY:
         if (param->size == sizeof(Recorder_Info_t))
         {
-            retval = onSignal((Recorder_Info_t*)param->data_p);
+            retval = onSignal(account, (Recorder_Info_t*)param->data_p);
         }
         else
         {
@@ -159,10 +168,9 @@ static int onEvent(Account::EventParam_t* param)
     return retval;
 }
 
-void DP_Recorder_Init(Account* act)
+DATA_PROC_INIT_DEF(Recorder)
 {
     act->Subscribe("GPS");
     act->Subscribe("Clock");
     act->SetEventCallback(onEvent);
-    actRecorder = act;
 }

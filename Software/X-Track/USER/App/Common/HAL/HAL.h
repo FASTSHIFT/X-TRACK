@@ -32,6 +32,8 @@ void MAG_Update();
 bool SD_Init();
 void SD_Update();
 bool SD_GetReady();
+typedef void(*SD_CallbackFunction_t)(bool insert);
+void SD_SetEventCallback(SD_CallbackFunction_t callback);
 
 /*Power*/
 void Power_Init();
@@ -43,7 +45,6 @@ void Power_Shutdown();
 void Power_Update();
 void Power_EventMonitor();
 void Power_GetInfo(Power_Info_t* info);
-
 typedef void(*Power_CallbackFunction_t)(void);
 void Power_SetEventCallback(Power_CallbackFunction_t callback);
 

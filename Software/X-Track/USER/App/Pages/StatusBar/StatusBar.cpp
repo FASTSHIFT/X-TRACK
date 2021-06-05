@@ -1,3 +1,25 @@
+/*
+ * MIT License
+ * Copyright (c) 2021 _VIFEXTech
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the follo18wing conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 #include "StatusBar.h"
 #include "Common/DataProc/DataProc.h"
 
@@ -29,30 +51,36 @@ struct
     } battery;
 } ui;
 
-static void RecorderDraw_Update(DataProc::Recorder_State_t state)
+static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    lv_obj_t* label = ui.labelRec;
-    switch (state)
+    if (param->event != Account::EVENT_NOTIFY)
     {
-    case DataProc::RECORDER_STOP:
-        if (lv_obj_has_flag(label, LV_OBJ_FLAG_HIDDEN))
-        {
-            lv_obj_clear_flag(label, LV_OBJ_FLAG_HIDDEN);
-            lv_obj_set_style_text_color(label, lv_color_white(), 0);
-        }
-        break;
-    case DataProc::RECORDER_PAUSE:
-        lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_YELLOW), 0);
-        break;
-    case DataProc::RECORDER_START:
-        if (!lv_obj_has_flag(label, LV_OBJ_FLAG_HIDDEN))
-        {
-            lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
-        }
-        break;
-    default:
-        break;
+        return Account::ERROR_UNSUPPORTED_REQUEST;
     }
+
+    if (param->size != sizeof(DataProc::StatusBar_Info_t))
+    {
+        return Account::ERROR_SIZE_MISMATCH;
+    }
+
+    DataProc::StatusBar_Info_t* info = (DataProc::StatusBar_Info_t*)param->data_p;
+    
+    if (info->showLabelRec)
+    {
+        lv_obj_clear_flag(ui.labelRec, LV_OBJ_FLAG_HIDDEN);
+        const char* str = info->labelRecStr;
+
+        if (str)
+        {
+            lv_label_set_text(ui.labelRec, str);
+        }
+    }
+    else
+    {
+        lv_obj_add_flag(ui.labelRec, LV_OBJ_FLAG_HIDDEN);
+    }
+
+    return 0;
 }
 
 static void StatusBar_Update(lv_timer_t* timer)
@@ -61,11 +89,6 @@ static void StatusBar_Update(lv_timer_t* timer)
     HAL::GPS_Info_t gps;
     actStatusBar->Pull("GPS", &gps, sizeof(gps));
     lv_label_set_text_fmt(ui.satellite.label, "%d", gps.satellites);
-
-    /* recorder */
-    DataProc::Recorder_Info_t rec;
-    actStatusBar->Pull("Recorder", &rec, sizeof(rec));
-    //RecorderDraw_Update(rec.state);
 
     /* clock */
     HAL::Clock_Info_t clock;
@@ -76,7 +99,7 @@ static void StatusBar_Update(lv_timer_t* timer)
     HAL::Power_Info_t power;
     actStatusBar->Pull("Power", &power, sizeof(power));
     lv_label_set_text_fmt(ui.battery.label, "%d", power.usage);
-    //lv_obj_set_height(ui.battery.objUsage, h);
+
     bool Is_BattCharging = power.isCharging;
     lv_obj_t* contBatt = ui.battery.objUsage;
     static bool Is_BattChargingAnimActive = false;
@@ -166,7 +189,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     label = lv_label_create(cont);
     lv_obj_add_style(label, &style, 0);
     lv_obj_align_to(label, ui.satellite.img, LV_ALIGN_OUT_RIGHT_MID, 30, 0);
-    lv_label_set_text(label, "REC*");
+    lv_label_set_text(label, "");
     lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
     ui.labelRec = label;
 
@@ -229,12 +252,16 @@ void StatusBar::SetStyle(Style_t style)
 void StatusBar::Init(lv_obj_t* par)
 {
     StatusBar_Create(par);
+}
 
-    actStatusBar = new Account("StatusBar", DataProc::Center());
-    actStatusBar->Subscribe("GPS");
-    actStatusBar->Subscribe("Power");
-    actStatusBar->Subscribe("Clock");
-    actStatusBar->Subscribe("Recorder");
+DATA_PROC_INIT_DEF(StatusBar)
+{
+    act->Subscribe("GPS");
+    act->Subscribe("Power");
+    act->Subscribe("Clock");
+    act->SetEventCallback(onEvent);
+
+    actStatusBar = act;
 }
 
 void StatusBar::Appear(bool en)

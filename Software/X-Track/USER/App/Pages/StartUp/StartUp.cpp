@@ -17,6 +17,7 @@ void StartUp::onCustomAttrConfig()
 
 void StartUp::onViewLoad()
 {
+    Model.Init();
     View.Create(root);
     lv_timer_create(onTimer, 2000, this);
 }
@@ -28,7 +29,7 @@ void StartUp::onViewDidLoad()
 
 void StartUp::onViewWillAppear()
 {
-    
+    Model.PlayMusic("StartUp");
 }
 
 void StartUp::onViewDidAppear()
@@ -48,7 +49,7 @@ void StartUp::onViewDidDisappear()
 
 void StartUp::onViewDidUnload()
 {
-
+    Model.Deinit();
 }
 
 void StartUp::onTimer(lv_timer_t* timer)

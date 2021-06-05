@@ -23,11 +23,11 @@
 #ifndef __DATA_CENTER_LOG_H
 #define __DATA_CENTER_LOG_H
 
-#define DATA_CENTER_USE_LOG 0
+#define DATA_CENTER_USE_LOG 1
 
 #if !defined(ARDUINO) && DATA_CENTER_USE_LOG
 #include <stdio.h>
-#  define DC_LOG_INFO(format, ...)  printf("\r\nDC INFO: "),printf(format, ##__VA_ARGS__)
+#  define DC_LOG_INFO(format, ...)  //printf("\r\nDC INFO: "),printf(format, ##__VA_ARGS__)
 #  define DC_LOG_WARN(format, ...)  printf("\r\nDC WARN: "),printf(format, ##__VA_ARGS__)
 #  define DC_LOG_ERROR(format, ...) printf("\r\nDC ERROR: "),printf(format, ##__VA_ARGS__)
 #else

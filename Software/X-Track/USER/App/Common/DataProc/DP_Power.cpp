@@ -2,10 +2,30 @@
 #include "Utils/Filters/Filters.h"
 #include "../HAL/HAL.h"
 
-static Filter::Hysteresis<int> usageFilter(2);
-
-static int onEvent(Account::EventParam_t* param)
+static void onTimer(Account* account)
 {
+    static bool lastStatus = false;
+
+    HAL::Power_Info_t info;
+    HAL::Power_GetInfo(&info);
+    if (info.isCharging != lastStatus)
+    {
+        HAL::Audio_PlayMusic(info.isCharging ? "BattChargeStart" : "BattChargeEnd");
+        lastStatus = info.isCharging;
+    }
+}
+
+static int onEvent(Account* account, Account::EventParam_t* param)
+{
+    static Filter::Hysteresis<int16_t>      battUsageHysFilter(2);
+    static Filter::MedianQueue<int16_t, 10> battUsageMqFilter;
+    
+    if (param->event == Account::EVENT_TIMER)
+    {
+        onTimer(account);
+        return 0;
+    }
+
     if (param->event != Account::EVENT_SUB_PULL)
     {
         return Account::ERROR_UNSUPPORTED_REQUEST;
@@ -19,29 +39,18 @@ static int onEvent(Account::EventParam_t* param)
     HAL::Power_Info_t powerInfo;
     HAL::Power_GetInfo(&powerInfo);
     
-    powerInfo.usage = usageFilter.GetNext(powerInfo.usage);
+    int16_t usage = powerInfo.usage;
+    usage = battUsageHysFilter.GetNext(usage);
+    usage = battUsageMqFilter.GetNext(usage);
+    powerInfo.usage = usage;
 
     memcpy(param->data_p, &powerInfo, param->size);
 
     return 0;
 }
 
-static void Power_Update(Account* account)
+DATA_PROC_INIT_DEF(Power)
 {
-    static bool lastStatus = false;
-    
-    HAL::Power_Info_t info;
-    HAL::Power_GetInfo(&info);
-    if(info.isCharging != lastStatus)
-    {
-        HAL::Audio_PlayMusic(info.isCharging ? "BattChargeStart" : "BattChargeEnd");
-        lastStatus = info.isCharging;
-    }
-}
-
-void DP_Power_Init(Account* act)
-{
-    act->Subscribe("Storage");
     act->SetEventCallback(onEvent);
-    act->SetTimerCallback(Power_Update, 500);
+    act->SetTimerPeriod(500);
 }

@@ -14,31 +14,55 @@ uint32_t DataProc::GetTickElaps(uint32_t prevTick)
 
 const char* DataProc::ConvTime(uint64_t ms, char* buf, uint16_t len)
 {
-    uint32_t ss = ms / 1000;
+    uint32_t ss = (uint32_t)(ms / 1000);
     uint32_t mm = ss / 60;
     uint32_t hh = mm / 60;
     lv_snprintf(buf, len, "%d:%02d:%02d", hh, mm % 60, ss % 60);
     return buf;
 }
 
-static int onEvent(Account::EventParam_t* param)
+static void onTimer(Account* account)
 {
+    HAL::GPS_Info_t gps;
+    account->Pull("GPS", &gps, sizeof(gps));
+    
+    if(gps.isVaild)
+    {
+        HAL::Clock_Info_t clock;
+        account->Pull("TzConv", &clock, sizeof(clock));
+        HAL::Clock_SetInfo(&clock);
+        account->SetTimerPeriod(0);
+    }
+}
+
+static int onEvent(Account* account, Account::EventParam_t* param)
+{
+    if (param->event == Account::EVENT_TIMER)
+    {
+        onTimer(account);
+        return 0;
+    }
+
     if (param->event != Account::EVENT_SUB_PULL)
     {
         return Account::ERROR_UNSUPPORTED_REQUEST;
     }
-
+    
     if (param->size != sizeof(HAL::Clock_Info_t))
     {
         return Account::ERROR_SIZE_MISMATCH;
     }
-
-    HAL::Clock_GetInfo((HAL::Clock_Info_t*)param->data_p);
+    
+    HAL::Clock_Info_t* info = (HAL::Clock_Info_t*)param->data_p;
+    HAL::Clock_GetInfo(info);
 
     return 0;
 }
 
-void DP_Clock_Init(Account* act)
+DATA_PROC_INIT_DEF(Clock)
 {
+    act->Subscribe("TzConv");
+    act->Subscribe("GPS");
     act->SetEventCallback(onEvent);
+    act->SetTimerPeriod(500);
 }

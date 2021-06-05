@@ -8,7 +8,7 @@ using namespace DataProc;
 
 static StorageService storageService(SAVE_FILE_NAME);
 
-static int onEvent(Account::EventParam_t* param)
+static int onEvent(Account* account, Account::EventParam_t* param)
 {
     if (param->event != Account::EVENT_NOTIFY)
     {
@@ -48,7 +48,16 @@ static int onEvent(Account::EventParam_t* param)
     return 0;
 }
 
-void DP_Storage_Init(Account* act)
+static void onSDEvent(bool insert)
+{
+    if(insert)
+    {
+        storageService.LoadFile();
+    }
+}
+
+DATA_PROC_INIT_DEF(Storage)
 {
     act->SetEventCallback(onEvent);
+    HAL::SD_SetEventCallback(onSDEvent);
 }

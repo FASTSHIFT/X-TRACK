@@ -7,10 +7,11 @@ class DialplateModel
 {
 public:
     typedef enum {
-        REC_STOP = DataProc::RECORDER_STOP,
-        REC_START = DataProc::RECORDER_START,
-        REC_PAUSE = DataProc::RECORDER_PAUSE,       
-    }RecCtrl_t;
+        REC_START    = DataProc::RECORDER_CMD_START,
+        REC_PAUSE    = DataProc::RECORDER_CMD_PAUSE,
+        REC_CONTINUE = DataProc::RECORDER_CMD_CONTINUE,
+        REC_STOP     = DataProc::RECORDER_CMD_STOP,
+    }RecCmd_t;
 
 public:
     HAL::SportStatus_Info_t sportStatusInfo;
@@ -18,23 +19,27 @@ public:
 public:
     void Init();
     void Deinit();
-    inline float GetSpeed()
+
+    bool GetGPSReady();
+
+    float GetSpeed()
     {
         return sportStatusInfo.speedKph;
     }
     
-    inline float GetAvgSpeed()
+    float GetAvgSpeed()
     {
         return sportStatusInfo.speedAvgKph;
     }
 
-    void RecorderCtrl(RecCtrl_t ctrl);
+    void RecorderCommand(RecCmd_t cmd);
+    void PlayMusic(const char* music);
 
 private:
     Account* account;
 
 private:
-    static int onEvent(Account::EventParam_t*param);
+    static int onEvent(Account* account, Account::EventParam_t* param);
 };
 
 #endif

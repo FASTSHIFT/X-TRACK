@@ -21,8 +21,6 @@ void HAL::HAL_Init()
     MAG_Init();
     Audio_Init();
     SD_Init();
-   
-    Audio_PlayMusic("StartUp");
     
     Timer_SetInterrupt(TIM4, 10 * 1000, HAL_InterrputUpdate);
     TIM_Cmd(TIM4, ENABLE);

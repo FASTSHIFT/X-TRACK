@@ -194,14 +194,14 @@ int Account::Publish()
         if (callback != nullptr)
         {
             param.recv = sub;
-            int ret = callback(&param);
+            int ret = callback(sub, &param);
 
             DC_LOG_INFO("push done: %d", ret);
             retval = ret;
         }
         else
         {
-            DC_LOG_WARN("sub[%s] not register callback", sub->ID);
+            DC_LOG_INFO("sub[%s] not register callback", sub->ID);
         }
     }
 
@@ -243,7 +243,7 @@ int Account::Pull(Account* pub, void* data_p, uint32_t size)
         param.data_p = data_p;
         param.size = size;
 
-        int ret = callback(&param);
+        int ret = callback(pub, &param);
 
         DC_LOG_INFO("pull done: %d", ret);
         retval = ret;
@@ -315,7 +315,7 @@ int Account::Notify(Account* pub, const void* data_p, uint32_t size)
         param.data_p = (void*)data_p;
         param.size = size;
 
-        int ret = callback(&param);
+        int ret = callback(pub, &param);
 
         DC_LOG_INFO("send done: %d", ret);
         retval = ret;
@@ -337,33 +337,50 @@ void Account::SetEventCallback(EventCallback_t callback)
 void Account::TimerCallbackHandler(lv_timer_t* timer)
 {
     Account* instance = (Account*)(timer->user_data);
-    TimerCallback_t callback = instance->priv.timerCallback;
+    EventCallback_t callback = instance->priv.eventCallback;
     if(callback)
     {
-        callback(instance);
+        EventParam_t param;
+        param.event = EVENT_TIMER;
+        param.tran = instance;
+        param.recv = instance;
+        param.data_p = nullptr;
+        param.size = 0;
+
+        callback(instance, &param);
     }
 }
 
-void Account::SetTimerCallback(TimerCallback_t callback, uint32_t intervalTime)
+void Account::SetTimerPeriod(uint32_t period)
 {   
     if(priv.timer)
     {
         lv_timer_del(priv.timer);
         priv.timer = nullptr;
     }
-
-    priv.timerCallback = callback;
     
-    if(callback == nullptr)
+    if(period == 0)
     {
         return;
     }
     
     priv.timer = lv_timer_create(
         TimerCallbackHandler,
-        intervalTime,
+        period,
         this
     );
+}
+
+void Account::SetTimerEnable(bool en)
+{
+    lv_timer_t* timer = priv.timer;
+
+    if (timer == nullptr)
+    {
+        return;
+    }
+
+    en ? lv_timer_resume(timer) : lv_timer_pause(timer);
 }
 
 uint32_t Account::GetPublisherLen()

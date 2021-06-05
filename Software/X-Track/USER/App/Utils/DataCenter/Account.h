@@ -38,6 +38,7 @@ public:
         EVENT_PUB_PUBLISH,
         EVENT_SUB_PULL,
         EVENT_NOTIFY,
+        EVENT_TIMER,
         _EVENT_LAST
     }EventCode_t;
 
@@ -61,8 +62,7 @@ public:
         uint32_t size;
     }EventParam_t;
 
-    typedef int (*EventCallback_t)(EventParam_t* param);
-    typedef void (*TimerCallback_t)(Account* account);
+    typedef int (*EventCallback_t)(Account* account, EventParam_t* param);
 
 public:
     Account(
@@ -97,7 +97,10 @@ public:
     void SetEventCallback(EventCallback_t callback);
 
     /* 定时上报 */
-    void SetTimerCallback(TimerCallback_t callback, uint32_t intervalTime);
+    void SetTimerPeriod(uint32_t period);
+
+    /* 定时器使能 */
+    void SetTimerEnable(bool en);
 
     /* 关注UP数 */
     uint32_t GetPublisherLen();
@@ -118,7 +121,6 @@ public:
         EventCallback_t eventCallback;  /* 事件 */
 
         lv_timer_t* timer;
-        TimerCallback_t timerCallback;
 
         PingPongBuffer_t BufferManager;
         uint32_t BufferSize;
