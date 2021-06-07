@@ -39,3 +39,11 @@
 ## 实物演示
 https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-8294-df79f151dedb.mp4
 
+## 致谢
+> 感谢[@davidce](https://www.geek-workshop.com/home.php?mod=space&uid=204)贡献的参考设计“[自制基于arduino的GPS地图导航系统3.0](https://www.geek-workshop.com/thread-8835-1-1.html)”以及地图选择工具。
+
+> 感谢[@W-Mai](https://github.com/W-Mai)改进的地图下载链接生成工具、地图下载器、[LVGL图片转换器(Python版)](https://github.com/W-Mai/lvgl_image_converter)、批量文件重命名工具。
+
+> 感谢[@Trigger-CN](https://github.com/Trigger-CN)的UI设计。
+
+> 感谢[@dj140](https://github.com/dj140)编写的地图下载教程。
