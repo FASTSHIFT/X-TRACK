@@ -33,8 +33,9 @@
 * 5.支持RTC自动根据GPS校准
 * 6.支持记录轨迹，可导出[GPX](https://zh.wikipedia.org/wiki/GPX)格式的文件
 * 7.支持掉电自动保存数据(JSON格式文件)
-* 8.4小时续航 (持续工作，始终亮屏)
-* 9.待续...
+* 8.四小时续航 (持续工作，始终亮屏)
+* 9.支持在[PC模拟器](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/Simulator)模拟，脱离硬件调试
+* 10.待续...
 
 ## 实物演示
 https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-8294-df79f151dedb.mp4
@@ -46,4 +47,6 @@ https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-
 
 > 感谢[@Trigger-CN](https://github.com/Trigger-CN)的UI设计。
 
-> 感谢[@dj140](https://github.com/dj140)编写的地图下载教程。
+> 感谢[@MouriNaruto](https://github.com/MouriNaruto)的LVGL Visual Studio模拟器[lv_sim_visual_studio](https://github.com/lvgl/lv_sim_visual_studio)
+
+> 感谢[@dj140](https://github.com/dj140)编写地图下载教程。
