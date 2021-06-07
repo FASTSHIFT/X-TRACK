@@ -47,6 +47,6 @@ https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-
 
 > 感谢[@Trigger-CN](https://github.com/Trigger-CN)的UI设计。
 
-> 感谢[@MouriNaruto](https://github.com/MouriNaruto)的LVGL Visual Studio模拟器[lv_sim_visual_studio](https://github.com/lvgl/lv_sim_visual_studio)
+> 感谢[@MouriNaruto](https://github.com/MouriNaruto)的LVGL Visual Studio模拟器[lv_sim_visual_studio](https://github.com/lvgl/lv_sim_visual_studio)。
 
 > 感谢[@dj140](https://github.com/dj140)编写地图下载教程。
