@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -24,7 +24,8 @@
 #include "HAL/HAL.h"
 
 #define USE_FPS_TEST 0
-#if (USE_FPS_TEST == 1) 
+
+#if USE_FPS_TEST 
 static float Display_GetFPS(SCREEN_CLASS* scr, uint32_t loopNum);
 #endif
 
@@ -59,10 +60,9 @@ void Display_Init()
     lv_port_disp_init(&screen);
     lv_port_indev_init();
     lv_fs_if_init();
-    //lv_port_log_init();
 
     /*±≥π‚Ω•¡¡*/
-    HAL::Backlight_SetGradual(HAL::Backlight_GetBKP(), 1000);
+    HAL::Backlight_SetGradual(1000, 1000);
 }
 
 #if (USE_FPS_TEST == 1) 

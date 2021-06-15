@@ -361,6 +361,9 @@
     <Filter Include="App\Utils\Time">
       <UniqueIdentifier>{8203c2d1-eff3-4a9b-a96e-baad94dbc101}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lvgl\src\extra\themes\mono">
+      <UniqueIdentifier>{19e567ae-ba85-45f0-9ba6-94c9e860b5dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -902,6 +905,9 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\Time\TimeLib.h">
       <Filter>App\Utils\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\themes\mono\lv_theme_mono.h">
+      <Filter>lvgl\src\extra\themes\mono</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1628,7 +1634,7 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.cpp">
+    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.c">
       <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp">
@@ -1864,6 +1870,12 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_SD_CARD.cpp">
       <Filter>App\Common\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\themes\mono\lv_theme_mono.c">
+      <Filter>lvgl\src\extra\themes\mono</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SysConfig.cpp">
+      <Filter>App\Common\DataProc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

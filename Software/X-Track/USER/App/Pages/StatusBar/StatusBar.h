@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -25,13 +25,15 @@
 
 #include "../Page.h"
 
-namespace StatusBar {
+namespace StatusBar
+{
 
-typedef enum {
+typedef enum
+{
     STYLE_TRANSP,
     STYLE_BLACK,
     STYLE_MAX
-}Style_t;
+} Style_t;
 
 void Init(lv_obj_t* par);
 void SetStyle(Style_t style);

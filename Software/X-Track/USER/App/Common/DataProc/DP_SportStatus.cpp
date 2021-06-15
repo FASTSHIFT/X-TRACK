@@ -94,8 +94,8 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
 DATA_PROC_INIT_DEF(SportStatus)
 {
-    act->Subscribe("GPS");
-    act->Subscribe("Storage");
+    account->Subscribe("GPS");
+    account->Subscribe("Storage");
 
     STORAGE_VALUE_REG(act, sportStatus.totalDistance, STORAGE_TYPE_FLOAT);
     STORAGE_VALUE_REG(act, sportStatus.totalTimeUINT32[0], STORAGE_TYPE_INT);
@@ -103,7 +103,7 @@ DATA_PROC_INIT_DEF(SportStatus)
     STORAGE_VALUE_REG(act, sportStatus.speedMaxKph, STORAGE_TYPE_FLOAT);
 
     sportStatus.lastTick = DataProc::GetTick();
-    
-    act->SetEventCallback(onEvent);
-    act->SetTimerPeriod(500);
+
+    account->SetEventCallback(onEvent);
+    account->SetTimerPeriod(500);
 }

@@ -22,12 +22,12 @@ static void Buzz_Handler(int dir)
         {
             freq += 100;
         }
-        
+
         if(dir < 0)
         {
             freq -= 100;
         }
-        
+
         freq = constrain(freq, 100, 20 * 1000);
     }
 
@@ -41,7 +41,7 @@ static void Encoder_EventHandler()
     {
         return;
     }
-    
+
     int dir = (digitalRead(CONFIG_ENCODER_B_PIN) == LOW ? -1 : +1);
     EncoderDiff += dir;
     Buzz_Handler(dir);
@@ -69,9 +69,9 @@ void HAL::Encoder_Init()
     pinMode(CONFIG_ENCODER_A_PIN, INPUT_PULLUP);
     pinMode(CONFIG_ENCODER_B_PIN, INPUT_PULLUP);
     pinMode(CONFIG_ENCODER_PUSH_PIN, INPUT_PULLUP);
-    
+
     attachInterrupt(CONFIG_ENCODER_A_PIN, Encoder_EventHandler, FALLING);
-    
+
     EncoderPush.EventAttach(Encoder_PushHandler);
 }
 
@@ -91,7 +91,7 @@ bool HAL::Encoder_GetIsPush()
 {
     static bool isFirststRelease = false;
     bool isPressed = (digitalRead(CONFIG_ENCODER_PUSH_PIN) == LOW);
-    
+
     if(!isFirststRelease)
     {
         if(!isPressed)
@@ -100,6 +100,6 @@ bool HAL::Encoder_GetIsPush()
         }
         return false;
     }
-    
+
     return isPressed;
 }

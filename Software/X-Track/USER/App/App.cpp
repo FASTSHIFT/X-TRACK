@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -29,6 +29,14 @@
 static AppFactory factory;
 static PageManager manager(&factory);
 
+#define ACCOUNT_SEND_CMD(ACT, CMD)\
+do{\
+    DataProc::ACT##_Info_t info;\
+    memset(&info, 0, sizeof(info));\
+    info.cmd = DataProc::CMD;\
+    DataProc::Center()->AccountMain.Notify(#ACT, &info, sizeof(info));\
+}while(0)
+
 void App_Init()
 {
     DataProc_Init();
@@ -45,25 +53,18 @@ void App_Init()
     manager.Install("Dialplate", "Pages/Dialplate");
     manager.Install("SystemInfos", "Pages/SystemInfos");
     manager.Install("StartUp", "Pages/StartUp");
-    
+
     manager.SetGlobalLoadAnimType(PageManager::LOAD_ANIM_OVER_TOP, 500);
-    
+
     manager.Push("Pages/StartUp");
 
-    DataProc::Storage_Info_t stoarageInfo;
-    memset(&stoarageInfo, 0, sizeof(stoarageInfo));
-    stoarageInfo.cmd = DataProc::STORAGE_CMD_LOAD;
-    DataProc::Center()->AccountMain.Notify("Storage", &stoarageInfo, sizeof(stoarageInfo));
+    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_LOAD);
+    ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_LOAD);
 }
 
 void App_Uninit()
 {
-    DataProc::Storage_Info_t stoarageInfo;
-    memset(&stoarageInfo, 0, sizeof(stoarageInfo));
-    stoarageInfo.cmd = DataProc::STORAGE_CMD_SAVE;
-    DataProc::Center()->AccountMain.Notify("Storage", &stoarageInfo, sizeof(stoarageInfo));
-    
-    DataProc::Recorder_Info_t recInfo;
-    recInfo.cmd = DataProc::RECORDER_CMD_STOP;
-    DataProc::Center()->AccountMain.Notify("Recorder", &recInfo, sizeof(recInfo));
+    ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_SAVE);
+    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_SAVE);
+    ACCOUNT_SEND_CMD(Recorder, RECORDER_CMD_STOP);
 }

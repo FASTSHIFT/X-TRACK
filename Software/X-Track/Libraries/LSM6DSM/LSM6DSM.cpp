@@ -197,7 +197,7 @@ void LSM6DSM::GetMotion6(
     *acc_z = (buf[11] << 8) | buf[10];
 }
 
-int16_t LSM6DSM::ReadTemperature(void)
+int16_t LSM6DSM::GetTemperature(void)
 {
     uint8_t buf[2];
     ReadRegs(OUT_TEMP_L, buf, sizeof(buf));

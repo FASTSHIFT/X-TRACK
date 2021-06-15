@@ -27,10 +27,10 @@ static void onTimer(Account* account)
     account->Pull("GPS", &gps, sizeof(gps));
 
     String gpxStr = gpx.getPt(
-        GPX_TRKPT,
-        String(gps.longitude, 6),
-        String(gps.latitude, 6)
-    );
+                        GPX_TRKPT,
+                        String(gps.longitude, 6),
+                        String(gps.latitude, 6)
+                    );
 
     Recorder_FileWriteString(gpxStr.c_str());
 }
@@ -41,16 +41,16 @@ static int Recorder_GetFileName(Account* account, char* buf, uint32_t size)
     account->Pull("Clock", &clock, sizeof(clock));
 
     int ret = snprintf(
-        buf,
-        size,
-        "/Track/TRK_%04d%02d%02d_%02d%02d%02d.gpx",
-        clock.year,
-        clock.month,
-        clock.day,
-        clock.hour,
-        clock.minute,
-        clock.second
-    );
+                  buf,
+                  size,
+                  "/Track/TRK_%04d%02d%02d_%02d%02d%02d.gpx",
+                  clock.year,
+                  clock.month,
+                  clock.day,
+                  clock.hour,
+                  clock.minute,
+                  clock.second
+              );
     return ret;
 }
 
@@ -136,7 +136,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     switch (param->event)
     {
-    case Account::EVENT_PUB_PUBLISH:       
+    case Account::EVENT_PUB_PUBLISH:
         break;
 
     case Account::EVENT_SUB_PULL:
@@ -170,7 +170,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
 DATA_PROC_INIT_DEF(Recorder)
 {
-    act->Subscribe("GPS");
-    act->Subscribe("Clock");
-    act->SetEventCallback(onEvent);
+    account->Subscribe("GPS");
+    account->Subscribe("Clock");
+    account->SetEventCallback(onEvent);
 }

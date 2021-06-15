@@ -34,12 +34,13 @@ int DialplateModel::onEvent(Account* account, Account::EventParam_t* param)
         return Account::ERROR_UNSUPPORTED_REQUEST;
     }
 
-    if (param->size != sizeof(HAL::SportStatus_Info_t))
+    if (strcmp(param->tran->ID, "SportStatus") != 0
+            || param->size != sizeof(HAL::SportStatus_Info_t))
     {
         return -1;
     }
 
-    DialplateModel* instance = (DialplateModel*)param->recv->UserData;
+    DialplateModel* instance = (DialplateModel*)account->UserData;
     memcpy(&(instance->sportStatusInfo), param->data_p, param->size);
 
     return 0;

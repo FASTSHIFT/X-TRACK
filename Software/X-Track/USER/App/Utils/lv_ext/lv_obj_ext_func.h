@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -26,15 +26,11 @@
 #include "lvgl/lvgl.h"
 
 #define LV_ANIM_TIME_DEFAULT    400
-#define LV_SYMBOL_DEGREE_SIGN   "\xC2\xB0"
 #define LV_ANIM_EXEC(attr)      (lv_anim_exec_xcb_t)lv_obj_set_##attr
 
-bool lv_obj_del_safe(lv_obj_t** obj);
-void lv_obj_set_opa_scale(lv_obj_t* obj, lv_coord_t opa);
-lv_coord_t lv_obj_get_opa_scale(lv_obj_t* obj);
+void lv_obj_set_opa_scale(lv_obj_t* obj, int16_t opa);
+int16_t lv_obj_get_opa_scale(lv_obj_t* obj);
 void lv_label_set_text_add(lv_obj_t * label, const char * text);
-lv_coord_t lv_obj_get_x_center(lv_obj_t * obj);
-lv_coord_t lv_obj_get_y_center(lv_obj_t * obj);
 void lv_obj_add_anim(
     lv_obj_t * obj, lv_anim_t * a,
     lv_anim_exec_xcb_t exec_cb, 

@@ -79,28 +79,28 @@ void ButtonEvent::EventMonitor(bool isPress)
     if (isPress && NowState == STATE_NO_PRESS)
     {
         NowState = STATE_PRESS;
-        
+
         IsPressed = true;
         LastPressTime = GET_TICK();
 
         EventCallbackFunc(this, EVENT_PRESSED);
         EventCallbackFunc(this, EVENT_CHANGED);
     }
-    
+
     if(NowState == STATE_NO_PRESS)
     {
         return;
     }
-    
+
     if(isPress)
     {
         EventCallbackFunc(this, EVENT_PRESSING);
     }
-    
+
     if (isPress && GetTickElaps(LastPressTime) >= LongPressTimeCfg)
     {
         NowState = STATE_LONG_PRESS;
-        
+
         if(!IS_LongPressed)
         {
             EventCallbackFunc(this, EVENT_LONG_PRESSED);
@@ -116,13 +116,13 @@ void ButtonEvent::EventMonitor(bool isPress)
     else if (!isPress)
     {
         NowState = STATE_NO_PRESS;
-        
+
         if(GetTickElaps(LastClickTime) < DoubleClickTimeCfg)
         {
             ClickCnt++;
             EventCallbackFunc(this, EVENT_DOUBLE_CLICKED);
         }
-        
+
         IS_LongPressed = false;
         IsClicked = true;
         LastClickTime = GET_TICK();

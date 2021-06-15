@@ -509,6 +509,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*An very simple them that is a good starting point for a custom theme*/
  #define LV_USE_THEME_BASIC    0
 
+#define LV_USE_THEME_MONO      0
+
 /*-----------
  * Layouts
  *----------*/

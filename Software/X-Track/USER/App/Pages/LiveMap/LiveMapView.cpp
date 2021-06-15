@@ -8,7 +8,7 @@ void LiveMapView::Create(lv_obj_t* root)
 {
     lv_obj_remove_style_all(root);
     lv_obj_set_size(root, LV_HOR_RES, LV_VER_RES);
-    lv_obj_set_style_bg_color(root, lv_color_white(),0);
+    lv_obj_set_style_bg_color(root, lv_color_white(), 0);
     lv_obj_set_style_bg_opa(root, LV_OPA_COVER, 0);
 
     lv_obj_t* label = lv_label_create(root);
@@ -78,7 +78,8 @@ void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)
     lv_obj_set_pos(cont, lv_obj_get_style_width(par, 0) - 40, 40);
     ui.zoom.cont = cont;
 
-    static const lv_style_prop_t prop[] = {
+    static const lv_style_prop_t prop[] =
+    {
         LV_STYLE_X,
         LV_STYLE_OPA,
         LV_STYLE_PROP_INV
@@ -101,7 +102,7 @@ void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)
     lv_obj_t* slider = lv_slider_create(cont);
     lv_obj_remove_style_all(slider);
     lv_slider_set_range(slider, 3, 15);
-    lv_slider_set_value(slider, 15, LV_ANIM_OFF);   
+    lv_slider_set_value(slider, 15, LV_ANIM_OFF);
     ui.zoom.slider = slider;
 }
 
@@ -112,8 +113,8 @@ void LiveMapView::SportInfo_Create(lv_obj_t* par)
     lv_obj_remove_style_all(obj);
     lv_obj_add_style(obj, &ui.styleCont, 0);
     lv_obj_set_size(obj, 159, 66);
-    lv_obj_align(obj, LV_ALIGN_BOTTOM_LEFT, -10, 10); 
-    lv_obj_set_style_radius(obj, 10, 0);    
+    lv_obj_align(obj, LV_ALIGN_BOTTOM_LEFT, -10, 10);
+    lv_obj_set_style_radius(obj, 10, 0);
     ui.sportInfo.cont = obj;
 
     /* speed */

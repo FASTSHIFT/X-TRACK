@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -34,7 +34,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
 {
     lv_obj_t* root = lv_event_get_target(event);
     PageBase* base = (PageBase*)lv_obj_get_user_data(root);
-    
+
     if (base == nullptr)
     {
         return;
@@ -62,7 +62,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
         manager->AnimState.IsBusy = false;
     }
     else if (eventCode == LV_EVENT_PRESSING)
-    {   
+    {
         lv_coord_t cur = animAttr.getter(root);
 
         lv_coord_t max = MAX(animAttr.pop.exit.start, animAttr.pop.exit.end);
@@ -87,7 +87,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
         if (manager->AnimState.IsSwitchReq)
         {
             return;
-        }  
+        }
 
         lv_coord_t offset_sum = animAttr.push.enter.end - animAttr.push.enter.start;
 
@@ -123,7 +123,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
             lv_anim_set_var(&a, root);
             lv_anim_set_values(&a, start, animAttr.push.enter.end);
             lv_anim_set_exec_cb(&a, animAttr.setter);
-            lv_anim_set_ready_cb(&a, onRootAnimFinish);    
+            lv_anim_set_ready_cb(&a, onRootAnimFinish);
             lv_anim_start(&a);
             PM_LOG_INFO("Root anim start");
         }
@@ -161,10 +161,10 @@ void PageManager::RootEnableDrag(lv_obj_t* root)
 }
 
 void PageManager::onRootAsyncLeave(void* data)
-{ 
+{
     PageBase* base = (PageBase*)data;
     PM_LOG_INFO("Page(%s) send event: LV_EVENT_LEAVE, need to handle...", base->Name);
-    lv_event_send(base->root, LV_EVENT_LEAVE, nullptr);  
+    lv_event_send(base->root, LV_EVENT_LEAVE, nullptr);
 }
 
 void PageManager::RootGetDragPredict(lv_coord_t* x, lv_coord_t* y)

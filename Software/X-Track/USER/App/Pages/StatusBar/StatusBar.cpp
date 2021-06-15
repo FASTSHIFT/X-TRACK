@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -64,7 +64,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     }
 
     DataProc::StatusBar_Info_t* info = (DataProc::StatusBar_Info_t*)param->data_p;
-    
+
     if (info->showLabelRec)
     {
         lv_obj_clear_flag(ui.labelRec, LV_OBJ_FLAG_HIDDEN);
@@ -256,23 +256,24 @@ void StatusBar::Init(lv_obj_t* par)
 
 DATA_PROC_INIT_DEF(StatusBar)
 {
-    act->Subscribe("GPS");
-    act->Subscribe("Power");
-    act->Subscribe("Clock");
-    act->SetEventCallback(onEvent);
+    account->Subscribe("GPS");
+    account->Subscribe("Power");
+    account->Subscribe("Clock");
+    account->SetEventCallback(onEvent);
 
-    actStatusBar = act;
+    actStatusBar = account;
 }
 
 void StatusBar::Appear(bool en)
 {
 #define ANIM_DEF(start_time, obj, attr, start, end) \
-    {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out}
+    {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
 
     lv_anim_timeline_t anim_timeline[] =
     {
         ANIM_DEF(1000, ui.cont, y, -STATUS_BAR_HEIGHT, 0),
+        LV_ANIM_TIMELINE_END
     };
 
-    lv_anim_timeline_start(anim_timeline, ARRAY_SIZE(anim_timeline), !en);
+    lv_anim_timeline_start(anim_timeline, !en);
 }

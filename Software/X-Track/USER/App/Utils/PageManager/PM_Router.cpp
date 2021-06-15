@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -44,7 +44,7 @@ PageBase* PageManager::Push(const char* name, const PageBase::Stash_t* stash)
         return nullptr;
     }
 
-    base->priv.IsDisableAutoCache = base->priv.ReqDisableAutoCache;   
+    base->priv.IsDisableAutoCache = base->priv.ReqDisableAutoCache;
 
     PageStack.push(base);
 
@@ -122,7 +122,7 @@ void PageManager::SwitchTo(PageBase* newNode, bool isPushAct, const PageBase::St
             else
             {
                 PM_LOG_INFO("stash(0x%p) malloc[%d]", buffer, stash->size);
-            }           
+            }
         }
         else if(newNode->priv.Stash.size == stash->size)
         {
@@ -230,7 +230,7 @@ bool PageManager::SwitchAnimStateCheck()
             "Page switch busy[AnimState.IsSwitchReq = %d,"
             "AnimState.IsBusy = %d],"
             "reqire is ignore",
-            AnimState.IsSwitchReq, 
+            AnimState.IsSwitchReq,
             AnimState.IsBusy
         );
         return false;

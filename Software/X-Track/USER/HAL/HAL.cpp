@@ -21,9 +21,9 @@ void HAL::HAL_Init()
     MAG_Init();
     Audio_Init();
     SD_Init();
-    
-    Timer_SetInterrupt(TIM4, 10 * 1000, HAL_InterrputUpdate);
-    TIM_Cmd(TIM4, ENABLE);
+
+    Timer_SetInterrupt(CONFIG_HAL_UPDATE_TIM, 10 * 1000, HAL_InterrputUpdate);
+    TIM_Cmd(CONFIG_HAL_UPDATE_TIM, ENABLE);
 }
 
 static void HAL_SensorUpdate()

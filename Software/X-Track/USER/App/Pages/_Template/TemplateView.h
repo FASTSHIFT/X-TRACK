@@ -3,18 +3,20 @@
 
 #include "../Page.h"
 
-class TemplateView {
+class TemplateView
+{
 public:
     void Create(lv_obj_t* root);
 
 public:
-    struct {
+    struct
+    {
         lv_obj_t* labelTitle;
         lv_obj_t* labelTick;
-    }ui;
+    } ui;
 
 private:
-    
+
 };
 
 #endif // !__VIEW_H

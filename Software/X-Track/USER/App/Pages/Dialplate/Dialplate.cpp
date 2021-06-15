@@ -2,7 +2,7 @@
 
 Dialplate::Dialplate()
     : recState(RECORD_STATE_READY)
-{  
+{
 }
 
 Dialplate::~Dialplate()
@@ -20,7 +20,7 @@ void Dialplate::onViewLoad()
     View.Create(root);
 
     group = lv_group_create();
-    
+
     lv_group_add_obj(group, View.ui.btnCont.btnMap);
     lv_group_add_obj(group, View.ui.btnCont.btnRec);
     lv_group_add_obj(group, View.ui.btnCont.btnMenu);
@@ -43,13 +43,14 @@ void Dialplate::onViewWillAppear()
 
     lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), group);
 
+    Update();
+
     View.AppearAnimStart();
 }
 
 void Dialplate::onViewDidAppear()
 {
     timer = lv_timer_create(onTimerUpdate, 1000, this);
-    lv_timer_ready(timer);
 }
 
 void Dialplate::onViewWillDisappear()
@@ -84,13 +85,13 @@ void Dialplate::Update()
         DataProc::ConvTime(Model.sportStatusInfo.singleTime, buf, sizeof(buf))
     );
     lv_label_set_text_fmt(
-        View.ui.bottomInfo.labelInfoGrp[2].lableValue, 
-        "%0.1f km", 
+        View.ui.bottomInfo.labelInfoGrp[2].lableValue,
+        "%0.1f km",
         Model.sportStatusInfo.singleDistance / 1000
     );
     lv_label_set_text_fmt(
-        View.ui.bottomInfo.labelInfoGrp[3].lableValue, 
-        "%d cal", 
+        View.ui.bottomInfo.labelInfoGrp[3].lableValue,
+        "%d cal",
         int(Model.sportStatusInfo.singleCalorie)
     );
 }

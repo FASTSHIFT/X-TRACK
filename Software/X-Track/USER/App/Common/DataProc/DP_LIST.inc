@@ -10,3 +10,4 @@ DP_DEF(MAG, sizeof(HAL::MAG_Info_t));
 DP_DEF(StatusBar, 0);
 DP_DEF(MusicPlayer, 0);
 DP_DEF(TzConv, 0);
+DP_DEF(SysConfig, 0);

@@ -23,11 +23,12 @@ private:
     LiveMapView View;
     LiveMapModel Model;
 
-    struct {
+    struct
+    {
         uint32_t localX, localY;
         uint32_t focusX, focusY;
         int32_t contLastX, contLastY;
-    }mapPos;  
+    } mapPos;
 
     uint32_t lastMapUpdateTime;
     uint32_t lastContShowTime;

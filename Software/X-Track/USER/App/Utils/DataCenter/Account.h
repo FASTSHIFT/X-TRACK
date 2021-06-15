@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -33,16 +33,18 @@ class DataCenter;
 class Account
 {
 public:
-    typedef enum {
+    typedef enum
+    {
         EVENT_NONE,
         EVENT_PUB_PUBLISH,
         EVENT_SUB_PULL,
         EVENT_NOTIFY,
         EVENT_TIMER,
         _EVENT_LAST
-    }EventCode_t;
+    } EventCode_t;
 
-    typedef enum {
+    typedef enum
+    {
         ERROR_NONE = 0,
         ERROR_UNKNOW = -1,
         ERROR_SIZE_MISMATCH = -2,
@@ -52,23 +54,24 @@ public:
         ERROR_NO_COMMITED = -6,
         ERROR_NOT_FOUND = -7,
         ERROR_PARAM_ERROR = -8
-    }ErrorCode_t;
+    } ErrorCode_t;
 
-    typedef struct {
+    typedef struct
+    {
         EventCode_t event;
         Account* tran;
         Account* recv;
         void* data_p;
         uint32_t size;
-    }EventParam_t;
+    } EventParam_t;
 
     typedef int (*EventCallback_t)(Account* account, EventParam_t* param);
 
 public:
     Account(
-        const char* id, 
-        DataCenter* center, 
-        uint32_t bufSize = 0, 
+        const char* id,
+        DataCenter* center,
+        uint32_t bufSize = 0,
         void* userData = nullptr
     );
     ~Account();
@@ -103,10 +106,10 @@ public:
     void SetTimerEnable(bool en);
 
     /* 关注UP数 */
-    uint32_t GetPublisherLen();
+    uint32_t GetPublisherSize();
 
     /* 粉丝数 */
-    uint32_t GetSubscribeLen();
+    uint32_t GetSubscribeSize();
 
 public:
     const char* ID;      /* B站帐号 */

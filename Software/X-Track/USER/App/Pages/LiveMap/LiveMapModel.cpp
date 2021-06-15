@@ -27,12 +27,13 @@ int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
         return Account::ERROR_UNSUPPORTED_REQUEST;
     }
 
-    LiveMapModel* instance = (LiveMapModel*)param->recv->UserData;
-
-    if (param->size != sizeof(HAL::SportStatus_Info_t))
+    if (strcmp(param->tran->ID, "SportStatus") != 0
+            || param->size != sizeof(HAL::SportStatus_Info_t))
     {
         return -1;
     }
+
+    LiveMapModel* instance = (LiveMapModel*)account->UserData;
     memcpy(&(instance->sportStatusInfo), param->data_p, param->size);
 
     return 0;

@@ -4,7 +4,8 @@
 #include "Utils/PageManager/ResourceManager.h"
 #include "lvgl/lvgl.h"
 
-class ResourcePool{
+class ResourcePool
+{
 
 public:
     ResourceManager Font_;

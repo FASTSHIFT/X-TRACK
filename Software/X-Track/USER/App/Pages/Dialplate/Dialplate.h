@@ -20,12 +20,13 @@ public:
     virtual void onViewDidUnload();
 
 private:
-    typedef enum {
+    typedef enum
+    {
         RECORD_STATE_READY,
         RECORD_STATE_RUN,
         RECORD_STATE_PAUSE,
         RECORD_STATE_STOP
-    }RecordState_t;
+    } RecordState_t;
 
 private:
     void Update();
@@ -40,7 +41,7 @@ private:
     DialplateView View;
     DialplateModel Model;
     lv_group_t* group;
-    lv_timer_t* timer;  
+    lv_timer_t* timer;
     RecordState_t recState;
 };
 

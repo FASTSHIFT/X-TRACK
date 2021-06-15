@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -25,7 +25,7 @@
 #include "lvgl/lvgl.h"
 #include <algorithm>
 
-#define JSON_BUFFER_SIZE 256
+#define JSON_BUFFER_SIZE 512
 
 #define VALUE_TO_DOC(type)\
 do{\
@@ -159,7 +159,7 @@ bool StorageService::LoadFile()
     DeserializationError error = deserializeJson(doc, file);
     if (error)
     {
-        LV_LOG_USER("Failed to read file, using default configuration");
+        LV_LOG_USER("Failed to read file: %s", FilePath);
         return false;
     }
 
@@ -186,7 +186,10 @@ bool StorageService::LoadFile()
         case TYPE_STRING:
         {
             const char* str = doc[iter->key];
-            strncpy((char*)iter->value, str, iter->size);
+            if (str)
+            {
+                strncpy((char*)iter->value, str, iter->size);
+            }
             break;
         }
         default:

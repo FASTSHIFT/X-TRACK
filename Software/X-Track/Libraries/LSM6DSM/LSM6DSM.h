@@ -24,7 +24,7 @@ public:
         int16_t* gyr_y,
         int16_t* gyr_z
     );
-    int16_t ReadTemperature();
+    int16_t GetTemperature();
     void SoftReset();
     void EnableEMbeddedFunc();
     void DisableEMbeddedFunc();

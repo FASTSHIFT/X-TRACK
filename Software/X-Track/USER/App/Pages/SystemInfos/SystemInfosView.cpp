@@ -10,7 +10,7 @@ void SystemInfosView::Create(lv_obj_t* root)
     lv_obj_set_style_bg_color(root, lv_color_black(), 0);
     lv_obj_set_style_bg_opa(root, LV_OPA_COVER, 0);
     lv_obj_set_style_pad_ver(root, ITEM_PAD, 0);
-    
+
     lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(
         root,
@@ -121,7 +121,7 @@ void SystemInfosView::Create(lv_obj_t* root)
         "Firmware\n"
         "LVGL\n"
         "SysTick\n"
-        "Compile\n\n\n"   
+        "Compile\n\n\n"
     );
 
     Group_Init();
@@ -172,7 +172,7 @@ void SystemInfosView::Style_Init()
     lv_style_init(&style.icon);
     lv_style_set_width(&style.icon, 220);
     lv_style_set_bg_color(&style.icon, lv_color_black());
-    lv_style_set_bg_opa(&style.icon, LV_OPA_COVER);    
+    lv_style_set_bg_opa(&style.icon, LV_OPA_COVER);
     lv_style_set_text_font(&style.icon, Resource.GetFont("bahnschrift_17"));
     lv_style_set_text_color(&style.icon, lv_color_white());
 
@@ -182,18 +182,19 @@ void SystemInfosView::Style_Init()
     lv_style_set_border_width(&style.focus, 2);
     lv_style_set_border_color(&style.focus, lv_color_hex(0xff931e));
 
-    static const lv_style_prop_t style_prop[] = {
+    static const lv_style_prop_t style_prop[] =
+    {
         LV_STYLE_WIDTH,
         LV_STYLE_PROP_INV
     };
 
     static lv_style_transition_dsc_t trans;
     lv_style_transition_dsc_init(
-        &trans, 
-        style_prop, 
+        &trans,
+        style_prop,
         lv_anim_path_overshoot,
-        200, 
-        0, 
+        200,
+        0,
         nullptr
     );
     lv_style_set_transition(&style.focus, &trans);
@@ -240,7 +241,7 @@ void SystemInfosView::Item_Create(
 
     lv_obj_set_flex_flow(icon, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(
-        icon, 
+        icon,
         LV_FLEX_ALIGN_SPACE_AROUND,
         LV_FLEX_ALIGN_CENTER,
         LV_FLEX_ALIGN_CENTER
@@ -299,7 +300,7 @@ void SystemInfosView::SetSport(
 void SystemInfosView::SetGPS(
     float lat,
     float lng,
-    float alt,  
+    float alt,
     const char* utc,
     float course,
     float speed
@@ -401,7 +402,7 @@ void SystemInfosView::SetSystem(
     const char* sysVer,
     const char* lvglVer,
     const char* bootTime,
-    const char* compile  
+    const char* compile
 )
 {
     lv_label_set_text_fmt(

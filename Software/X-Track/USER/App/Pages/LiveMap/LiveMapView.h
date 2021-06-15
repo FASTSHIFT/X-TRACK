@@ -3,38 +3,44 @@
 
 #include "../Page.h"
 
-class LiveMapView {
+class LiveMapView
+{
 public:
-    struct {
+    struct
+    {
         lv_obj_t* labelInfo;
 
         lv_style_t styleCont;
         lv_style_t styleLabel;
 
-        struct {
+        struct
+        {
             lv_obj_t* cont;
             lv_obj_t* imgMap[9];
-            lv_obj_t* imgArrow;   
-        }map;
+            lv_obj_t* imgArrow;
+        } map;
 
-        struct {
+        struct
+        {
             lv_obj_t* cont;
             lv_obj_t* labelInfo;
             lv_obj_t* slider;
-        }zoom;
+        } zoom;
 
-        struct {
+        struct
+        {
             lv_obj_t* cont;
-        }move;
+        } move;
 
-        struct {
+        struct
+        {
             lv_obj_t* cont;
 
             lv_obj_t* labelSpeed;
             lv_obj_t* labelTrip;
             lv_obj_t* labelTime;
-        }sportInfo;
-    }ui;
+        } sportInfo;
+    } ui;
 
     void Create(lv_obj_t* root);
     void SetImgArrowAngle(float angle)

@@ -37,12 +37,12 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     info->hour = hour();
     info->minute = minute();
     info->second = second();
-   
+
     return 0;
 }
 
 DATA_PROC_INIT_DEF(TzConv)
 {
-    act->Subscribe("GPS");
-    act->SetEventCallback(onEvent);
+    account->Subscribe("GPS");
+    account->SetEventCallback(onEvent);
 }

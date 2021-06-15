@@ -3,7 +3,8 @@
 
 #include "../Page.h"
 
-class DialplateView {
+class DialplateView
+{
 
 public:
     typedef struct
@@ -11,28 +12,32 @@ public:
         lv_obj_t* cont;
         lv_obj_t* lableValue;
         lv_obj_t* lableUnit;
-    }SubInfo_t;
+    } SubInfo_t;
 
 public:
-    struct {
-        struct {
+    struct
+    {
+        struct
+        {
             lv_obj_t* cont;
             lv_obj_t* labelSpeed;
             lv_obj_t* labelUint;
-        }topInfo;
-        
-        struct {
+        } topInfo;
+
+        struct
+        {
             lv_obj_t* cont;
             SubInfo_t labelInfoGrp[4];
-        }bottomInfo;
+        } bottomInfo;
 
-        struct {
+        struct
+        {
             lv_obj_t* cont;
             lv_obj_t* btnMap;
             lv_obj_t* btnRec;
             lv_obj_t* btnMenu;
-        }btnCont;
-    }ui;
+        } btnCont;
+    } ui;
 
     void Create(lv_obj_t* root);
     void AppearAnimStart(bool playback = false);

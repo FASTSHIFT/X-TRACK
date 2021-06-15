@@ -11,7 +11,7 @@ public:
     void PlayMusic(const char* music);
 
 private:
-	Account* account;
+    Account* account;
 };
 
 #endif

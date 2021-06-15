@@ -166,6 +166,7 @@
     <ClInclude Include="lvgl\src\extra\themes\basic\lv_theme_basic.h" />
     <ClInclude Include="lvgl\src\extra\themes\default\lv_theme_default.h" />
     <ClInclude Include="lvgl\src\extra\themes\lv_themes.h" />
+    <ClInclude Include="lvgl\src\extra\themes\mono\lv_theme_mono.h" />
     <ClInclude Include="lvgl\src\extra\widgets\calendar\lv_calendar.h" />
     <ClInclude Include="lvgl\src\extra\widgets\calendar\lv_calendar_header_arrow.h" />
     <ClInclude Include="lvgl\src\extra\widgets\calendar\lv_calendar_header_dropdown.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Recorder.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Storage.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SysConfig.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TzConv.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
@@ -317,7 +319,7 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\DataCenter.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c" />
     <ClCompile Include="..\..\USER\App\Utils\GPX\GPX.cpp" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
@@ -466,6 +468,7 @@
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
     <ClCompile Include="lvgl\src\extra\themes\basic\lv_theme_basic.c" />
     <ClCompile Include="lvgl\src\extra\themes\default\lv_theme_default.c" />
+    <ClCompile Include="lvgl\src\extra\themes\mono\lv_theme_mono.c" />
     <ClCompile Include="lvgl\src\extra\widgets\calendar\lv_calendar.c" />
     <ClCompile Include="lvgl\src\extra\widgets\calendar\lv_calendar_header_arrow.c" />
     <ClCompile Include="lvgl\src\extra\widgets\calendar\lv_calendar_header_dropdown.c" />

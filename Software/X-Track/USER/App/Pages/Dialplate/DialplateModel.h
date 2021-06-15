@@ -6,12 +6,13 @@
 class DialplateModel
 {
 public:
-    typedef enum {
+    typedef enum
+    {
         REC_START    = DataProc::RECORDER_CMD_START,
         REC_PAUSE    = DataProc::RECORDER_CMD_PAUSE,
         REC_CONTINUE = DataProc::RECORDER_CMD_CONTINUE,
         REC_STOP     = DataProc::RECORDER_CMD_STOP,
-    }RecCmd_t;
+    } RecCmd_t;
 
 public:
     HAL::SportStatus_Info_t sportStatusInfo;
@@ -26,7 +27,7 @@ public:
     {
         return sportStatusInfo.speedKph;
     }
-    
+
     float GetAvgSpeed()
     {
         return sportStatusInfo.speedAvgKph;

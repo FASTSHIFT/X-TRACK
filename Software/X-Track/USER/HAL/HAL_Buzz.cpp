@@ -16,7 +16,7 @@ void HAL::Buzz_Tone(uint32_t freq, int32_t duration)
 {
     if(!IsEnable)
         return;
-    
+
     if(duration >= 0)
     {
         tone(CONFIG_BUZZ_PIN, freq, duration);

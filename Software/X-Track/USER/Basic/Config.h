@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -31,14 +31,14 @@
 #define CONFIG_SCREEN_RST_PIN   PA6
 #define CONFIG_SCREEN_SCK_PIN   PA5
 #define CONFIG_SCREEN_MOSI_PIN  PA7
-#define CONFIG_SCREEN_BLK_PIN   PB1
+#define CONFIG_SCREEN_BLK_PIN   PB1  // TIM3
 
 /* Battery */
 #define CONFIG_BAT_DET_PIN      PA1
 #define CONFIG_BAT_CHG_DET_PIN  PA11
 
 /* Buzzer */
-#define CONFIG_BUZZ_PIN         PA0
+#define CONFIG_BUZZ_PIN         PA0  // TIM2
 
 /* GPS */
 #define CONFIG_GPS_TX_PIN       PA3
@@ -70,5 +70,7 @@
 #define CONFIG_SD_MISO_PIN      PB14
 #define CONFIG_SD_SCK_PIN       PB13
 #define CONFIG_SD_CS_PIN        PB12
+
+#define CONFIG_HAL_UPDATE_TIM   TIM4
 
 #endif

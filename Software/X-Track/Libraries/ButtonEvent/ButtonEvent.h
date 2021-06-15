@@ -97,7 +97,7 @@ public:
     };
 
 
-    private:
+private:
     typedef enum
     {
         STATE_NO_PRESS,

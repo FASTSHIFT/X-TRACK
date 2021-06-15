@@ -4,13 +4,13 @@
 void SystemInfosModel::Init()
 {
     account = new Account("SystemInfosModel", DataProc::Center(), 0, this);
-    
+
     account->Subscribe("SportStatus");
     account->Subscribe("GPS");
     account->Subscribe("MAG");
     account->Subscribe("IMU");
     account->Subscribe("Clock");
-    account->Subscribe("Power");  
+    account->Subscribe("Power");
     account->Subscribe("Storage");
 }
 
@@ -51,8 +51,8 @@ void SystemInfosModel::GetGPSInfo(
     *lng = (float)gps.longitude;
     *alt = gps.altitude;
     snprintf(
-        utc, len, 
-        "%d-%d-%d\n%02d:%02d:%02d", 
+        utc, len,
+        "%d-%d-%d\n%02d:%02d:%02d",
         gps.clock.year,
         gps.clock.month,
         gps.clock.day,

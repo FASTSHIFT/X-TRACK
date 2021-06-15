@@ -3,20 +3,23 @@
 
 #include "../Page.h"
 
-class SystemInfosView {
+class SystemInfosView
+{
 public:
     void Create(lv_obj_t* root);
     void Delete();
 
 public:
-    typedef struct {
+    typedef struct
+    {
         lv_obj_t* cont;
         lv_obj_t* icon;
         lv_obj_t* labelInfo;
         lv_obj_t* labelData;
-    }item_t;
+    } item_t;
 
-    struct {
+    struct
+    {
         item_t sport;
         item_t gps;
         item_t mag;
@@ -26,12 +29,12 @@ public:
         item_t storage;
         item_t system;
         lv_group_t* group;
-    }ui;
+    } ui;
 
 public:
     void SetSport(
-        float trip, 
-        const char* time, 
+        float trip,
+        const char* time,
         float maxSpd
     );
     void SetGPS(
@@ -75,12 +78,13 @@ public:
     static void onFocus(lv_group_t* e);
 
 private:
-    struct {
+    struct
+    {
         lv_style_t icon;
         lv_style_t focus;
         lv_style_t info;
         lv_style_t data;
-    }style;
+    } style;
 
 private:
     void Group_Init();

@@ -3,15 +3,17 @@
 
 #include "../Page.h"
 
-class StartUpView {
+class StartUpView
+{
 public:
     void Create(lv_obj_t* root);
 
 public:
-    struct {
+    struct
+    {
         lv_obj_t* labelLogo;
         lv_obj_t* bar;
-    }ui;
+    } ui;
 
 private:
     static void Bar_SetValue(lv_obj_t* bar, int32_t value);

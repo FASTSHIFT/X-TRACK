@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -73,9 +73,9 @@ int MapConv::ConvertMapPath(uint32_t x, uint32_t y, char* path, uint32_t len)
     uint32_t tileX = x / MapTileSize;
     uint32_t tileY = y / MapTileSize;
     int ret = snprintf(
-        path, len,
-        "%s/%lX/%lX/%s", MapKeyRootName, tileX, tileY, MapKeyFileName
-    );
+                  path, len,
+                  "%s/%lX/%lX/%s", MapKeyRootName, tileX, tileY, MapKeyFileName
+              );
 
     return ret;
 }
@@ -95,7 +95,7 @@ void MapConv::GetMapTile(double longitude, double latitude, MapTile_t* mapTile)
 {
     uint32_t x, y;
     ConvertMapCoordinate(longitude, latitude, &x, &y);
-    ConvertMapTile(x, y, mapTile);   
+    ConvertMapTile(x, y, mapTile);
 }
 
 void MapConv::ConvertMapCoordinate(

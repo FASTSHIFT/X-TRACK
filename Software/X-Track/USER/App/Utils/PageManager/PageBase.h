@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -30,9 +30,11 @@
 
 class PageManager;
 
-class PageBase {
+class PageBase
+{
 public:
-    typedef enum {
+    typedef enum
+    {
         PAGE_STATE_IDLE,
         PAGE_STATE_LOAD,
         PAGE_STATE_WILL_APPEAR,
@@ -42,18 +44,20 @@ public:
         PAGE_STATE_DID_DISAPPEAR,
         PAGE_STATE_UNLOAD,
         PAGE_STATE_MAX
-    }State_t;
+    } State_t;
 
-    typedef struct {
+    typedef struct
+    {
         void* ptr;
         uint32_t size;
-    }Stash_t;
+    } Stash_t;
 
-    typedef struct {
+    typedef struct
+    {
         uint8_t Type;
         uint16_t Time;
         lv_anim_path_cb_t Path;
-    }AnimAttr_t;
+    } AnimAttr_t;
 
 public:
     lv_obj_t* root;
@@ -62,7 +66,8 @@ public:
     uint16_t ID;
     void* UserData;
 
-    struct {
+    struct
+    {
         bool ReqEnableCache;
         bool ReqDisableAutoCache;
 
@@ -72,12 +77,13 @@ public:
         Stash_t Stash;
         State_t State;
 
-        struct {
+        struct
+        {
             bool IsEnter;
             bool IsBusy;
             AnimAttr_t Attr;
-        }Anim;
-    }priv;
+        } Anim;
+    } priv;
 
 public:
     virtual ~PageBase() {}
@@ -90,7 +96,7 @@ public:
     virtual void onViewWillDisappear() {}
     virtual void onViewDidDisappear() {}
     virtual void onViewDidUnload() {}
-    
+
     void SetCustomCacheEnable(bool en)
     {
         SetCustomAutoCacheEnable(false);

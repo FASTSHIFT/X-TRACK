@@ -30,7 +30,6 @@
 #include "lv_drivers/win32drv/win32drv.h"
 #include "lv_fs_if/lv_fs_if.h"
 
-
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
 #pragma warning(pop)
@@ -52,6 +51,10 @@ int main()
         return -1;
     }
 
+    HAL::HAL_Init();
+
+    App_Init();
+
     /*
      * Demos, benchmarks, and tests.
      *
@@ -59,8 +62,6 @@ int main()
      * item.
      */
 
-    HAL::HAL_Init();
-    App_Init();
     //lv_example_scroll_2();
     //lv_demo_keypad_encoder();
     //lv_example_flex_3();

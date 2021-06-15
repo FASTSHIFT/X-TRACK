@@ -4,13 +4,13 @@
 void HAL::I2C_Scan(bool startScan)
 {
     Wire.begin();
-    
+
     if(!startScan)
         return;
-    
+
     uint8_t error, address;
     int nDevices;
-    
+
     Serial.println("I2C: device scanning...");
 
     nDevices = 0;

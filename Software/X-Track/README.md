@@ -122,3 +122,20 @@
 * 16.去除PageManager::Pop函数的stash参数
 * 17.添加Arduino Time时间转换库
 * 18.去除GPS_Info_t的hour_utc成员，使用TzConv进行时区转换
+
+## [v0.8] - 2021-6-15
+* 1.格式化所有代码
+* 2.APP_Init添加ACCOUNT_SEND_CMD，简化Account通知调用
+* 3.dataCenter("Bilibili") -> dataCenter("CENTER")
+* 4.添加SysConfig节点，用于保存系统设置
+* 5.Power节点使用Account通知方式调用MusicPlayer，而不使用HAL::Audio_PlayMusic
+* 6.去除HAL::Backlight_UpdateBKP()和Backlight_GetBKP()
+* 7.DialplateModel添加节点名称验证
+* 8.LiveMapModel添加节点名称验证
+* 9.DataCenter添加Account双buffer动态内存申请检查
+* 10.Account::GetPublisherLen() -> GetPublisherSize(), GetSubscribeLen() -> GetSubscribeSize()
+* 11.更新lv_anim_timeline，支持设置progress，已提交至lvgl主线
+* 12.去除lv_obj_ext_func不常用的函数
+* 13.StorageService扩大JSON_BUFFER_SIZE 256 -> 512, 添加字符串类型参数读取返回值检查
+* 14.添加硬件定时器配置到Config.h
+* 15.修改版权声明遗留拼写错误

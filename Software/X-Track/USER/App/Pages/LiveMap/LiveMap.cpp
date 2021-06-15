@@ -1,4 +1,4 @@
- #include "LiveMap.h"
+#include "LiveMap.h"
 
 #define MAP_TILE_SIZE 256
 #define MAP_TILE_POS(pos) ((pos) - ((pos) % MAP_TILE_SIZE))
@@ -35,7 +35,7 @@ void LiveMap::onViewLoad()
 
 void LiveMap::onViewDidLoad()
 {
-    
+
 }
 
 void LiveMap::onViewWillAppear()
@@ -69,7 +69,7 @@ void LiveMap::onViewDidDisappear()
 
 void LiveMap::onViewDidUnload()
 {
-    lv_group_del(group);  
+    lv_group_del(group);
 }
 
 void LiveMap::AttachEvent(lv_obj_t* obj)
@@ -106,7 +106,7 @@ void LiveMap::MapUpdate()
 
     MapConv* mapConv = &(Model.mapConv);
     mapConv->SetLevel(zoomVal);
-    
+
     uint32_t mapX, mapY;
     mapConv->ConvertMapCoordinate(gpsInfo.longitude, gpsInfo.latitude, &mapX, &mapY);
 

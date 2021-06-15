@@ -34,12 +34,12 @@ void StartUp::onViewWillAppear()
 
 void StartUp::onViewDidAppear()
 {
-    
+
 }
 
 void StartUp::onViewWillDisappear()
 {
-    
+
 }
 
 void StartUp::onViewDidDisappear()

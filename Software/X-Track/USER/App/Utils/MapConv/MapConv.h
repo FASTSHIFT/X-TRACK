@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -25,17 +25,19 @@
 
 #include <stdint.h>
 
-class MapConv {
+class MapConv
+{
 public:
     MapConv();
     ~MapConv() {}
 
-    typedef struct {
+    typedef struct
+    {
         uint32_t tileX;
         uint32_t tileY;
         int16_t subX;
         int16_t subY;
-    }MapTile_t;
+    } MapTile_t;
 
     void SetLevel(int level);
     void SetLevelUp()
@@ -83,7 +85,7 @@ public:
     void ConvertMapTile(uint32_t x, uint32_t y, MapTile_t* mapTile);
     void GetMapTile(double longitude, double latitude, MapTile_t* mapTile);
 
-private: 
+private:
     const int32_t EarthRadius;
 
     const double LongitudeMin;

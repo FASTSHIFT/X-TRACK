@@ -1,4 +1,4 @@
-﻿/*
+/*
  * MIT License
  * Copyright (c) 2021 _VIFEXTech
  *
@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -28,9 +28,11 @@
 #include <vector>
 #include <stack>
 
-class PageManager {
+class PageManager
+{
 public:
-    typedef enum {
+    typedef enum
+    {
         LOAD_ANIM_GLOBAL = 0,
         LOAD_ANIM_OVER_LEFT,
         LOAD_ANIM_OVER_RIGHT,
@@ -45,36 +47,41 @@ public:
         LOAD_ANIM_MAX = LOAD_ANIM_NONE
     } LoadAnim_t;
 
-    typedef enum {
+    typedef enum
+    {
         ROOT_DRAG_DIR_NONE,
         ROOT_DRAG_DIR_HOR,
         ROOT_DRAG_DIR_VER,
-    }RootDragDir_t;
+    } RootDragDir_t;
 
     typedef lv_anim_exec_xcb_t lv_anim_setter_t;
     typedef lv_coord_t(*lv_anim_getter_t)(void*);
 
-    typedef struct {
+    typedef struct
+    {
         /* 作为被进入方 */
-        struct {
+        struct
+        {
             lv_coord_t start;
             lv_coord_t end;
-        }enter;
+        } enter;
 
         /* 作为被退出方 */
-        struct {
+        struct
+        {
             lv_coord_t start;
             lv_coord_t end;
-        }exit;
-    }AnimValue_t;
+        } exit;
+    } AnimValue_t;
 
-    typedef struct {
+    typedef struct
+    {
         lv_anim_setter_t setter;
         lv_anim_getter_t getter;
         RootDragDir_t dragDir;
         AnimValue_t push;
         AnimValue_t pop;
-    }LoadAnimAttr_t;
+    } LoadAnimAttr_t;
 
 public:
     PageManager(PageFactory* factory = nullptr);
@@ -85,7 +92,7 @@ public:
     bool Uninstall(const char* appName);
     bool Register(PageBase* base, const char* name);
     bool Unregister(const char* name);
-  
+
     /* Router */
     PageBase* Push(const char* name, const PageBase::Stash_t* stash = nullptr);
     PageBase* Pop();
@@ -94,8 +101,8 @@ public:
 
     /* Global Anim */
     void SetGlobalLoadAnimType(
-        LoadAnim_t anim = LOAD_ANIM_OVER_LEFT, 
-        uint16_t time = 500, 
+        LoadAnim_t anim = LOAD_ANIM_OVER_LEFT,
+        uint16_t time = 500,
         lv_anim_path_cb_t path = lv_anim_path_ease_out
     );
 
@@ -157,7 +164,7 @@ private:
     {
         return PageCurrent->priv.State;
     }
-    
+
 private:
     PageFactory* Factory;
 
@@ -167,14 +174,15 @@ private:
     PageBase* PagePrev;
     PageBase* PageCurrent;
 
-    struct {
+    struct
+    {
         bool IsSwitchReq;
         bool IsBusy;
         bool IsPushing;
 
         PageBase::AnimAttr_t Current;
         PageBase::AnimAttr_t Global;
-    }AnimState;
+    } AnimState;
 };
 
 #endif

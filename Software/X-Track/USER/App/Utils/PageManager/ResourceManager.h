@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -25,7 +25,8 @@
 
 #include <vector>
 
-class ResourceManager {
+class ResourceManager
+{
 
 public:
     ResourceManager();
@@ -37,7 +38,8 @@ public:
     void SetDefault(void* ptr);
 
 private:
-    typedef struct ResourceNode {
+    typedef struct ResourceNode
+    {
         const char* name;
         void* ptr;
 
@@ -45,7 +47,7 @@ private:
         {
             return (this->name == n.name && this->ptr == n.ptr);
         }
-    }ResourceNode_t;
+    } ResourceNode_t;
 
 private:
     std::vector<ResourceNode_t> NodePool;

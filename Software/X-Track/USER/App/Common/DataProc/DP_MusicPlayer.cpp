@@ -16,11 +16,11 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     DataProc::MusicPlayer_Info_t* info = (DataProc::MusicPlayer_Info_t*)param->data_p;
 
     HAL::Audio_PlayMusic(info->music);
-    
+
     return 0;
 }
 
 DATA_PROC_INIT_DEF(MusicPlayer)
 {
-    act->SetEventCallback(onEvent);
+    account->SetEventCallback(onEvent);
 }

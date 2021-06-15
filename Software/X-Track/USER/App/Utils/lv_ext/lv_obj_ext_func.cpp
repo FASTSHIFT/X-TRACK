@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -22,29 +22,12 @@
  */
 #include "lv_obj_ext_func.h"
 
-/**
-  * @brief  安全删除对象，当对象为NULL的时候不执行删除
-  * @param  obj:对象二级地址
-  * @retval true 成功; false 失败
-  */
-bool lv_obj_del_safe(lv_obj_t** obj)
-{
-    bool ret = false;
-    if(*obj != NULL)
-    {
-        lv_obj_del(*obj);
-        *obj = NULL;
-        ret = true;
-    }
-    return ret;
-}
-
-void lv_obj_set_opa_scale(lv_obj_t* obj, lv_coord_t opa)
+void lv_obj_set_opa_scale(lv_obj_t* obj, int16_t opa)
 {
     lv_obj_set_style_bg_opa(obj, (lv_opa_t)opa, LV_PART_MAIN);
 }
 
-lv_coord_t lv_obj_get_opa_scale(lv_obj_t* obj)
+int16_t lv_obj_get_opa_scale(lv_obj_t* obj)
 {
     return lv_obj_get_style_bg_opa(obj, LV_PART_MAIN);
 }
@@ -61,26 +44,6 @@ void lv_label_set_text_add(lv_obj_t * label, const char * text)
         return;
 
     lv_label_ins_text(label, strlen(lv_label_get_text(label)), text);
-}
-
-/**
-  * @brief  获取对象的X中心坐标
-  * @param  obj:对象地址
-  * @retval X中心坐标
-  */
-lv_coord_t lv_obj_get_x_center(lv_obj_t * obj)
-{
-    return (obj->coords.x2 + obj->coords.x1) / 2;
-}
-
-/**
-  * @brief  获取对象的Y中心坐标
-  * @param  obj:对象地址
-  * @retval Y中心坐标
-  */
-lv_coord_t lv_obj_get_y_center(lv_obj_t * obj)
-{
-    return (obj->coords.y2 + obj->coords.y1) / 2;
 }
 
 /**
@@ -107,7 +70,7 @@ void lv_obj_add_anim(
 )
 {
     lv_anim_t anim_temp;
-    
+
     if (a == NULL)
     {
         a = &anim_temp;
@@ -116,7 +79,7 @@ void lv_obj_add_anim(
         *-----------------------*/
         lv_anim_init(a);
     }
-        
+
     /* MANDATORY SETTINGS
      *------------------*/
 
@@ -131,7 +94,7 @@ void lv_obj_add_anim(
 
     /*Set start and end values. E.g. 0, 150*/
     lv_anim_set_values(a, start, end);
-    
+
 
     /* OPTIONAL SETTINGS
      *------------------*/
@@ -164,7 +127,8 @@ lv_indev_t* lv_get_indev(lv_indev_type_t type)
             break;
         }
 
-        if (cur_indev->driver->type == type) {
+        if (cur_indev->driver->type == type)
+        {
             return cur_indev;
         }
     }

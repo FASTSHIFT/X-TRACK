@@ -6,12 +6,15 @@ static void onTimer(Account* account)
 {
     static bool lastStatus = false;
 
-    HAL::Power_Info_t info;
-    HAL::Power_GetInfo(&info);
-    if (info.isCharging != lastStatus)
+    HAL::Power_Info_t power;
+    HAL::Power_GetInfo(&power);
+    if (power.isCharging != lastStatus)
     {
-        HAL::Audio_PlayMusic(info.isCharging ? "BattChargeStart" : "BattChargeEnd");
-        lastStatus = info.isCharging;
+        DataProc::MusicPlayer_Info_t info;
+        info.music = power.isCharging ? "BattChargeStart" : "BattChargeEnd";
+        account->Notify("MusicPlayer", &info, sizeof(info));
+
+        lastStatus = power.isCharging;
     }
 }
 
@@ -19,7 +22,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 {
     static Filter::Hysteresis<int16_t>      battUsageHysFilter(2);
     static Filter::MedianQueue<int16_t, 10> battUsageMqFilter;
-    
+
     if (param->event == Account::EVENT_TIMER)
     {
         onTimer(account);
@@ -33,16 +36,16 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (param->size != sizeof(HAL::Power_Info_t))
     {
-        return -1;
+        return Account::ERROR_SIZE_MISMATCH;
     }
 
     HAL::Power_Info_t powerInfo;
     HAL::Power_GetInfo(&powerInfo);
-    
+
     int16_t usage = powerInfo.usage;
     usage = battUsageHysFilter.GetNext(usage);
     usage = battUsageMqFilter.GetNext(usage);
-    powerInfo.usage = usage;
+    powerInfo.usage = (uint8_t)usage;
 
     memcpy(param->data_p, &powerInfo, param->size);
 
@@ -51,6 +54,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
 DATA_PROC_INIT_DEF(Power)
 {
-    act->SetEventCallback(onEvent);
-    act->SetTimerPeriod(500);
+    account->Subscribe("MusicPlayer");
+    account->SetEventCallback(onEvent);
+    account->SetTimerPeriod(500);
 }

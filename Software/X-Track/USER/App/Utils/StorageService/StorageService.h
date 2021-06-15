@@ -7,7 +7,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the follo18wing conditions:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -26,15 +26,17 @@
 #include <stdint.h>
 #include <vector>
 
-class StorageService {
+class StorageService
+{
 public:
-    typedef enum {
+    typedef enum
+    {
         TYPE_UNKNOW,
         TYPE_INT,
         TYPE_FLOAT,
         TYPE_DOUBLE,
         TYPE_STRING
-    }DataType_t;
+    } DataType_t;
 
 public:
     StorageService(const char* filepath);
@@ -46,12 +48,13 @@ public:
     bool LoadFile();
 
 private:
-    typedef struct {
+    typedef struct
+    {
         const char* key;
         void* value;
         uint16_t size;
         DataType_t type;
-    }Node_t;
+    } Node_t;
 
 private:
     const char* FilePath;

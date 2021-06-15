@@ -58,6 +58,6 @@ static void onSDEvent(bool insert)
 
 DATA_PROC_INIT_DEF(Storage)
 {
-    act->SetEventCallback(onEvent);
+    account->SetEventCallback(onEvent);
     HAL::SD_SetEventCallback(onSDEvent);
 }
