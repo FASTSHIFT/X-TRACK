@@ -3,7 +3,7 @@
 > 
 > 拥有可显示实时位置的离线地图。
 > 
-> 支持记录轨迹以及导出标准GPX格式的轨迹文件。
+> 支持记录和显示实时轨迹以及导出标准GPX格式的轨迹文件。
 > 
 > 全新设计的[页面调度](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/USER/App/Utils/PageManager)和[消息框架](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/USER/App/Utils/DataCenter)。
 
@@ -35,7 +35,8 @@
 * 7.支持掉电自动保存数据(JSON格式文件)
 * 8.四小时续航 (持续工作，始终亮屏)
 * 9.支持在[PC模拟器](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/Simulator)模拟，脱离硬件调试
-* 10.待续...
+* 10.支持显示实时轨迹
+* 11.待续...
 
 ## 实物演示
 https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-8294-df79f151dedb.mp4
