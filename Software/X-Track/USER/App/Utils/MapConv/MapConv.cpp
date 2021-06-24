@@ -62,7 +62,7 @@ int MapConv::GetMapInfo(
     *mapX = x;
     *mapY = y;
 
-    ConvertMapTile(x, y, mapTile);
+    ConvertPosToTile(x, y, mapTile);
     int ret = ConvertMapPath(x, y, path, len);
 
     return ret;
