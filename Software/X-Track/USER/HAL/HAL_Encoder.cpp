@@ -3,6 +3,7 @@
 
 static ButtonEvent EncoderPush(5000);
 
+static bool EncoderEnable = true;
 static volatile int32_t EncoderDiff = 0;
 static bool EncoderDiffDisable = false;
 
@@ -37,7 +38,7 @@ static void Buzz_Handler(int dir)
 
 static void Encoder_EventHandler()
 {
-    if(EncoderDiffDisable)
+    if(!EncoderEnable || EncoderDiffDisable)
     {
         return;
     }
@@ -89,17 +90,15 @@ int32_t HAL::Encoder_GetDiff()
 
 bool HAL::Encoder_GetIsPush()
 {
-    static bool isFirststRelease = false;
-    bool isPressed = (digitalRead(CONFIG_ENCODER_PUSH_PIN) == LOW);
-
-    if(!isFirststRelease)
+    if(!EncoderEnable)
     {
-        if(!isPressed)
-        {
-            isFirststRelease = true;
-        }
         return false;
     }
+    
+    return (digitalRead(CONFIG_ENCODER_PUSH_PIN) == LOW);
+}
 
-    return isPressed;
+void HAL::Encoder_SetEnable(bool en)
+{
+    EncoderEnable = en;
 }

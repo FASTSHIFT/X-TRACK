@@ -38,3 +38,16 @@ int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
 
     return 0;
 }
+
+void LiveMapModel::TrackAddPoint(int32_t x, int32_t y)
+{
+    TileConv::Point_t point = { x, y };
+    trackPoints.push_back(point);
+}
+
+void LiveMapModel::TrackReset()
+{
+    trackPoints.clear();
+    pointFilter.Reset();
+}
+

@@ -6,7 +6,7 @@ static lv_disp_drv_t* disp_drv_p;
 #define DISP_VER_RES         240
 #define DISP_BUF_SIZE        (DISP_HOR_RES * DISP_VER_RES)
 #define DISP_USE_DMA         1
-#define DISP_DMA_Channel     DMA1_Channel3
+#define DISP_DMA_CHANNEL     DMA1_Channel3
 #define DISP_DMA_MAX_SIZE    65535
 
 static lv_color_t lv_full_disp_buf[DISP_BUF_SIZE];
@@ -38,10 +38,10 @@ static void disp_spi_dma_send(const void* buf, uint32_t size)
         disp_dma_tar_p = NULL;
     }
     
-    DMA_ChannelEnable(DISP_DMA_Channel, DISABLE);
-    DISP_DMA_Channel->CMBA = (uint32_t)buf;
-    DISP_DMA_Channel->TCNT = size;
-    DMA_ChannelEnable(DISP_DMA_Channel, ENABLE);
+    DMA_ChannelEnable(DISP_DMA_CHANNEL, DISABLE);
+    DISP_DMA_CHANNEL->CMBA = (uint32_t)buf;
+    DISP_DMA_CHANNEL->TCNT = size;
+    DMA_ChannelEnable(DISP_DMA_CHANNEL, ENABLE);
 }
 
 /**
@@ -58,8 +58,8 @@ static void disp_flush_cb(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t
     disp_drv_p = disp;
 
 #if DISP_USE_DMA
-    const int16_t w = (area->x2 - area->x1 + 1);
-    const int16_t h = (area->y2 - area->y1 + 1);
+    const lv_coord_t w = (area->x2 - area->x1 + 1);
+    const lv_coord_t h = (area->y2 - area->y1 + 1);
     const uint32_t size = w * h * sizeof(lv_color_t);
 
     /*设置刷新区域*/
@@ -106,7 +106,7 @@ static void disp_spi_dma_init()
 {
     RCC_AHBPeriphClockCmd(RCC_AHBPERIPH_DMA1, ENABLE);
 
-    DMA_Reset(DISP_DMA_Channel);
+    DMA_Reset(DISP_DMA_CHANNEL);
 
     DMA_InitType DMA_InitStructure;
     DMA_DefaultInitParaConfig(&DMA_InitStructure);
@@ -125,13 +125,13 @@ static void disp_spi_dma_init()
     DMA_InitStructure.DMA_PeripheralInc = DMA_PERIPHERALINC_DISABLE;  //外设地址寄存器不变
     DMA_InitStructure.DMA_PeripheralDataWidth = DMA_PERIPHERALDATAWIDTH_BYTE;  //数据宽度
 
-    DMA_Init(DISP_DMA_Channel, &DMA_InitStructure);
+    DMA_Init(DISP_DMA_CHANNEL, &DMA_InitStructure);
 
     SPI_I2S_DMAEnable(SPI1, SPI_I2S_DMA_TX, ENABLE);
 
     NVIC_EnableIRQ(DMA1_Channel3_IRQn);
     
-    DMA_INTConfig(DISP_DMA_Channel, DMA_INT_TC, ENABLE);
+    DMA_INTConfig(DISP_DMA_CHANNEL, DMA_INT_TC, ENABLE);
 }
 
 static void disp_wait_cb(lv_disp_drv_t* disp_drv)

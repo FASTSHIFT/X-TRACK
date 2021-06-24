@@ -214,6 +214,7 @@ void SystemInfosView::Style_Reset()
     lv_style_reset(&style.icon);
     lv_style_reset(&style.info);
     lv_style_reset(&style.data);
+    lv_style_reset(&style.focus);
 }
 
 void SystemInfosView::Item_Create(

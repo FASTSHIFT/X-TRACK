@@ -25,29 +25,26 @@ private:
 
     struct
     {
-        uint32_t localX, localY;
-        uint32_t focusX, focusY;
-        int32_t contLastX, contLastY;
-    } mapPos;
-
-    uint32_t lastMapUpdateTime;
-    uint32_t lastContShowTime;
-
-    lv_timer_t* timer;
-    lv_group_t* group;
+        uint32_t lastMapUpdateTime;
+        uint32_t lastContShowTime;
+        lv_timer_t* timer;
+        lv_group_t* group;
+        TileConv::Point_t lastTileContOriPoint;
+        int lastMapLevel;
+    } priv;
 
 private:
     void Update();
     void MapUpdate();
+    void TrackLineUpdate(int32_t x, int32_t y);
     void MapUpdateWait(uint32_t ms);
     void SportInfoUpdate();
     void AttachEvent(lv_obj_t* obj);
-    void LoadMap(uint32_t x, uint32_t y);
-    void FocusMap(uint32_t x, uint32_t y);
-    void ReCalibrateMapCont();
+    void CheckTileContOriPoint();
 
     static void onTimerUpdate(lv_timer_t* timer);
     static void onEvent(lv_event_t* event);
+    static void onFilterOutput(TrackPointFilter* filter, const TrackPointFilter::Point_t* point);
 };
 
 #endif

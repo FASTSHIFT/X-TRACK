@@ -7,7 +7,7 @@
   * @param  brightness:¡¡∂»÷µ
   * @retval None
   */
-static void Backlight_AnimCallback(void * obj, int16_t brightness)
+static void Backlight_AnimCallback(void * obj, int32_t brightness)
 {
     HAL::Backlight_SetValue(brightness);
 }

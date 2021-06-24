@@ -364,6 +364,15 @@
     <Filter Include="lvgl\src\extra\themes\mono">
       <UniqueIdentifier>{19e567ae-ba85-45f0-9ba6-94c9e860b5dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Utils\TrackFilter">
+      <UniqueIdentifier>{0f735ffd-c9ba-452c-9f1f-22a7fadd18ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\lv_allocator">
+      <UniqueIdentifier>{89d42a3a-b6a0-4bfc-9a9e-00a9a67bbc8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\TileConv">
+      <UniqueIdentifier>{ab575e4a-7eec-467a-beec-da885672c5f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -908,6 +917,21 @@
     </ClInclude>
     <ClInclude Include="lvgl\src\extra\themes\mono\lv_theme_mono.h">
       <Filter>lvgl\src\extra\themes\mono</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackLineFilter.h">
+      <Filter>App\Utils\TrackFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackPointFilter.h">
+      <Filter>App\Utils\TrackFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackFilter.h">
+      <Filter>App\Utils\TrackFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_allocator\lv_allocator.h">
+      <Filter>App\Utils\lv_allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\TileConv\TileConv.h">
+      <Filter>App\Utils\TileConv</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1876,6 +1900,18 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SysConfig.cpp">
       <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\TrackFilter\TrackLineFilter.cpp">
+      <Filter>App\Utils\TrackFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\TrackFilter\TrackPointFilter.cpp">
+      <Filter>App\Utils\TrackFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Encoder.cpp">
+      <Filter>App\Common\HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\TileConv\TileConv.cpp">
+      <Filter>App\Utils\TileConv</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

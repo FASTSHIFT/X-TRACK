@@ -104,11 +104,20 @@ static void * fs_open (lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
 {
     oflag_t oflag = O_RDONLY;
 
-    if(mode == LV_FS_MODE_WR) oflag = O_WRONLY;
-    else if(mode == LV_FS_MODE_RD) oflag = O_RDONLY;
-    else if(mode == (LV_FS_MODE_WR | LV_FS_MODE_RD)) oflag = O_RDWR | O_CREAT;
+    if(mode == LV_FS_MODE_WR)
+    {
+        oflag = O_WRONLY;
+    }
+    else if(mode == LV_FS_MODE_RD)
+    {
+        oflag = O_RDONLY;
+    }
+    else if(mode == (LV_FS_MODE_WR | LV_FS_MODE_RD))
+    {
+        oflag = O_RDWR | O_CREAT;
+    }
 
-    file_t * file_p = (file_t *)lv_mem_alloc(sizeof(file_t));
+    file_t* file_p = (file_t*)lv_mem_alloc(sizeof(file_t));
 
     if(file_p == NULL)
     {

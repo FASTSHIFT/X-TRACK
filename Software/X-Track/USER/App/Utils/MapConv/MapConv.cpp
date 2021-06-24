@@ -45,7 +45,7 @@ MapConv::MapConv()
     , MapY_Calibration(0)
 {
     MapLevel = 15;
-    MapKeyRootName = "MAP/MapInfos";
+    MapFilePath = "MAP/MapInfos";
     MapKeyFileName = "map.bin";
 }
 
@@ -74,7 +74,7 @@ int MapConv::ConvertMapPath(uint32_t x, uint32_t y, char* path, uint32_t len)
     uint32_t tileY = y / MapTileSize;
     int ret = snprintf(
                   path, len,
-                  "%s/%lX/%lX/%s", MapKeyRootName, tileX, tileY, MapKeyFileName
+                  "%s/%lX/%lX/%s", MapFilePath, tileX, tileY, MapKeyFileName
               );
 
     return ret;
@@ -95,7 +95,7 @@ void MapConv::GetMapTile(double longitude, double latitude, MapTile_t* mapTile)
 {
     uint32_t x, y;
     ConvertMapCoordinate(longitude, latitude, &x, &y);
-    ConvertMapTile(x, y, mapTile);
+    ConvertPosToTile(x, y, mapTile);
 }
 
 void MapConv::ConvertMapCoordinate(
@@ -121,7 +121,7 @@ void MapConv::ConvertMapCoordinate(
     *mapY = (uint32_t)constrain(ySize, 0, mapSize);
 }
 
-void MapConv::ConvertMapTile(uint32_t x, uint32_t y, MapTile_t* mapTile)
+void MapConv::ConvertPosToTile(uint32_t x, uint32_t y, MapTile_t* mapTile)
 {
     mapTile->tileX = x / MapTileSize;
     mapTile->tileY = y / MapTileSize;

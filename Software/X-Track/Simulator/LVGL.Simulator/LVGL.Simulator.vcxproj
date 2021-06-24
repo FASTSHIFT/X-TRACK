@@ -55,14 +55,14 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization Condition="'$(Configuration)'=='Release'">MinSpace</Optimization>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\USER\App</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\USER\App;$(ProjectDir)..\..\USER\App\Utils\ArduinoJson\src</AdditionalIncludeDirectories>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ProgramDatabase</DebugInformationFormat>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ProgramDatabase</DebugInformationFormat>
     </ClCompile>
@@ -106,6 +106,7 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\HysteresisFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX\GPX.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_allocator\lv_allocator.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
@@ -116,9 +117,13 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
+    <ClInclude Include="..\..\USER\App\Utils\TileConv\TileConv.h" />
     <ClInclude Include="..\..\USER\App\Utils\Time\Time.h" />
     <ClInclude Include="..\..\USER\App\Utils\Time\TimeLib.h" />
     <ClInclude Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.h" />
+    <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackFilter.h" />
+    <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackLineFilter.h" />
+    <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackPointFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\dtostrf.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WCharacter.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WString.h" />
@@ -267,6 +272,7 @@
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Buzz.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Clock.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Encoder.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_MAG.cpp" />
@@ -330,9 +336,12 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\TileConv\TileConv.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Time\DateStrings.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Time\Time.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\TrackFilter\TrackLineFilter.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\TrackFilter\TrackPointFilter.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\WString\dtostrf.c" />
     <ClCompile Include="..\..\USER\App\Utils\WString\WString.cpp" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c" />

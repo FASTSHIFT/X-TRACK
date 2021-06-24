@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @file lv_demo_conf.h
  * Configuration file for v8.0.0
  *

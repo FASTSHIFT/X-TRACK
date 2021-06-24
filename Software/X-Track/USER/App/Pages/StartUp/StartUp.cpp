@@ -18,6 +18,7 @@ void StartUp::onCustomAttrConfig()
 void StartUp::onViewLoad()
 {
     Model.Init();
+    Model.SetEncoderEnable(false);
     View.Create(root);
     lv_timer_create(onTimer, 2000, this);
 }
@@ -49,6 +50,7 @@ void StartUp::onViewDidDisappear()
 
 void StartUp::onViewDidUnload()
 {
+    Model.SetEncoderEnable(true);
     Model.Deinit();
 }
 

@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    ButtonEvent.h
   * @author  FASTSHIFT
-  * @version V1.3.0
+  * @version V1.6.0
   * @date    2018-12-23
   * @brief   非阻塞式按键事件驱动库，支持短摁、长摁、释放、状态改变事件的识别。
   * @Upgrade 2019.6.18  添加按键双击事件、长按单次触发事件。
@@ -17,7 +17,7 @@
                         FuncCallBack_t -> FuncCallback_t
   ******************************************************************************
   * @attention
-  * 需要提供一个精确到毫秒级的系统时钟，用户需要在ButtonEvent.cpp里定义ButtonEvent_Millis
+  * 需要提供一个精确到毫秒级的系统时钟，用户需要在ButtonEvent.cpp里定义GET_TIKC()
   ******************************************************************************
   */
 
@@ -30,15 +30,9 @@
 class ButtonEvent
 {
 private:
-    typedef void(*FuncCallback_t)(ButtonEvent*, int);
+    typedef void(*FuncCallback_t)(ButtonEvent* btn, int event);
 
 public:
-    ButtonEvent(
-        uint16_t longPressTime = 500,
-        uint16_t longPressTimeRepeat = 200,
-        uint16_t doubleClickTime = 200
-    );
-
     typedef enum
     {
 #       define EVENT_DEF(evt) evt
@@ -46,6 +40,20 @@ public:
 #       undef EVENT_DEF
         _EVENT_LAST
     } Event_t;
+
+public:
+    bool IsPressed;
+    bool IsClicked;
+    bool IsLongPressed;
+
+public:
+    ButtonEvent(
+        uint16_t longPressTime = 500,
+        uint16_t longPressTimeRepeat = 200,
+        uint16_t doubleClickTime = 200
+    );
+    void EventAttach(FuncCallback_t function);
+    void EventMonitor(bool isPress);
 
     const char* GetEventString(uint16_t event)
     {
@@ -59,31 +67,27 @@ public:
         return (event < _EVENT_LAST) ? eventStr[event] : "EVENT_NOT_FOUND";
     }
 
-    bool IsPressed;
-    bool IsClicked;
-    bool IsLongPressed;
-
-    void EventAttach(FuncCallback_t function);
-    void EventMonitor(bool isPress);
-
     inline uint16_t GetClickCnt()
     {
-        uint16_t cnt = ClickCnt + 1;
-        ClickCnt = 0;
+        uint16_t cnt = priv.clickCnt + 1;
+        priv.clickCnt = 0;
         return cnt;
     }
+
     inline bool GetClicked()
     {
         bool n = IsClicked;
         IsClicked = false;
         return n;
     }
+
     inline bool GetPressed()
     {
         bool n = IsPressed;
         IsPressed = false;
         return n;
     }
+
     inline bool GetLongPressed()
     {
         bool n = IsLongPressed;
@@ -93,7 +97,7 @@ public:
 
     operator uint8_t()
     {
-        return NowState;
+        return priv.nowState;
     };
 
 
@@ -106,17 +110,21 @@ private:
     } State_t;
 
 private:
-    State_t NowState;
-    uint16_t LongPressTimeCfg;
-    uint16_t LongPressRepeatTimeCfg;
-    uint16_t DoubleClickTimeCfg;
-    uint32_t LastLongPressTime;
-    uint32_t LastPressTime;
-    uint32_t LastClickTime;
-    uint16_t ClickCnt;
-    bool IS_LongPressed;
-    FuncCallback_t EventCallbackFunc;
+    struct
+    {
+        State_t nowState;
+        uint16_t longPressTimeCfg;
+        uint16_t longPressRepeatTimeCfg;
+        uint16_t doubleClickTimeCfg;
+        uint32_t lastLongPressTime;
+        uint32_t lastPressTime;
+        uint32_t lastClickTime;
+        uint16_t clickCnt;
+        bool isLongPressed;
+        FuncCallback_t eventCallback;
+    } priv;
 
+private:
     uint32_t GetTickElaps(uint32_t prevTick);
 };
 

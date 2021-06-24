@@ -3,8 +3,10 @@
 #ifdef ARDUINO
 #  include "Arduino.h"
 #  define GET_TICK() millis()
-#else
-#  error "Please set the system clock used by ButtonEvent"
+#endif
+
+#ifndef GET_TICK
+#  error "Please define the GET_TICK() function to get the system time "
 #endif
 
 #ifndef UINT32_MAX
@@ -23,15 +25,17 @@ ButtonEvent::ButtonEvent(
     uint16_t doubleClickTime
 )
 {
-    LongPressTimeCfg = longPressTime;
-    LongPressRepeatTimeCfg = longPressTimeRepeat;
-    DoubleClickTimeCfg = doubleClickTime;
+    memset(&priv, 0, sizeof(priv));
 
-    LastLongPressTime = LastClickTime = LastPressTime = 0;
-    IS_LongPressed = false;
-    NowState = STATE_NO_PRESS;
+    priv.longPressTimeCfg = longPressTime;
+    priv.longPressRepeatTimeCfg = longPressTimeRepeat;
+    priv.doubleClickTimeCfg = doubleClickTime;
 
-    EventCallbackFunc = NULL;
+    priv.lastLongPressTime = priv.lastClickTime = priv.lastPressTime = 0;
+    priv.isLongPressed = false;
+    priv.nowState = STATE_NO_PRESS;
+
+    priv.eventCallback = NULL;
 }
 
 /**
@@ -63,7 +67,7 @@ uint32_t ButtonEvent::GetTickElaps(uint32_t prevTick)
   */
 void ButtonEvent::EventAttach(FuncCallback_t function)
 {
-    EventCallbackFunc = function;
+    priv.eventCallback = function;
 }
 
 /**
@@ -73,67 +77,75 @@ void ButtonEvent::EventAttach(FuncCallback_t function)
   */
 void ButtonEvent::EventMonitor(bool isPress)
 {
-    if(EventCallbackFunc == NULL)
-        return;
-
-    if (isPress && NowState == STATE_NO_PRESS)
+    if(priv.eventCallback == NULL)
     {
-        NowState = STATE_PRESS;
-
-        IsPressed = true;
-        LastPressTime = GET_TICK();
-
-        EventCallbackFunc(this, EVENT_PRESSED);
-        EventCallbackFunc(this, EVENT_CHANGED);
+        return;
     }
 
-    if(NowState == STATE_NO_PRESS)
+    if (isPress && priv.nowState == STATE_NO_PRESS)
+    {
+        priv.nowState = STATE_PRESS;
+
+        IsPressed = true;
+        priv.lastPressTime = GET_TICK();
+
+        priv.eventCallback(this, EVENT_PRESSED);
+        priv.eventCallback(this, EVENT_CHANGED);
+    }
+
+    if(priv.nowState == STATE_NO_PRESS)
     {
         return;
     }
 
     if(isPress)
     {
-        EventCallbackFunc(this, EVENT_PRESSING);
+        priv.eventCallback(this, EVENT_PRESSING);
     }
 
-    if (isPress && GetTickElaps(LastPressTime) >= LongPressTimeCfg)
+    if (isPress && GetTickElaps(priv.lastPressTime) >= priv.longPressTimeCfg)
     {
-        NowState = STATE_LONG_PRESS;
+        priv.nowState = STATE_LONG_PRESS;
 
-        if(!IS_LongPressed)
+        if(!priv.isLongPressed)
         {
-            EventCallbackFunc(this, EVENT_LONG_PRESSED);
-            LastLongPressTime = GET_TICK();
-            IsLongPressed = IS_LongPressed = true;
+            priv.eventCallback(this, EVENT_LONG_PRESSED);
+            priv.lastLongPressTime = GET_TICK();
+            IsLongPressed = priv.isLongPressed = true;
         }
-        else if(GetTickElaps(LastLongPressTime) >= LongPressRepeatTimeCfg)
+        else if(GetTickElaps(priv.lastLongPressTime) >= priv.longPressRepeatTimeCfg)
         {
-            LastLongPressTime = GET_TICK();
-            EventCallbackFunc(this, EVENT_LONG_PRESSED_REPEAT);
+            priv.lastLongPressTime = GET_TICK();
+            priv.eventCallback(this, EVENT_LONG_PRESSED_REPEAT);
         }
     }
     else if (!isPress)
     {
-        NowState = STATE_NO_PRESS;
+        priv.nowState = STATE_NO_PRESS;
 
-        if(GetTickElaps(LastClickTime) < DoubleClickTimeCfg)
+        if(GetTickElaps(priv.lastClickTime) < priv.doubleClickTimeCfg)
         {
-            ClickCnt++;
-            EventCallbackFunc(this, EVENT_DOUBLE_CLICKED);
+            priv.clickCnt++;
+            priv.eventCallback(this, EVENT_DOUBLE_CLICKED);
         }
 
-        IS_LongPressed = false;
+        if(priv.isLongPressed)
+        {
+            priv.eventCallback(this, EVENT_LONG_PRESSED_RELEASED);
+        }
+
+        priv.isLongPressed = false;
         IsClicked = true;
-        LastClickTime = GET_TICK();
+        priv.lastClickTime = GET_TICK();
 
-        if(GetTickElaps(LastPressTime) < LongPressTimeCfg)
+        if(GetTickElaps(priv.lastPressTime) < priv.longPressTimeCfg)
         {
-            EventCallbackFunc(this, EVENT_SHORT_CLICKED);
+            priv.eventCallback(this, EVENT_SHORT_CLICKED);
         }
-        EventCallbackFunc(this, EVENT_CLICKED);
-        EventCallbackFunc(this, EVENT_RELEASED);
-        EventCallbackFunc(this, EVENT_CHANGED);
+
+        priv.eventCallback(this, EVENT_CLICKED);
+        priv.eventCallback(this, EVENT_RELEASED);
+        priv.eventCallback(this, EVENT_CHANGED);
     }
 }
 

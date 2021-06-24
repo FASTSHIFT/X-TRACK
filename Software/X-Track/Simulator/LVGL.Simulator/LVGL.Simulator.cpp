@@ -15,6 +15,8 @@
 #include "App.h"
 #include "Common/HAL/HAL.h"
 
+#include <stdio.h>
+
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
 #pragma warning(push)
@@ -52,7 +54,6 @@ int main()
     }
 
     HAL::HAL_Init();
-
     App_Init();
 
     /*

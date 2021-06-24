@@ -97,10 +97,10 @@ DATA_PROC_INIT_DEF(SportStatus)
     account->Subscribe("GPS");
     account->Subscribe("Storage");
 
-    STORAGE_VALUE_REG(act, sportStatus.totalDistance, STORAGE_TYPE_FLOAT);
-    STORAGE_VALUE_REG(act, sportStatus.totalTimeUINT32[0], STORAGE_TYPE_INT);
-    STORAGE_VALUE_REG(act, sportStatus.totalTimeUINT32[1], STORAGE_TYPE_INT);
-    STORAGE_VALUE_REG(act, sportStatus.speedMaxKph, STORAGE_TYPE_FLOAT);
+    STORAGE_VALUE_REG(account, sportStatus.totalDistance, STORAGE_TYPE_FLOAT);
+    STORAGE_VALUE_REG(account, sportStatus.totalTimeUINT32[0], STORAGE_TYPE_INT);
+    STORAGE_VALUE_REG(account, sportStatus.totalTimeUINT32[1], STORAGE_TYPE_INT);
+    STORAGE_VALUE_REG(account, sportStatus.speedMaxKph, STORAGE_TYPE_FLOAT);
 
     sportStatus.lastTick = DataProc::GetTick();
 

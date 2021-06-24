@@ -56,7 +56,7 @@ do{\
     info.value = &data; \
     info.size = sizeof(data); \
     info.type = dataType; \
-    account->Notify("Storage", &info, sizeof(info)); \
+    act->Notify("Storage", &info, sizeof(info)); \
 }while(0)
 
 /* StatusBar */

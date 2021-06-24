@@ -139,3 +139,17 @@
 * 13.StorageService扩大JSON_BUFFER_SIZE 256 -> 512, 添加字符串类型参数读取返回值检查
 * 14.添加硬件定时器配置到Config.h
 * 15.修改版权声明遗留拼写错误
+
+## [v0.9] - 2021-6-24
+* 1.更新ButtonEvent，支持EVENT_LONG_PRESSED_RELEASED
+* 2.调整lvgl内存池，32KB -> 64KB
+* 3.HAL_GPS支持读取csv格式的文件，在PC上模拟位置变化
+* 4.更新LiveMap页面，支持实时绘制运动轨迹，支持自适应分辨率动态加载地图
+* 5.更新StartUp页面，移除默认样式，并在开机动画过程中屏蔽Encoder事件
+* 6.修复SystemInfos页面因为忘记释放style.focus导致的内存泄漏
+* 7.优化DataCenter的Account的cache申请失败判断逻辑
+* 8.添加lv_allocator，使用lvgl接管std::vector内存管理实现
+* 9.更新MapConv，MapKeyRootName -> MapFilePath，ConvertMapTile() -> ConvertPosToTile()
+* 10.添加TileConv，通用的瓦片动态加载算法实现
+* 11.添加TrackFilter轨迹过滤器，包含TrackPointFilter曲线关键点提取算法和TrackLineFilter曲线区域裁剪算法
+* 12.HAL::Encoder添加Encoder_SetEnable()方法

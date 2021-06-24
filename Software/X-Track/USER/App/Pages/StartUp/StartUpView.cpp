@@ -5,6 +5,9 @@
 
 void StartUpView::Create(lv_obj_t* root)
 {
+    lv_obj_remove_style_all(root);
+    lv_obj_set_size(root, LV_HOR_RES, LV_VER_RES);
+
     lv_obj_t* label = lv_label_create(root);
     lv_obj_set_style_text_font(label, Resource.GetFont("agencyb_36"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);

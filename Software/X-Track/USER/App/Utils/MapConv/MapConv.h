@@ -35,8 +35,8 @@ public:
     {
         uint32_t tileX;
         uint32_t tileY;
-        int16_t subX;
-        int16_t subY;
+        uint32_t subX;
+        uint32_t subY;
     } MapTile_t;
 
     void SetLevel(int level);
@@ -48,9 +48,9 @@ public:
     {
         SetLevel(GetLevel() - 1);
     }
-    void SetRootName(const char* rootName)
+    void SetMapFilePath(const char* path)
     {
-        MapKeyRootName = rootName;
+        MapFilePath = path;
     }
     void SetFileName(const char* fileName)
     {
@@ -82,7 +82,7 @@ public:
         double longitude, double latitude,
         uint32_t* mapX, uint32_t* mapY
     );
-    void ConvertMapTile(uint32_t x, uint32_t y, MapTile_t* mapTile);
+    void ConvertPosToTile(uint32_t x, uint32_t y, MapTile_t* mapTile);
     void GetMapTile(double longitude, double latitude, MapTile_t* mapTile);
 
 private:
@@ -101,7 +101,7 @@ private:
     double MapY_Calibration;
 
     int MapLevel;
-    const char* MapKeyRootName;
+    const char* MapFilePath;
     const char* MapKeyFileName;
 
     uint32_t GetMapSize();

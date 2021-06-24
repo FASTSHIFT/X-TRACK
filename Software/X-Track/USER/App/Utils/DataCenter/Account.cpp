@@ -58,9 +58,8 @@ Account::Account(
 
         PingPongBuffer_Init(&priv.BufferManager, buf0, buf1);
         DC_LOG_INFO("Account[%s] cached %d x2 bytes", ID, bufSize);
+        priv.BufferSize = bufSize;
     }
-
-    priv.BufferSize = bufSize;
 
     Center->AddAccount(this);
 
@@ -70,6 +69,12 @@ Account::Account(
 Account::~Account()
 {
     DC_LOG_INFO("Account[%s] deleting...", ID);
+
+    if(priv.BufferSize)
+    {
+        delete priv.BufferManager.buffer[0];
+        delete priv.BufferManager.buffer[1];
+    }
 
     /* 删除定时刷新任务 */
     if (priv.timer)

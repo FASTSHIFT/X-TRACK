@@ -64,7 +64,7 @@ void Template::onViewDidUnload()
 
 void Template::AttachEvent(lv_obj_t* obj)
 {
-    obj->user_data = this;
+    lv_obj_set_user_data(obj, this);
     lv_obj_add_event_cb(obj, onEvent, LV_EVENT_ALL, this);
 }
 
