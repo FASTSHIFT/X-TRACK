@@ -34,7 +34,7 @@
 * 6.支持记录轨迹，可导出[GPX](https://zh.wikipedia.org/wiki/GPX)格式的文件
 * 7.支持掉电自动保存数据(JSON格式文件)
 * 8.四小时续航 (持续工作，始终亮屏)
-* 9.支持在[PC模拟器](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/Simulator)模拟，脱离硬件调试
+* 9.支持在[PC模拟器](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/Simulator)模拟，脱离硬件调试(配置为**Release x86**)
 * 10.支持显示实时轨迹
 * 11.待续...
 
