@@ -3,6 +3,9 @@
 
 #include "../Page.h"
 
+namespace Page
+{
+
 class SystemInfosView
 {
 public:
@@ -98,5 +101,7 @@ private:
         const char* infos
     );
 };
+
+}
 
 #endif // !__VIEW_H

@@ -222,7 +222,9 @@ lv_coord_t lv_obj_get_scroll_right(lv_obj_t * obj)
     lv_coord_t pad_left = lv_obj_get_style_pad_left(obj, LV_PART_MAIN);
     lv_coord_t border_width = lv_obj_get_style_border_width(obj, LV_PART_MAIN);
 
-    child_res -= (obj->coords.x2 - pad_right - border_width);
+    if(child_res != LV_COORD_MIN) {
+        child_res -= (obj->coords.x2 - pad_right - border_width);
+    }
 
     lv_coord_t self_w;
     self_w = lv_obj_get_self_width(obj);
@@ -256,10 +258,6 @@ void lv_obj_scroll_by(lv_obj_t * obj, lv_coord_t x, lv_coord_t y, lv_anim_enable
         lv_anim_set_ready_cb(&a, scroll_anim_ready_cb);
 
         if(x) {
-            lv_res_t res;
-            res = lv_event_send(obj, LV_EVENT_SCROLL_BEGIN, NULL);
-            if(res != LV_RES_OK) return;
-
             uint32_t t = lv_anim_speed_to_time((lv_disp_get_hor_res(d) * 2) >> 2, 0, x);
             if(t < SCROLL_ANIM_TIME_MIN) t = SCROLL_ANIM_TIME_MIN;
             if(t > SCROLL_ANIM_TIME_MAX) t = SCROLL_ANIM_TIME_MAX;
@@ -268,14 +266,14 @@ void lv_obj_scroll_by(lv_obj_t * obj, lv_coord_t x, lv_coord_t y, lv_anim_enable
             lv_anim_set_values(&a, -sx, -sx + x);
             lv_anim_set_exec_cb(&a, scroll_x_anim);
             lv_anim_set_path_cb(&a, lv_anim_path_ease_out);
+
+            lv_res_t res;
+            res = lv_event_send(obj, LV_EVENT_SCROLL_BEGIN, &a);
+            if(res != LV_RES_OK) return;
             lv_anim_start(&a);
         }
 
         if(y) {
-            lv_res_t res;
-            res = lv_event_send(obj, LV_EVENT_SCROLL_BEGIN, NULL);
-            if(res != LV_RES_OK) return;
-
             uint32_t t = lv_anim_speed_to_time((lv_disp_get_ver_res(d) * 2) >> 2, 0, y);
             if(t < SCROLL_ANIM_TIME_MIN) t = SCROLL_ANIM_TIME_MIN;
             if(t > SCROLL_ANIM_TIME_MAX) t = SCROLL_ANIM_TIME_MAX;
@@ -285,12 +283,22 @@ void lv_obj_scroll_by(lv_obj_t * obj, lv_coord_t x, lv_coord_t y, lv_anim_enable
             lv_anim_set_exec_cb(&a,  scroll_y_anim);
             lv_anim_set_path_cb(&a, lv_anim_path_ease_out);
             lv_anim_start(&a);
+
+            lv_res_t res;
+            res = lv_event_send(obj, LV_EVENT_SCROLL_BEGIN, &a);
+            if(res != LV_RES_OK) return;
+
         }
     } else {
         /*Remove pending animations*/
-        lv_anim_del(obj, scroll_y_anim);
-        lv_anim_del(obj, scroll_x_anim);
+        bool y_del = lv_anim_del(obj, scroll_y_anim);
+        bool x_del = lv_anim_del(obj, scroll_x_anim);
         scroll_by_raw(obj, x, y);
+        if(y_del || x_del) {
+            lv_res_t res;
+            res = lv_event_send(obj, LV_EVENT_SCROLL_END, NULL);
+            if(res != LV_RES_OK) return;
+        }
     }
 }
 
@@ -537,6 +545,38 @@ void lv_obj_scrollbar_invalidate(lv_obj_t * obj)
     if(lv_area_get_size(&ver_area) > 0) lv_obj_invalidate_area(obj, &ver_area);
 }
 
+void lv_obj_readjust_scroll(lv_obj_t * obj, lv_anim_enable_t anim_en)
+{
+    /*Be sure the bottom side is not remains scrolled in*/
+    /*With snapping the content can't be scrolled in*/
+    if(lv_obj_get_scroll_snap_y(obj) == LV_SCROLL_SNAP_NONE) {
+        lv_coord_t st = lv_obj_get_scroll_top(obj);
+        lv_coord_t sb = lv_obj_get_scroll_bottom(obj);
+        if(sb < 0 && st > 0) {
+            sb = LV_MIN(st, -sb);
+            lv_obj_scroll_by(obj, 0, sb, anim_en);
+        }
+    }
+
+    if(lv_obj_get_scroll_snap_x(obj) == LV_SCROLL_SNAP_NONE) {
+        lv_coord_t sl = lv_obj_get_scroll_left(obj);
+        lv_coord_t sr = lv_obj_get_scroll_right(obj);
+        if(lv_obj_get_style_base_dir(obj, LV_PART_MAIN) != LV_BASE_DIR_RTL) {
+            /*Be sure the left side is not remains scrolled in*/
+            if(sr < 0 && sl > 0) {
+                sr = LV_MIN(sl, -sr);
+                lv_obj_scroll_by(obj, sr, 0, anim_en);
+            }
+        } else {
+            /*Be sure the right side is not remains scrolled in*/
+            if(sl < 0 && sr > 0) {
+                sr = LV_MIN(sr, -sl);
+                lv_obj_scroll_by(obj, sl, 0, anim_en);
+            }
+        }
+    }
+}
+
 /**********************
  *   STATIC FUNCTIONS
  **********************/
@@ -664,8 +704,13 @@ static void scroll_area_into_view(const lv_area_t * area, lv_obj_t * child, lv_p
     }
 
     /*Remove any pending scroll animations.*/
-    lv_anim_del(parent, scroll_x_anim);
-    lv_anim_del(parent, scroll_y_anim);
+    bool y_del = lv_anim_del(parent, scroll_y_anim);
+    bool x_del = lv_anim_del(parent, scroll_x_anim);
+    if(y_del || x_del) {
+        lv_res_t res;
+        res = lv_event_send(parent, LV_EVENT_SCROLL_END, NULL);
+        if(res != LV_RES_OK) return;
+    }
 
     if((scroll_dir & LV_DIR_LEFT) == 0 && x_scroll < 0) x_scroll = 0;
     if((scroll_dir & LV_DIR_RIGHT) == 0 && x_scroll > 0) x_scroll = 0;

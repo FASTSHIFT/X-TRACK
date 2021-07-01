@@ -153,3 +153,19 @@
 * 10.添加TileConv，通用的瓦片动态加载算法实现
 * 11.添加TrackFilter轨迹过滤器，包含TrackPointFilter曲线关键点提取算法和TrackLineFilter曲线区域裁剪算法
 * 12.HAL::Encoder添加Encoder_SetEnable()方法
+
+## [v1.0] - 2021-7-1
+* 1.更新lvgl v8.1.0 dev
+* 2.添加TrackFilter数据处理节点，储存过滤后的拐点坐标
+* 3.优化DP_Clock RTC自动校准
+* 4.优化DP_GPS提示音播放，添加cache，使用Publish向订阅者推送数据，减少定时轮询拉取
+* 5.添加GPX_Parser，支持直接解析GPX数据还原轨迹
+* 6.Config.h转移到App
+* 7.页面添加namespace Page命名空间
+* 8.优化LiveMap轨迹显示，在轨迹记录时显示轨迹，使用lambda表达式替换部分回调函数
+* 9.优化StatusBar充电动画
+* 10.DataCenter添加注释
+* 11.PageManager添加注释
+* 12.lv_allocater添加遗漏的运算符重载
+* 13.添加Utils/Stream，来自Arduino
+* 14.转移CommmonMacro.h到HAL，去除Basic文件夹

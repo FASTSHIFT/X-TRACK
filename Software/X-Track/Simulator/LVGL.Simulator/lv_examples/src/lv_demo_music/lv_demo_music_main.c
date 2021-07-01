@@ -58,6 +58,8 @@ static void timer_cb(lv_timer_t * t);
 static void track_load(uint32_t id);
 static void stop_start_anim(lv_timer_t * t);
 static void spectrum_end_cb(lv_anim_t * a);
+static int32_t get_cos(int32_t deg, int32_t a);
+static int32_t get_sin(int32_t deg, int32_t a);
 
 /**********************
  *  STATIC VARIABLES

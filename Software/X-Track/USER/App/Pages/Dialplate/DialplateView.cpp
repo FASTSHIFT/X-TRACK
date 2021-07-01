@@ -2,6 +2,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+using namespace Page;
+
 void DialplateView::Create(lv_obj_t* root)
 {
     lv_obj_remove_style_all(root);

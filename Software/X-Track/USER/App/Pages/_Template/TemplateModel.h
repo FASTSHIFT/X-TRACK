@@ -3,6 +3,9 @@
 
 #include "lvgl/lvgl.h"
 
+namespace Page
+{
+
 class TemplateModel
 {
 public:
@@ -11,5 +14,7 @@ public:
 private:
 
 };
+
+}
 
 #endif

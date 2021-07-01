@@ -84,6 +84,29 @@ typedef struct
     SysConfig_Cmd_t cmd;
 } SysConfig_Info_t;
 
+/* TrackFilter */
+typedef enum
+{
+    TRACK_FILTER_CMD_START = RECORDER_CMD_START,
+    TRACK_FILTER_CMD_PAUSE = RECORDER_CMD_PAUSE,
+    TRACK_FILTER_CMD_CONTINUE = RECORDER_CMD_CONTINUE,
+    TRACK_FILTER_CMD_STOP = RECORDER_CMD_STOP,
+} TrackFilter_Cmd_t;
+
+typedef struct
+{
+    float longitude;
+    float latitude;
+} TrackFilter_Point_t;
+
+typedef struct
+{
+    TrackFilter_Cmd_t cmd;
+    TrackFilter_Point_t* points;
+    uint32_t size;
+    bool isActive;
+} TrackFilter_Info_t;
+
 }
 
 #endif

@@ -1,6 +1,6 @@
 /**
  * @file lv_demo_conf.h
- * Configuration file for v8.0.0
+ * Configuration file for v8.1.0-dev
  *
  */
 /*
@@ -9,8 +9,8 @@
 
 #if 0 /*Set it to "1" to enable the content*/
 
-#ifndef LV_EX_CONF_H
-#define LV_EX_CONF_H
+#ifndef LV_DEMO_CONF_H
+#define LV_DEMO_CONF_H
 
 
 /*******************
@@ -50,7 +50,7 @@
 #define LV_DEMO_MUSIC_AUTO_PLAY  0
 #endif
 
-#endif /*LV_EX_CONF_H*/
+#endif /*LV_DEMO_CONF_H*/
 
 #endif /*End of "Content enable"*/
 

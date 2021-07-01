@@ -373,6 +373,15 @@
     <Filter Include="App\Utils\TileConv">
       <UniqueIdentifier>{ab575e4a-7eec-467a-beec-da885672c5f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Utils\GPX_Parser">
+      <UniqueIdentifier>{15e0424b-cdf2-45f0-aae3-ff01d2e9131b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Config">
+      <UniqueIdentifier>{a87c00e9-164a-4330-90af-c452b2391df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\Stream">
+      <UniqueIdentifier>{2c910873-82bf-4044-8da8-798dff7b5625}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -932,6 +941,21 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\TileConv\TileConv.h">
       <Filter>App\Utils\TileConv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Config\Config.h">
+      <Filter>App\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.h">
+      <Filter>App\Utils\GPX_Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\Stream\Print.h">
+      <Filter>App\Utils\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\Stream\Printable.h">
+      <Filter>App\Utils\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\Stream\Stream.h">
+      <Filter>App\Utils\Stream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1912,6 +1936,18 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\TileConv\TileConv.cpp">
       <Filter>App\Utils\TileConv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TrackFilter.cpp">
+      <Filter>App\Common\DataProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.cpp">
+      <Filter>App\Utils\GPX_Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\Stream\Print.cpp">
+      <Filter>App\Utils\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\Stream\Stream.cpp">
+      <Filter>App\Utils\Stream</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

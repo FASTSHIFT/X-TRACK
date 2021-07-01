@@ -4,6 +4,9 @@
 #include "SystemInfosView.h"
 #include "SystemInfosModel.h"
 
+namespace Page
+{
+
 class SystemInfos : public PageBase
 {
 public:
@@ -32,5 +35,7 @@ private:
     SystemInfosModel Model;
     lv_timer_t* timer;
 };
+
+}
 
 #endif

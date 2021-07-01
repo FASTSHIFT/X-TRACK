@@ -31,22 +31,35 @@
 class PageManager
 {
 public:
+
+    /* Page switching animation type  */
     typedef enum
     {
+        /* Default (global) animation type  */
         LOAD_ANIM_GLOBAL = 0,
+
+        /* New page overwrites old page  */
         LOAD_ANIM_OVER_LEFT,
         LOAD_ANIM_OVER_RIGHT,
         LOAD_ANIM_OVER_TOP,
         LOAD_ANIM_OVER_BOTTOM,
+
+        /* New page pushes old page  */
         LOAD_ANIM_MOVE_LEFT,
         LOAD_ANIM_MOVE_RIGHT,
         LOAD_ANIM_MOVE_TOP,
         LOAD_ANIM_MOVE_BOTTOM,
+
+        /* The new interface fades in, the old page fades out */
         LOAD_ANIM_FADE_ON,
+
+        /* No animation */
         LOAD_ANIM_NONE,
-        LOAD_ANIM_MAX = LOAD_ANIM_NONE
+
+        _LOAD_ANIM_LAST = LOAD_ANIM_NONE
     } LoadAnim_t;
 
+    /* Page dragging direction */
     typedef enum
     {
         ROOT_DRAG_DIR_NONE,
@@ -54,19 +67,23 @@ public:
         ROOT_DRAG_DIR_VER,
     } RootDragDir_t;
 
+    /* Animated setter  */
     typedef lv_anim_exec_xcb_t lv_anim_setter_t;
+
+    /* Animated getter  */
     typedef lv_coord_t(*lv_anim_getter_t)(void*);
 
+    /* Animation switching record  */
     typedef struct
     {
-        /* 作为被进入方 */
+        /* As the entered party */
         struct
         {
             lv_coord_t start;
             lv_coord_t end;
         } enter;
 
-        /* 作为被退出方 */
+        /* As the exited party */
         struct
         {
             lv_coord_t start;
@@ -74,6 +91,7 @@ public:
         } exit;
     } AnimValue_t;
 
+    /* Page loading animation properties */
     typedef struct
     {
         lv_anim_setter_t setter;
@@ -166,22 +184,31 @@ private:
     }
 
 private:
+
+    /* Page factory */
     PageFactory* Factory;
 
+    /* Page pool */
     std::vector<PageBase*> PagePool;
+
+    /* Page stack */
     std::stack<PageBase*> PageStack;
 
+    /* Previous page */
     PageBase* PagePrev;
+
+    /* The current page */
     PageBase* PageCurrent;
 
+    /* Page animation status */
     struct
     {
-        bool IsSwitchReq;
-        bool IsBusy;
-        bool IsPushing;
+        bool IsSwitchReq;              // Whether to switch request
+        bool IsBusy;                   // Is switching
+        bool IsPushing;                // Whether it is in push state
 
-        PageBase::AnimAttr_t Current;
-        PageBase::AnimAttr_t Global;
+        PageBase::AnimAttr_t Current;  // Current animation properties
+        PageBase::AnimAttr_t Global;   // Global animation properties
     } AnimState;
 };
 

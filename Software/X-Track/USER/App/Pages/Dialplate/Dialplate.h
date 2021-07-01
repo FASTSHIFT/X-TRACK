@@ -4,6 +4,9 @@
 #include "DialplateView.h"
 #include "DialplateModel.h"
 
+namespace Page
+{
+
 class Dialplate : public PageBase
 {
 public:
@@ -44,5 +47,7 @@ private:
     lv_timer_t* timer;
     RecordState_t recState;
 };
+
+}
 
 #endif

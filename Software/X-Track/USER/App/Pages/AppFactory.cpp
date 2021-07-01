@@ -31,7 +31,7 @@
 do{\
     if (strcmp(name, #className) == 0)\
     {\
-        return new className;\
+        return new Page::className;\
     }\
 }while(0)
 

@@ -4,6 +4,9 @@
 #include "Common/DataProc/DataProc.h"
 #include "Common/HAL/HAL.h"
 
+namespace Page
+{
+
 class StartUpModel
 {
 public:
@@ -18,5 +21,7 @@ public:
 private:
     Account* account;
 };
+
+}
 
 #endif

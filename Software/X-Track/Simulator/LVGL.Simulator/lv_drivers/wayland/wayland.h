@@ -44,10 +44,10 @@ extern "C" {
 void wayland_init(void);
 void wayland_deinit(void);
 void wayland_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
-bool wayland_pointer_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
-bool wayland_pointeraxis_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
-bool wayland_keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
-bool wayland_touch_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
+void wayland_pointer_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
+void wayland_pointeraxis_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
+void wayland_keyboard_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
+void wayland_touch_read(lv_indev_drv_t * drv, lv_indev_data_t * data);
 
 /**********************
  *      MACROS

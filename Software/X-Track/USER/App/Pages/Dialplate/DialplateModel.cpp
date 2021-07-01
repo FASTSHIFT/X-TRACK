@@ -1,5 +1,7 @@
 #include "DialplateModel.h"
 
+using namespace Page;
+
 void DialplateModel::Init()
 {
     account = new Account("DialplateModel", DataProc::Center(), 0, this);

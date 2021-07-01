@@ -3,6 +3,9 @@
 
 #include "../Page.h"
 
+namespace Page
+{
+
 class TemplateView
 {
 public:
@@ -18,5 +21,7 @@ public:
 private:
 
 };
+
+}
 
 #endif // !__VIEW_H

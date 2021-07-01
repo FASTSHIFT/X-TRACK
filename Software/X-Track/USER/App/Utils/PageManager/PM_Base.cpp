@@ -24,6 +24,13 @@
 #include "PM_Log.h"
 #include <algorithm>
 
+#define PM_EMPTY_PAGE_NAME "EMPTY_PAGE"
+
+/**
+  * @brief  Page manager constructor
+  * @param  factory: Pointer to the page factory
+  * @retval None
+  */
 PageManager::PageManager(PageFactory* factory)
     : Factory(factory)
     , PagePrev(nullptr)
@@ -34,10 +41,20 @@ PageManager::PageManager(PageFactory* factory)
     SetGlobalLoadAnimType();
 }
 
+/**
+  * @brief  Page manager destructor
+  * @param  None
+  * @retval None
+  */
 PageManager::~PageManager()
 {
 }
 
+/**
+  * @brief  Search pages in the page pool
+  * @param  name: Page name
+  * @retval A pointer to the base class of the page, or nullptr if not found
+  */
 PageBase* PageManager::FindPageInPool(const char* name)
 {
     for (auto iter : PagePool)
@@ -50,6 +67,11 @@ PageBase* PageManager::FindPageInPool(const char* name)
     return nullptr;
 }
 
+/**
+  * @brief  Search pages in the page stack
+  * @param  name: Page name
+  * @retval A pointer to the base class of the page, or nullptr if not found
+  */
 PageBase* PageManager::FindPageInStack(const char* name)
 {
     std::stack<PageBase*> stk = PageStack;
@@ -68,6 +90,12 @@ PageBase* PageManager::FindPageInStack(const char* name)
     return nullptr;
 }
 
+/**
+  * @brief  Install the page, and register the page to the page pool
+  * @param  className: The class name of the page
+  * @param  appName: Page application name, no duplicates allowed
+  * @retval A pointer to the base class of the page, or nullptr if wrong
+  */
 PageBase* PageManager::Install(const char* className, const char* appName)
 {
     if (Factory == nullptr)
@@ -103,6 +131,11 @@ PageBase* PageManager::Install(const char* className, const char* appName)
     return base;
 }
 
+/**
+  * @brief  Uninstall page
+  * @param  appName: Page application name, no duplicates allowed
+  * @retval Return true if the uninstallation is successful
+  */
 bool PageManager::Uninstall(const char* appName)
 {
     PM_LOG_INFO("Page(%s) uninstall...", appName);
@@ -136,6 +169,11 @@ bool PageManager::Uninstall(const char* appName)
     return true;
 }
 
+/**
+  * @brief  Register the page to the page pool
+  * @param  name: Page application name, duplicate registration is not allowed
+  * @retval Return true if the registration is successful
+  */
 bool PageManager::Register(PageBase* base, const char* name)
 {
     if (FindPageInPool(name) != nullptr)
@@ -152,6 +190,11 @@ bool PageManager::Register(PageBase* base, const char* name)
     return true;
 }
 
+/**
+  * @brief  Log out the page from the page pool
+  * @param  name: Page application name
+  * @retval Return true if the logout is successful
+  */
 bool PageManager::Unregister(const char* name)
 {
     PM_LOG_INFO("Page(%s) unregister...", name);
@@ -185,11 +228,21 @@ bool PageManager::Unregister(const char* name)
     return true;
 }
 
+/**
+  * @brief  Get the top page of the page stack
+  * @param  None
+  * @retval A pointer to the base class of the page
+  */
 PageBase* PageManager::GetStackTop()
 {
     return PageStack.empty() ? nullptr : PageStack.top();
 }
 
+/**
+  * @brief  Get the page below the top of the page stack
+  * @param  None
+  * @retval A pointer to the base class of the page
+  */
 PageBase* PageManager::GetStackTopAfter()
 {
     PageBase* top = GetStackTop();
@@ -208,6 +261,11 @@ PageBase* PageManager::GetStackTopAfter()
     return topAfter;
 }
 
+/**
+  * @brief  Clear the page stack and end the life cycle of all pages in the page stack
+  * @param  keepBottom: Whether to keep the bottom page of the stack
+  * @retval None
+  */
 void PageManager::SetStackClear(bool keepBottom)
 {
     while (1)
@@ -243,7 +301,12 @@ void PageManager::SetStackClear(bool keepBottom)
     PM_LOG_INFO("Stack clear done");
 }
 
+/**
+  * @brief  Get the name of the previous page
+  * @param  None
+  * @retval The name of the previous page, if it does not exist, return PM_EMPTY_PAGE_NAME
+  */
 const char* PageManager::GetPagePrevName()
 {
-    return PagePrev ? PagePrev->Name : "EMPTY_PAGE";
+    return PagePrev ? PagePrev->Name : PM_EMPTY_PAGE_NAME;
 }

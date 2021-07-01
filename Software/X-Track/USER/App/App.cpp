@@ -48,23 +48,23 @@ void App_Init()
 
     StatusBar::Init(lv_layer_top());
 
-    manager.Install("Template",  "Pages/_Template");
-    manager.Install("LiveMap",   "Pages/LiveMap");
-    manager.Install("Dialplate", "Pages/Dialplate");
+    manager.Install("Template",    "Pages/_Template");
+    manager.Install("LiveMap",     "Pages/LiveMap");
+    manager.Install("Dialplate",   "Pages/Dialplate");
     manager.Install("SystemInfos", "Pages/SystemInfos");
-    manager.Install("StartUp", "Pages/StartUp");
+    manager.Install("StartUp",     "Pages/StartUp");
 
     manager.SetGlobalLoadAnimType(PageManager::LOAD_ANIM_OVER_TOP, 500);
 
     manager.Push("Pages/StartUp");
 
-    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_LOAD);
+    ACCOUNT_SEND_CMD(Storage,   STORAGE_CMD_LOAD);
     ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_LOAD);
 }
 
 void App_Uninit()
 {
     ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_SAVE);
-    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_SAVE);
-    ACCOUNT_SEND_CMD(Recorder, RECORDER_CMD_STOP);
+    ACCOUNT_SEND_CMD(Storage,   STORAGE_CMD_SAVE);
+    ACCOUNT_SEND_CMD(Recorder,  RECORDER_CMD_STOP);
 }

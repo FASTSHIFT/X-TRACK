@@ -5,6 +5,9 @@
 #include <vector>
 #include "Utils/lv_allocator/lv_allocator.h"
 
+namespace Page
+{
+
 class LiveMapView
 {
 public:
@@ -73,5 +76,7 @@ private:
     lv_obj_t* ImgLabel_Create(lv_obj_t* par, const void* img_src, lv_coord_t x_ofs, lv_coord_t y_ofs);
     void TrackLine_Create(lv_obj_t* par);
 };
+
+}
 
 #endif // !__VIEW_H

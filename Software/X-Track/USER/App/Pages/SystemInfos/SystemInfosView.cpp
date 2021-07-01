@@ -1,5 +1,7 @@
 #include "SystemInfosView.h"
 
+using namespace Page;
+
 #define ITEM_HEIGHT_MIN   100
 #define ITEM_PAD          ((LV_VER_RES - ITEM_HEIGHT_MIN) / 2)
 

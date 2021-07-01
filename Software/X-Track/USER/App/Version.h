@@ -27,7 +27,7 @@
 #define VERSION_NUM_TO_STR(n)   _VERSION_NUM_TO_STR_(n)
 
 #define VERSION_FIRMWARE_NAME   "X-Track"
-#define VERSION_SOFTWARE        "v0.9"
+#define VERSION_SOFTWARE        "v1.0"
 #define VERSION_HARDWARE        "v1.0"
 
 #include "lvgl/lvgl.h"

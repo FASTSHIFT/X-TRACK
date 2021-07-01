@@ -1,6 +1,8 @@
 #include "SystemInfos.h"
 #include "../App/Version.h"
 
+using namespace Page;
+
 SystemInfos::SystemInfos()
 {
 }

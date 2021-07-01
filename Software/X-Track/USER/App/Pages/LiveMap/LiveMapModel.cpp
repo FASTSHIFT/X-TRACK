@@ -1,13 +1,20 @@
 #include "LiveMapModel.h"
+#include "Config/Config.h"
+
+using namespace Page;
 
 void LiveMapModel::Init()
 {
-    mapConv.SetMapCalibration(0.00610, 0.00130);
+    mapConv.SetMapCalibration(
+        CONFIG_MAP_CONV_CALIBRATION_LNG, 
+        CONFIG_MAP_CONV_CALIBRATION_LAT
+    );
     //mapConv.SetMapCalibration(0.00495, -0.0033);
 
     account = new Account("LiveMapModel", DataProc::Center(), 0, this);
     account->Subscribe("GPS");
     account->Subscribe("SportStatus");
+    account->Subscribe("TrackFilter");
     account->SetEventCallback(onEvent);
 }
 
@@ -17,6 +24,21 @@ void LiveMapModel::Deinit()
     {
         delete account;
         account = nullptr;
+    }
+
+    std::vector<TileConv::Point_t, lv_allocator<TileConv::Point_t>> vec;
+    trackPoints.swap(vec);
+}
+
+void LiveMapModel::GetGPS_Info(HAL::GPS_Info_t* info)
+{
+    account->Pull("GPS", info, sizeof(HAL::GPS_Info_t));
+
+    /* Default location : Tian An Men */
+    if (!info->isVaild)
+    {
+        info->longitude = CONFIG_LIVE_MAP_LNG_DEFAULT;
+        info->latitude = CONFIG_LIVE_MAP_LAT_DEFAULT;
     }
 }
 
@@ -43,6 +65,40 @@ void LiveMapModel::TrackAddPoint(int32_t x, int32_t y)
 {
     TileConv::Point_t point = { x, y };
     trackPoints.push_back(point);
+}
+
+void LiveMapModel::TrackReload()
+{
+    DataProc::TrackFilter_Info_t info;
+    account->Pull("TrackFilter", &info, sizeof(info));
+
+    if (!info.isActive)
+    {
+        return;
+    }
+
+    TrackReset();
+
+    TrackPointFilter ptFilter;
+
+    ptFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
+
+    uint32_t size = info.size;
+    DataProc::TrackFilter_Point_t* points = info.points;
+
+    for (uint32_t i = 0; i < size; i++)
+    {
+        uint32_t mapX, mapY;
+        mapConv.ConvertMapCoordinate(
+            points[i].longitude, points[i].latitude,
+            &mapX, &mapY
+        );
+
+        if (ptFilter.PushPoint(mapX, mapY))
+        {
+            TrackAddPoint(mapX, mapY);
+        }
+    }
 }
 
 void LiveMapModel::TrackReset()

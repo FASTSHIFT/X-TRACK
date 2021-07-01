@@ -1,0 +1,52 @@
+#ifndef __GPX_PARSER_H
+#define __GPX_PARSER_H
+
+#ifdef  ARDUINO
+#include "Stream.h"
+#else
+#include "../Stream/Stream.h"
+#endif //  ARDUINO
+
+class GPX_Parser : public Stream
+{
+public:
+    typedef int (*Callback_t)(GPX_Parser* parser);
+    typedef struct
+    {
+        float longitude;
+        float latitude;
+    } Point_t;
+
+public:
+    void* userData;
+
+public:
+    GPX_Parser();
+    ~GPX_Parser();
+
+    void SetCallback(Callback_t avaliableCallback, Callback_t readCallback);
+    bool ReadNext(Point_t* point);
+
+private:
+    struct
+    {
+        Callback_t avaliableCallback;
+        Callback_t readCallback;
+    } priv;
+
+private:
+    virtual int available();
+    virtual int read();
+    virtual int peek()
+    {
+        return 0;
+    }
+    virtual void flush() {}
+    virtual size_t write(uint8_t ch)
+    {
+        return 0;
+    }
+    using Print::write;
+};
+
+#endif

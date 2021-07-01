@@ -30,6 +30,11 @@
     #include "../gpu/lv_gpu_stm32_dma2d.h"
 #endif
 
+#if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
+    #include "../gpu/lv_gpu_nxp_pxp.h"
+    #include "../gpu/lv_gpu_nxp_pxp_osa.h"
+#endif
+
 /*********************
  *      DEFINES
  *********************/
@@ -105,6 +110,13 @@ void lv_init(void)
     lv_gpu_stm32_dma2d_init();
 #endif
 
+#if LV_USE_GPU_NXP_PXP && LV_USE_GPU_NXP_PXP_AUTO_INIT
+    if(lv_gpu_nxp_pxp_init(&pxp_default_cfg) != LV_RES_OK) {
+        LV_LOG_ERROR("PXP init error. STOP.\n");
+        for(; ;) ;
+    }
+#endif
+
     _lv_obj_style_init();
     _lv_ll_init(&LV_GC_ROOT(_lv_disp_ll), sizeof(lv_disp_t));
     _lv_ll_init(&LV_GC_ROOT(_lv_indev_ll), sizeof(lv_indev_t));
@@ -140,6 +152,10 @@ void lv_init(void)
 
 #if LV_USE_ASSERT_OBJ
     LV_LOG_WARN("Object sanity checks are enabled via LV_USE_ASSERT_OBJ which makes LVGL much slower")
+#endif
+
+#if LV_USE_ASSERT_STYLE
+    LV_LOG_WARN("Style sanity checks are enabled that uses more RAM")
 #endif
 
 #if LV_LOG_LEVEL == LV_LOG_LEVEL_TRACE
@@ -369,7 +385,7 @@ static void lv_obj_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
 
     /*Set attributes*/
     obj->flags = LV_OBJ_FLAG_CLICKABLE;
-    obj->flags |= LV_OBJ_FLAG_SNAPABLE;
+    obj->flags |= LV_OBJ_FLAG_SNAPPABLE;
     if(parent) obj->flags |= LV_OBJ_FLAG_PRESS_LOCK;
     if(parent) obj->flags |= LV_OBJ_FLAG_SCROLL_CHAIN;
     obj->flags |= LV_OBJ_FLAG_CLICK_FOCUSABLE;
@@ -468,7 +484,17 @@ static void lv_obj_draw(lv_event_t * e)
         coords.y1 -= h;
         coords.y2 += h;
 
+
+        lv_obj_draw_part_dsc_t part_dsc;
+        lv_obj_draw_dsc_init(&part_dsc, clip_area);
+        part_dsc.rect_dsc = &draw_dsc;
+        part_dsc.draw_area = &coords;
+        part_dsc.part = LV_PART_MAIN;
+        lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_dsc);
+
         lv_draw_rect(&coords, clip_area, &draw_dsc);
+
+        lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_dsc);
 
 #if LV_DRAW_COMPLEX
         if(lv_obj_get_style_clip_corner(obj, LV_PART_MAIN)) {
@@ -526,8 +552,23 @@ static void draw_scrollbar(lv_obj_t * obj, const lv_area_t * clip_area)
     lv_res_t sb_res = scrollbar_init_draw_dsc(obj, &draw_dsc);
     if(sb_res != LV_RES_OK) return;
 
-    if(lv_area_get_size(&hor_area) > 0) lv_draw_rect(&hor_area, clip_area, &draw_dsc);
-    if(lv_area_get_size(&ver_area) > 0) lv_draw_rect(&ver_area, clip_area, &draw_dsc);
+    lv_obj_draw_part_dsc_t part_dsc;
+    lv_obj_draw_dsc_init(&part_dsc, clip_area);
+    part_dsc.rect_dsc = &draw_dsc;
+    part_dsc.part = LV_PART_SCROLLBAR;
+
+    if(lv_area_get_size(&hor_area) > 0) {
+        part_dsc.draw_area = &hor_area;
+        lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_dsc);
+        lv_draw_rect(&hor_area, clip_area, &draw_dsc);
+        lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_dsc);
+    }
+    if(lv_area_get_size(&ver_area) > 0) {
+        part_dsc.draw_area = &ver_area;
+        lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_dsc);
+        lv_draw_rect(&ver_area, clip_area, &draw_dsc);
+        lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_dsc);
+    }
 }
 
 /**
@@ -618,8 +659,12 @@ static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)
             else if(c == LV_KEY_LEFT || c == LV_KEY_DOWN) {
                 lv_obj_clear_state(obj, LV_STATE_CHECKED);
             }
-            lv_res_t res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
-            if(res != LV_RES_OK) return;
+
+            /*With Enter LV_EVENT_RELEASED will send VALUE_CHANGE event*/
+            if(c != LV_KEY_ENTER) {
+                lv_res_t res = lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
+                if(res != LV_RES_OK) return;
+            }
         }
     }
     else if(code == LV_EVENT_FOCUSED) {
@@ -770,7 +815,6 @@ static void lv_obj_set_state(lv_obj_t * obj, lv_state_t new_state)
 
 static bool obj_valid_child(const lv_obj_t * parent, const lv_obj_t * obj_to_find)
 {
-
     /*Check all children of `parent`*/
     uint32_t child_cnt = 0;
     if(parent->spec_attr) child_cnt = parent->spec_attr->child_cnt;

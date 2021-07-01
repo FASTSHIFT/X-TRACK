@@ -1,12 +1,11 @@
 #include "DataProc.h"
 #include "../HAL/HAL.h"
 #include "Utils/StorageService/StorageService.h"
-
-#define SAVE_FILE_NAME "/SystemSave.json"
+#include "Config/Config.h"
 
 using namespace DataProc;
 
-static StorageService storageService(SAVE_FILE_NAME);
+static StorageService storageService(CONFIG_SYSTEM_SAVE_FILE_PATH);
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {

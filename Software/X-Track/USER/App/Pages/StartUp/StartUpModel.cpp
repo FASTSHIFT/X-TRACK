@@ -1,5 +1,7 @@
 #include "StartUpModel.h"
 
+using namespace Page;
+
 void StartUpModel::Init()
 {
     account = new Account("StartUpModel", DataProc::Center(), 0, this);

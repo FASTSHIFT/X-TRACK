@@ -477,6 +477,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Config</GroupName>
+          <Files>
+            <File>
+              <FileName>Config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Config\Config.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Common/DataPorc</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -622,6 +632,11 @@
               <FileName>DP_SysConfig.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_SysConfig.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_TrackFilter.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_TrackFilter.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -1111,7 +1126,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Page/SystemInfos</GroupName>
+          <GroupName>Pages/SystemInfos</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -2014,6 +2029,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Utils/GPX_Parser</GroupName>
+          <Files>
+            <File>
+              <FileName>GPX_Parser.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\GPX_Parser\GPX_Parser.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>GPX_Parser.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\GPX_Parser\GPX_Parser.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Utils/StorageService</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -2386,21 +2416,6 @@
               <FileName>TileConv.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\TileConv\TileConv.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Basic</GroupName>
-          <Files>
-            <File>
-              <FileName>Config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\Basic\Config.h</FilePath>
-            </File>
-            <File>
-              <FileName>CommonMacro.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\Basic\CommonMacro.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -4,6 +4,9 @@
 #include "StartUpView.h"
 #include "StartUpModel.h"
 
+namespace Page
+{
+
 class StartUp : public PageBase
 {
 public:
@@ -29,5 +32,7 @@ private:
     StartUpView View;
     StartUpModel Model;
 };
+
+}
 
 #endif

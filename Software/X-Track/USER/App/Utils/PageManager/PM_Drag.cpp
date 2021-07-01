@@ -28,8 +28,14 @@
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))
 
-#define INDEV_DEF_DRAG_THROW    20
+/* The distance threshold to trigger the drag */
+#define PM_INDEV_DEF_DRAG_THROW    20
 
+/**
+  * @brief  Page drag event callback
+  * @param  event: Pointer to event structure
+  * @retval None
+  */
 void PageManager::onRootDragEvent(lv_event_t* event)
 {
     lv_obj_t* root = lv_event_get_target(event);
@@ -130,6 +136,11 @@ void PageManager::onRootDragEvent(lv_event_t* event)
     }
 }
 
+/**
+  * @brief  Drag animation end event callback
+  * @param  a: Pointer to animation
+  * @retval None
+  */
 void PageManager::onRootAnimFinish(lv_anim_t* a)
 {
     PageManager* manager = (PageManager*)a->user_data;
@@ -137,6 +148,11 @@ void PageManager::onRootAnimFinish(lv_anim_t* a)
     manager->AnimState.IsBusy = false;
 }
 
+/**
+  * @brief  Enable root's drag function
+  * @param  root: Pointer to the root object
+  * @retval None
+  */
 void PageManager::RootEnableDrag(lv_obj_t* root)
 {
     lv_obj_add_event_cb(
@@ -160,6 +176,11 @@ void PageManager::RootEnableDrag(lv_obj_t* root)
     PM_LOG_INFO("Root drag enabled");
 }
 
+/**
+  * @brief  Asynchronous callback when dragging ends
+  * @param  data: Pointer to the base class of the page
+  * @retval None
+  */
 void PageManager::onRootAsyncLeave(void* data)
 {
     PageBase* base = (PageBase*)data;
@@ -167,6 +188,12 @@ void PageManager::onRootAsyncLeave(void* data)
     lv_event_send(base->root, LV_EVENT_LEAVE, nullptr);
 }
 
+/**
+  * @brief  Get drag inertia prediction stop point
+  * @param  x: x stop point
+  * @param  y: y stop point
+  * @retval None
+  */
 void PageManager::RootGetDragPredict(lv_coord_t* x, lv_coord_t* y)
 {
     lv_indev_t* indev = lv_indev_get_act();
@@ -179,13 +206,13 @@ void PageManager::RootGetDragPredict(lv_coord_t* x, lv_coord_t* y)
     while (vect.y != 0)
     {
         y_predict += vect.y;
-        vect.y = vect.y * (100 - INDEV_DEF_DRAG_THROW) / 100;
+        vect.y = vect.y * (100 - PM_INDEV_DEF_DRAG_THROW) / 100;
     }
 
     while (vect.x != 0)
     {
         x_predict += vect.x;
-        vect.x = vect.x * (100 - INDEV_DEF_DRAG_THROW) / 100;
+        vect.x = vect.x * (100 - PM_INDEV_DEF_DRAG_THROW) / 100;
     }
 
     *x = x_predict;

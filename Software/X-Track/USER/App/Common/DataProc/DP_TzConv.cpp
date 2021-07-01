@@ -1,9 +1,10 @@
 #include "DataProc.h"
 #include "../HAL/HAL.h"
 #include "Utils/Time/Time.h"
+#include "Config/Config.h"
 
 // Offset hours from gps time (UTC)
-static int GMT_OffsetHours = 8; //GMT+8 Beijing
+static const int GMT_OffsetHours = CONFIG_GMT_OFFSET_HOURS;
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {

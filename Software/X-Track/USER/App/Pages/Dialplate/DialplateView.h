@@ -3,6 +3,9 @@
 
 #include "../Page.h"
 
+namespace Page
+{
+
 class DialplateView
 {
 
@@ -49,5 +52,7 @@ private:
     void BtnCont_Create(lv_obj_t* par);
     lv_obj_t* Btn_Create(lv_obj_t* par, const void* img_src, lv_coord_t x_ofs);
 };
+
+}
 
 #endif // !__VIEW_H

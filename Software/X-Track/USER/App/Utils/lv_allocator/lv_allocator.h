@@ -103,4 +103,16 @@ public:
     }
 };
 
+// return that all specializations of this allocator are interchangeable
+template <class T1, class T2>
+bool operator== (const lv_allocator<T1>&,
+    const lv_allocator<T2>&) throw() {
+    return true;
+}
+template <class T1, class T2>
+bool operator!= (const lv_allocator<T1>&,
+    const lv_allocator<T2>&) throw() {
+    return false;
+}
+
 #endif

@@ -4,6 +4,9 @@
 #include "TemplateView.h"
 #include "TemplateModel.h"
 
+namespace Page
+{
+
 class Template : public PageBase
 {
 public:
@@ -37,5 +40,7 @@ private:
     TemplateModel Model;
     lv_timer_t* timer;
 };
+
+}
 
 #endif

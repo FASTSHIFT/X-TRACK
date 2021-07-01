@@ -3,10 +3,11 @@
 
 using namespace DataProc;
 
-static struct{
-    bool SoundDisable;
-    char Language[16];
-}SysConfig;
+static struct
+{
+    bool soundDisable;
+    char language[16];
+} sysConfig;
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
@@ -24,7 +25,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (info->cmd == SYSCONFIG_CMD_LOAD)
     {
-        HAL::Buzz_SetEnable(!SysConfig.SoundDisable);
+        HAL::Buzz_SetEnable(!sysConfig.soundDisable);
     }
 
     return 0;
@@ -35,6 +36,6 @@ DATA_PROC_INIT_DEF(SysConfig)
     account->Subscribe("Storage");
     account->SetEventCallback(onEvent);
 
-    STORAGE_VALUE_REG(account, SysConfig.SoundDisable, STORAGE_TYPE_INT);
-    STORAGE_VALUE_REG(account, SysConfig.Language, STORAGE_TYPE_STRING);
+    STORAGE_VALUE_REG(account, sysConfig.soundDisable, STORAGE_TYPE_INT);
+    STORAGE_VALUE_REG(account, sysConfig.language, STORAGE_TYPE_STRING);
 }

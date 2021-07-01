@@ -1,5 +1,7 @@
 #include "StartUpView.h"
 
+using namespace Page;
+
 #define COLOR_GREY      lv_color_hex(0x333333)
 #define COLOR_ORANGE    lv_color_hex(0xff931e)
 

@@ -29,25 +29,31 @@ const char* DataProc::ConvTime(uint64_t ms, char* buf, uint16_t len)
     return buf;
 }
 
-static void onTimer(Account* account)
+static bool Clock_Calibrate(Account* account, HAL::GPS_Info_t* gpsInfo)
 {
-    HAL::GPS_Info_t gps;
-    account->Pull("GPS", &gps, sizeof(gps));
-
-    if(gps.isVaild)
+    bool retval = false;
+    if(gpsInfo->isVaild)
     {
         HAL::Clock_Info_t clock;
         account->Pull("TzConv", &clock, sizeof(clock));
         HAL::Clock_SetInfo(&clock);
-        account->SetTimerPeriod(0);
+        retval = true;
     }
+    return retval;
 }
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    if (param->event == Account::EVENT_TIMER)
+    if (param->event == Account::EVENT_PUB_PUBLISH)
     {
-        onTimer(account);
+        if (param->size == sizeof(HAL::GPS_Info_t))
+        {
+            if (Clock_Calibrate(account, (HAL::GPS_Info_t*)param->data_p))
+            {
+                account->Unsubscribe("GPS");
+            }
+        }
+        
         return 0;
     }
 
@@ -72,5 +78,4 @@ DATA_PROC_INIT_DEF(Clock)
     account->Subscribe("TzConv");
     account->Subscribe("GPS");
     account->SetEventCallback(onEvent);
-    account->SetTimerPeriod(500);
 }

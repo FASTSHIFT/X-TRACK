@@ -1,5 +1,6 @@
 #include "DataProc.h"
 #include "../HAL/HAL.h"
+#include "Config/Config.h"
 
 typedef enum{
     GPS_STATUS_DISCONNECT,
@@ -16,7 +17,7 @@ static void onTimer(Account* account)
 
     static GPS_Status_t lastStatus = GPS_STATUS_DISCONNECT;
 
-    GPS_Status_t nowStatus;
+    GPS_Status_t nowStatus = GPS_STATUS_DISCONNECT;
 
     if (satellites > 6)
     {
@@ -25,10 +26,6 @@ static void onTimer(Account* account)
     else if (satellites >= 3)
     {
         nowStatus = GPS_STATUS_UNSTABLE;
-    }
-    else
-    {
-        nowStatus = GPS_STATUS_DISCONNECT;
     }
 
     if (nowStatus != lastStatus)
@@ -39,8 +36,16 @@ static void onTimer(Account* account)
             "Connect"
         };
 
-        HAL::Audio_PlayMusic(music[nowStatus]);
+        DataProc::MusicPlayer_Info_t info;
+        info.music = music[nowStatus];
+        account->Notify("MusicPlayer", &info, sizeof(info));
         lastStatus = nowStatus;
+    }
+
+    if (satellites >= 3)
+    {
+        account->Commit(&gpsInfo, sizeof(gpsInfo));
+        account->Publish();
     }
 }
 
@@ -69,6 +74,8 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
 DATA_PROC_INIT_DEF(GPS)
 {
+    account->Subscribe("MusicPlayer");
+
     account->SetEventCallback(onEvent);
-    account->SetTimerPeriod(500);
+    account->SetTimerPeriod(CONFIG_GPS_MAP_REFR_PERIOD);
 }

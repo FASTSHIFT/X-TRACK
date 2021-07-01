@@ -1,6 +1,6 @@
 /**
  * @file lv_conf.h
- * Configuration file for v8.0.0
+ * Configuration file for v8.1.0-dev
  */
 
 /*
@@ -27,7 +27,7 @@
 #define LV_COLOR_16_SWAP   0
 
 /*Enable more complex drawing routines to manage screens transparency.
- *Can be used if the UI is above an other layer, e.g. an OSD menu or video player.
+ *Can be used if the UI is above another layer, e.g. an OSD menu or video player.
  *Requires `LV_COLOR_DEPTH = 32` colors and the screen's `bg_opa` should be set to non LV_OPA_COVER value*/
 #define LV_COLOR_SCREEN_TRANSP    0
 
@@ -122,7 +122,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_USE_GPU_NXP_PXP      0
 #if LV_USE_GPU_NXP_PXP
 /*1: Add default bare metal and FreeRTOS interrupt handling routines for PXP (lv_gpu_nxp_pxp_osa.c)
- *   and call lv_gpu_nxp_pxp_init() automatically during lv_init(). Note that symbol FSL_RTOS_FREE_RTOS
+ *   and call lv_gpu_nxp_pxp_init() automatically during lv_init(). Note that symbol SDK_OS_FREE_RTOS
  *   has to be defined in order to use FreeRTOS OSA, otherwise bare-metal implementation is selected.
  *0: lv_gpu_nxp_pxp_init() has to be called manually before lv_init()
  */

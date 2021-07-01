@@ -3,6 +3,9 @@
 
 #include "Common/DataProc/DataProc.h"
 
+namespace Page
+{
+
 class SystemInfosModel
 {
 public:
@@ -52,5 +55,7 @@ private:
 private:
 
 };
+
+}
 
 #endif

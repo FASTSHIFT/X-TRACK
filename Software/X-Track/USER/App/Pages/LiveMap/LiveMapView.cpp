@@ -2,6 +2,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+using namespace Page;
+
 void LiveMapView::Create(lv_obj_t* root, uint32_t tileNum)
 {
     lv_obj_remove_style_all(root);
@@ -28,6 +30,9 @@ void LiveMapView::Delete()
         lv_mem_free(ui.map.imgTiles);
         ui.map.imgTiles = nullptr;
     }
+
+    std::vector<lv_point_t, lv_allocator<lv_point_t>> vec;
+    ui.map.trackPoints.swap(vec);
 
     lv_style_reset(&ui.styleCont);
     lv_style_reset(&ui.styleLabel);
@@ -67,7 +72,7 @@ void LiveMapView::Map_Create(lv_obj_t* par, uint32_t tileNum)
     ui.map.imgTiles = (lv_obj_t**)lv_mem_alloc(tileNum * sizeof(lv_obj_t*));
     ui.map.tileNum = tileNum;
 
-    for (int i = 0; i < tileNum; i++)
+    for (uint32_t i = 0; i < tileNum; i++)
     {
         lv_obj_t* img = lv_img_create(cont);
         lv_obj_remove_style_all(img);
@@ -93,7 +98,7 @@ void LiveMapView::SetMapTile(uint32_t tileSize, uint32_t widthCnt)
 
     lv_obj_set_size(ui.map.cont, width, height);
 
-    for (int i = 0; i < tileNum; i++)
+    for (uint32_t i = 0; i < tileNum; i++)
     {
         lv_obj_t* img = ui.map.imgTiles[i];
 
@@ -216,7 +221,14 @@ void LiveMapView::TrackReset()
 
 void LiveMapView::TrackSetActivePoint(lv_coord_t x, lv_coord_t y)
 {
-    lv_line_set_points(ui.map.lineTrack, &ui.map.trackPoints[0], ui.map.trackPoints.size());
+    if (ui.map.trackPoints.size())
+    {
+        lv_line_set_points(
+            ui.map.lineTrack,
+            &ui.map.trackPoints[0],
+            (uint16_t)ui.map.trackPoints.size()
+        );
+    }
 
     lv_point_t end = ui.map.trackPoints.back();
     ui.map.pointActive[0] = end;

@@ -7,6 +7,7 @@ using namespace DataProc;
 static GPX gpx;
 static Recorder_Info_t recInfo;
 static lv_fs_file_t file;
+static bool recActive = false;
 
 static void Recorder_FileWriteString(const char* str)
 {
@@ -20,16 +21,14 @@ static void Recorder_FileWriteString(const char* str)
     );
 }
 
-static void onTimer(Account* account)
+static void Recorder_RecPoint(Account* account, HAL::GPS_Info_t* gpsInfo)
 {
     LV_LOG_USER("Track recording...");
-    HAL::GPS_Info_t gps;
-    account->Pull("GPS", &gps, sizeof(gps));
 
     String gpxStr = gpx.getPt(
                         GPX_TRKPT,
-                        String(gps.longitude, 6),
-                        String(gps.latitude, 6)
+                        String(gpsInfo->longitude, 6),
+                        String(gpsInfo->latitude, 6)
                     );
 
     Recorder_FileWriteString(gpxStr.c_str());
@@ -79,7 +78,7 @@ static void Recorder_RecStart(Account* account, uint16_t time)
         Recorder_FileWriteString(gpx.getInfo().c_str());
         Recorder_FileWriteString(gpx.getTrakSegOpen().c_str());
 
-        account->SetTimerPeriod(time);
+        recActive = true;
     }
     else
     {
@@ -89,7 +88,7 @@ static void Recorder_RecStart(Account* account, uint16_t time)
 
 static void Recorder_RecStop(Account* account)
 {
-    account->SetTimerPeriod(0);
+    recActive = false;
 
     Recorder_FileWriteString(gpx.getTrakSegClose().c_str());;
     Recorder_FileWriteString(gpx.getTrakClose().c_str());
@@ -99,7 +98,7 @@ static void Recorder_RecStop(Account* account)
     LV_LOG_USER("Track record end");
 }
 
-static int onSignal(Account* account, Recorder_Info_t* info)
+static int onNotify(Account* account, Recorder_Info_t* info)
 {
     int retval = 0;
 
@@ -109,34 +108,46 @@ static int onSignal(Account* account, Recorder_Info_t* info)
         Recorder_RecStart(account, info->time);
         break;
     case RECORDER_CMD_PAUSE:
+        recActive = false;
         LV_LOG_USER("Track record pause");
-        account->SetTimerEnable(false);
         break;
     case RECORDER_CMD_CONTINUE:
         LV_LOG_USER("Track record continue");
-        account->SetTimerEnable(true);
+        recActive = true;
         break;
     case RECORDER_CMD_STOP:
         Recorder_RecStop(account);
         break;
     }
 
+    TrackFilter_Info_t tfInfo = {
+        .cmd = (TrackFilter_Cmd_t)info->cmd
+    };
+
+    account->Notify("TrackFilter", &tfInfo, sizeof(tfInfo));
+
     return retval;
 }
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    if (param->event == Account::EVENT_TIMER)
-    {
-        onTimer(account);
-        return 0;
-    }
-
     int retval = Account::ERROR_UNKNOW;
 
     switch (param->event)
     {
     case Account::EVENT_PUB_PUBLISH:
+        if (param->size == sizeof(HAL::GPS_Info_t))
+        {
+            if (recActive)
+            {
+                Recorder_RecPoint(account, (HAL::GPS_Info_t*)param->data_p);;
+            }
+            retval = Account::ERROR_NONE;
+        }
+        else
+        {
+            retval = Account::ERROR_SIZE_MISMATCH;
+        }
         break;
 
     case Account::EVENT_SUB_PULL:
@@ -153,7 +164,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     case Account::EVENT_NOTIFY:
         if (param->size == sizeof(Recorder_Info_t))
         {
-            retval = onSignal(account, (Recorder_Info_t*)param->data_p);
+            retval = onNotify(account, (Recorder_Info_t*)param->data_p);
         }
         else
         {
@@ -172,5 +183,6 @@ DATA_PROC_INIT_DEF(Recorder)
 {
     account->Subscribe("GPS");
     account->Subscribe("Clock");
+    account->Subscribe("TrackFilter");
     account->SetEventCallback(onEvent);
 }

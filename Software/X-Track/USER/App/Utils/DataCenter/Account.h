@@ -33,38 +33,43 @@ class DataCenter;
 class Account
 {
 public:
+
+    /* Event type enumeration */
     typedef enum
     {
         EVENT_NONE,
-        EVENT_PUB_PUBLISH,
-        EVENT_SUB_PULL,
-        EVENT_NOTIFY,
-        EVENT_TIMER,
+        EVENT_PUB_PUBLISH, // Publisher posted information
+        EVENT_SUB_PULL,    // Subscriber data pull request
+        EVENT_NOTIFY,      // Subscribers send notifications to publishers
+        EVENT_TIMER,       // Timed event
         _EVENT_LAST
     } EventCode_t;
 
+    /* Error type enumeration */
     typedef enum
     {
-        ERROR_NONE = 0,
-        ERROR_UNKNOW = -1,
-        ERROR_SIZE_MISMATCH = -2,
+        ERROR_NONE                = 0,
+        ERROR_UNKNOW              = -1,
+        ERROR_SIZE_MISMATCH       = -2,
         ERROR_UNSUPPORTED_REQUEST = -3,
-        ERROR_NO_CALLBACK = -4,
-        ERROR_NO_CACHE = -5,
-        ERROR_NO_COMMITED = -6,
-        ERROR_NOT_FOUND = -7,
-        ERROR_PARAM_ERROR = -8
+        ERROR_NO_CALLBACK         = -4,
+        ERROR_NO_CACHE            = -5,
+        ERROR_NO_COMMITED         = -6,
+        ERROR_NOT_FOUND           = -7,
+        ERROR_PARAM_ERROR         = -8
     } ErrorCode_t;
 
+    /* Event parameter structure */
     typedef struct
     {
-        EventCode_t event;
-        Account* tran;
-        Account* recv;
-        void* data_p;
-        uint32_t size;
+        EventCode_t event; // Event type
+        Account* tran;     // Pointer to sender
+        Account* recv;     // Pointer to receiver
+        void* data_p;      // Pointer to data
+        uint32_t size;     // The length of the data
     } EventParam_t;
 
+    /* Event callback function pointer */
     typedef int (*EventCallback_t)(Account* account, EventParam_t* param);
 
 public:
@@ -76,55 +81,32 @@ public:
     );
     ~Account();
 
-    /* 关注 */
     Account* Subscribe(const char* pubID);
-
-    /* 取关 */
     bool Unsubscribe(const char* pubID);
-
-    /* 提交 */
     bool Commit(const void* data_p, uint32_t size);
-
-    /* 推送 */
     int Publish();
-
-    /* 拉取 */
     int Pull(const char* pubID, void* data_p, uint32_t size);
     int Pull(Account* pub, void* data_p, uint32_t size);
-
-    /* 私信 */
     int Notify(const char* pubID, const void* data_p, uint32_t size);
     int Notify(Account* pub, const void* data_p, uint32_t size);
-
-    /* 事件回调 */
     void SetEventCallback(EventCallback_t callback);
-
-    /* 定时上报 */
     void SetTimerPeriod(uint32_t period);
-
-    /* 定时器使能 */
     void SetTimerEnable(bool en);
-
-    /* 关注UP数 */
     uint32_t GetPublisherSize();
-
-    /* 粉丝数 */
     uint32_t GetSubscribeSize();
 
 public:
-    const char* ID;      /* B站帐号 */
-    DataCenter* Center;  /* B站 */
+    const char* ID;      /* Unique account ID */
+    DataCenter* Center;  /* Pointer to the data center */
     void* UserData;
 
-    std::vector<Account*> publishers;  /* 关注列表 */
-    std::vector<Account*> subscribers; /* 粉丝列表 */
+    std::vector<Account*> publishers;  /* Followed publishers */
+    std::vector<Account*> subscribers; /* Followed subscribers */
 
     struct
     {
-        EventCallback_t eventCallback;  /* 事件 */
-
+        EventCallback_t eventCallback;
         lv_timer_t* timer;
-
         PingPongBuffer_t BufferManager;
         uint32_t BufferSize;
     } priv;

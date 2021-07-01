@@ -4,6 +4,9 @@
 #include "LiveMapView.h"
 #include "LiveMapModel.h"
 
+namespace Page
+{
+
 class LiveMap : public PageBase
 {
 public:
@@ -30,21 +33,25 @@ private:
         lv_timer_t* timer;
         lv_group_t* group;
         TileConv::Point_t lastTileContOriPoint;
-        int lastMapLevel;
+        bool isTrackAvtive;
+        bool trackReloadReq;
     } priv;
+
+    static uint16_t mapLevel;
 
 private:
     void Update();
     void MapUpdate();
-    void TrackLineUpdate(int32_t x, int32_t y);
+    void TrackViewLineUpdate(int32_t x, int32_t y);
+    void TrackViewLineReload();
+    bool TrackCheckTileContReload();
     void MapUpdateWait(uint32_t ms);
     void SportInfoUpdate();
     void AttachEvent(lv_obj_t* obj);
-    void CheckTileContOriPoint();
 
-    static void onTimerUpdate(lv_timer_t* timer);
     static void onEvent(lv_event_t* event);
-    static void onFilterOutput(TrackPointFilter* filter, const TrackPointFilter::Point_t* point);
 };
+
+}
 
 #endif

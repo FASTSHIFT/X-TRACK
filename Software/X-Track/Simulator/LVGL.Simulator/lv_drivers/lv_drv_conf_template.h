@@ -1,6 +1,6 @@
 /**
  * @file lv_drv_conf.h
- * Configuration file for v7.11.0
+ * Configuration file for v8.1.0-dev
  */
 
 /*

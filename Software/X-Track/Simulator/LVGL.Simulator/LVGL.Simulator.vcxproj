@@ -74,6 +74,7 @@
     <ClInclude Include="..\..\USER\App\Common\HAL\HAL.h" />
     <ClInclude Include="..\..\USER\App\Common\HAL\HAL_Def.h" />
     <ClInclude Include="..\..\USER\App\Common\Music\ToneMap.h" />
+    <ClInclude Include="..\..\USER\App\Config\Config.h" />
     <ClInclude Include="..\..\USER\App\Pages\AppFactory.h" />
     <ClInclude Include="..\..\USER\App\Pages\Dialplate\Dialplate.h" />
     <ClInclude Include="..\..\USER\App\Pages\Dialplate\DialplateModel.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\HysteresisFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX\GPX.h" />
+    <ClInclude Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_allocator\lv_allocator.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
@@ -117,6 +119,9 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
+    <ClInclude Include="..\..\USER\App\Utils\Stream\Print.h" />
+    <ClInclude Include="..\..\USER\App\Utils\Stream\Printable.h" />
+    <ClInclude Include="..\..\USER\App\Utils\Stream\Stream.h" />
     <ClInclude Include="..\..\USER\App\Utils\TileConv\TileConv.h" />
     <ClInclude Include="..\..\USER\App\Utils\Time\Time.h" />
     <ClInclude Include="..\..\USER\App\Utils\Time\TimeLib.h" />
@@ -267,6 +272,7 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Storage.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SysConfig.cpp" />
+    <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TrackFilter.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TzConv.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL.cpp" />
     <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
@@ -325,6 +331,7 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\DataCenter.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c" />
     <ClCompile Include="..\..\USER\App\Utils\GPX\GPX.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
@@ -336,6 +343,8 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\Stream\Print.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\Stream\Stream.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\TileConv\TileConv.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Time\DateStrings.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Time\Time.cpp" />

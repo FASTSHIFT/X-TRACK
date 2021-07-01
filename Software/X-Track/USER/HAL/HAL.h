@@ -4,7 +4,7 @@
 #include "App/Common/HAL/HAL.h"
 
 #include "Arduino.h"
-#include "Basic/Config.h"
-#include "Basic/CommonMacro.h"
+#include "Config/Config.h"
+#include "CommonMacro.h"
 
 #endif

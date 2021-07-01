@@ -1,6 +1,8 @@
 #include "SystemInfosModel.h"
 #include <stdio.h>
 
+using namespace Page;
+
 void SystemInfosModel::Init()
 {
     account = new Account("SystemInfosModel", DataProc::Center(), 0, this);

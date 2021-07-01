@@ -1,5 +1,7 @@
 #include "StartUp.h"
 
+using namespace Page;
+
 StartUp::StartUp()
 {
 }

@@ -1,5 +1,7 @@
 #include "Template.h"
 
+using namespace Page;
+
 Template::Template()
 {
 }

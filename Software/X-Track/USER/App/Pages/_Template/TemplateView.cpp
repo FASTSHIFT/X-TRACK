@@ -2,6 +2,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+using namespace Page;
+
 void TemplateView::Create(lv_obj_t* root)
 {
     lv_obj_t* label = lv_label_create(root);

@@ -37,7 +37,7 @@ enum {
 typedef uint8_t lv_scrollbar_mode_t;
 
 
-/** Scroll span align options. Tells where to align the snapable children when scroll stops.*/
+/** Scroll span align options. Tells where to align the snappable children when scroll stops.*/
 enum {
     LV_SCROLL_SNAP_NONE,    /**< Do not align, leave where it is*/
     LV_SCROLL_SNAP_START,   /**< Align to to the left/top*/
@@ -265,6 +265,13 @@ void lv_obj_get_scrollbar_area(struct _lv_obj_t * obj, lv_area_t * hor, lv_area_
  * @param obj       pointer to an object
  */
 void lv_obj_scrollbar_invalidate(struct _lv_obj_t * obj);
+
+/**
+ * Checked if the content is scrolled "in" and adjusts it to a normal position.
+ * @param obj       pointer to an object
+ * @param anim_en   LV_ANIM_ON/OFF
+ */
+void lv_obj_readjust_scroll(struct _lv_obj_t * obj, lv_anim_enable_t anim_en);
 
 /**********************
  *      MACROS

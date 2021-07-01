@@ -3,6 +3,9 @@
 
 #include "../Page.h"
 
+namespace Page
+{
+
 class StartUpView
 {
 public:
@@ -18,5 +21,7 @@ public:
 private:
     static void Bar_SetValue(lv_obj_t* bar, int32_t value);
 };
+
+}
 
 #endif // !__VIEW_H

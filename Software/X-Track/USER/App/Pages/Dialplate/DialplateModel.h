@@ -3,6 +3,9 @@
 
 #include "Common/DataProc/DataProc.h"
 
+namespace Page
+{
+
 class DialplateModel
 {
 public:
@@ -42,5 +45,7 @@ private:
 private:
     static int onEvent(Account* account, Account::EventParam_t* param);
 };
+
+}
 
 #endif

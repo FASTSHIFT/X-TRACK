@@ -3,111 +3,93 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "lvgl/lvgl.h"
+#include "Utils/GPX_Parser/GPX_Parser.h"
+#include "Config/Config.h"
 
-typedef struct {
-    char time[32];
-    float longitude;
-    float latitude;
-    float altitude;
-}TrackPoint_t;
+typedef struct
+{
+    lv_fs_file_t file;
+    uint32_t size;
+}FileInfo_t;
 
-static lv_fs_file_t file;
-static TrackPoint_t point = {
-    .longitude = 116.391332,
-    .latitude = 39.907415,
-    .altitude = 53.0f
-};
+static int Parser_FileReadByte(GPX_Parser* parser)
+{
+    FileInfo_t* info = (FileInfo_t*)parser->userData;
+    uint8_t data = 0;
+    lv_fs_read(&info->file, &data, 1, nullptr);
+    return data;
+}
 
-static bool ReadFileUntil(lv_fs_file_t* f, char c, char* buf, uint32_t len)
+static int Parser_FileAvaliable(GPX_Parser* parser)
+{
+    FileInfo_t* info = (FileInfo_t*)parser->userData;
+    uint32_t cur = 0;
+    lv_fs_tell(&info->file, &cur);
+    return (info->size - cur);
+}
+
+static bool Parser_Init(GPX_Parser* parser, FileInfo_t* info)
 {
     bool retval = false;
-    uint32_t index = 0;
-    while (1)
+    lv_fs_res_t res = lv_fs_open(&info->file, CONFIG_VIRTUAL_TRACK_GPX_FILE_PATH, LV_FS_MODE_RD);
+
+    if (res == LV_FS_RES_OK)
     {
-        if (index >= len)
-        {
-            break;
-        }
+        uint32_t cur = 0;
+        lv_fs_tell(&info->file, &cur);
 
-        char data;
-        lv_fs_res_t res = lv_fs_read(f, &data, 1, nullptr);
+        lv_fs_seek(&info->file, 0L, LV_FS_SEEK_END);
 
-        if (res != LV_FS_RES_OK)
-        {
-            buf[index] = '\0';
-            break;
-        }
+        lv_fs_tell(&info->file, &info->size);
 
-        if (data == c)
-        {
-            buf[index] = '\0';
-            retval = true;
-            break;
-        }
+        /*Restore file pointer*/
+        lv_fs_seek(&info->file, 0L, LV_FS_SEEK_SET);
 
-        buf[index] = data;
+        parser->SetCallback(Parser_FileAvaliable, Parser_FileReadByte);
 
-        index++;
+        parser->userData = info;
+
+        retval = true;
     }
     return retval;
 }
 
-static bool TrackGetNext(lv_fs_file_t* f, TrackPoint_t* point)
-{
-    char buf[64];
-    bool ret = ReadFileUntil(f, '\n', buf, sizeof(buf));
-
-    if (ret)
-    {
-        sscanf(
-            buf, "%[^,],%f,%f,%f",
-            point->time,
-            &point->longitude,
-            &point->latitude,
-            &point->altitude
-        );
-    }
-
-    return ret;
-}
-
-static void TrackUpdate(lv_timer_t* timer)
-{
-    bool ret = TrackGetNext(&file, &point);
-    if(!ret)
-    {
-        lv_fs_seek(&file, 0, LV_FS_SEEK_SET);
-    }
-}
-
 bool HAL::GPS_GetInfo(GPS_Info_t* info)
 {
-    static int angle;
+    static bool isInit = false;
+    static bool isFileOpen = false;
+    static GPX_Parser gpxParser;
+    static FileInfo_t fileInfo;
+
     memset(info, 0, sizeof(GPS_Info_t));
 
     info->isVaild = true;
     info->satellites = 10;
 
-    static bool fileIsOpen = false;
-
-    if (!fileIsOpen)
+    if (!isInit)
     {
-       lv_fs_res_t res = lv_fs_open(&file, "/Track.csv", LV_FS_MODE_RD);
-       fileIsOpen = true;
-
-       if (res == LV_FS_RES_OK)
-       {
-           lv_timer_create(TrackUpdate, 1000, nullptr);
-       }
+        isFileOpen = Parser_Init(&gpxParser, &fileInfo);
+        isInit = true;
     }
 
-    info->longitude = point.longitude;
-    info->latitude = point.latitude;
-    info->altitude = point.altitude;
-
-    /*info->longitude = 116.391332;
-    info->latitude = 39.907415;
-    info->altitude = 53.0f;*/
+    if (isFileOpen)
+    {
+        GPX_Parser::Point_t point;
+        if (gpxParser.ReadNext(&point))
+        {
+            info->longitude = point.longitude;
+            info->latitude = point.latitude;
+        }
+        else
+        {
+            lv_fs_seek(&fileInfo.file, 0, LV_FS_SEEK_SET);
+        }  
+    }
+    else
+    {
+        info->longitude = CONFIG_LIVE_MAP_LNG_DEFAULT;
+        info->latitude = CONFIG_LIVE_MAP_LAT_DEFAULT;
+    }
 
     Clock_GetInfo(&info->clock);
 

@@ -24,6 +24,14 @@
 #include "DataCenter.h"
 #include "DataCenterLog.h"
 
+/**
+  * @brief  Account constructor
+  * @param  id:       Unique name
+  * @param  center:   Pointer to the data center
+  * @param  bufSize:  The length of the data to be cached
+  * @param  userData: Point to the address of user-defined data
+  * @retval None
+  */
 Account::Account(
     const char* id,
     DataCenter* center,
@@ -66,52 +74,63 @@ Account::Account(
     DC_LOG_INFO("Account[%s] created", ID);
 }
 
+/**
+  * @brief  Account destructor
+  * @param  None
+  * @retval None
+  */
 Account::~Account()
 {
     DC_LOG_INFO("Account[%s] deleting...", ID);
 
+    /* Release cache */
     if(priv.BufferSize)
     {
         delete priv.BufferManager.buffer[0];
         delete priv.BufferManager.buffer[1];
     }
 
-    /* 删除定时刷新任务 */
+    /* Delete timer */
     if (priv.timer)
     {
         lv_timer_del(priv.timer);
         DC_LOG_INFO("Account[%s] task deleted", ID);
     }
 
-    /* 让我的粉丝们取关我这个UP */
+    /* Let subscribers unfollow */
     for(auto iter : subscribers)
     {
         iter->Unsubscribe(ID);
         DC_LOG_INFO("sub[%s] unsubscribed pub[%s]", iter->ID, ID);
     }
 
-    /* 让我关注的UP们删除我这个粉丝 */
+    /* Ask the publisher to delete this subscriber */
     for (auto iter : publishers)
     {
         Center->Remove(&iter->subscribers, this);
         DC_LOG_INFO("pub[%s] removed sub[%s]", iter->ID, ID);
     }
 
-    /* 让B站删号*/
+    /* Let the data center delete the account */
     Center->RemoveAccount(this);
     DC_LOG_INFO("Account[%s] deleted", ID);
 }
 
+/**
+  * @brief  Subscribe to Publisher
+  * @param  pubID: Publisher ID
+  * @retval Pointer to publisher
+  */
 Account* Account::Subscribe(const char* pubID)
 {
-    /* 不允许订阅自己 */
+    /* Not allowed to subscribe to yourself */
     if (strcmp(pubID, ID) == 0)
     {
         DC_LOG_ERROR("Account[%s] try to subscribe to it itself", ID);
         return nullptr;
     }
 
-    /* 是否重复关注 */
+    /* Whether to subscribe repeatedly */
     Account* pub = Center->Find(&publishers, pubID);
     if(pub != nullptr)
     {
@@ -119,7 +138,7 @@ Account* Account::Subscribe(const char* pubID)
         return nullptr;
     }
 
-    /* B站是否有号 */
+    /* BWhether the account is created */
     pub = Center->SearchAccount(pubID);
     if (pub == nullptr)
     {
@@ -127,10 +146,10 @@ Account* Account::Subscribe(const char* pubID)
         return nullptr;
     }
 
-    /* 将UP加至我的关注列表 */
+    /* Add the publisher to the subscription list */
     publishers.push_back(pub);
 
-    /* 让UP添加一个我这个粉丝 */
+    /* Let the publisher add this subscriber */
     pub->subscribers.push_back(this);
 
     DC_LOG_INFO("sub[%s] subscribed pub[%s]", ID, pubID);
@@ -138,9 +157,14 @@ Account* Account::Subscribe(const char* pubID)
     return pub;
 }
 
+/**
+  * @brief  Unsubscribe from publisher
+  * @param  pubID: Publisher ID
+  * @retval Return true if unsubscribe is successful
+  */
 bool Account::Unsubscribe(const char* pubID)
 {
-    /* 我是否有关注这个UP */
+    /* Whether to subscribe to the publisher */
     Account* pub = Center->Find(&publishers, pubID);
     if (pub == nullptr)
     {
@@ -148,15 +172,21 @@ bool Account::Unsubscribe(const char* pubID)
         return false;
     }
 
-    /* 将UP移出我关注列表 */
+    /* Remove the publisher from the subscription list */
     Center->Remove(&publishers, pub);
 
-    /* UP删除我这个粉丝 */
+    /* Let the publisher add this subscriber */
     Center->Remove(&pub->subscribers, this);
 
     return true;
 }
 
+/**
+  * @brief  Submit data to cache
+  * @param  data_p: Pointer to data
+  * @param  size:   The size of the data
+  * @retval Return true if the submission is successful
+  */
 bool Account::Commit(const void* data_p, uint32_t size)
 {
     if (!size || size != priv.BufferSize)
@@ -178,6 +208,11 @@ bool Account::Commit(const void* data_p, uint32_t size)
     return true;
 }
 
+/**
+  * @brief  Publish data to subscribers
+  * @param  None
+  * @retval error code
+  */
 int Account::Publish()
 {
     int retval = ERROR_UNKNOW;
@@ -202,7 +237,7 @@ int Account::Publish()
     param.data_p = rBuf;
     param.size = priv.BufferSize;
 
-    /* 向粉丝推送消息 */
+    /* Push messages to subscribers */
     for(auto iter : subscribers)
     {
         Account* sub = iter;
@@ -230,6 +265,13 @@ int Account::Publish()
     return retval;
 }
 
+/**
+  * @brief  Pull data from the publisher
+  * @param  pubID:  Publisher ID
+  * @param  data_p: Pointer to data
+  * @param  size:   The size of the data
+  * @retval error code
+  */
 int Account::Pull(const char* pubID, void* data_p, uint32_t size)
 {
     Account* pub = Center->Find(&publishers, pubID);
@@ -302,6 +344,13 @@ int Account::Pull(Account* pub, void* data_p, uint32_t size)
     return retval;
 }
 
+/**
+  * @brief  Send a notification to the publisher
+  * @param  pubID: Publisher ID
+  * @param  data_p: Pointer to data
+  * @param  size:   The size of the data
+  * @retval error code
+  */
 int Account::Notify(const char* pubID, const void* data_p, uint32_t size)
 {
     Account* pub = Center->Find(&publishers, pubID);
@@ -313,6 +362,13 @@ int Account::Notify(const char* pubID, const void* data_p, uint32_t size)
     return Notify(pub, data_p, size);
 }
 
+/**
+  * @brief  Send a notification to the publisher
+  * @param  pub:    Pointer to publisher
+  * @param  data_p: Pointer to data
+  * @param  size:   The size of the data
+  * @retval error code
+  */
 int Account::Notify(Account* pub, const void* data_p, uint32_t size)
 {
     int retval = ERROR_UNKNOW;
@@ -349,11 +405,21 @@ int Account::Notify(Account* pub, const void* data_p, uint32_t size)
     return retval;
 }
 
+/**
+  * @brief  Set event callback
+  * @param  callback: Callback function pointer
+  * @retval None
+  */
 void Account::SetEventCallback(EventCallback_t callback)
 {
     priv.eventCallback = callback;
 }
 
+/**
+  * @brief  Timer callback entry function
+  * @param  timer: Pointer to timer
+  * @retval None
+  */
 void Account::TimerCallbackHandler(lv_timer_t* timer)
 {
     Account* instance = (Account*)(timer->user_data);
@@ -371,6 +437,11 @@ void Account::TimerCallbackHandler(lv_timer_t* timer)
     }
 }
 
+/**
+  * @brief  Set timing period
+  * @param  period: Timing period
+  * @retval None
+  */
 void Account::SetTimerPeriod(uint32_t period)
 {
     if(priv.timer)
@@ -391,6 +462,11 @@ void Account::SetTimerPeriod(uint32_t period)
                  );
 }
 
+/**
+  * @brief  Set timer enable
+  * @param  en: Whether to enable
+  * @retval None
+  */
 void Account::SetTimerEnable(bool en)
 {
     lv_timer_t* timer = priv.timer;
@@ -403,11 +479,19 @@ void Account::SetTimerEnable(bool en)
     en ? lv_timer_resume(timer) : lv_timer_pause(timer);
 }
 
+/**
+  * @brief  Get the number of publishers
+  * @retval number of publishers
+  */
 uint32_t Account::GetPublisherSize()
 {
     return publishers.size();
 }
 
+/**
+  * @brief  Get the number of subscribes
+  * @retval number of subscribes
+  */
 uint32_t Account::GetSubscribeSize()
 {
     return subscribers.size();

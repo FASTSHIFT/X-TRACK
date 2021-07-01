@@ -1,5 +1,7 @@
 #include "Dialplate.h"
 
+using namespace Page;
+
 Dialplate::Dialplate()
     : recState(RECORD_STATE_READY)
 {

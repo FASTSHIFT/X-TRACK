@@ -83,6 +83,48 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     return 0;
 }
 
+static void StatusBar_ConBattSetOpa(lv_obj_t* obj, int32_t opa)
+{
+    lv_obj_set_style_opa(obj, opa, 0);
+}
+
+static void StatusBar_onAnimOpaFinish(lv_anim_t* a)
+{
+    if (a->act_time > 0)
+    {
+        lv_anim_t a_opa;
+        lv_anim_init(&a_opa);
+        lv_anim_set_var(&a_opa, a->var);
+        lv_anim_set_exec_cb(&a_opa, (lv_anim_exec_xcb_t)StatusBar_ConBattSetOpa);
+        lv_anim_set_ready_cb(&a_opa, StatusBar_onAnimOpaFinish);
+        lv_anim_set_values(&a_opa, LV_OPA_COVER, LV_OPA_TRANSP);
+        lv_anim_set_early_apply(&a_opa, true);
+        lv_anim_set_delay(&a_opa, 1490);
+        lv_anim_set_time(&a_opa, 510);
+        lv_anim_start(&a_opa);
+    }
+}
+
+static void StatusBar_AnimCreate(lv_obj_t* contBatt)
+{
+    lv_anim_t a_height;
+    lv_anim_init(&a_height);
+    lv_anim_set_var(&a_height, contBatt);
+    lv_anim_set_exec_cb(&a_height, (lv_anim_exec_xcb_t)lv_obj_set_height);
+    lv_anim_set_values(&a_height, 0, BATT_USAGE_HEIGHT);
+
+    lv_anim_set_time(&a_height, 1000);
+    lv_anim_set_repeat_delay(&a_height, 1000);
+    lv_anim_set_repeat_count(&a_height, LV_ANIM_REPEAT_INFINITE);
+    lv_anim_start(&a_height);
+
+    lv_anim_t a_opa;
+    lv_anim_init(&a_opa);
+    lv_anim_set_var(&a_opa, contBatt);
+    a_opa.act_time = 1000;
+    StatusBar_onAnimOpaFinish(&a_opa);
+}
+
 static void StatusBar_Update(lv_timer_t* timer)
 {
     /* satellite */
@@ -107,15 +149,7 @@ static void StatusBar_Update(lv_timer_t* timer)
     {
         if(!Is_BattChargingAnimActive)
         {
-            lv_anim_t a;
-            lv_anim_init(&a);
-            lv_anim_set_var(&a, contBatt);
-            lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)lv_obj_set_height);
-            lv_anim_set_values(&a, 0, BATT_USAGE_HEIGHT);
-            lv_anim_set_time(&a, 1000);
-            lv_anim_set_repeat_delay(&a, 200);
-            lv_anim_set_repeat_count(&a, LV_ANIM_REPEAT_INFINITE);
-            lv_anim_start(&a);
+            StatusBar_AnimCreate(contBatt);
             Is_BattChargingAnimActive = true;
         }
     }
@@ -123,7 +157,8 @@ static void StatusBar_Update(lv_timer_t* timer)
     {
         if(Is_BattChargingAnimActive)
         {
-            lv_anim_del(contBatt, (lv_anim_exec_xcb_t)lv_obj_set_height);
+            lv_anim_del(contBatt, nullptr);
+            StatusBar_ConBattSetOpa(contBatt, LV_OPA_COVER);
             Is_BattChargingAnimActive = false;
         }
         lv_coord_t height = lv_map(power.usage, 0, 100, 0, BATT_USAGE_HEIGHT);

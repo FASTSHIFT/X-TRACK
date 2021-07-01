@@ -718,9 +718,11 @@ static void lv_chart_event(const lv_obj_class_t * class_p, lv_event_t * e)
         draw_div_lines(obj, clip_area);
         draw_axes(obj, clip_area);
 
-        if(chart->type == LV_CHART_TYPE_LINE) draw_series_line(obj, clip_area);
-        else if(chart->type == LV_CHART_TYPE_BAR) draw_series_bar(obj, clip_area);
-        else if(chart->type == LV_CHART_TYPE_SCATTER) draw_series_scatter(obj, clip_area);
+        if(_lv_ll_is_empty(&chart->series_ll) == false) {
+            if(chart->type == LV_CHART_TYPE_LINE) draw_series_line(obj, clip_area);
+            else if(chart->type == LV_CHART_TYPE_BAR) draw_series_bar(obj, clip_area);
+            else if(chart->type == LV_CHART_TYPE_SCATTER) draw_series_scatter(obj, clip_area);
+        }
 
         draw_cursors(obj, clip_area);
     }
@@ -1559,8 +1561,17 @@ static void invalidate_point(lv_obj_t * obj, uint16_t i)
 
     lv_coord_t w  = (lv_obj_get_content_width(obj) * chart->zoom_x) >> 8;
     lv_coord_t scroll_left = lv_obj_get_scroll_left(obj);
+
+    /*In shift mode the whole chart changes so the whole object*/
+    if(chart->update_mode == LV_CHART_UPDATE_MODE_SHIFT) {
+        lv_obj_invalidate(obj);
+        return;
+    }
+
     if(chart->type == LV_CHART_TYPE_LINE) {
-        lv_coord_t x_ofs = obj->coords.x1 + lv_obj_get_style_pad_left(obj, LV_PART_MAIN) - scroll_left;
+        lv_coord_t bwidth = lv_obj_get_style_border_width(obj, LV_PART_MAIN);
+        lv_coord_t pleft = lv_obj_get_style_pad_left(obj, LV_PART_MAIN);
+        lv_coord_t x_ofs = obj->coords.x1 + pleft + bwidth - scroll_left;
         lv_coord_t line_width = lv_obj_get_style_line_width(obj, LV_PART_ITEMS);
         lv_coord_t point_w = lv_obj_get_style_width(obj, LV_PART_INDICATOR);
 

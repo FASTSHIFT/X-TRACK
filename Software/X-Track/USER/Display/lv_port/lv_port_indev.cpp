@@ -11,7 +11,7 @@
  *********************/
 #include "lv_port_indev.h"
 #include "Arduino.h"
-#include "Basic/Config.h"
+#include "Config/Config.h"
 #include "HAL/HAL.h"
 
 /*********************

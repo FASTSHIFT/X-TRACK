@@ -67,12 +67,8 @@ void lv_obj_del(lv_obj_t * obj)
 
     /*Call the ancestor's event handler to the parent to notify it about the child delete*/
     if(par) {
-        /*Just to remove scroll animations if any*/
-        lv_obj_scroll_to(par, 0, 0, LV_ANIM_OFF);
-        if(par->spec_attr) {
-                par->spec_attr->scroll.x = 0;
-                par->spec_attr->scroll.y = 0;
-            }
+        lv_obj_readjust_scroll(par, LV_ANIM_OFF);
+        lv_obj_scrollbar_invalidate(par);
         lv_event_send(par, LV_EVENT_CHILD_CHANGED, NULL);
     }
 
@@ -108,6 +104,18 @@ void lv_obj_clean(lv_obj_t * obj)
     LV_ASSERT_MEM_INTEGRITY();
 
     LV_LOG_TRACE("finished (delete %p)", obj)
+}
+
+void lv_obj_del_delayed(lv_obj_t * obj, uint32_t delay_ms)
+{
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, obj);
+    lv_anim_set_exec_cb(&a, NULL);
+    lv_anim_set_time(&a, 1);
+    lv_anim_set_delay(&a, delay_ms);
+    lv_anim_set_ready_cb(&a, lv_obj_del_anim_ready_cb);
+    lv_anim_start(&a);
 }
 
 void lv_obj_del_anim_ready_cb(lv_anim_t * a)
