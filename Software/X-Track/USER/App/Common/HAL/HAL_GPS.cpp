@@ -31,7 +31,7 @@ static int Parser_FileAvaliable(GPX_Parser* parser)
 static bool Parser_Init(GPX_Parser* parser, FileInfo_t* info)
 {
     bool retval = false;
-    lv_fs_res_t res = lv_fs_open(&info->file, CONFIG_VIRTUAL_TRACK_GPX_FILE_PATH, LV_FS_MODE_RD);
+    lv_fs_res_t res = lv_fs_open(&info->file, CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH, LV_FS_MODE_RD);
 
     if (res == LV_FS_RES_OK)
     {

@@ -29,24 +29,26 @@
 
 #define CONFIG_SYSTEM_SAVE_FILE_PATH          "/SystemSave.json"
 
+#define CONFIG_GMT_OFFSET_HOURS               8 // GMT+ 8
+
+#define CONFIG_GPS_REFR_PERIOD                1000 // ms
+
+#define CONFIG_TRACK_FILTER_OFFSET_THRESHOLD  2 // pixel
+#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx"
+#define CONFIG_TRACK_RECORD_FILE_DIR_NAME     "Track"
+
+#define CONFIG_MAP_CONV_CALIBRATION_LNG       0.00610
+#define CONFIG_MAP_CONV_CALIBRATION_LAT       0.00130
+#define CONFIG_MAP_TILE_SIZE                  256
+#define CONFIG_MAP_FILE_DIR_NAME              "MAP"
+#define CONFIG_MAP_FILE_NAME                  "map.bin"
+#define CONFIG_MAP_FILE_PATH                  "/MAP/MapInfos"
+
 #define CONFIG_LIVE_MAP_LEVEL_DEFAULT         15
 #define CONFIG_LIVE_MAP_VIEW_WIDTH            LV_HOR_RES
 #define CONFIG_LIVE_MAP_VIEW_HEIGHT           LV_VER_RES
 #define CONFIG_LIVE_MAP_LNG_DEFAULT           116.391332
 #define CONFIG_LIVE_MAP_LAT_DEFAULT           39.907415
-
-#define CONFIG_TRACK_FILTER_OFFSET_THRESHOLD  2 // pixel
-
-#define CONFIG_MAP_CONV_CALIBRATION_LNG       0.00610
-#define CONFIG_MAP_CONV_CALIBRATION_LAT       0.00130
-
-#define CONFIG_MAP_TILE_SIZE                  256
-
-#define CONFIG_GMT_OFFSET_HOURS               8 // GMT+ 8
-
-#define CONFIG_GPS_MAP_REFR_PERIOD            50
-
-#define CONFIG_VIRTUAL_TRACK_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx"
 
 /*=========================
    Hardware Configuration

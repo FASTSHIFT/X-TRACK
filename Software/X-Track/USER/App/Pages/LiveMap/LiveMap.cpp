@@ -54,11 +54,10 @@ void LiveMap::onViewLoad()
 
     lv_slider_set_value(View.ui.zoom.slider, mapLevel, LV_ANIM_OFF);
     Model.mapConv.SetLevel(mapLevel);
-    Model.mapConv.SetMapFilePath("/MAP/Mapinfos");
     lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
 
     Model.pointFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
-    Model.pointFilter.SetOutputPointCallback([](TrackPointFilter * filter, const TrackPointFilter::Point_t* point)->void
+    Model.pointFilter.SetOutputPointCallback([](TrackPointFilter * filter, const TrackPointFilter::Point_t* point)
     {
         LiveMap* instance = (LiveMap*)filter->userData;
         instance->Model.TrackAddPoint((int32_t)point->x, (int32_t)point->y);
@@ -88,7 +87,7 @@ void LiveMap::onViewWillAppear()
 
 void LiveMap::onViewDidAppear()
 {
-    priv.timer = lv_timer_create([](lv_timer_t* timer)->void
+    priv.timer = lv_timer_create([](lv_timer_t* timer)
     {
         LiveMap* instance = (LiveMap*)timer->user_data;
         instance->Update();
@@ -130,7 +129,7 @@ void LiveMap::AttachEvent(lv_obj_t* obj)
 
 void LiveMap::Update()
 {
-    if (lv_tick_elaps(priv.lastMapUpdateTime) >= CONFIG_GPS_MAP_REFR_PERIOD)
+    if (lv_tick_elaps(priv.lastMapUpdateTime) >= CONFIG_GPS_REFR_PERIOD)
     {
         MapUpdate();
         SportInfoUpdate();

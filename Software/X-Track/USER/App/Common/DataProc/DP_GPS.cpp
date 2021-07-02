@@ -77,5 +77,5 @@ DATA_PROC_INIT_DEF(GPS)
     account->Subscribe("MusicPlayer");
 
     account->SetEventCallback(onEvent);
-    account->SetTimerPeriod(CONFIG_GPS_MAP_REFR_PERIOD);
+    account->SetTimerPeriod(CONFIG_GPS_REFR_PERIOD);
 }

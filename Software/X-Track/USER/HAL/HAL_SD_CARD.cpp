@@ -53,8 +53,8 @@ bool HAL::SD_Init()
     if(retval)
     {
         SdFile::dateTimeCallback(SD_GetDateTime);
-        SD_CheckDir("Track");
-        SD_CheckDir("MAP");
+        SD_CheckDir(CONFIG_TRACK_RECORD_FILE_DIR_NAME);
+        SD_CheckDir(CONFIG_MAP_FILE_DIR_NAME);
         Serial.println("SD: Init success");
     }
     else

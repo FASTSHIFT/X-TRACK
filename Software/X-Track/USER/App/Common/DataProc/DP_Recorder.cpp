@@ -1,6 +1,7 @@
 #include "DataProc.h"
 #include "Utils/GPX/GPX.h"
 #include <stdio.h>
+#include "Config/Config.h"
 
 using namespace DataProc;
 
@@ -42,7 +43,9 @@ static int Recorder_GetFileName(Account* account, char* buf, uint32_t size)
     int ret = snprintf(
                   buf,
                   size,
-                  "/Track/TRK_%04d%02d%02d_%02d%02d%02d.gpx",
+                  "/"
+                  CONFIG_TRACK_RECORD_FILE_DIR_NAME
+                  "/TRK_%04d%02d%02d_%02d%02d%02d.gpx",
                   clock.year,
                   clock.month,
                   clock.day,
