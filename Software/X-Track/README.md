@@ -169,3 +169,11 @@
 * 12.lv_allocater添加遗漏的运算符重载
 * 13.添加Utils/Stream，来自Arduino
 * 14.转移CommmonMacro.h到HAL，去除Basic文件夹
+
+## [v1.1] - 2021-7-7
+* 1.支持在GPX中记录海拔和时间，可在GPXSee查看爬升和速度统计
+* 2.更新StartUp页面，使用匿名函数回调
+* 3.更新SystemInfos页面，添加Author署名和Build时间，电池状态 State -> Status
+* 4.更新lvgl
+* 5.更新GPX生成库，添加遗漏的time_成员
+* 6.尝试将lvgl部分函数放在RAM中执行，但是执行速度提升不明显

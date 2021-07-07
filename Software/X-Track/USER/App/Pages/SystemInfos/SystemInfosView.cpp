@@ -99,7 +99,7 @@ void SystemInfosView::Create(lv_obj_t* root)
 
         "Usage\n"
         "Voltage\n"
-        "State"
+        "Status"
     );
 
     /* Item Storage */
@@ -121,9 +121,11 @@ void SystemInfosView::Create(lv_obj_t* root)
         "system_info",
 
         "Firmware\n"
+        "Author\n"
         "LVGL\n"
         "SysTick\n"
-        "Compile\n\n\n"
+        "Compiler\n\n"
+        "Build\n"
     );
 
     Group_Init();
@@ -402,10 +404,12 @@ void SystemInfosView::SetStorage(
 }
 
 void SystemInfosView::SetSystem(
-    const char* sysVer,
+    const char* firmVer,
+    const char* authorName,
     const char* lvglVer,
     const char* bootTime,
-    const char* compile
+    const char* compilerName,
+    const char* bulidTime
 )
 {
     lv_label_set_text_fmt(
@@ -413,10 +417,14 @@ void SystemInfosView::SetSystem(
         "%s\n"
         "%s\n"
         "%s\n"
+        "%s\n"
+        "%s\n"
         "%s",
-        sysVer,
+        firmVer,
+        authorName,
         lvglVer,
         bootTime,
-        compile
+        compilerName,
+        bulidTime
     );
 }

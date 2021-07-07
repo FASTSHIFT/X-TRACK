@@ -250,21 +250,6 @@
     <Filter Include="lvgl\src\widgets">
       <UniqueIdentifier>{111a750f-9bc8-4ce3-b248-d39214e7fc4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lvgl\tests">
-      <UniqueIdentifier>{0d04982d-5485-4c9f-b019-6fb13e6fb519}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lvgl\tests\lv_test_core">
-      <UniqueIdentifier>{def55234-91c5-4fc6-8d81-92692e892a48}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lvgl\tests\lv_test_fonts">
-      <UniqueIdentifier>{3492f051-3bb4-433d-a96f-de3509f94080}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lvgl\tests\lv_test_ref_imgs">
-      <UniqueIdentifier>{f057c5b9-3c70-4f85-a4dc-0fb5c2936b92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lvgl\tests\lv_test_widgets">
-      <UniqueIdentifier>{063ff02b-610d-493f-876c-f347fd660f57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lvgl\zephyr">
       <UniqueIdentifier>{6c4ef90c-cc0f-4a1f-813a-095c2310e4cd}</UniqueIdentifier>
     </Filter>
@@ -722,27 +707,6 @@
     </ClInclude>
     <ClInclude Include="lvgl\src\lv_conf_kconfig.h">
       <Filter>lvgl\src</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_core.h">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_font_loader.h">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_obj.h">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_style.h">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_widgets\lv_test_label.h">
-      <Filter>lvgl\tests\lv_test_widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_assert.h">
-      <Filter>lvgl\tests</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\tests\lv_test_conf.h">
-      <Filter>lvgl\tests</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\lvgl.h">
       <Filter>lvgl</Filter>
@@ -1612,36 +1576,6 @@
     </ClCompile>
     <ClCompile Include="lvgl\src\widgets\lv_textarea.c">
       <Filter>lvgl\src\widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_core.c">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_font_loader.c">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_obj.c">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_style.c">
-      <Filter>lvgl\tests\lv_test_core</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_1.c">
-      <Filter>lvgl\tests\lv_test_fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_2.c">
-      <Filter>lvgl\tests\lv_test_fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_3.c">
-      <Filter>lvgl\tests\lv_test_fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_widgets\lv_test_label.c">
-      <Filter>lvgl\tests\lv_test_widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_assert.c">
-      <Filter>lvgl\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\tests\lv_test_main.c">
-      <Filter>lvgl\tests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\App.cpp">
       <Filter>App</Filter>
@@ -2583,30 +2517,6 @@
     </None>
     <None Include="lvgl\src\widgets\lv_widgets.mk">
       <Filter>lvgl\src\widgets</Filter>
-    </None>
-    <None Include="lvgl\tests\lv_test_ref_imgs\lv_test_img32_label_1.png">
-      <Filter>lvgl\tests\lv_test_ref_imgs</Filter>
-    </None>
-    <None Include="lvgl\tests\build.py">
-      <Filter>lvgl\tests</Filter>
-    </None>
-    <None Include="lvgl\tests\font_1.fnt">
-      <Filter>lvgl\tests</Filter>
-    </None>
-    <None Include="lvgl\tests\font_2.fnt">
-      <Filter>lvgl\tests</Filter>
-    </None>
-    <None Include="lvgl\tests\font_3.fnt">
-      <Filter>lvgl\tests</Filter>
-    </None>
-    <None Include="lvgl\tests\icon.png">
-      <Filter>lvgl\tests</Filter>
-    </None>
-    <None Include="lvgl\tests\icon2.png">
-      <Filter>lvgl\tests</Filter>
-    </None>
-    <None Include="lvgl\tests\Makefile">
-      <Filter>lvgl\tests</Filter>
     </None>
     <None Include="lvgl\zephyr\module.yml">
       <Filter>lvgl\zephyr</Filter>

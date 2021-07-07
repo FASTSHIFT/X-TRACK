@@ -2,6 +2,7 @@
 #include "Utils/GPX/GPX.h"
 #include <stdio.h>
 #include "Config/Config.h"
+#include "Version.h"
 
 using namespace DataProc;
 
@@ -10,32 +11,26 @@ static Recorder_Info_t recInfo;
 static lv_fs_file_t file;
 static bool recActive = false;
 
-static void Recorder_FileWriteString(const char* str)
+static lv_fs_res_t Recorder_FileWriteString(const char* str)
 {
     //LV_LOG_USER(str);
     //printf(str);
-    lv_fs_write(
-        &file,
-        str,
-        strlen(str),
-        nullptr
-    );
+
+    lv_fs_res_t res = lv_fs_write(
+                          &file,
+                          str,
+                          strlen(str),
+                          nullptr
+                      );
+
+    return res;
 }
 
-static void Recorder_RecPoint(Account* account, HAL::GPS_Info_t* gpsInfo)
-{
-    LV_LOG_USER("Track recording...");
-
-    String gpxStr = gpx.getPt(
-                        GPX_TRKPT,
-                        String(gpsInfo->longitude, 6),
-                        String(gpsInfo->latitude, 6)
-                    );
-
-    Recorder_FileWriteString(gpxStr.c_str());
-}
-
-static int Recorder_GetFileName(Account* account, char* buf, uint32_t size)
+static int Recorder_GetTimeConv(
+    Account* account,
+    const char* format,
+    char* buf,
+    uint32_t size)
 {
     HAL::Clock_Info_t clock;
     account->Pull("Clock", &clock, sizeof(clock));
@@ -43,9 +38,7 @@ static int Recorder_GetFileName(Account* account, char* buf, uint32_t size)
     int ret = snprintf(
                   buf,
                   size,
-                  "/"
-                  CONFIG_TRACK_RECORD_FILE_DIR_NAME
-                  "/TRK_%04d%02d%02d_%02d%02d%02d.gpx",
+                  format,
                   clock.year,
                   clock.month,
                   clock.day,
@@ -56,26 +49,53 @@ static int Recorder_GetFileName(Account* account, char* buf, uint32_t size)
     return ret;
 }
 
+static void Recorder_RecPoint(Account* account, HAL::GPS_Info_t* gpsInfo)
+{
+    LV_LOG_USER("Track recording...");
+
+    char timeBuf[64];
+    Recorder_GetTimeConv(
+        account,
+        "%d-%02d-%02dT%02d:%02d:%02dZ",
+        timeBuf,
+        sizeof(timeBuf)
+    );
+
+    gpx.setEle(String(gpsInfo->altitude, 2));
+    gpx.setTime(timeBuf);
+
+    String gpxStr = gpx.getPt(
+                        GPX_TRKPT,
+                        String(gpsInfo->longitude, 6),
+                        String(gpsInfo->latitude, 6)
+                    );
+
+    Recorder_FileWriteString(gpxStr.c_str());
+}
+
 static void Recorder_RecStart(Account* account, uint16_t time)
 {
     LV_LOG_USER("Track record start");
 
-    char filename[128];
-    Recorder_GetFileName(account, filename, sizeof(filename));
+    char filepath[128];
+    Recorder_GetTimeConv(
+        account,
+        "/" CONFIG_TRACK_RECORD_FILE_DIR_NAME "/TRK_%d%02d%02d_%02d%02d%02d.gpx",
+        filepath, sizeof(filepath)
+    );
 
-    lv_fs_res_t res = lv_fs_open(&file, filename, LV_FS_MODE_WR | LV_FS_MODE_RD);
+    lv_fs_res_t res = lv_fs_open(&file, filepath, LV_FS_MODE_WR | LV_FS_MODE_RD);
 
     if (res == LV_FS_RES_OK)
     {
-        LV_LOG_USER("Track file %s open success", filename);
+        LV_LOG_USER("Track file %s open success", filepath);
 
-        gpx.setMetaDesc("X-TRACK RECORDER");
-        gpx.setName(filename);
-        gpx.setDesc("X-TRACK " __TIMESTAMP__ " Build");
-        gpx.setSrc("SUP500Ff");
+        gpx.setMetaName(VERSION_FIRMWARE_NAME " " VERSION_SOFTWARE);
+        gpx.setMetaDesc(VERSION_PROJECT_LINK);
+        gpx.setName(filepath);
+        gpx.setDesc("");
 
         Recorder_FileWriteString(gpx.getOpen().c_str());
-        Recorder_FileWriteString(gpx.getMetaData().c_str());
         Recorder_FileWriteString(gpx.getMetaData().c_str());
         Recorder_FileWriteString(gpx.getTrakOpen().c_str());
         Recorder_FileWriteString(gpx.getInfo().c_str());
@@ -123,10 +143,10 @@ static int onNotify(Account* account, Recorder_Info_t* info)
         break;
     }
 
-    TrackFilter_Info_t tfInfo = {
+    TrackFilter_Info_t tfInfo =
+    {
         .cmd = (TrackFilter_Cmd_t)info->cmd
     };
-
     account->Notify("TrackFilter", &tfInfo, sizeof(tfInfo));
 
     return retval;
@@ -143,7 +163,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         {
             if (recActive)
             {
-                Recorder_RecPoint(account, (HAL::GPS_Info_t*)param->data_p);;
+                Recorder_RecPoint(account, (HAL::GPS_Info_t*)param->data_p);
             }
             retval = Account::ERROR_NONE;
         }

@@ -94,6 +94,7 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     Clock_GetInfo(&info->clock);
 
     info->speed = (rand() % 600) / 10.0f;
+    info->altitude = (rand() % 1000) / 10.0f;
 
     return true;
 }

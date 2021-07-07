@@ -128,9 +128,11 @@ void SystemInfos::Update()
     DataProc::ConvTime(lv_tick_get(), buf, sizeof(buf));
     View.SetSystem(
         VERSION_FIRMWARE_NAME " " VERSION_SOFTWARE,
+        VERSION_AUTHOR_NAME,
         VERSION_LVGL,
         buf,
-        VERSION_COMPILER "\n" VERSION_COMPILE_TIME
+        VERSION_COMPILER,
+        VERSION_BUILD_TIME
     );
 }
 

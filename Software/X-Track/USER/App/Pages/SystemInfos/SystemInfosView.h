@@ -71,10 +71,12 @@ public:
         const char* version
     );
     void SetSystem(
-        const char* sysVer,
+        const char* firmVer,
+        const char* authorName,
         const char* lvglVer,
         const char* bootTime,
-        const char* compile
+        const char* compilerName,
+        const char* bulidTime
     );
 
     void SetScrollToY(lv_obj_t* obj, lv_coord_t y, lv_anim_enable_t en);

@@ -19,7 +19,6 @@ public:
     } ui;
 
 private:
-    static void Bar_SetValue(lv_obj_t* bar, int32_t value);
 };
 
 }

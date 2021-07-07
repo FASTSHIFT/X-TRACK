@@ -23,13 +23,18 @@
 #ifndef __VERSION_H
 #define __VERSION_H
 
+/* Firmware Version */
+#define VERSION_FIRMWARE_NAME   "X-TRACK"
+#define VERSION_SOFTWARE        "v1.1"
+#define VERSION_HARDWARE        "v1.0"
+#define VERSION_AUTHOR_NAME     "_VIFEXTech"
+#define VERSION_PROJECT_LINK    "https://github.com/FASTSHIFT/X-TRACK"
+
+/* Number to string macro */
 #define _VERSION_NUM_TO_STR_(n)  #n
 #define VERSION_NUM_TO_STR(n)   _VERSION_NUM_TO_STR_(n)
 
-#define VERSION_FIRMWARE_NAME   "X-Track"
-#define VERSION_SOFTWARE        "v1.0"
-#define VERSION_HARDWARE        "v1.0"
-
+/* LVGL Version */
 #include "lvgl/lvgl.h"
 #define VERSION_LVGL            "v"\
                                 VERSION_NUM_TO_STR(LVGL_VERSION_MAJOR)\
@@ -40,6 +45,8 @@
                                 " "\
                                 LVGL_VERSION_INFO
 
+
+/* File System Version */
 #ifdef ARDUINO
 #  include "SdFat.h"
 #  define VERSION_FILESYSTEM    "SDFAT v" VERSION_NUM_TO_STR(SD_FAT_VERSION)
@@ -47,6 +54,8 @@
 #  define VERSION_FILESYSTEM    "STDC"
 #endif
 
+
+/* Compiler Version */
 #if defined(_MSC_FULL_VER)
 #  define VERSION_COMPILER      "MSVC\nv" VERSION_NUM_TO_STR(_MSC_FULL_VER)
 #elif defined(__ARMCC_VERSION)
@@ -63,7 +72,8 @@
 #  define VERSION_COMPILER      "UNKNOW"
 #endif
 
-#define VERSION_COMPILE_TIME    __DATE__ "\n" __TIME__
+/* Build Time */
+#define VERSION_BUILD_TIME    __DATE__ "\n" __TIME__
 
 
 #endif

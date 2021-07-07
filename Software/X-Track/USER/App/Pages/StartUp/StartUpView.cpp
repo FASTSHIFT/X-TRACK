@@ -31,20 +31,16 @@ void StartUpView::Create(lv_obj_t* root)
     lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, LV_PART_INDICATOR);
     lv_obj_set_style_radius(bar, LV_RADIUS_CIRCLE, LV_PART_INDICATOR);
     lv_bar_set_range(bar, 0, 1000);
-
     ui.bar = bar;
 
     lv_anim_t a;
     lv_anim_init(&a);
     lv_anim_set_var(&a, bar);
     lv_anim_set_values(&a, 0, 1000);
-    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)Bar_SetValue);
+    lv_anim_set_exec_cb(&a, [](void* bar, int32_t value) {
+        lv_bar_set_value((lv_obj_t*)bar, value, LV_ANIM_OFF);
+    });
     lv_anim_set_path_cb(&a, lv_anim_path_ease_in_out);
     lv_anim_set_time(&a, 1000);
     lv_anim_start(&a);
-}
-
-void StartUpView::Bar_SetValue(lv_obj_t* bar, int32_t value)
-{
-    lv_bar_set_value(bar, value, LV_ANIM_OFF);
 }

@@ -249,13 +249,6 @@
     <ClInclude Include="lvgl\src\lv_api_map.h" />
     <ClInclude Include="lvgl\src\lv_conf_internal.h" />
     <ClInclude Include="lvgl\src\lv_conf_kconfig.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_core.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_font_loader.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_obj.h" />
-    <ClInclude Include="lvgl\tests\lv_test_core\lv_test_style.h" />
-    <ClInclude Include="lvgl\tests\lv_test_widgets\lv_test_label.h" />
-    <ClInclude Include="lvgl\tests\lv_test_assert.h" />
-    <ClInclude Include="lvgl\tests\lv_test_conf.h" />
     <ClInclude Include="lvgl\lvgl.h" />
     <ClInclude Include="lvgl\lv_conf_template.h" />
   </ItemGroup>
@@ -577,16 +570,6 @@
     <ClCompile Include="lvgl\src\widgets\lv_switch.c" />
     <ClCompile Include="lvgl\src\widgets\lv_table.c" />
     <ClCompile Include="lvgl\src\widgets\lv_textarea.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_core.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_font_loader.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_obj.c" />
-    <ClCompile Include="lvgl\tests\lv_test_core\lv_test_style.c" />
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_1.c" />
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_2.c" />
-    <ClCompile Include="lvgl\tests\lv_test_fonts\font_3.c" />
-    <ClCompile Include="lvgl\tests\lv_test_widgets\lv_test_label.c" />
-    <ClCompile Include="lvgl\tests\lv_test_assert.c" />
-    <ClCompile Include="lvgl\tests\lv_test_main.c" />
     <ClCompile Include="lv_fs_if\lv_fs_if.c" />
     <ClCompile Include="lv_fs_if\lv_fs_pc.c" />
     <ClCompile Include="lv_fs_if\lv_fs_posix.c" />
@@ -805,14 +788,6 @@
     <None Include="lvgl\src\hal\lv_hal.mk" />
     <None Include="lvgl\src\misc\lv_misc.mk" />
     <None Include="lvgl\src\widgets\lv_widgets.mk" />
-    <None Include="lvgl\tests\lv_test_ref_imgs\lv_test_img32_label_1.png" />
-    <None Include="lvgl\tests\build.py" />
-    <None Include="lvgl\tests\font_1.fnt" />
-    <None Include="lvgl\tests\font_2.fnt" />
-    <None Include="lvgl\tests\font_3.fnt" />
-    <None Include="lvgl\tests\icon.png" />
-    <None Include="lvgl\tests\icon2.png" />
-    <None Include="lvgl\tests\Makefile" />
     <None Include="lvgl\zephyr\module.yml" />
     <None Include="lvgl\.editorconfig" />
     <None Include="lvgl\.git" />

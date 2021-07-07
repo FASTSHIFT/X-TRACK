@@ -268,7 +268,11 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_ATTRIBUTE_LARGE_RAM_ARRAY
 
 /*Place performance critical functions into a faster memory (e.g RAM)*/
-#define LV_ATTRIBUTE_FAST_MEM
+#ifdef ARDUINO
+#  define LV_ATTRIBUTE_FAST_MEM    //__attribute__((section("RAMCODE")))
+#else
+#  define LV_ATTRIBUTE_FAST_MEM
+#endif
 
 /*Prefix variables that are used in GPU accelerated operations, often these need to be placed in RAM sections that are DMA accessible*/
 #define LV_ATTRIBUTE_DMA

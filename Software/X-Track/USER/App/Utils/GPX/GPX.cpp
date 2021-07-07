@@ -142,6 +142,12 @@ String GPX::getPt(String typ, String lon, String lat)
         localStr += _ele;
         localStr += _GPX_ELE_TAIL;
     }
+    if (_time.length() > 0)
+    {
+        localStr += _GPX_TIME_HEAD;
+        localStr += _time;
+        localStr += _GPX_TIME_TAIL;
+    }
     if (_sym.length() > 0)
     {
         localStr += _GPX_SYM_HEAD;
@@ -193,6 +199,10 @@ void GPX::setSym(String sym)
 void GPX::setSrc(String src)
 {
     _src = src;
+}
+void GPX::setTime(String time)
+{
+    _time = time;
 }
 
 //Private Functions
