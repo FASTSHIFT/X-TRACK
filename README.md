@@ -42,7 +42,7 @@
 ### 测速
 https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-8294-df79f151dedb.mp4
 
-### 轨迹([GPXSee](https://github.com/tumic0/GPXSee))
+### 历史轨迹显示([GPXSee](https://github.com/tumic0/GPXSee))
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E8%BF%90%E5%8A%A8%E8%BD%A8%E8%BF%B9.png)
 
 ## 致谢
