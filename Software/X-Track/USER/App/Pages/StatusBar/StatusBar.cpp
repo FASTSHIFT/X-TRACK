@@ -30,6 +30,8 @@
 
 static Account* actStatusBar;
 
+static void StatusBar_AnimCreate(lv_obj_t* contBatt);
+
 struct
 {
     lv_obj_t* cont;
@@ -40,8 +42,11 @@ struct
         lv_obj_t* label;
     } satellite;
 
-    lv_obj_t* labelRec;
+    lv_obj_t* imgSD;
+    
     lv_obj_t* labelClock;
+    
+    lv_obj_t* labelRec;
 
     struct
     {
@@ -90,39 +95,37 @@ static void StatusBar_ConBattSetOpa(lv_obj_t* obj, int32_t opa)
 
 static void StatusBar_onAnimOpaFinish(lv_anim_t* a)
 {
-    if (a->act_time > 0)
-    {
-        lv_anim_t a_opa;
-        lv_anim_init(&a_opa);
-        lv_anim_set_var(&a_opa, a->var);
-        lv_anim_set_exec_cb(&a_opa, (lv_anim_exec_xcb_t)StatusBar_ConBattSetOpa);
-        lv_anim_set_ready_cb(&a_opa, StatusBar_onAnimOpaFinish);
-        lv_anim_set_values(&a_opa, LV_OPA_COVER, LV_OPA_TRANSP);
-        lv_anim_set_early_apply(&a_opa, true);
-        lv_anim_set_delay(&a_opa, 1490);
-        lv_anim_set_time(&a_opa, 510);
-        lv_anim_start(&a_opa);
-    }
+    lv_obj_t* obj = (lv_obj_t*)a->var;
+    StatusBar_ConBattSetOpa(obj, LV_OPA_COVER);
+    StatusBar_AnimCreate(obj);
+}
+
+static void StatusBar_onAnimHeightFinish(lv_anim_t* a)
+{
+    lv_anim_t a_opa;
+    lv_anim_init(&a_opa);
+    lv_anim_set_var(&a_opa, a->var);
+    lv_anim_set_exec_cb(&a_opa, (lv_anim_exec_xcb_t)StatusBar_ConBattSetOpa);
+    lv_anim_set_ready_cb(&a_opa, StatusBar_onAnimOpaFinish);
+    lv_anim_set_values(&a_opa, LV_OPA_COVER, LV_OPA_TRANSP);
+    lv_anim_set_early_apply(&a_opa, true);
+    lv_anim_set_delay(&a_opa, 500);
+    lv_anim_set_time(&a_opa, 500);
+    lv_anim_start(&a_opa);
 }
 
 static void StatusBar_AnimCreate(lv_obj_t* contBatt)
 {
-    lv_anim_t a_height;
-    lv_anim_init(&a_height);
-    lv_anim_set_var(&a_height, contBatt);
-    lv_anim_set_exec_cb(&a_height, (lv_anim_exec_xcb_t)lv_obj_set_height);
-    lv_anim_set_values(&a_height, 0, BATT_USAGE_HEIGHT);
-
-    lv_anim_set_time(&a_height, 1000);
-    lv_anim_set_repeat_delay(&a_height, 1000);
-    lv_anim_set_repeat_count(&a_height, LV_ANIM_REPEAT_INFINITE);
-    lv_anim_start(&a_height);
-
-    lv_anim_t a_opa;
-    lv_anim_init(&a_opa);
-    lv_anim_set_var(&a_opa, contBatt);
-    a_opa.act_time = 1000;
-    StatusBar_onAnimOpaFinish(&a_opa);
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, contBatt);
+    lv_anim_set_exec_cb(&a, [](void* var, int32_t v) {
+        lv_obj_set_height((lv_obj_t*)var, v);
+    });
+    lv_anim_set_values(&a, 0, BATT_USAGE_HEIGHT);
+    lv_anim_set_time(&a, 1000);
+    lv_anim_set_ready_cb(&a, StatusBar_onAnimHeightFinish);
+    lv_anim_start(&a);
 }
 
 static void StatusBar_Update(lv_timer_t* timer)
@@ -131,6 +134,10 @@ static void StatusBar_Update(lv_timer_t* timer)
     HAL::GPS_Info_t gps;
     actStatusBar->Pull("GPS", &gps, sizeof(gps));
     lv_label_set_text_fmt(ui.satellite.label, "%d", gps.satellites);
+
+    DataProc::Storage_Basic_Info_t sdInfo;
+    actStatusBar->Pull("Storage", &sdInfo, sizeof(sdInfo));
+    sdInfo.isDetect ? lv_obj_clear_flag(ui.imgSD, LV_OBJ_FLAG_HIDDEN) : lv_obj_add_flag(ui.imgSD, LV_OBJ_FLAG_HIDDEN);
 
     /* clock */
     HAL::Clock_Info_t clock;
@@ -220,13 +227,12 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     lv_label_set_text(label, "0");
     ui.satellite.label = label;
 
-    /* recorder */
-    label = lv_label_create(cont);
-    lv_obj_add_style(label, &style, 0);
-    lv_obj_align_to(label, ui.satellite.img, LV_ALIGN_OUT_RIGHT_MID, 30, 0);
-    lv_label_set_text(label, "");
-    lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
-    ui.labelRec = label;
+    /* sd card */
+    img = lv_img_create(cont);
+    lv_img_set_src(img, Resource.GetImage("sd_card"));
+    lv_obj_align(img, LV_ALIGN_LEFT_MID, 50, -1);
+    lv_obj_add_flag(img, LV_OBJ_FLAG_HIDDEN);
+    ui.imgSD = img;
 
     /* clock */
     label = lv_label_create(cont);
@@ -234,6 +240,14 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     lv_label_set_text(label, "00:00");
     lv_obj_center(label);
     ui.labelClock = label;
+
+    /* recorder */
+    label = lv_label_create(cont);
+    lv_obj_add_style(label, &style, 0);
+    lv_obj_align(label, LV_ALIGN_RIGHT_MID, -50, 0);
+    lv_label_set_text(label, "");
+    lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
+    ui.labelRec = label;
 
     /* battery */
     img = lv_img_create(cont);
@@ -294,6 +308,7 @@ DATA_PROC_INIT_DEF(StatusBar)
     account->Subscribe("GPS");
     account->Subscribe("Power");
     account->Subscribe("Clock");
+    account->Subscribe("Storage");
     account->SetEventCallback(onEvent);
 
     actStatusBar = account;

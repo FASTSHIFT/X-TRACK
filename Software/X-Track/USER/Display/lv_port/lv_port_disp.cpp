@@ -2,9 +2,9 @@
 
 static lv_disp_drv_t* disp_drv_p;
 
-#define DISP_HOR_RES         240
-#define DISP_VER_RES         240
-#define DISP_BUF_SIZE        (DISP_HOR_RES * DISP_VER_RES)
+#define DISP_HOR_RES         CONFIG_SCREEN_HOR_RES
+#define DISP_VER_RES         CONFIG_SCREEN_VER_RES
+#define DISP_BUF_SIZE        CONFIG_SCREEN_BUFFER_SIZE
 #define DISP_USE_DMA         1
 #define DISP_DMA_CHANNEL     DMA1_Channel3
 #define DISP_DMA_MAX_SIZE    65535

@@ -59,6 +59,13 @@ do{\
     act->Notify("Storage", &info, sizeof(info)); \
 }while(0)
 
+typedef struct
+{
+    bool isDetect;
+    uint32_t totalSize;
+    uint32_t freeSize;
+} Storage_Basic_Info_t;
+
 /* StatusBar */
 typedef struct
 {

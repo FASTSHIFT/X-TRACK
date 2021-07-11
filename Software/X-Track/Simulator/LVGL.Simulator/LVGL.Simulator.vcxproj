@@ -132,6 +132,7 @@
     <ClInclude Include="..\..\USER\App\Utils\WString\dtostrf.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WCharacter.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WString.h" />
+    <ClInclude Include="..\..\USER\App\Version.h" />
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h" />
     <ClInclude Include="lvgl\examples\layouts\flex\lv_example_flex.h" />
     <ClInclude Include="lvgl\examples\layouts\grid\lv_example_grid.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_origin_point.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_pause.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_satellite.c" />
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_sd_card.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_start.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_stop.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_storage.c" />

@@ -54,54 +54,66 @@
    Hardware Configuration
  *=========================*/
 
-#define NULL_PIN                PD0
+#define NULL_PIN                    PD0
 
 /* Screen */
-#define CONFIG_SCREEN_CS_PIN    PB0
-#define CONFIG_SCREEN_DC_PIN    PA4
-#define CONFIG_SCREEN_RST_PIN   PA6
-#define CONFIG_SCREEN_SCK_PIN   PA5
-#define CONFIG_SCREEN_MOSI_PIN  PA7
-#define CONFIG_SCREEN_BLK_PIN   PB1  // TIM3
+#define CONFIG_SCREEN_CS_PIN        PB0
+#define CONFIG_SCREEN_DC_PIN        PA4
+#define CONFIG_SCREEN_RST_PIN       PA6
+#define CONFIG_SCREEN_SCK_PIN       PA5
+#define CONFIG_SCREEN_MOSI_PIN      PA7
+#define CONFIG_SCREEN_BLK_PIN       PB1  // TIM3
+
+#define CONFIG_SCREEN_HOR_RES       240
+#define CONFIG_SCREEN_VER_RES       240
+#define CONFIG_SCREEN_BUFFER_SIZE   (CONFIG_SCREEN_HOR_RES * CONFIG_SCREEN_VER_RES)
 
 /* Battery */
-#define CONFIG_BAT_DET_PIN      PA1
-#define CONFIG_BAT_CHG_DET_PIN  PA11
+#define CONFIG_BAT_DET_PIN          PA1
+#define CONFIG_BAT_CHG_DET_PIN      PA11
 
 /* Buzzer */
-#define CONFIG_BUZZ_PIN         PA0  // TIM2
+#define CONFIG_BUZZ_PIN             PA0  // TIM2
 
 /* GPS */
-#define CONFIG_GPS_TX_PIN       PA3
-#define CONFIG_GPS_RX_PIN       PA2
+#define CONFIG_GPS_SERIAL           Serial2
+#define CONFIG_GPS_USE_TRANSPARENT  0
+#define CONFIG_GPS_TX_PIN           PA3
+#define CONFIG_GPS_RX_PIN           PA2
 
 /* IMU */
-#define CONFIG_IMU_INT1_PIN     PB10
-#define CONFIG_IMU_INT2_PIN     PB11
+#define CONFIG_IMU_INT1_PIN         PB10
+#define CONFIG_IMU_INT2_PIN         PB11
 
 /* I2C */
-#define CONFIG_MCU_SDA_PIN      PB7
-#define CONFIG_MCU_SDL_PIN      PB6
+#define CONFIG_MCU_SDA_PIN          PB7
+#define CONFIG_MCU_SDL_PIN          PB6
 
 /* Encoder */
-#define CONFIG_ENCODER_B_PIN    PB5
-#define CONFIG_ENCODER_A_PIN    PB4
-#define CONFIG_ENCODER_PUSH_PIN PB3
+#define CONFIG_ENCODER_B_PIN        PB5
+#define CONFIG_ENCODER_A_PIN        PB4
+#define CONFIG_ENCODER_PUSH_PIN     PB3
 
 /* Power */
-#define CONFIG_POWER_EN_PIN     PA12
+#define CONFIG_POWER_EN_PIN         PA12
 
-/* USART */
-#define CONFIG_MCU_RX_PIN       PA10
-#define CONFIG_MCU_TX_PIN       PA9
+/* Debug USART */
+#define CONFIG_DEBUG_SERIAL_        Serial
+#define CONFIG_DEBUG_RX_PIN         PA10
+#define CONFIG_DEBUG_TX_PIN         PA9
 
 /* SD CARD */
-#define CONFIG_SD_CD_PIN        PA8
-#define CONFIG_SD_MOSI_PIN      PB15
-#define CONFIG_SD_MISO_PIN      PB14
-#define CONFIG_SD_SCK_PIN       PB13
-#define CONFIG_SD_CS_PIN        PB12
+#define CONFIG_SD_SPI               SPI_2
+#define CONFIG_SD_CD_PIN            PA8
+#define CONFIG_SD_MOSI_PIN          PB15
+#define CONFIG_SD_MISO_PIN          PB14
+#define CONFIG_SD_SCK_PIN           PB13
+#define CONFIG_SD_CS_PIN            PB12
 
-#define CONFIG_HAL_UPDATE_TIM   TIM4
+/* HAL Interrupt Update Timer */
+#define CONFIG_HAL_UPDATE_TIM       TIM4
+
+/* Stack Info */
+#define CONFIG_USE_STACK_INFO       0
 
 #endif

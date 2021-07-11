@@ -9,6 +9,20 @@ static StorageService storageService(CONFIG_SYSTEM_SAVE_FILE_PATH);
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
+    if (param->event == Account::EVENT_SUB_PULL)
+    {
+        if (param->size != sizeof(Storage_Basic_Info_t))
+        {
+            return Account::ERROR_SIZE_MISMATCH;
+        }
+
+        Storage_Basic_Info_t* info = (Storage_Basic_Info_t*)param->data_p;
+        info->isDetect = HAL::SD_GetReady();
+        info->totalSize = 0;
+        info->freeSize = 0;
+        return 0;
+    }
+
     if (param->event != Account::EVENT_NOTIFY)
     {
         return Account::ERROR_UNSUPPORTED_REQUEST;

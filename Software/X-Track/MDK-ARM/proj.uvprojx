@@ -1550,6 +1550,11 @@
               <FileType>1</FileType>
               <FilePath>..\USER\App\Resource\Image\img_src_time_info.c</FilePath>
             </File>
+            <File>
+              <FileName>img_src_sd_card.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_sd_card.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3453,6 +3458,11 @@
               <FileName>ButtonEvent.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Libraries\ButtonEvent\ButtonEvent.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>StackInfo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Libraries\StackInfo\StackInfo.c</FilePath>
             </File>
           </Files>
         </Group>

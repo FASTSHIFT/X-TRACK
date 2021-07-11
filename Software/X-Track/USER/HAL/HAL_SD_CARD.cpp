@@ -1,7 +1,7 @@
 #include "HAL.h"
 #include "SdFat.h"
 
-static SdFat SD(&SPI_2);
+static SdFat SD(&CONFIG_SD_SPI);
 
 static bool SD_IsReady = false;
 
@@ -61,7 +61,7 @@ bool HAL::SD_Init()
     {
         Serial.println("SD: CARD ERROR");
     }
-
+    
     SD_IsReady = retval;
 
     return retval;
@@ -87,6 +87,8 @@ static void SD_Check(bool isInsert)
     }
     else
     {
+        SD_IsReady = false;
+
         if(SD_EventCallback)
         {
             SD_EventCallback(false);

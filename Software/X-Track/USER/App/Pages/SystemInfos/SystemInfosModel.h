@@ -49,6 +49,11 @@ public:
         char* state, uint32_t len
     );
 
+    void GetStorageInfo(
+        bool* detect,
+        char* usage, uint32_t len
+    );
+
 private:
     Account* account;
 

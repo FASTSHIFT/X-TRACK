@@ -24,7 +24,7 @@ void HAL::I2C_Scan(bool startScan)
 
         if (error == 0)
         {
-            Serial.print("I2C device found at address 0x");
+            Serial.print("I2C: device found at address 0x");
             if (address < 16)
                 Serial.print("0");
             Serial.print(address, HEX);
@@ -34,12 +34,12 @@ void HAL::I2C_Scan(bool startScan)
         }
         else if (error == 4)
         {
-            Serial.print("Unknow error at address 0x");
+            Serial.print("I2C: unknow error at address 0x");
             if (address < 16)
                 Serial.print("0");
             Serial.println(address, HEX);
         }
     }
 
-    Serial.printf("%d I2C devices was found\r\n", nDevices);
+    Serial.printf("I2C: %d devices was found\r\n", nDevices);
 }

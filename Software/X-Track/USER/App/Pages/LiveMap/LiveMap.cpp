@@ -46,6 +46,7 @@ void LiveMap::onViewLoad()
 
     AttachEvent(root);
     AttachEvent(View.ui.zoom.slider);
+    AttachEvent(View.ui.sportInfo.cont);
 
     priv.group = lv_group_create();
     lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), priv.group);
@@ -291,7 +292,15 @@ void LiveMap::onEvent(lv_event_t* event)
             instance->priv.lastContShowTime = lv_tick_get();
             instance->MapUpdateWait(200);
         }
-        else if (code == LV_EVENT_CLICKED)
+        else if (code == LV_EVENT_PRESSED)
+        {
+            instance->Manager->Pop();
+        }
+    }
+
+    if (obj == instance->View.ui.sportInfo.cont)
+    {
+        if (code == LV_EVENT_PRESSED)
         {
             instance->Manager->Pop();
         }

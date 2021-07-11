@@ -921,6 +921,9 @@
     <ClInclude Include="..\..\USER\App\Utils\Stream\Stream.h">
       <Filter>App\Utils\Stream</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\USER\App\Version.h">
+      <Filter>App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c">
@@ -1882,6 +1885,9 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\Stream\Stream.cpp">
       <Filter>App\Utils\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_sd_card.c">
+      <Filter>App\Resource\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

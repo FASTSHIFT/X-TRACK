@@ -119,7 +119,10 @@ void SystemInfos::Update()
     View.SetBattery(usage, voltage, buf);
 
     /* Storage */
+    bool detect;
+    Model.GetStorageInfo(&detect, buf, sizeof(buf));
     View.SetStorage(
+        detect ? "YES" : "NO",
         "-",
         VERSION_FILESYSTEM
     );
@@ -149,9 +152,12 @@ void SystemInfos::onEvent(lv_event_t* event)
     lv_event_code_t code = lv_event_get_code(event);
     SystemInfos* instance = (SystemInfos*)lv_obj_get_user_data(obj);
 
-    if (code == LV_EVENT_SHORT_CLICKED)
+    if (code == LV_EVENT_PRESSED)
     {
-        instance->Manager->Pop();
+        if (lv_obj_has_state(obj, LV_STATE_FOCUSED))
+        {
+            instance->Manager->Pop();
+        }
     }
 
     if (obj == instance->root)

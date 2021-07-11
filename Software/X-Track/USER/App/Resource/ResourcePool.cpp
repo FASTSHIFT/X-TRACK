@@ -40,6 +40,7 @@ do{\
         IMPORT_IMG(origin_point);
         IMPORT_IMG(pause);
         IMPORT_IMG(satellite);
+        IMPORT_IMG(sd_card);
         IMPORT_IMG(start);
         IMPORT_IMG(stop);
         IMPORT_IMG(storage);

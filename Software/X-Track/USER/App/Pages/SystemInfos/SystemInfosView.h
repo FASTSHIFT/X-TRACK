@@ -67,6 +67,7 @@ public:
         const char* state
     );
     void SetStorage(
+        const char* detect,
         const char* usage,
         const char* version
     );

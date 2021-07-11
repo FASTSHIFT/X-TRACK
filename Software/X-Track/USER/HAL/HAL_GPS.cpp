@@ -1,9 +1,8 @@
 #include "HAL.h"
 #include "TinyGPSPlus/src/TinyGPS++.h"
 
-#define DEBUG_SERIAL           Serial
-#define GPS_SERIAL             Serial2
-#define GPS_USE_TRANSPARENT    0
+#define GPS_SERIAL             CONFIG_GPS_SERIAL
+#define GPS_USE_TRANSPARENT    CONFIG_GPS_USE_TRANSPARENT
 
 static TinyGPSPlus gps;
 
@@ -11,9 +10,9 @@ void HAL::GPS_Init()
 {
     GPS_SERIAL.begin(9600);
 
-    DEBUG_SERIAL.print("GPS: TinyGPS++ library v. ");
-    DEBUG_SERIAL.print(TinyGPSPlus::libraryVersion());
-    DEBUG_SERIAL.println(" by Mikal Hart");
+    Serial.print("GPS: TinyGPS++ library v. ");
+    Serial.print(TinyGPSPlus::libraryVersion());
+    Serial.println(" by Mikal Hart");
 }
 
 void HAL::GPS_Update()
