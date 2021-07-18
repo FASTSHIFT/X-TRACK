@@ -54,6 +54,7 @@ int main()
     }
 
     HAL::HAL_Init();
+
     App_Init();
 
     /*

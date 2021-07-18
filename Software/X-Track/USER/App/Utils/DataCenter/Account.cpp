@@ -64,6 +64,8 @@ Account::Account(
             return;
         }
 
+        memset(buf0, 0, bufSize);
+        memset(buf1, 0, bufSize);
         PingPongBuffer_Init(&priv.BufferManager, buf0, buf1);
         DC_LOG_INFO("Account[%s] cached %d x2 bytes", ID, bufSize);
         priv.BufferSize = bufSize;

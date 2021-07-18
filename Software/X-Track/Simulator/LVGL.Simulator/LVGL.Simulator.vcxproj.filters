@@ -367,6 +367,9 @@
     <Filter Include="App\Utils\Stream">
       <UniqueIdentifier>{2c910873-82bf-4044-8da8-798dff7b5625}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Utils\TileSystem">
+      <UniqueIdentifier>{51b60e9b-cd0e-4ed6-9cfc-17f335ec730a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -923,6 +926,9 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Version.h">
       <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\TileSystem\TileSystem.h">
+      <Filter>App\Utils\TileSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1888,6 +1894,9 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_sd_card.c">
       <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\TileSystem\TileSystem.cpp">
+      <Filter>App\Utils\TileSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

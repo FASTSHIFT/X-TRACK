@@ -186,3 +186,8 @@
 * 5.添加触控逻辑
 * 6.修复StatusBar充电动画闪烁的BUG，添加SD卡图标
 * 7.SystemInfos页面添加SD卡状态监测显示
+
+## [v1.3] - 2021-7-18
+* 1.Config.h添加传感器使能配置选项
+* 2.DataCenter添加cache自动初始化置0
+* 3.添加Microsoft官方TileSystem解析库，供mapConv调用

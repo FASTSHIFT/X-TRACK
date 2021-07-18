@@ -22,27 +22,17 @@
  */
 #include "MapConv.h"
 #include <stdio.h>
-#include <math.h>
-
-#ifndef PI
-#   define PI 3.1415926535897932384626433832795
-#endif
 
 #ifndef constrain
 #   define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #endif
 
 MapConv::MapConv()
-    : EarthRadius(6378137)
-    , LongitudeMin(-180.0)
-    , LongitudeMax(180.0)
-    , LatitudeMin(-85.05112878)
-    , LatitudeMax(85.05112878)
-    , MapLevelMax(15)
+    : MapLevelMax(15)
     , MapLevelMin(3)
     , MapTileSize(256)
-    , MapX_Calibration(0)
-    , MapY_Calibration(0)
+    , MapLng_Calibration(0)
+    , MapLat_Calibration(0)
 {
     MapLevel = 15;
     MapFilePath = "MAP/MapInfos";
@@ -103,22 +93,18 @@ void MapConv::ConvertMapCoordinate(
     uint32_t* mapX, uint32_t* mapY
 )
 {
-    longitude = constrain(longitude, LongitudeMin, LongitudeMax);
-    latitude = constrain(latitude, LatitudeMin, LatitudeMax);
+    int pixelX, pixelY;
 
-    longitude += MapX_Calibration;
-    latitude += MapY_Calibration;
+    LatLongToPixelXY(
+        latitude + MapLat_Calibration,
+        longitude + MapLng_Calibration,
+        GetLevel(),
+        &pixelX,
+        &pixelY
+    );
 
-    double x = (longitude + 180.0) / 360.0;
-    double sinLatitude = sin(latitude * PI / 180.0);
-    double y = 0.5 - log((1.0 + sinLatitude) / (1.0 - sinLatitude)) / (4.0 * PI);
-
-    uint32_t mapSize = GetMapSize();
-    double xSize = x * mapSize + 0.5;
-    double ySize = y * mapSize + 0.5;
-    mapSize--;
-    *mapX = (uint32_t)constrain(xSize, 0, mapSize);
-    *mapY = (uint32_t)constrain(ySize, 0, mapSize);
+    *mapX = pixelX;
+    *mapY = pixelY;
 }
 
 void MapConv::ConvertPosToTile(uint32_t x, uint32_t y, MapTile_t* mapTile)

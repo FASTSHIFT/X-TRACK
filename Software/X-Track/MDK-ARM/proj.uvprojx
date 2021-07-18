@@ -2133,6 +2133,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Utils/TileSystem</GroupName>
+          <Files>
+            <File>
+              <FileName>TileSystem.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\TileSystem\TileSystem.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>TileSystem.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\TileSystem\TileSystem.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Utils/TonePlayer</GroupName>
           <GroupOption>
             <CommonProperty>

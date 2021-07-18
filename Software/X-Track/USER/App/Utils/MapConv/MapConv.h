@@ -24,8 +24,9 @@
 #define __MAP_CONV_H
 
 #include <stdint.h>
+#include "../TileSystem/TileSystem.h"
 
-class MapConv
+class MapConv : public Microsoft_MapPoint::TileSystem
 {
 public:
     MapConv();
@@ -56,10 +57,10 @@ public:
     {
         MapKeyFileName = fileName;
     }
-    void SetMapCalibration(double x, double y)
+    void SetMapCalibration(double lng, double lat)
     {
-        MapX_Calibration = x;
-        MapY_Calibration = y;
+        MapLng_Calibration = lng;
+        MapLat_Calibration = lat;
     }
     int GetMapInfo(
         double longitude, double latitude,
@@ -86,19 +87,11 @@ public:
     void GetMapTile(double longitude, double latitude, MapTile_t* mapTile);
 
 private:
-    const int32_t EarthRadius;
-
-    const double LongitudeMin;
-    const double LongitudeMax;
-
-    const double LatitudeMin;
-    const double LatitudeMax;
-
     const int MapLevelMax;
     const int MapLevelMin;
     const uint16_t MapTileSize;
-    double MapX_Calibration;
-    double MapY_Calibration;
+    double MapLng_Calibration;
+    double MapLat_Calibration;
 
     int MapLevel;
     const char* MapFilePath;

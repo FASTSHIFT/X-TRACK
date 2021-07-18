@@ -42,7 +42,7 @@
 #define CONFIG_MAP_TILE_SIZE                  256
 #define CONFIG_MAP_FILE_DIR_NAME              "MAP"
 #define CONFIG_MAP_FILE_NAME                  "map.bin"
-#define CONFIG_MAP_FILE_PATH                  "/MAP/MapInfos"
+#define CONFIG_MAP_FILE_PATH                  "/" CONFIG_MAP_FILE_DIR_NAME "/MapInfos"
 
 #define CONFIG_LIVE_MAP_LEVEL_DEFAULT         15
 #define CONFIG_LIVE_MAP_VIEW_WIDTH            LV_HOR_RES
@@ -53,6 +53,14 @@
 /*=========================
    Hardware Configuration
  *=========================*/
+
+/* Sensors */
+#define CONFIG_SENSOR_ENABLE        0
+
+#if CONFIG_SENSOR_ENABLE
+#  define CONFIG_SENSOR_IMU_ENABLE  1
+#  define CONFIG_SENSOR_MAG_ENABLE  1
+#endif
 
 #define NULL_PIN                    PD0
 
@@ -98,7 +106,7 @@
 #define CONFIG_POWER_EN_PIN         PA12
 
 /* Debug USART */
-#define CONFIG_DEBUG_SERIAL_        Serial
+#define CONFIG_DEBUG_SERIAL         Serial
 #define CONFIG_DEBUG_RX_PIN         PA10
 #define CONFIG_DEBUG_TX_PIN         PA9
 

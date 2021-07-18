@@ -123,6 +123,7 @@
     <ClInclude Include="..\..\USER\App\Utils\Stream\Printable.h" />
     <ClInclude Include="..\..\USER\App\Utils\Stream\Stream.h" />
     <ClInclude Include="..\..\USER\App\Utils\TileConv\TileConv.h" />
+    <ClInclude Include="..\..\USER\App\Utils\TileSystem\TileSystem.h" />
     <ClInclude Include="..\..\USER\App\Utils\Time\Time.h" />
     <ClInclude Include="..\..\USER\App\Utils\Time\TimeLib.h" />
     <ClInclude Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.h" />
@@ -341,6 +342,7 @@
     <ClCompile Include="..\..\USER\App\Utils\Stream\Print.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Stream\Stream.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\TileConv\TileConv.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\TileSystem\TileSystem.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Time\DateStrings.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Time\Time.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\TonePlayer\TonePlayer.cpp" />
