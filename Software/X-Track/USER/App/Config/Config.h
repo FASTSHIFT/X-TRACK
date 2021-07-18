@@ -55,7 +55,7 @@
  *=========================*/
 
 /* Sensors */
-#define CONFIG_SENSOR_ENABLE        0
+#define CONFIG_SENSOR_ENABLE        1
 
 #if CONFIG_SENSOR_ENABLE
 #  define CONFIG_SENSOR_IMU_ENABLE  1
