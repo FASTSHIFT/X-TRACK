@@ -1,7 +1,11 @@
+## 编译
+* MCU固件使用Keil v5.25或以上的版本进行编译，并安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK->[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)
+* 模拟器使用Visual Studio 2019编译，配置为**Release x86**
+
 ## 硬件修改
-* 去除**D4**二极管，防止充电时自动开机，导致充电变慢和发热。
-* GPS模块需要由**HT1818Z3G5L**更换为**ATGM336H**，否则外壳放不下。
-* 地磁计**LIS3MDL**和加速度计**LSM6DSM**在该系统中作用不大，又由于芯片涨价导致整机成本过高，可以不安装，但需要在源代码中屏蔽相关函数并重新编译固件。
+* 去除**D4**二极管，防止充电时自动开机，导致充电变慢和发热
+* GPS模块需要由**HT1818Z3G5L**更换为**ATGM336H**，否则外壳放不下
+* 地磁计**LIS3MDL**和加速度计**LSM6DSM**在该系统中作用不大，又由于芯片涨价导致整机成本过高，可以不安装，但需要在源代码的**Config.h**中的**CONFIG_SENSOR_ENABLE**宏开关设置0，并重新编译固件
 
 ## 特殊器件购买链接
 * 电池 (选择 683030) https://detail.tmall.com/item.htm?id=634173891714&spm=a1z09.2.0.0.55112e8dkTgWKa&_u=h33s833p8189
