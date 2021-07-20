@@ -13,6 +13,7 @@
 * 屏幕 (选择 裸屏) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.55112e8dkTgWKa&id=600653923469&_u=h33s833p5d15
 * 调试口 (选择 4P弯针) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.55112e8dkTgWKa&id=522574977704&_u=h33s833p394d
 * 码表底座 (选择 竖向按装拓展片孔距M3*20~21mm[塑胶材料 3g]) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.67002e8dpTpXY9&id=599529362799&_u=h33s833p5dc8
+* Pad (非实体元件，只是焊接电池线的焊盘)
 
 ## 焊接建议
 * 不建议新手尝试自己焊接。
