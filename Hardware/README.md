@@ -6,7 +6,7 @@
 * 去除**D4**二极管，防止充电时自动开机，导致充电变慢和发热
 * GPS模块需要由**HT1818Z3G5L**更换为**ATGM336H**，否则外壳放不下
 * 地磁计**LIS3MDL**和加速度计**LSM6DSM**在该系统中作用不大，又由于芯片涨价导致整机成本过高，可以不安装，但需要在源代码的**Config.h**中的**CONFIG_SENSOR_ENABLE**宏开关设置0，并重新编译固件
-* MCU: AT32F403ACGU7如果定不到货，可以尝试[@johnsbark](https://github.com/johnsbark)提供的[改进版硬件](https://github.com/FASTSHIFT/X-TRACK/tree/main/Hardware/X-TRACK%20%E6%94%B9%E8%BF%9B%E7%89%88)
+* MCU: AT32F403ACGU7如果定不到货，可以尝试[@johnsbark](https://github.com/johnsbark)设计的[改进版硬件](https://github.com/FASTSHIFT/X-TRACK/tree/main/Hardware/X-TRACK%20%E6%94%B9%E8%BF%9B%E7%89%88)方案
 
 ## 特殊器件购买链接
 * 电池 (选择 683030) https://detail.tmall.com/item.htm?id=634173891714&spm=a1z09.2.0.0.55112e8dkTgWKa&_u=h33s833p8189
@@ -15,7 +15,7 @@
 * 调试口 (选择 4P弯针) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.55112e8dkTgWKa&id=522574977704&_u=h33s833p394d
 * 码表底座 (选择 竖向按装拓展片孔距M3*20~21mm[塑胶材料 3g]) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.67002e8dpTpXY9&id=599529362799&_u=h33s833p5dc8
 * Pad (非实体元件，只是焊接电池线的焊盘)
-* AON3400 -> AO3400 N沟道MOS管
+* AON3400 (AO3400 N沟道MOS管)
 
 ## 焊接建议
 * 不建议新手尝试自己焊接
