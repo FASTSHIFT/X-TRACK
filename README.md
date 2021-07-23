@@ -24,7 +24,7 @@
 * 7.地磁计: LIS3MDL
 * 8.GPS: ATGM336H (BDS + GPS + GLONASS + GALILEO + QZSS + SBAS)
 * 9.电池: Li-ion 3.7V 683030 700mAh
-* 10.电源管理: LP5904-3.3 + MCP73831
+* 10.电源管理: LP5907-3.3 + MCP73831
 * 11.外壳: 3D打印 光固化
 
 ## 功能
