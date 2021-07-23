@@ -106,10 +106,11 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\MedianQueueFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\Filters\HysteresisFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h" />
+    <ClInclude Include="..\..\USER\App\Utils\GPS_Transform\GPS_Transform.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX\GPX.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_allocator\lv_allocator.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv.h" />
@@ -175,6 +176,8 @@
     <ClInclude Include="lvgl\src\extra\layouts\flex\lv_flex.h" />
     <ClInclude Include="lvgl\src\extra\layouts\grid\lv_grid.h" />
     <ClInclude Include="lvgl\src\extra\layouts\lv_layouts.h" />
+    <ClInclude Include="lvgl\src\extra\others\lv_others.h" />
+    <ClInclude Include="lvgl\src\extra\others\snapshot\lv_snapshot.h" />
     <ClInclude Include="lvgl\src\extra\themes\basic\lv_theme_basic.h" />
     <ClInclude Include="lvgl\src\extra\themes\default\lv_theme_default.h" />
     <ClInclude Include="lvgl\src\extra\themes\lv_themes.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="lvgl\src\extra\widgets\list\lv_list.h" />
     <ClInclude Include="lvgl\src\extra\widgets\meter\lv_meter.h" />
     <ClInclude Include="lvgl\src\extra\widgets\msgbox\lv_msgbox.h" />
+    <ClInclude Include="lvgl\src\extra\widgets\span\lv_span.h" />
     <ClInclude Include="lvgl\src\extra\widgets\spinbox\lv_spinbox.h" />
     <ClInclude Include="lvgl\src\extra\widgets\spinner\lv_spinner.h" />
     <ClInclude Include="lvgl\src\extra\widgets\tabview\lv_tabview.h" />
@@ -210,6 +214,7 @@
     <ClInclude Include="lvgl\src\hal\lv_hal_indev.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal_tick.h" />
     <ClInclude Include="lvgl\src\misc\lv_anim.h" />
+    <ClInclude Include="lvgl\src\misc\lv_anim_timeline.h" />
     <ClInclude Include="lvgl\src\misc\lv_area.h" />
     <ClInclude Include="lvgl\src\misc\lv_assert.h" />
     <ClInclude Include="lvgl\src\misc\lv_async.h" />
@@ -326,9 +331,10 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\Account.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\DataCenter.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c" />
+    <ClCompile Include="..\..\USER\App\Utils\GPS_Transform\GPS_Transform.c" />
     <ClCompile Include="..\..\USER\App\Utils\GPX\GPX.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.cpp" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
@@ -481,6 +487,7 @@
     <ClCompile Include="lvgl\src\draw\lv_img_decoder.c" />
     <ClCompile Include="lvgl\src\extra\layouts\flex\lv_flex.c" />
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
+    <ClCompile Include="lvgl\src\extra\others\snapshot\lv_snapshot.c" />
     <ClCompile Include="lvgl\src\extra\themes\basic\lv_theme_basic.c" />
     <ClCompile Include="lvgl\src\extra\themes\default\lv_theme_default.c" />
     <ClCompile Include="lvgl\src\extra\themes\mono\lv_theme_mono.c" />
@@ -495,6 +502,7 @@
     <ClCompile Include="lvgl\src\extra\widgets\list\lv_list.c" />
     <ClCompile Include="lvgl\src\extra\widgets\meter\lv_meter.c" />
     <ClCompile Include="lvgl\src\extra\widgets\msgbox\lv_msgbox.c" />
+    <ClCompile Include="lvgl\src\extra\widgets\span\lv_span.c" />
     <ClCompile Include="lvgl\src\extra\widgets\spinbox\lv_spinbox.c" />
     <ClCompile Include="lvgl\src\extra\widgets\spinner\lv_spinner.c" />
     <ClCompile Include="lvgl\src\extra\widgets\tabview\lv_tabview.c" />
@@ -539,6 +547,7 @@
     <ClCompile Include="lvgl\src\hal\lv_hal_indev.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_tick.c" />
     <ClCompile Include="lvgl\src\misc\lv_anim.c" />
+    <ClCompile Include="lvgl\src\misc\lv_anim_timeline.c" />
     <ClCompile Include="lvgl\src\misc\lv_area.c" />
     <ClCompile Include="lvgl\src\misc\lv_async.c" />
     <ClCompile Include="lvgl\src\misc\lv_bidi.c" />

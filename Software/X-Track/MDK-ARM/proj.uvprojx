@@ -1650,9 +1650,9 @@
               <FilePath>..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp</FilePath>
             </File>
             <File>
-              <FileName>lv_anim_timeline.c</FileName>
+              <FileName>lv_anim_timeline_wrapper.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_anim_timeline.c</FilePath>
+              <FilePath>..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2015,6 +2015,21 @@
               <FileName>SlidingFilter.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\Filters\SlidingFilter.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/GPS_Transform</GroupName>
+          <Files>
+            <File>
+              <FileName>GPS_Transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\GPS_Transform\GPS_Transform.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPS_Transform.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\GPS_Transform\GPS_Transform.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -3071,6 +3086,11 @@
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_anim.c</FilePath>
             </File>
             <File>
+              <FileName>lv_anim_timeline.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_anim_timeline.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_area.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\misc\lv_area.c</FilePath>
@@ -3264,6 +3284,11 @@
               <FileName>lv_animimg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\animimg\lv_animimg.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_snapshot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\others\snapshot\lv_snapshot.c</FilePath>
             </File>
           </Files>
         </Group>

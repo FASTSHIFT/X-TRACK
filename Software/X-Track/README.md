@@ -191,3 +191,12 @@
 * 1.Config.h添加传感器使能配置选项
 * 2.DataCenter添加cache自动初始化置0
 * 3.添加Microsoft官方TileSystem解析库，供mapConv调用
+
+## [v1.4] - 2021-7-24
+* 1.更新lvgl
+* 2.更新MapConv，统一使用GPS_Transform校准坐标
+* 3.更新HAL::GPS模拟，支持航向和速度模拟
+* 4.修改HAL::GPS_Info_t的 compass -> course
+* 5.使用合入lvgl主线的lv_anim_timeline，使用lv_anim_timeline_wrapper封装动画组
+* 6.更新StartUp页面，新的开机动画
+* 7.LV_IMG_CACHE_DEF_SIZE设置为0

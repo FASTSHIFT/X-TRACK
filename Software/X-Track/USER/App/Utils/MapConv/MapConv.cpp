@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "MapConv.h"
+#include "../GPS_Transform/GPS_Transform.h"
 #include <stdio.h>
 
 #ifndef constrain
@@ -31,8 +32,6 @@ MapConv::MapConv()
     : MapLevelMax(15)
     , MapLevelMin(3)
     , MapTileSize(256)
-    , MapLng_Calibration(0)
-    , MapLat_Calibration(0)
 {
     MapLevel = 15;
     MapFilePath = "MAP/MapInfos";
@@ -95,9 +94,12 @@ void MapConv::ConvertMapCoordinate(
 {
     int pixelX, pixelY;
 
+    double lat, lng;
+    GPS_Transform(latitude, longitude, &lat, &lng);
+
     LatLongToPixelXY(
-        latitude + MapLat_Calibration,
-        longitude + MapLng_Calibration,
+        lat,
+        lng,
         GetLevel(),
         &pixelX,
         &pixelY

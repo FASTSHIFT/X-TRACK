@@ -34,7 +34,6 @@
 #define CONFIG_GPS_REFR_PERIOD                1000 // ms
 
 #define CONFIG_TRACK_FILTER_OFFSET_THRESHOLD  2 // pixel
-#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx" // Simulator only
 #define CONFIG_TRACK_RECORD_FILE_DIR_NAME     "Track"
 
 #define CONFIG_MAP_CONV_CALIBRATION_LNG       0.00610
@@ -49,6 +48,9 @@
 #define CONFIG_LIVE_MAP_VIEW_HEIGHT           LV_VER_RES
 #define CONFIG_LIVE_MAP_LNG_DEFAULT           116.391332
 #define CONFIG_LIVE_MAP_LAT_DEFAULT           39.907415
+
+/* Simulator */
+#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx"
 
 /*=========================
    Hardware Configuration

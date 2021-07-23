@@ -46,7 +46,7 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
     info->latitude = gps.location.lat();
     info->altitude = gps.altitude.meters();
     info->speed = gps.speed.kmph();
-    info->compass = gps.course.deg();
+    info->course = gps.course.deg();
 
     info->clock.year = gps.date.year();
     info->clock.month = gps.date.month();

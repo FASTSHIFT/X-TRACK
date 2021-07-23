@@ -22,7 +22,8 @@ void StartUp::onViewLoad()
     Model.Init();
     Model.SetEncoderEnable(false);
     View.Create(root);
-    lv_timer_create(onTimer, 2000, this);
+    lv_timer_t* timer = lv_timer_create(onTimer, 2000, this);
+    lv_timer_set_repeat_count(timer, 1);
 }
 
 void StartUp::onViewDidLoad()
@@ -33,6 +34,7 @@ void StartUp::onViewDidLoad()
 void StartUp::onViewWillAppear()
 {
     Model.PlayMusic("StartUp");
+    lv_anim_timeline_start(View.ui.anim_timeline);
 }
 
 void StartUp::onViewDidAppear()
@@ -52,6 +54,7 @@ void StartUp::onViewDidDisappear()
 
 void StartUp::onViewDidUnload()
 {
+    View.Delete();
     Model.SetEncoderEnable(true);
     Model.Deinit();
 }
@@ -61,8 +64,6 @@ void StartUp::onTimer(lv_timer_t* timer)
     StartUp* instance = (StartUp*)timer->user_data;
 
     instance->Manager->Push("Pages/Dialplate");
-
-    lv_timer_del(timer);
 }
 
 void StartUp::onEvent(lv_event_t* event)

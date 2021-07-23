@@ -41,19 +41,22 @@ enum {
 typedef uint8_t lv_span_mode_t;
 
 typedef struct {
-    char * txt;
-    lv_style_t style;
-    uint8_t static_flag : 1;
+    char * txt;             /* a pointer to display text */
+    lv_obj_t * spangroup;   /* a pointer to spangroup */
+    lv_style_t style;       /* display text style */
+    uint8_t static_flag : 1;/* the text is static flag */
 } lv_span_t;
 
 /** Data of label*/
 typedef struct {
     lv_obj_t obj;
-    lv_coord_t indent;
+    lv_coord_t indent;      /* first line indent */
+    lv_coord_t cache_w;     /* the cache automatically calculates the width */
+    lv_coord_t cache_h;     /* similar cache_w */
     lv_ll_t  child_ll;
-    uint8_t mode : 2;
-    uint8_t align : 2;
-    uint8_t overflow : 1;
+    uint8_t mode : 2;       /* details see lv_span_mode_t */
+    uint8_t overflow : 1;   /* details see lv_span_overflow_t */
+    uint8_t refresh : 1;    /* the spangroup need refresh cache_w and cache_h */
 } lv_spangroup_t;
 
 extern const lv_obj_class_t lv_spangroup_class;
@@ -133,6 +136,27 @@ void lv_spangroup_set_mode(lv_obj_t * obj, lv_span_mode_t mode);
 /*=====================
  * Getter functions
  *====================*/
+
+/**
+ * Get a spangroup child by its index.
+ *
+ * @param obj   The spangroup object
+ * @param id    the index of the child.
+ *              0: the oldest (firstly created) child
+ *              1: the second oldest
+ *              child count-1: the youngest
+ *              -1: the youngest
+ *              -2: the second youngest
+ * @return      The child span at index `id`, or NULL if the ID does not exist
+ */
+lv_span_t * lv_spangroup_get_child(const lv_obj_t * obj, int32_t id);
+
+/**
+ *
+ * @param obj   The spangroup object to get the child count of.
+ * @return      The span count of the spangroup.
+ */
+uint32_t lv_spangroup_get_child_cnt(const lv_obj_t * obj);
 
 /**
  * get the align of the spangroup.

@@ -194,7 +194,7 @@ void LiveMap::MapUpdate()
     Model.tileConv.GetFocusOffset(&offset);
     lv_coord_t x = offset.x - lv_obj_get_width(img) / 2;
     lv_coord_t y = offset.y - lv_obj_get_height(img) / 2;
-    View.SetImgArrowState(x, y, gpsInfo.compass);
+    View.SetImgArrowState(x, y, gpsInfo.course);
 
     /* map cont */
     Model.tileConv.GetTileContainerOffset(&offset);

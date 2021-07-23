@@ -57,11 +57,6 @@ public:
     {
         MapKeyFileName = fileName;
     }
-    void SetMapCalibration(double lng, double lat)
-    {
-        MapLng_Calibration = lng;
-        MapLat_Calibration = lat;
-    }
     int GetMapInfo(
         double longitude, double latitude,
         char* path, uint32_t len,
@@ -90,8 +85,6 @@ private:
     const int MapLevelMax;
     const int MapLevelMin;
     const uint16_t MapTileSize;
-    double MapLng_Calibration;
-    double MapLat_Calibration;
 
     int MapLevel;
     const char* MapFilePath;

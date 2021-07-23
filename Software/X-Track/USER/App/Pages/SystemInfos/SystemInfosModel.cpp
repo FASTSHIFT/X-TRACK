@@ -62,7 +62,7 @@ void SystemInfosModel::GetGPSInfo(
         gps.clock.minute,
         gps.clock.second
     );
-    *course = gps.compass;
+    *course = gps.course;
     *speed = gps.speed;
 }
 

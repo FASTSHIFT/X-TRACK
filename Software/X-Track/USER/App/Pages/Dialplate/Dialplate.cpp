@@ -68,6 +68,7 @@ void Dialplate::onViewDidDisappear()
 void Dialplate::onViewDidUnload()
 {
     Model.Deinit();
+    View.Delete();
     lv_group_del(group);
 }
 

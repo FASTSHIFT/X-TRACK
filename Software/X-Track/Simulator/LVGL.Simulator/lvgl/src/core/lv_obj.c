@@ -401,6 +401,20 @@ static void lv_obj_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
 {
     LV_UNUSED(class_p);
 
+    _lv_event_mark_deleted(obj);
+
+    /*Remove all style*/
+    lv_obj_enable_style_refresh(false); /*No need to refresh the style because the object will be deleted*/
+    lv_obj_remove_style_all(obj);
+    lv_obj_enable_style_refresh(true);
+
+    /*Remove the animations from this object*/
+    lv_anim_del(obj, NULL);
+
+    /*Delete from the group*/
+    lv_group_t * group = lv_obj_get_group(obj);
+    if(group) lv_group_remove_obj(obj);
+
     if(obj->spec_attr) {
         if(obj->spec_attr->children) {
             lv_mem_free(obj->spec_attr->children);
@@ -414,7 +428,6 @@ static void lv_obj_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
         lv_mem_free(obj->spec_attr);
         obj->spec_attr = NULL;
     }
-
 }
 
 static void lv_obj_draw(lv_event_t * e)
@@ -487,6 +500,8 @@ static void lv_obj_draw(lv_event_t * e)
 
         lv_obj_draw_part_dsc_t part_dsc;
         lv_obj_draw_dsc_init(&part_dsc, clip_area);
+        part_dsc.class_p = MY_CLASS;
+        part_dsc.type = LV_OBJ_DRAW_PART_RECTANGLE;
         part_dsc.rect_dsc = &draw_dsc;
         part_dsc.draw_area = &coords;
         part_dsc.part = LV_PART_MAIN;
@@ -534,7 +549,19 @@ static void lv_obj_draw(lv_event_t * e)
             coords.x2 += w;
             coords.y1 -= h;
             coords.y2 += h;
+
+
+            lv_obj_draw_part_dsc_t part_dsc;
+            lv_obj_draw_dsc_init(&part_dsc, clip_area);
+            part_dsc.class_p = MY_CLASS;
+            part_dsc.type = LV_OBJ_DRAW_PART_BORDER_POST;
+            part_dsc.rect_dsc = &draw_dsc;
+            part_dsc.draw_area = &coords;
+            part_dsc.part = LV_PART_MAIN;
+            lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_dsc);
+
             lv_draw_rect(&coords, clip_area, &draw_dsc);
+            lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_dsc);
         }
     }
 }
@@ -554,6 +581,8 @@ static void draw_scrollbar(lv_obj_t * obj, const lv_area_t * clip_area)
 
     lv_obj_draw_part_dsc_t part_dsc;
     lv_obj_draw_dsc_init(&part_dsc, clip_area);
+    part_dsc.class_p = MY_CLASS;
+    part_dsc.type = LV_OBJ_DRAW_PART_SCROLLBAR;
     part_dsc.rect_dsc = &draw_dsc;
     part_dsc.part = LV_PART_SCROLLBAR;
 
@@ -650,6 +679,13 @@ static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)
     else if(code == LV_EVENT_PRESS_LOST) {
         lv_obj_clear_state(obj, LV_STATE_PRESSED);
     }
+    else if(code == LV_EVENT_STYLE_CHANGED) {
+        uint32_t child_cnt = lv_obj_get_child_cnt(obj);
+        for(uint32_t i = 0; i < child_cnt; i++) {
+            lv_obj_t * child = obj->spec_attr->children[i];
+            lv_obj_mark_layout_as_dirty(child);
+        }
+    }
     else if(code == LV_EVENT_KEY) {
         if(lv_obj_has_flag(obj, LV_OBJ_FLAG_CHECKABLE)) {
             char c = *((char *)lv_event_get_param(e));
@@ -676,7 +712,12 @@ static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)
         editing = lv_group_get_editing(lv_obj_get_group(obj));
         lv_state_t state = LV_STATE_FOCUSED;
 
+        /* Use the indev for then indev handler.
+         * But if the obj was focused manually it returns NULL so try to
+         * use the indev from the event*/
         lv_indev_t * indev = lv_indev_get_act();
+        if(indev == NULL) indev = lv_event_get_indev(e);
+
         lv_indev_type_t indev_type = lv_indev_get_type(indev);
         if(indev_type == LV_INDEV_TYPE_KEYPAD || indev_type == LV_INDEV_TYPE_ENCODER) state |= LV_STATE_FOCUS_KEY;
         if(editing) {

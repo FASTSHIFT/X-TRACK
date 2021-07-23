@@ -283,7 +283,7 @@ double TrackPointFilter::QuickSort(double num)
     long i;
     float x2, y;
     const float threehalfs = 1.5f;
-    x2 = num * 0.5f;
+    x2 = (float)num * 0.5f;
     y = (float)num;
     i = *(long*)&y;
     i = 0x5f3759df - (i >> 1);

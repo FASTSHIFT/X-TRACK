@@ -370,6 +370,18 @@
     <Filter Include="App\Utils\TileSystem">
       <UniqueIdentifier>{51b60e9b-cd0e-4ed6-9cfc-17f335ec730a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Utils\GPS_Transform">
+      <UniqueIdentifier>{bf7739d1-a33b-40e5-b5ef-a59b4ae47c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\others">
+      <UniqueIdentifier>{4d7d9b2e-2c1e-4de6-a499-b1f133ef8b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\others\snapshot">
+      <UniqueIdentifier>{01012b65-4896-4713-b4b2-bef514bf9245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\widgets\span">
+      <UniqueIdentifier>{5db124e7-60d6-4b06-9e67-93c83cf70d8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -741,9 +753,6 @@
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.h">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.h">
-      <Filter>App\Utils\lv_ext</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h">
       <Filter>App\Utils\lv_ext</Filter>
     </ClInclude>
@@ -929,6 +938,24 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\TileSystem\TileSystem.h">
       <Filter>App\Utils\TileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\GPS_Transform\GPS_Transform.h">
+      <Filter>App\Utils\GPS_Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\misc\lv_anim_timeline.h">
+      <Filter>lvgl\src\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\others\lv_others.h">
+      <Filter>lvgl\src\extra\others</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\others\snapshot\lv_snapshot.h">
+      <Filter>lvgl\src\extra\others\snapshot</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\widgets\span\lv_span.h">
+      <Filter>lvgl\src\extra\widgets\span</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h">
+      <Filter>App\Utils\lv_ext</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1625,9 +1652,6 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline.c">
-      <Filter>App\Utils\lv_ext</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp">
       <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
@@ -1897,6 +1921,21 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\TileSystem\TileSystem.cpp">
       <Filter>App\Utils\TileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\misc\lv_anim_timeline.c">
+      <Filter>lvgl\src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\others\snapshot\lv_snapshot.c">
+      <Filter>lvgl\src\extra\others\snapshot</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\widgets\span\lv_span.c">
+      <Filter>lvgl\src\extra\widgets\span</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c">
+      <Filter>App\Utils\lv_ext</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\GPS_Transform\GPS_Transform.c">
+      <Filter>App\Utils\GPS_Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

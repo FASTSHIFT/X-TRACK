@@ -74,6 +74,7 @@ code.sig-name
   flex: none;
   position: relative;
 }
+
 .lv-example > iframe {
   position: absolute;
   top: 0;
@@ -82,6 +83,7 @@ code.sig-name
 
 .lv-example-container {
     display: flex;
+    padding-bottom: 16px;
 }
 .lv-example-description {
     flex: 1 1 auto;

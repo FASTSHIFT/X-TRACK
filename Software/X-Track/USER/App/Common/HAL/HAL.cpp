@@ -4,6 +4,7 @@ void HAL::HAL_Init()
 {
     Buzz_init();
     Audio_Init();
+    GPS_Init();
 }
 
 void HAL::HAL_Update()

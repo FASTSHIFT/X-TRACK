@@ -2,7 +2,6 @@
 
 using namespace Page;
 
-#define COLOR_GREY      lv_color_hex(0x333333)
 #define COLOR_ORANGE    lv_color_hex(0xff931e)
 
 void StartUpView::Create(lv_obj_t* root)
@@ -10,37 +9,43 @@ void StartUpView::Create(lv_obj_t* root)
     lv_obj_remove_style_all(root);
     lv_obj_set_size(root, LV_HOR_RES, LV_VER_RES);
 
-    lv_obj_t* label = lv_label_create(root);
+    lv_obj_t* cont = lv_obj_create(root);
+    lv_obj_remove_style_all(cont);
+    lv_obj_set_size(cont, 110, 50);
+    lv_obj_set_style_border_color(cont, COLOR_ORANGE, 0);
+    lv_obj_set_style_border_side(cont, LV_BORDER_SIDE_BOTTOM, 0);
+    lv_obj_set_style_border_width(cont, 3, 0);
+    lv_obj_set_style_border_post(cont, true, 0);
+    lv_obj_center(cont);
+    ui.cont = cont;
+
+    lv_obj_t* label = lv_label_create(cont);
     lv_obj_set_style_text_font(label, Resource.GetFont("agencyb_36"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_label_set_text(label, "X-TRACK");
     lv_obj_center(label);
     ui.labelLogo = label;
 
-    lv_obj_t* bar = lv_bar_create(root);
-    lv_obj_remove_style_all(bar);
+    ui.anim_timeline = lv_anim_timeline_create();
 
-    lv_obj_set_size(bar, 100, 4);
-    lv_obj_align_to(bar, label, LV_ALIGN_OUT_BOTTOM_MID, 0, 20);
+#define ANIM_DEF(start_time, obj, attr, start, end) \
+     {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
 
-    lv_obj_set_style_bg_color(bar, COLOR_GREY, 0);
-    lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, 0);
-    lv_obj_set_style_radius(bar, LV_RADIUS_CIRCLE, 0);
+    lv_anim_timeline_wrapper_t wrapper[] =
+    {
+        ANIM_DEF(0, ui.cont, width, 0, lv_obj_get_style_width(ui.cont, 0)),
+        ANIM_DEF(500, ui.labelLogo, y, lv_obj_get_style_height(ui.cont, 0), lv_obj_get_y(ui.labelLogo)),
+        LV_ANIM_TIMELINE_WRAPPER_END
+    };
 
-    lv_obj_set_style_bg_color(bar, COLOR_ORANGE, LV_PART_INDICATOR);
-    lv_obj_set_style_bg_opa(bar, LV_OPA_COVER, LV_PART_INDICATOR);
-    lv_obj_set_style_radius(bar, LV_RADIUS_CIRCLE, LV_PART_INDICATOR);
-    lv_bar_set_range(bar, 0, 1000);
-    ui.bar = bar;
+    lv_anim_timeline_add_wrapper(ui.anim_timeline, wrapper);
+}
 
-    lv_anim_t a;
-    lv_anim_init(&a);
-    lv_anim_set_var(&a, bar);
-    lv_anim_set_values(&a, 0, 1000);
-    lv_anim_set_exec_cb(&a, [](void* bar, int32_t value) {
-        lv_bar_set_value((lv_obj_t*)bar, value, LV_ANIM_OFF);
-    });
-    lv_anim_set_path_cb(&a, lv_anim_path_ease_in_out);
-    lv_anim_set_time(&a, 1000);
-    lv_anim_start(&a);
+void StartUpView::Delete()
+{
+    if(ui.anim_timeline)
+    {
+        lv_anim_timeline_del(ui.anim_timeline);
+        ui.anim_timeline = nullptr;
+    }
 }

@@ -316,14 +316,24 @@ DATA_PROC_INIT_DEF(StatusBar)
 
 void StatusBar::Appear(bool en)
 {
-#define ANIM_DEF(start_time, obj, attr, start, end) \
-    {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
+    int32_t start = -STATUS_BAR_HEIGHT;
+    int32_t end = 0;
 
-    lv_anim_timeline_t anim_timeline[] =
+    if (!en)
     {
-        ANIM_DEF(1000, ui.cont, y, -STATUS_BAR_HEIGHT, 0),
-        LV_ANIM_TIMELINE_END
-    };
+        int32_t temp = start;
+        start = end;
+        end = temp;
+    }
 
-    lv_anim_timeline_start(anim_timeline, !en);
+    lv_anim_t a;
+    lv_anim_init(&a);
+    lv_anim_set_var(&a, ui.cont);
+    lv_anim_set_values(&a, start, end);
+    lv_anim_set_time(&a, 500);
+    lv_anim_set_delay(&a, 1000);
+    lv_anim_set_exec_cb(&a, LV_ANIM_EXEC(y));
+    lv_anim_set_path_cb(&a, lv_anim_path_ease_out);
+    lv_anim_set_early_apply(&a, true);
+    lv_anim_start(&a);
 }

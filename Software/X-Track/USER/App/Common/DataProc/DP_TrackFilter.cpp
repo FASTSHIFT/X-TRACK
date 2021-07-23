@@ -126,10 +126,6 @@ DATA_PROC_INIT_DEF(TrackFilter)
     account->Subscribe("GPS");
     account->SetEventCallback(onEvent);
 
-    mapConv.SetMapCalibration(
-        CONFIG_MAP_CONV_CALIBRATION_LNG,
-        CONFIG_MAP_CONV_CALIBRATION_LAT
-    );
     mapConv.SetLevel(15);
 
     static PointVector_t vec;

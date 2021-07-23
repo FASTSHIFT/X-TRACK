@@ -40,10 +40,13 @@ public:
             lv_obj_t* btnRec;
             lv_obj_t* btnMenu;
         } btnCont;
+
+        lv_anim_timeline_t* anim_timeline;
     } ui;
 
     void Create(lv_obj_t* root);
-    void AppearAnimStart(bool playback = false);
+    void Delete();
+    void AppearAnimStart(bool reverse = false);
 
 private:
     void TopInfo_Create(lv_obj_t* par);

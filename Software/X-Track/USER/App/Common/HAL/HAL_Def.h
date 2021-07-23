@@ -24,7 +24,7 @@ typedef struct {
     double longitude;
     double latitude;
     float altitude;
-    float compass;
+    float course;
     float speed;
     int16_t satellites;
     Clock_Info_t clock;

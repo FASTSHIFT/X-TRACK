@@ -12,6 +12,38 @@ void DialplateView::Create(lv_obj_t* root)
     BottomInfo_Create(root);
     TopInfo_Create(root);
     BtnCont_Create(root);
+
+    ui.anim_timeline = lv_anim_timeline_create();
+
+#define ANIM_DEF(start_time, obj, attr, start, end) \
+     {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
+
+#define ANIM_OPA_DEF(start_time, obj) \
+     ANIM_DEF(start_time, obj, opa_scale, LV_OPA_TRANSP, LV_OPA_COVER)
+
+    lv_coord_t y_tar_top = lv_obj_get_y(ui.topInfo.cont);
+    lv_coord_t y_tar_bottom = lv_obj_get_y(ui.bottomInfo.cont);
+    lv_coord_t h_tar_btn = lv_obj_get_height(ui.btnCont.btnRec);
+
+    lv_anim_timeline_wrapper_t wrapper[] =
+    {
+        ANIM_DEF(0, ui.topInfo.cont, y, -lv_obj_get_height(ui.topInfo.cont), y_tar_top),
+
+        ANIM_DEF(200, ui.bottomInfo.cont, y, -lv_obj_get_height(ui.bottomInfo.cont), y_tar_bottom),
+        ANIM_OPA_DEF(200, ui.bottomInfo.cont),
+
+        ANIM_DEF(500, ui.btnCont.btnMap, height, 0, h_tar_btn),
+        ANIM_DEF(600, ui.btnCont.btnRec, height, 0, h_tar_btn),
+        ANIM_DEF(700, ui.btnCont.btnMenu, height, 0, h_tar_btn),
+        LV_ANIM_TIMELINE_WRAPPER_END
+    };
+    lv_anim_timeline_add_wrapper(ui.anim_timeline, wrapper);
+}
+
+void DialplateView::Delete()
+{
+    lv_anim_timeline_del(ui.anim_timeline);
+    ui.anim_timeline = nullptr;
 }
 
 void DialplateView::TopInfo_Create(lv_obj_t* par)
@@ -164,30 +196,8 @@ lv_obj_t* DialplateView::Btn_Create(lv_obj_t* par, const void* img_src, lv_coord
     return obj;
 }
 
-void DialplateView::AppearAnimStart(bool playback)
+void DialplateView::AppearAnimStart(bool reverse)
 {
-#define ANIM_DEF(start_time, obj, attr, start, end) \
-     {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
-
-#define ANIM_OPA_DEF(start_time, obj) \
-     ANIM_DEF(start_time, obj, opa_scale, LV_OPA_TRANSP, LV_OPA_COVER)
-
-    static lv_coord_t y_tar_top = lv_obj_get_y(ui.topInfo.cont);
-    static lv_coord_t y_tar_bottom = lv_obj_get_y(ui.bottomInfo.cont);
-    static lv_coord_t h_tar_btn = lv_obj_get_height(ui.btnCont.btnRec);
-
-    lv_anim_timeline_t anim_timeline[] =
-    {
-        ANIM_DEF(0, ui.topInfo.cont, y, -lv_obj_get_height(ui.topInfo.cont), y_tar_top),
-
-        ANIM_DEF(200, ui.bottomInfo.cont, y, -lv_obj_get_height(ui.bottomInfo.cont), y_tar_bottom),
-        ANIM_OPA_DEF(200, ui.bottomInfo.cont),
-
-        ANIM_DEF(500, ui.btnCont.btnMap, height, 0, h_tar_btn),
-        ANIM_DEF(600, ui.btnCont.btnRec, height, 0, h_tar_btn),
-        ANIM_DEF(700, ui.btnCont.btnMenu, height, 0, h_tar_btn),
-        LV_ANIM_TIMELINE_END
-    };
-
-    lv_anim_timeline_start(anim_timeline, playback);
+    lv_anim_timeline_set_reverse(ui.anim_timeline, reverse);
+    lv_anim_timeline_start(ui.anim_timeline);
 }

@@ -7,11 +7,6 @@ void LiveMapModel::Init()
 {
     mapConv.SetMapFilePath(CONFIG_MAP_FILE_PATH);
     mapConv.SetFileName(CONFIG_MAP_FILE_NAME);
-    mapConv.SetMapCalibration(
-        CONFIG_MAP_CONV_CALIBRATION_LNG,
-        CONFIG_MAP_CONV_CALIBRATION_LAT
-    );
-    //mapConv.SetMapCalibration(0.00495, -0.0033);
 
     account = new Account("LiveMapModel", DataProc::Center(), 0, this);
     account->Subscribe("GPS");
