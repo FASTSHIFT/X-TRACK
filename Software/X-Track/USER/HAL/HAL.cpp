@@ -1,4 +1,5 @@
 #include "HAL.h"
+#include "App/Version.h"
 
 static void HAL_InterrputUpdate()
 {
