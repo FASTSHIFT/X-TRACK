@@ -25,6 +25,11 @@ static void HAL_Sensor_Init()
 void HAL::HAL_Init()
 {
     Serial.begin(115200);
+    Serial.println(VERSION_FIRMWARE_NAME);
+    Serial.println("Version: " VERSION_SOFTWARE);
+    Serial.println("Author: " VERSION_AUTHOR_NAME);
+    Serial.println("Project: " VERSION_PROJECT_LINK);
+
     Power_Init();
     Backlight_Init();
     Encoder_Init();
