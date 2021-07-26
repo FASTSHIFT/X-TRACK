@@ -9,11 +9,11 @@
 * MCU: AT32F403ACGU7如果定不到货，可以尝试[@johnsbark](https://github.com/johnsbark)设计的[改进版硬件](https://github.com/FASTSHIFT/X-TRACK/tree/main/Hardware/X-TRACK%20%E6%94%B9%E8%BF%9B%E7%89%88)方案
 
 ## 特殊器件购买链接
-* 电池 (选择 683030) https://detail.tmall.com/item.htm?id=634173891714&spm=a1z09.2.0.0.55112e8dkTgWKa&_u=h33s833p8189
-* 旋转编码器 https://item.taobao.com/item.htm?spm=a1z10.3-c.w4002-12260322724.9.731a6469iG1L2z&id=598028191617
-* 屏幕 (选择 裸屏) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.55112e8dkTgWKa&id=600653923469&_u=h33s833p5d15
-* 调试口 (选择 4P弯针) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.55112e8dkTgWKa&id=522574977704&_u=h33s833p394d
-* 码表底座 (选择 竖向按装拓展片孔距M3*20~21mm[塑胶材料 3g]) https://item.taobao.com/item.htm?spm=a1z09.2.0.0.67002e8dpTpXY9&id=599529362799&_u=h33s833p5dc8
+* 电池 (选择 683030) https://detail.tmall.com/item.htm?id=634173891714
+* 旋转编码器 https://item.taobao.com/item.htm?id=598028191617
+* 屏幕 (选择 裸屏) https://item.taobao.com/item.htm?id=600653923469
+* 调试口 (选择 4P弯针) https://item.taobao.com/item.htm?id=522574977704
+* 码表底座 (选择 竖向按装拓展片孔距M3*20~21mm[塑胶材料 3g]) https://item.taobao.com/item.htm?id=599529362799
 * Pad (非实体元件，只是焊接电池线的焊盘)
 * AON3400 (AO3400 N沟道MOS管)
 
