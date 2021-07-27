@@ -1,5 +1,5 @@
 ## 编译
-* 参考: 
+* 参见: [编译说明](https://github.com/FASTSHIFT/X-TRACK/blob/main/Software/README.md)
 
 ## 硬件修改
 * 去除**D4**二极管，防止充电时自动开机，导致充电变慢和发热
