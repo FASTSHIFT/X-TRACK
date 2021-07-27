@@ -1,6 +1,5 @@
 ## 编译
-* MCU固件使用Keil v5.25或以上的版本进行编译，并安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK->[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)
-* 模拟器使用Visual Studio 2019编译，配置为**Release x86**
+* 参考: 
 
 ## 硬件修改
 * 去除**D4**二极管，防止充电时自动开机，导致充电变慢和发热
