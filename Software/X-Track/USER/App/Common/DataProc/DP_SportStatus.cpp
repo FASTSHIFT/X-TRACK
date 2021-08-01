@@ -1,6 +1,7 @@
 #include "DataProc.h"
 #include "Utils/Filters/Filters.h"
 #include "../HAL/HAL.h"
+#include "Config/Config.h"
 
 using namespace DataProc;
 
@@ -8,7 +9,10 @@ using namespace DataProc;
 #  define ABS(x) (((x)>0)?(x):-(x))
 #endif
 
-static HAL::SportStatus_Info_t sportStatus;
+static HAL::SportStatus_Info_t sportStatus =
+{
+    .weight = CONFIG_WEIGHT_DEFAULT
+};
 
 static double SportStatus_GetRealDistance(HAL::GPS_Info_t* gpsInfo, double dist)
 {
@@ -59,7 +63,7 @@ static void onTimer(Account* account)
         float meterPerSec = sportStatus.singleDistance * 1000 / sportStatus.singleTime;
         sportStatus.speedAvgKph = meterPerSec * 3.6f;
 
-        float calorie = speedKph * 65 * 1.05f * timeElaps / 1000 / 3600;
+        float calorie = speedKph * sportStatus.weight * 1.05f * timeElaps / 1000 / 3600;
         sportStatus.singleCalorie += calorie;
     }
 
@@ -101,6 +105,7 @@ DATA_PROC_INIT_DEF(SportStatus)
     STORAGE_VALUE_REG(account, sportStatus.totalTimeUINT32[0], STORAGE_TYPE_INT);
     STORAGE_VALUE_REG(account, sportStatus.totalTimeUINT32[1], STORAGE_TYPE_INT);
     STORAGE_VALUE_REG(account, sportStatus.speedMaxKph, STORAGE_TYPE_FLOAT);
+    STORAGE_VALUE_REG(account, sportStatus.weight, STORAGE_TYPE_FLOAT);
 
     sportStatus.lastTick = DataProc::GetTick();
 

@@ -56,6 +56,8 @@ private:
 
 private:
     static int onEvent(Account* account, Account::EventParam_t* param);
+
+private:
 };
 
 }

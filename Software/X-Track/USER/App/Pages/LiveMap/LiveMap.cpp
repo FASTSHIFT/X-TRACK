@@ -21,7 +21,7 @@ void LiveMap::onCustomAttrConfig()
 
 void LiveMap::onViewLoad()
 {
-    const uint32_t tileSize = CONFIG_MAP_TILE_SIZE;
+    const uint32_t tileSize = 256;
 
     Model.tileConv.SetTileSize(tileSize);
     Model.tileConv.SetViewSize(
@@ -34,6 +34,11 @@ void LiveMap::onViewLoad()
     uint32_t tileNum = Model.tileConv.GetTileContainer(&rect);
 
     View.Create(root, tileNum);
+    lv_slider_set_range(
+        View.ui.zoom.slider,
+        Model.mapConv.GetConv()->GetLevelMin(),
+        Model.mapConv.GetConv()->GetLevelMax()
+    );
     View.SetMapTile(tileSize, rect.width / tileSize);
 
 #if 0
@@ -54,7 +59,7 @@ void LiveMap::onViewLoad()
     lv_group_set_editing(priv.group, View.ui.zoom.slider);
 
     lv_slider_set_value(View.ui.zoom.slider, mapLevel, LV_ANIM_OFF);
-    Model.mapConv.SetLevel(mapLevel);
+    Model.mapConv.GetConv()->SetLevel(mapLevel);
     lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
 
     Model.pointFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
@@ -153,22 +158,22 @@ void LiveMap::MapUpdate()
     Model.GetGPS_Info(&gpsInfo);
 
     mapLevel = lv_slider_get_value(View.ui.zoom.slider);
-    if (mapLevel != Model.mapConv.GetLevel())
+    if (mapLevel != Model.mapConv.GetConv()->GetLevel())
     {
         priv.trackReloadReq = true;
     }
 
-    Model.mapConv.SetLevel(mapLevel);
+    Model.mapConv.GetConv()->SetLevel(mapLevel);
 
-    uint32_t mapX, mapY;
-    Model.mapConv.ConvertMapCoordinate(
+    int32_t mapX, mapY;
+    Model.mapConv.GetConv()->ConvertMapCoordinate(
         gpsInfo.longitude, gpsInfo.latitude,
         &mapX, &mapY
     );
     Model.tileConv.SetFocusPos(mapX, mapY);
 
     TileConv::Point_t offset;
-    TileConv::Point_t oriPoint = { (int32_t)mapX, (int32_t)mapY };
+    TileConv::Point_t oriPoint = { mapX, mapY };
     Model.tileConv.GetOffset(&offset, &oriPoint);
 
     /* track line */
@@ -210,7 +215,7 @@ void LiveMap::MapUpdate()
         Model.tileConv.GetTilePos(i, &pos);
 
         char path[64];
-        Model.mapConv.ConvertMapPath(pos.x, pos.y, path, sizeof(path));
+        Model.mapConv.GetConv()->ConvertMapPath(pos.x, pos.y, path, sizeof(path));
 
         lv_img_set_src(View.ui.map.imgTiles[i], path);
     }
@@ -286,7 +291,8 @@ void LiveMap::onEvent(lv_event_t* event)
         if (code == LV_EVENT_VALUE_CHANGED)
         {
             int32_t level = lv_slider_get_value(obj);
-            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d/13", level - 2);
+            int32_t levelMax = instance->Model.mapConv.GetConv()->GetLevelMax();
+            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d/%d", level + 1, levelMax + 1);
 
             lv_obj_clear_state(instance->View.ui.zoom.cont, LV_STATE_USER_1);
             instance->priv.lastContShowTime = lv_tick_get();

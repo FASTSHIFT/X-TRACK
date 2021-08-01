@@ -10,6 +10,11 @@ bool HAL::SD_GetReady()
     return true;
 }
 
+float HAL::SD_GetCardSizeMB()
+{
+    return 32 * 1024;
+}
+
 static void SD_Check(bool isInsert)
 {
    

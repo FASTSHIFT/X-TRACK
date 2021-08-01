@@ -6,7 +6,6 @@
 
 using namespace DataProc;
 
-static GPX gpx;
 static Recorder_Info_t recInfo;
 static lv_fs_file_t file;
 static bool recActive = false;
@@ -49,7 +48,7 @@ static int Recorder_GetTimeConv(
     return ret;
 }
 
-static void Recorder_RecPoint(Account* account, HAL::GPS_Info_t* gpsInfo)
+static void Recorder_RecPoint(Account* account, GPX* gpx, HAL::GPS_Info_t* gpsInfo)
 {
     LV_LOG_USER("Track recording...");
 
@@ -61,10 +60,10 @@ static void Recorder_RecPoint(Account* account, HAL::GPS_Info_t* gpsInfo)
         sizeof(timeBuf)
     );
 
-    gpx.setEle(String(gpsInfo->altitude, 2));
-    gpx.setTime(timeBuf);
+    gpx->setEle(String(gpsInfo->altitude, 2));
+    gpx->setTime(timeBuf);
 
-    String gpxStr = gpx.getPt(
+    String gpxStr = gpx->getPt(
                         GPX_TRKPT,
                         String(gpsInfo->longitude, 6),
                         String(gpsInfo->latitude, 6)
@@ -73,7 +72,7 @@ static void Recorder_RecPoint(Account* account, HAL::GPS_Info_t* gpsInfo)
     Recorder_FileWriteString(gpxStr.c_str());
 }
 
-static void Recorder_RecStart(Account* account, uint16_t time)
+static void Recorder_RecStart(Account* account, GPX* gpx, uint16_t time)
 {
     LV_LOG_USER("Track record start");
 
@@ -90,16 +89,16 @@ static void Recorder_RecStart(Account* account, uint16_t time)
     {
         LV_LOG_USER("Track file %s open success", filepath);
 
-        gpx.setMetaName(VERSION_FIRMWARE_NAME " " VERSION_SOFTWARE);
-        gpx.setMetaDesc(VERSION_PROJECT_LINK);
-        gpx.setName(filepath);
-        gpx.setDesc("");
+        gpx->setMetaName(VERSION_FIRMWARE_NAME " " VERSION_SOFTWARE);
+        gpx->setMetaDesc(VERSION_PROJECT_LINK);
+        gpx->setName(filepath);
+        gpx->setDesc("");
 
-        Recorder_FileWriteString(gpx.getOpen().c_str());
-        Recorder_FileWriteString(gpx.getMetaData().c_str());
-        Recorder_FileWriteString(gpx.getTrakOpen().c_str());
-        Recorder_FileWriteString(gpx.getInfo().c_str());
-        Recorder_FileWriteString(gpx.getTrakSegOpen().c_str());
+        Recorder_FileWriteString(gpx->getOpen().c_str());
+        Recorder_FileWriteString(gpx->getMetaData().c_str());
+        Recorder_FileWriteString(gpx->getTrakOpen().c_str());
+        Recorder_FileWriteString(gpx->getInfo().c_str());
+        Recorder_FileWriteString(gpx->getTrakSegOpen().c_str());
 
         recActive = true;
     }
@@ -109,13 +108,13 @@ static void Recorder_RecStart(Account* account, uint16_t time)
     }
 }
 
-static void Recorder_RecStop(Account* account)
+static void Recorder_RecStop(Account* account, GPX* gpx)
 {
     recActive = false;
 
-    Recorder_FileWriteString(gpx.getTrakSegClose().c_str());;
-    Recorder_FileWriteString(gpx.getTrakClose().c_str());
-    Recorder_FileWriteString(gpx.getClose().c_str());
+    Recorder_FileWriteString(gpx->getTrakSegClose().c_str());;
+    Recorder_FileWriteString(gpx->getTrakClose().c_str());
+    Recorder_FileWriteString(gpx->getClose().c_str());
     lv_fs_close(&file);
 
     LV_LOG_USER("Track record end");
@@ -125,10 +124,12 @@ static int onNotify(Account* account, Recorder_Info_t* info)
 {
     int retval = 0;
 
+    GPX* gpx = (GPX*)account->UserData;
+
     switch (info->cmd)
     {
     case RECORDER_CMD_START:
-        Recorder_RecStart(account, info->time);
+        Recorder_RecStart(account, gpx, info->time);
         break;
     case RECORDER_CMD_PAUSE:
         recActive = false;
@@ -139,7 +140,7 @@ static int onNotify(Account* account, Recorder_Info_t* info)
         recActive = true;
         break;
     case RECORDER_CMD_STOP:
-        Recorder_RecStop(account);
+        Recorder_RecStop(account, gpx);
         break;
     }
 
@@ -163,7 +164,8 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         {
             if (recActive)
             {
-                Recorder_RecPoint(account, (HAL::GPS_Info_t*)param->data_p);
+                GPX* gpx = (GPX*)account->UserData;
+                Recorder_RecPoint(account, gpx, (HAL::GPS_Info_t*)param->data_p);
             }
             retval = Account::ERROR_NONE;
         }
@@ -204,6 +206,9 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
 DATA_PROC_INIT_DEF(Recorder)
 {
+    static GPX gpx;
+    account->UserData = &gpx;
+
     account->Subscribe("GPS");
     account->Subscribe("Clock");
     account->Subscribe("TrackFilter");

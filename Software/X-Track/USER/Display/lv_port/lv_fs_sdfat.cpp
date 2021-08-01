@@ -254,7 +254,7 @@ static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p)
  */
 static void * fs_dir_open(lv_fs_drv_t * drv, const char * path)
 {
-    rddir_t * dir_p = (file_t *)lv_mem_alloc(sizeof(rddir_t));
+    rddir_t * dir_p = (rddir_t *)lv_mem_alloc(sizeof(rddir_t));
 
     if(dir_p == NULL)
     {
@@ -286,27 +286,30 @@ static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn)
     file_t file;
     char name[128];
 
-    if(file.openNext(SD_DIR(dir_p), O_RDONLY))
+    do
     {
-        file.getName(name, sizeof(name));
-
-        if(file.isDir())
+        if(file.openNext(SD_DIR(dir_p), O_RDONLY))
         {
-            fn[0] = '/';
-            strcpy(&fn[1], name);
+            file.getName(name, sizeof(name));
+
+            if(file.isDir())
+            {
+                fn[0] = '/';
+                strcpy(&fn[1], name);
+            }
+            else
+            {
+                strcpy(fn, name);
+            }
+
+            file.close();
         }
         else
         {
-            strcpy(fn, name);
+            fn[0] = '\0';
         }
-
-        file.close();
     }
-
-    if (SD_DIR(dir_p)->getError())
-    {
-        return LV_FS_RES_UNKNOWN;
-    }
+    while(strcmp(fn, "/.") == 0 || strcmp(fn, "/..") == 0);
 
     return LV_FS_RES_OK;
 }

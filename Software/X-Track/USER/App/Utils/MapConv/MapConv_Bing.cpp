@@ -20,28 +20,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __MAP_CONV_H
-#define __MAP_CONV_H
-
-#include "MapConvBase.h"
 #include "MapConv_Bing.h"
-#include "MapConv_OSM.h"
-#include <string.h>
+#include "GPS_Transform/GPS_Transform.h"
+#include <stdio.h>
 #include "Config/Config.h"
 
-class MapConv
+MapConv_Bing::MapConv_Bing()
 {
-public:
-    MapConv() {}
-    ~MapConv() {}
+    SetDirPath("/" CONFIG_MAP_BING_FILE_DIR_NAME "/MapInfos");
+}
 
-    static void SetConv(const char* name);
-    static MapConvBase* GetConv();
+int MapConv_Bing::ConvertMapPath(int32_t x, int32_t y, char* path, size_t len)
+{
+    int32_t tileX = x / priv.tileSize;
+    int32_t tileY = y / priv.tileSize;
+    int ret = snprintf(
+                  path, len,
+                  "%s/%lX/%lX/map.bin", priv.dirPath, tileX, tileY
+              );
 
-private:
-    static MapConvBase* base;
-    static MapConv_Bing bingConv;
-    static MapConv_OSM osmConv;
-};
+    return ret;
+}
 
-#endif
+
+void MapConv_Bing::ConvertMapCoordinate(
+    double longitude, double latitude,
+    int32_t* mapX, int32_t* mapY
+)
+{
+    int pixelX, pixelY;
+
+    double lat, lng;
+    GPS_Transform(latitude, longitude, &lat, &lng);
+
+    LatLongToPixelXY(
+        lat,
+        lng,
+        GetLevel(),
+        &pixelX,
+        &pixelY
+    );
+
+    *mapX = pixelX;
+    *mapY = pixelY;
+}

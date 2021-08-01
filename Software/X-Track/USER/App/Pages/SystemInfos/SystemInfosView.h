@@ -68,7 +68,7 @@ public:
     );
     void SetStorage(
         const char* detect,
-        const char* usage,
+        const char* size,
         const char* version
     );
     void SetSystem(

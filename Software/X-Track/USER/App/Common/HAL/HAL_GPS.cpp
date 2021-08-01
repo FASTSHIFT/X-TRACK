@@ -121,11 +121,10 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 
 void HAL::GPS_Init()
 {
-
     gpsInfo.isVaild = true;
     gpsInfo.satellites = 10;
-    gpsInfo.longitude = CONFIG_LIVE_MAP_LNG_DEFAULT;
-    gpsInfo.latitude = CONFIG_LIVE_MAP_LAT_DEFAULT;
+    gpsInfo.longitude = CONFIG_GPS_LNG_DEFAULT;
+    gpsInfo.latitude = CONFIG_GPS_LAT_DEFAULT;
 
     bool success = Parser_Init(&gpxParser, &fileInfo);
 

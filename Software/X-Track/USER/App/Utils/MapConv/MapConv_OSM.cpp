@@ -20,28 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __MAP_CONV_H
-#define __MAP_CONV_H
-
-#include "MapConvBase.h"
-#include "MapConv_Bing.h"
-#include "MapConv_OSM.h"
-#include <string.h>
+#include "MapConv.h"
+#include <stdio.h>
 #include "Config/Config.h"
 
-class MapConv
+MapConv_OSM::MapConv_OSM()
 {
-public:
-    MapConv() {}
-    ~MapConv() {}
+    SetDirPath("/" CONFIG_MAP_OSM_FILE_DIR_NAME);
+}
 
-    static void SetConv(const char* name);
-    static MapConvBase* GetConv();
+int MapConv_OSM::ConvertMapPath(int32_t x, int32_t y, char* path, uint32_t len)
+{
+    int32_t tileX = x / priv.tileSize;
+    int32_t tileY = y / priv.tileSize;
+    int ret = snprintf(
+                  path, len,
+                  "%s/%d/%d/%d.bin",
+                  priv.dirPath,
+                  priv.level,
+                  tileX,
+                  tileY
+              );
 
-private:
-    static MapConvBase* base;
-    static MapConv_Bing bingConv;
-    static MapConv_OSM osmConv;
-};
+    return ret;
+}
 
-#endif

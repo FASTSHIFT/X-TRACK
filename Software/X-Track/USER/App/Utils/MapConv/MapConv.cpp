@@ -21,98 +21,24 @@
  * SOFTWARE.
  */
 #include "MapConv.h"
-#include "../GPS_Transform/GPS_Transform.h"
-#include <stdio.h>
 
-#ifndef constrain
-#   define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
-#endif
+MapConv_Bing MapConv::bingConv;
+MapConv_OSM MapConv::osmConv;
+MapConvBase* MapConv::base = &bingConv;
 
-MapConv::MapConv()
-    : MapLevelMax(15)
-    , MapLevelMin(3)
-    , MapTileSize(256)
+void MapConv::SetConv(const char* name)
 {
-    MapLevel = 15;
-    MapFilePath = "MAP/MapInfos";
-    MapKeyFileName = "map.bin";
+    if (strcmp(name, CONFIG_MAP_SOURCE_BING_NAME) == 0)
+    {
+        base = &bingConv;
+    }
+    else if (strcmp(name, CONFIG_MAP_SOURCE_OSM_NAME) == 0)
+    {
+        base = &osmConv;
+    }
 }
 
-int MapConv::GetMapInfo(
-    double longitude, double latitude,
-    char* path, uint32_t len,
-    uint32_t* mapX, uint32_t* mapY,
-    MapTile_t* mapTile
-)
+MapConvBase* MapConv::GetConv()
 {
-    uint32_t x, y;
-    ConvertMapCoordinate(longitude, latitude, &x, &y);
-
-    *mapX = x;
-    *mapY = y;
-
-    ConvertPosToTile(x, y, mapTile);
-    int ret = ConvertMapPath(x, y, path, len);
-
-    return ret;
-}
-
-int MapConv::ConvertMapPath(uint32_t x, uint32_t y, char* path, uint32_t len)
-{
-    uint32_t tileX = x / MapTileSize;
-    uint32_t tileY = y / MapTileSize;
-    int ret = snprintf(
-                  path, len,
-                  "%s/%lX/%lX/%s", MapFilePath, tileX, tileY, MapKeyFileName
-              );
-
-    return ret;
-}
-
-void MapConv::SetLevel(int level)
-{
-    MapLevel = constrain(level, MapLevelMin, MapLevelMax);
-}
-
-uint32_t MapConv::GetMapSize()
-{
-    uint32_t seed = MapTileSize;
-    return seed << MapLevel;
-}
-
-void MapConv::GetMapTile(double longitude, double latitude, MapTile_t* mapTile)
-{
-    uint32_t x, y;
-    ConvertMapCoordinate(longitude, latitude, &x, &y);
-    ConvertPosToTile(x, y, mapTile);
-}
-
-void MapConv::ConvertMapCoordinate(
-    double longitude, double latitude,
-    uint32_t* mapX, uint32_t* mapY
-)
-{
-    int pixelX, pixelY;
-
-    double lat, lng;
-    GPS_Transform(latitude, longitude, &lat, &lng);
-
-    LatLongToPixelXY(
-        lat,
-        lng,
-        GetLevel(),
-        &pixelX,
-        &pixelY
-    );
-
-    *mapX = pixelX;
-    *mapY = pixelY;
-}
-
-void MapConv::ConvertPosToTile(uint32_t x, uint32_t y, MapTile_t* mapTile)
-{
-    mapTile->tileX = x / MapTileSize;
-    mapTile->tileY = y / MapTileSize;
-    mapTile->subX = x % MapTileSize;
-    mapTile->subY = y % MapTileSize;
+    return base;
 }

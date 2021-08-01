@@ -23,6 +23,8 @@ void Dialplate::onViewLoad()
 
     group = lv_group_create();
 
+    lv_group_set_wrap(group, false);
+
     lv_group_add_obj(group, View.ui.btnCont.btnMap);
     lv_group_add_obj(group, View.ui.btnCont.btnRec);
     lv_group_add_obj(group, View.ui.btnCont.btnMenu);
@@ -94,7 +96,7 @@ void Dialplate::Update()
     );
     lv_label_set_text_fmt(
         View.ui.bottomInfo.labelInfoGrp[3].lableValue,
-        "%d cal",
+        "%d k",
         int(Model.sportStatusInfo.singleCalorie)
     );
 }

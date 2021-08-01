@@ -3,8 +3,10 @@
 #include "Utils/Time/Time.h"
 #include "Config/Config.h"
 
+using namespace DataProc;
+
 // Offset hours from gps time (UTC)
-static const int GMT_OffsetHours = CONFIG_GMT_OFFSET_HOURS;
+static int GMT_OffsetHours = CONFIG_SYSTEM_GMT_OFFSET_DEFAULT;
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
@@ -45,5 +47,8 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 DATA_PROC_INIT_DEF(TzConv)
 {
     account->Subscribe("GPS");
+    account->Subscribe("Storage");
     account->SetEventCallback(onEvent);
+
+    STORAGE_VALUE_REG(account, GMT_OffsetHours, STORAGE_TYPE_INT);
 }

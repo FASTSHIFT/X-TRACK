@@ -1729,14 +1729,64 @@
           </GroupOption>
           <Files>
             <File>
+              <FileName>MapConv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\MapConv.h</FilePath>
+            </File>
+            <File>
               <FileName>MapConv.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\MapConv\MapConv.cpp</FilePath>
             </File>
             <File>
-              <FileName>MapConv.h</FileName>
+              <FileName>MapConvBase.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConv.h</FilePath>
+              <FilePath>..\USER\App\Utils\MapConv\MapConvBase.h</FilePath>
+            </File>
+            <File>
+              <FileName>MapConvBase.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\MapConvBase.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MapConv_Bing.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\MapConv_Bing.h</FilePath>
+            </File>
+            <File>
+              <FileName>MapConv_Bing.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\MapConv_Bing.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MapConv_OSM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\MapConv_OSM.h</FilePath>
+            </File>
+            <File>
+              <FileName>MapConv_OSM.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\MapConv_OSM.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>GPS_Transform.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h</FilePath>
+            </File>
+            <File>
+              <FileName>GPS_Transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c</FilePath>
+            </File>
+            <File>
+              <FileName>TileSystem.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\TileSystem\TileSystem.h</FilePath>
+            </File>
+            <File>
+              <FileName>TileSystem.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -2019,21 +2069,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Utils/GPS_Transform</GroupName>
-          <Files>
-            <File>
-              <FileName>GPS_Transform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\GPS_Transform\GPS_Transform.c</FilePath>
-            </File>
-            <File>
-              <FileName>GPS_Transform.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\GPS_Transform\GPS_Transform.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Utils/GPX</GroupName>
           <Files>
             <File>
@@ -2144,21 +2179,6 @@
               <FileName>StorageService.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\StorageService\StorageService.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Utils/TileSystem</GroupName>
-          <Files>
-            <File>
-              <FileName>TileSystem.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\TileSystem\TileSystem.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>TileSystem.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\TileSystem\TileSystem.h</FilePath>
             </File>
           </Files>
         </Group>

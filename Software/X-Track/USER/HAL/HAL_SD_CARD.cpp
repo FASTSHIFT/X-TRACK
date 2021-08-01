@@ -4,6 +4,7 @@
 static SdFat SD(&CONFIG_SD_SPI);
 
 static bool SD_IsReady = false;
+static float SD_CardSizeMB = 0;
 
 static HAL::SD_CallbackFunction_t SD_EventCallback = nullptr;
 
@@ -52,16 +53,17 @@ bool HAL::SD_Init()
 
     if(retval)
     {
+#define CONV_MB(size) (size*0.000512f)
+        SD_CardSizeMB = CONV_MB(SD.card()->cardSize());
         SdFile::dateTimeCallback(SD_GetDateTime);
         SD_CheckDir(CONFIG_TRACK_RECORD_FILE_DIR_NAME);
-        SD_CheckDir(CONFIG_MAP_FILE_DIR_NAME);
         Serial.println("SD: Init success");
     }
     else
     {
         Serial.println("SD: CARD ERROR");
     }
-    
+
     SD_IsReady = retval;
 
     return retval;
@@ -70,6 +72,11 @@ bool HAL::SD_Init()
 bool HAL::SD_GetReady()
 {
     return SD_IsReady;
+}
+
+float HAL::SD_GetCardSizeMB()
+{
+    return SD_CardSizeMB;
 }
 
 static void SD_Check(bool isInsert)

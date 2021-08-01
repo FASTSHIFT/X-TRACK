@@ -25,7 +25,7 @@
 #include "lvgl/lvgl.h"
 #include <algorithm>
 
-#define JSON_BUFFER_SIZE 512
+#define JSON_BUFFER_SIZE 1024
 
 #define VALUE_TO_DOC(type)\
 do{\
@@ -149,7 +149,7 @@ bool StorageService::LoadFile()
 
     if (!file)
     {
-        LV_LOG_USER("Failed to open file %s", FilePath);
+        LV_LOG_USER("Failed to open file: %s", FilePath);
         return false;
     }
 
@@ -166,6 +166,12 @@ bool StorageService::LoadFile()
     // Copy values from the JsonDocument to the Config
     for (auto iter : NodePool)
     {
+        if (!doc.containsKey(iter->key))
+        {
+            LV_LOG_USER("NOT contains key: %s, use default value", iter->key);
+            continue;
+        }
+
         switch (iter->type)
         {
         case TYPE_INT:

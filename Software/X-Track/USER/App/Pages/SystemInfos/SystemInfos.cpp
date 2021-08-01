@@ -123,7 +123,7 @@ void SystemInfos::Update()
     Model.GetStorageInfo(&detect, buf, sizeof(buf));
     View.SetStorage(
         detect ? "YES" : "NO",
-        "-",
+        buf,
         VERSION_FILESYSTEM
     );
 

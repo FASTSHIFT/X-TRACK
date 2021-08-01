@@ -166,6 +166,7 @@ lv_obj_t* DialplateView::Btn_Create(lv_obj_t* par, const void* img_src, lv_coord
     lv_obj_t* obj = lv_obj_create(par);
     lv_obj_remove_style_all(obj);
     lv_obj_set_size(obj, 40, 31);
+    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
 
     lv_obj_align(obj, LV_ALIGN_CENTER, x_ofs, 0);
     lv_obj_set_style_bg_img_src(obj, img_src, 0);

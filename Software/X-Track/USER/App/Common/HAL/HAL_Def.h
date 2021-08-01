@@ -3,8 +3,9 @@
 
 #include <stdint.h>
 
-namespace HAL {
-    
+namespace HAL
+{
+
 /* Clock */
 typedef struct
 {
@@ -19,7 +20,8 @@ typedef struct
 } Clock_Info_t;
 
 /* GPS */
-typedef struct {
+typedef struct
+{
     bool isVaild;
     double longitude;
     double latitude;
@@ -28,17 +30,19 @@ typedef struct {
     float speed;
     int16_t satellites;
     Clock_Info_t clock;
-}GPS_Info_t;
+} GPS_Info_t;
 
 /* MAG */
-typedef struct {
+typedef struct
+{
     int16_t x;
     int16_t y;
     int16_t z;
-}MAG_Info_t;
+} MAG_Info_t;
 
 /* IMU */
-typedef struct {
+typedef struct
+{
     int16_t ax;
     int16_t ay;
     int16_t az;
@@ -46,37 +50,45 @@ typedef struct {
     int16_t gy;
     int16_t gz;
     int16_t steps;
-}IMU_Info_t;
+} IMU_Info_t;
 
 /* SportStatus */
-typedef struct {
+typedef struct
+{
+    uint32_t lastTick;
+
+    float weight;
+
     float speedKph;
     float speedMaxKph;
     float speedAvgKph;
 
-    union {
+    union
+    {
         uint32_t totalTimeUINT32[2];
         uint64_t totalTime;
     };
-    
+
     float totalDistance;
 
-    union {
+    union
+    {
         uint32_t singleTimeUINT32[2];
         uint64_t singleTime;
     };
 
     float singleDistance;
     float singleCalorie;
-    uint32_t lastTick;
-}SportStatus_Info_t;
+    
+} SportStatus_Info_t;
 
 /* Power */
-typedef struct {
+typedef struct
+{
     uint16_t voltage;
     uint8_t usage;
     bool isCharging;
-}Power_Info_t;
+} Power_Info_t;
 
 }
 

@@ -21,6 +21,17 @@
 
 #include "WString.h"
 
+#define WS_USE_STD_LIB    0
+
+#if WS_USE_STD_LIB
+#  define WS_MEM_REALLOC(ptr, new_size) realloc(ptr, new_size)
+#  define WS_MEM_FREE(ptr)              free(ptr)
+#else
+#include "lvgl/lvgl.h"
+#  define WS_MEM_REALLOC(ptr, new_size) lv_mem_realloc(ptr, new_size)
+#  define WS_MEM_FREE(ptr)              lv_mem_free(ptr) 
+#endif
+
 
 /*********************************************/
 /*  Constructors                             */
@@ -122,7 +133,7 @@ String::String(double value, unsigned char decimalPlaces)
 
 String::~String()
 {
-    free(buffer);
+    WS_MEM_FREE(buffer);
 }
 
 /*********************************************/
@@ -138,7 +149,7 @@ inline void String::init(void)
 
 void String::invalidate(void)
 {
-    if (buffer) free(buffer);
+    if (buffer) WS_MEM_FREE(buffer);
     buffer = NULL;
     capacity = len = 0;
 }
@@ -156,7 +167,7 @@ unsigned char String::reserve(unsigned int size)
 
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
-    char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
+    char *newbuffer = (char *)WS_MEM_REALLOC(buffer, maxStrLen + 1);
     if (newbuffer)
     {
         buffer = newbuffer;
@@ -208,7 +219,7 @@ void String::move(String &rhs)
         }
         else
         {
-            free(buffer);
+            WS_MEM_FREE(buffer);
         }
     }
     buffer = rhs.buffer;

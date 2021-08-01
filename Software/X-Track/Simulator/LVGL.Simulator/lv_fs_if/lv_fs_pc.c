@@ -263,7 +263,7 @@ static lv_fs_res_t fs_trunc (lv_fs_drv_t * drv, void * file_p)
 
 	fflush(file_p);                    /*If not syncronized fclose can write the truncated part*/
 	uint32_t p  = ftell(file_p);
-	ftruncate(fileno(file_p), p);
+	//ftruncate(fileno(file_p), p);
 	return LV_FS_RES_OK;
 }
 
@@ -322,7 +322,7 @@ static char next_fn[256];
 static void * fs_dir_open (lv_fs_drv_t * drv, const char *path)
 {
 	(void) drv;		/*Unused*/
-#ifndef WIN32
+#ifndef xWIN32
 	/*Make the path relative to the current directory (the projects root folder)*/
 	char buf[256];
 	sprintf(buf, LV_FS_PC_PATH "/%s", path);
@@ -368,7 +368,7 @@ static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn)
 {
 	(void) drv;		/*Unused*/
 
-#ifndef WIN32
+#ifndef xWIN32
 	struct dirent *entry;
 	do {
 		entry = readdir(dir_p);
@@ -415,7 +415,7 @@ static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn)
 static lv_fs_res_t fs_dir_close (lv_fs_drv_t * drv, void * dir_p)
 {
 	(void) drv;		/*Unused*/
-#ifndef WIN32
+#ifndef xWIN32
 	closedir(dir_p);
 #else
 	FindClose(dir_p);

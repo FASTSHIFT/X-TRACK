@@ -367,12 +367,6 @@
     <Filter Include="App\Utils\Stream">
       <UniqueIdentifier>{2c910873-82bf-4044-8da8-798dff7b5625}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utils\TileSystem">
-      <UniqueIdentifier>{51b60e9b-cd0e-4ed6-9cfc-17f335ec730a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\Utils\GPS_Transform">
-      <UniqueIdentifier>{bf7739d1-a33b-40e5-b5ef-a59b4ae47c29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lvgl\src\extra\others">
       <UniqueIdentifier>{4d7d9b2e-2c1e-4de6-a499-b1f133ef8b96}</UniqueIdentifier>
     </Filter>
@@ -381,6 +375,12 @@
     </Filter>
     <Filter Include="lvgl\src\extra\widgets\span">
       <UniqueIdentifier>{5db124e7-60d6-4b06-9e67-93c83cf70d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\MapConv\GPS_Transform">
+      <UniqueIdentifier>{8d0075d6-b180-4223-aa20-5b8ae8b0bc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\MapConv\TileSystem">
+      <UniqueIdentifier>{07f89167-2976-4ade-b85e-1cdb1267900e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -936,12 +936,6 @@
     <ClInclude Include="..\..\USER\App\Version.h">
       <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\TileSystem\TileSystem.h">
-      <Filter>App\Utils\TileSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\GPS_Transform\GPS_Transform.h">
-      <Filter>App\Utils\GPS_Transform</Filter>
-    </ClInclude>
     <ClInclude Include="lvgl\src\misc\lv_anim_timeline.h">
       <Filter>lvgl\src\misc</Filter>
     </ClInclude>
@@ -956,6 +950,21 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h">
       <Filter>App\Utils\lv_ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h">
+      <Filter>App\Utils\MapConv\GPS_Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv_Bing.h">
+      <Filter>App\Utils\MapConv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv_OSM.h">
+      <Filter>App\Utils\MapConv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.h">
+      <Filter>App\Utils\MapConv\TileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConvBase.h">
+      <Filter>App\Utils\MapConv</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1658,9 +1667,6 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp">
       <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp">
-      <Filter>App\Utils\MapConv</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Base.cpp">
       <Filter>App\Utils\PageManager</Filter>
     </ClCompile>
@@ -1919,9 +1925,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_sd_card.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\TileSystem\TileSystem.cpp">
-      <Filter>App\Utils\TileSystem</Filter>
-    </ClCompile>
     <ClCompile Include="lvgl\src\misc\lv_anim_timeline.c">
       <Filter>lvgl\src\misc</Filter>
     </ClCompile>
@@ -1934,8 +1937,23 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c">
       <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\GPS_Transform\GPS_Transform.c">
-      <Filter>App\Utils\GPS_Transform</Filter>
+    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv_OSM.cpp">
+      <Filter>App\Utils\MapConv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c">
+      <Filter>App\Utils\MapConv\GPS_Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConvBase.cpp">
+      <Filter>App\Utils\MapConv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv_Bing.cpp">
+      <Filter>App\Utils\MapConv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp">
+      <Filter>App\Utils\MapConv\TileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp">
+      <Filter>App\Utils\MapConv</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

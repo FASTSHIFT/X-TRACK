@@ -20,28 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __MAP_CONV_H
-#define __MAP_CONV_H
-
 #include "MapConvBase.h"
-#include "MapConv_Bing.h"
-#include "MapConv_OSM.h"
-#include <string.h>
-#include "Config/Config.h"
 
-class MapConv
+class MapConv_Bing : public MapConvBase
 {
 public:
-    MapConv() {}
-    ~MapConv() {}
+    MapConv_Bing();
+    ~MapConv_Bing() {}
 
-    static void SetConv(const char* name);
-    static MapConvBase* GetConv();
+    virtual int ConvertMapPath(int32_t x, int32_t y, char* path, uint32_t len);
+    virtual void ConvertMapCoordinate(
+        double longitude, double latitude,
+        int32_t* mapX, int32_t* mapY
+    );
 
 private:
-    static MapConvBase* base;
-    static MapConv_Bing bingConv;
-    static MapConv_OSM osmConv;
-};
 
-#endif
+};

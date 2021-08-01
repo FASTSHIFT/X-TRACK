@@ -20,28 +20,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __MAP_CONV_H
-#define __MAP_CONV_H
-
 #include "MapConvBase.h"
-#include "MapConv_Bing.h"
-#include "MapConv_OSM.h"
-#include <string.h>
-#include "Config/Config.h"
+#include <stdio.h>
 
-class MapConv
+#ifndef constrain
+#   define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#endif
+
+int16_t MapConvBase::levelMin = 0;
+int16_t MapConvBase::levelMax = 19;
+
+MapConvBase::MapConvBase()
 {
-public:
-    MapConv() {}
-    ~MapConv() {}
+    priv.level = 16;
+    priv.tileSize = 256;
+    priv.dirPath = "/";
+}
 
-    static void SetConv(const char* name);
-    static MapConvBase* GetConv();
+void MapConvBase::SetLevel(int level)
+{
+    priv.level = constrain(level, levelMin, levelMax);
+}
 
-private:
-    static MapConvBase* base;
-    static MapConv_Bing bingConv;
-    static MapConv_OSM osmConv;
+void MapConvBase::GetMapTile(double longitude, double latitude, MapTile_t* mapTile)
+{
+    int32_t x, y;
+    ConvertMapCoordinate(longitude, latitude, &x, &y);
+    ConvertPosToTile(x, y, mapTile);
+}
+
+void MapConvBase::ConvertMapCoordinate(
+    double longitude, double latitude,
+    int32_t* mapX, int32_t* mapY
+)
+{
+    int pixelX, pixelY;
+
+    LatLongToPixelXY(
+        latitude,
+        longitude,
+        priv.level,
+        &pixelX,
+        &pixelY
+    );
+
+    *mapX = pixelX;
+    *mapY = pixelY;
 };
 
-#endif
+void MapConvBase::ConvertPosToTile(int32_t x, int32_t y, MapTile_t* mapTile)
+{
+    mapTile->tileX = x / priv.tileSize;
+    mapTile->tileY = y / priv.tileSize;
+    mapTile->subX = x % priv.tileSize;
+    mapTile->subY = y % priv.tileSize;
+}

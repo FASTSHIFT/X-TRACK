@@ -75,7 +75,7 @@ bool TrackPointFilter::PushPoint(const Point_t* point)
         DumpLine("--", &priv.refLine);
 
         double offset = GetOffset(&priv.refLine, point);
-        LOG_PRINT("OFS = %f", offset);
+        LOG_PRINT("OFS = %lf", offset);
 
         if (offset > priv.offsetThreshold)
         {
@@ -233,7 +233,7 @@ bool TrackPointFilter::GetLine(Line_t* line, const Point_t* point0, const Point_
 void TrackPointFilter::DumpLine(const char* name, const Line_t* line)
 {
     LOG_PRINT(
-        "%s : %fx + %fy + %f = 0 { y = %fx + %f }",
+        "%s : %lfx + %lfy + %lf = 0 { y = %lfx + %lf }",
         name, line->a, line->b, line->c,
         -line->a / line->b, -line->c / line->b
     );
@@ -241,7 +241,7 @@ void TrackPointFilter::DumpLine(const char* name, const Line_t* line)
 
 void TrackPointFilter::DumpPoint(const char* name, const Point_t* point)
 {
-    LOG_PRINT("%s : (%f, %f)", name, point->x, point->y);
+    LOG_PRINT("%s : (%lf, %lf)", name, point->x, point->y);
 }
 
 void TrackPointFilter::GetVerticalLine(Line_t* verLine, const Line_t* oriLine, const Point_t* point)

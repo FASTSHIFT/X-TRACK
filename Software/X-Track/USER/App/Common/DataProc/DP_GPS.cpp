@@ -2,35 +2,40 @@
 #include "../HAL/HAL.h"
 #include "Config/Config.h"
 
-typedef enum{
+typedef enum
+{
     GPS_STATUS_DISCONNECT,
     GPS_STATUS_UNSTABLE,
     GPS_STATUS_CONNECT,
-}GPS_Status_t;
+} GPS_Status_t;
 
 static void onTimer(Account* account)
 {
     HAL::GPS_Info_t gpsInfo;
-    bool isValid = GPS_GetInfo(&gpsInfo);
+    HAL::GPS_GetInfo(&gpsInfo);
 
     int satellites = gpsInfo.satellites;
 
+    static GPS_Status_t nowStatus = GPS_STATUS_DISCONNECT;
     static GPS_Status_t lastStatus = GPS_STATUS_DISCONNECT;
 
-    GPS_Status_t nowStatus = GPS_STATUS_DISCONNECT;
-
-    if (satellites > 6)
+    if (satellites > 7)
     {
         nowStatus = GPS_STATUS_CONNECT;
     }
-    else if (satellites >= 3)
+    else if (satellites < 5 && satellites >= 3)
     {
         nowStatus = GPS_STATUS_UNSTABLE;
+    }
+    else if (satellites == 0)
+    {
+        nowStatus = GPS_STATUS_DISCONNECT;
     }
 
     if (nowStatus != lastStatus)
     {
-        const char* music[] = {
+        const char* music[] =
+        {
             "Disconnect",
             "UnstableConnect",
             "Connect"

@@ -62,8 +62,8 @@ do{\
 typedef struct
 {
     bool isDetect;
-    uint32_t totalSize;
-    uint32_t freeSize;
+    float totalSizeMB;
+    float freeSizeMB;
 } Storage_Basic_Info_t;
 
 /* StatusBar */
@@ -89,6 +89,14 @@ typedef enum
 typedef struct
 {
     SysConfig_Cmd_t cmd;
+
+    bool soundEnable;
+    
+    double longitudeDefault;
+    double latitudeDefault;
+
+    char language[8];
+    char mapSource[8];
 } SysConfig_Info_t;
 
 /* TrackFilter */

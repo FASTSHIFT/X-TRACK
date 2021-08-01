@@ -116,8 +116,8 @@ void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)
     lv_obj_remove_style_all(cont);
     lv_obj_add_style(cont, &ui.styleCont, 0);
     lv_obj_set_style_opa(cont, LV_OPA_COVER, 0);
-    lv_obj_set_size(cont, 45, 30);
-    lv_obj_set_pos(cont, lv_obj_get_style_width(par, 0) - 40, 40);
+    lv_obj_set_size(cont, 50, 30);
+    lv_obj_set_pos(cont, lv_obj_get_style_width(par, 0) - lv_obj_get_style_width(cont, 0) + 5, 40);
     ui.zoom.cont = cont;
 
     static const lv_style_prop_t prop[] =
@@ -143,7 +143,6 @@ void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)
 
     lv_obj_t* slider = lv_slider_create(cont);
     lv_obj_remove_style_all(slider);
-    lv_slider_set_range(slider, 3, 15);
     lv_slider_set_value(slider, 15, LV_ANIM_OFF);
     ui.zoom.slider = slider;
 }

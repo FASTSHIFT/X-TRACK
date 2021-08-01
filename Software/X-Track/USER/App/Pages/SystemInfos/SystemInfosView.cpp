@@ -110,7 +110,7 @@ void SystemInfosView::Create(lv_obj_t* root)
         "storage",
 
         "Detect\n"
-        "Usage\n"
+        "Size\n"
         "Version"
     );
 
@@ -240,6 +240,7 @@ void SystemInfosView::Item_Create(
     /* icon */
     lv_obj_t* icon = lv_obj_create(cont);
     lv_obj_remove_style_all(icon);
+    lv_obj_clear_flag(icon, LV_OBJ_FLAG_SCROLLABLE);
 
     lv_obj_add_style(icon, &style.icon, 0);
     lv_obj_add_style(icon, &style.focus, LV_STATE_FOCUSED);
@@ -262,8 +263,6 @@ void SystemInfosView::Item_Create(
 
     /* infos */
     label = lv_label_create(cont);
-    //lv_obj_set_style_border_width(label, 1, 0);
-    //lv_obj_set_style_border_color(label, lv_color_white(), 0);
     lv_label_set_text(label, infos);
     lv_obj_add_style(label, &style.info, 0);
     lv_obj_align(label, LV_ALIGN_LEFT_MID, 75, 0);
@@ -392,7 +391,7 @@ void SystemInfosView::SetBattery(
 
 void SystemInfosView::SetStorage(
     const char* detect,
-    const char* usage,
+    const char* size,
     const char* version
 )
 {
@@ -402,7 +401,7 @@ void SystemInfosView::SetStorage(
         "%s\n"
         "%s",
         detect,
-        usage,
+        size,
         version
     );
 }

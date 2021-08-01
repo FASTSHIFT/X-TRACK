@@ -58,7 +58,7 @@ void App_Init()
 
     manager.Push("Pages/StartUp");
 
-    ACCOUNT_SEND_CMD(Storage,   STORAGE_CMD_LOAD);
+    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_LOAD);
     ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_LOAD);
 }
 

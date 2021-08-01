@@ -1,44 +1,98 @@
 #include "DataProc.h"
 #include "../HAL/HAL.h"
 #include "Utils/StorageService/StorageService.h"
+#include "Utils/MapConv/MapConv.h"
 #include "Config/Config.h"
+#include <stdlib.h>
 
 using namespace DataProc;
 
 static StorageService storageService(CONFIG_SYSTEM_SAVE_FILE_PATH);
 
-static int onEvent(Account* account, Account::EventParam_t* param)
+static void MapConvGetRange(const char* dirName, int16_t* min, int16_t* max)
 {
-    if (param->event == Account::EVENT_SUB_PULL)
+    lv_fs_dir_t dir;
+    lv_fs_res_t res = lv_fs_dir_open(&dir, dirName);
+
+    if (res == LV_FS_RES_OK)
     {
-        if (param->size != sizeof(Storage_Basic_Info_t))
+        LV_LOG_USER("%s open success", dirName);
+
+        int16_t levelMin = 19;
+        int16_t levelMax = 0;
+
+        char name[128];
+        while (1)
         {
-            return Account::ERROR_SIZE_MISMATCH;
+            lv_fs_dir_read(&dir, name);
+            if (name[0] == '\0')
+            {
+                break;
+            }
+
+            if (name[0] == '/')
+            {
+                int level = atoi(name + 1);
+
+                if (level < levelMin)
+                {
+                    levelMin = level;
+                }
+
+                if (level > levelMax)
+                {
+                    levelMax = level;
+                }
+            }
         }
 
-        Storage_Basic_Info_t* info = (Storage_Basic_Info_t*)param->data_p;
-        info->isDetect = HAL::SD_GetReady();
-        info->totalSize = 0;
-        info->freeSize = 0;
-        return 0;
-    }
+        *min = levelMin;
+        *max = levelMax;
 
-    if (param->event != Account::EVENT_NOTIFY)
+        lv_fs_dir_close(&dir);
+    }
+    else
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        LV_LOG_USER("%s open faild", dirName);
     }
+}
 
-    if (param->size != sizeof(Storage_Info_t))
+static void onLoad(Account* account)
+{
+    storageService.LoadFile();
+
+    SysConfig_Info_t sysConfig;
+    account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+
+    if (strcmp(sysConfig.mapSource, CONFIG_MAP_SOURCE_BING_NAME) == 0)
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        MapConv::SetConv(CONFIG_MAP_SOURCE_BING_NAME);
+        MapConvBase::SetLevelRange(CONFIG_MAP_BING_LEVEL_MIN, CONFIG_MAP_BING_LEVEL_MAX);
+    }
+    else if (strcmp(sysConfig.mapSource, CONFIG_MAP_SOURCE_OSM_NAME) == 0)
+    {
+        int16_t levelMin = 19;
+        int16_t levelMax = 0;
+        MapConvGetRange("/" CONFIG_MAP_OSM_FILE_DIR_NAME, &levelMin, &levelMax);
+
+        MapConv::SetConv(CONFIG_MAP_SOURCE_OSM_NAME);
+        MapConvBase::SetLevelRange(levelMin, levelMax);
     }
 
-    Storage_Info_t* info = (Storage_Info_t*)param->data_p;
+    LV_LOG_USER(
+        "Map source: %s, level min = %d, max = %d",
+        sysConfig.mapSource,
+        MapConvBase::GetLevelMin(),
+        MapConvBase::GetLevelMax()
+    );
+}
 
+static void onNotify(Account* account, Storage_Info_t* info)
+{
     switch (info->cmd)
     {
     case STORAGE_CMD_LOAD:
-        storageService.LoadFile();
+        onLoad(account);
         break;
     case STORAGE_CMD_SAVE:
         storageService.SaveFile();
@@ -57,20 +111,54 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     default:
         break;
     }
+}
+
+static int onEvent(Account* account, Account::EventParam_t* param)
+{
+    if (param->event == Account::EVENT_SUB_PULL)
+    {
+        if (param->size != sizeof(Storage_Basic_Info_t))
+        {
+            return Account::ERROR_SIZE_MISMATCH;
+        }
+
+        Storage_Basic_Info_t* info = (Storage_Basic_Info_t*)param->data_p;
+        info->isDetect = HAL::SD_GetReady();
+        info->totalSizeMB = HAL::SD_GetCardSizeMB();
+        info->freeSizeMB = 0.0f;
+        return 0;
+    }
+
+    if (param->event != Account::EVENT_NOTIFY)
+    {
+        return Account::ERROR_UNSUPPORTED_REQUEST;
+    }
+
+    if (param->size != sizeof(Storage_Info_t))
+    {
+        return Account::ERROR_SIZE_MISMATCH;
+    }
+
+    Storage_Info_t* info = (Storage_Info_t*)param->data_p;
+    onNotify(account, info);
 
     return 0;
 }
+
 
 static void onSDEvent(bool insert)
 {
     if(insert)
     {
-        storageService.LoadFile();
+        DataProc::Storage_Info_t info;
+        info.cmd = DataProc::STORAGE_CMD_LOAD;
+        DataProc::Center()->AccountMain.Notify("Storage", &info, sizeof(info));
     }
 }
 
 DATA_PROC_INIT_DEF(Storage)
 {
     account->SetEventCallback(onEvent);
+    account->Subscribe("SysConfig");
     HAL::SD_SetEventCallback(onSDEvent);
 }

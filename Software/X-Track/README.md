@@ -200,3 +200,21 @@
 * 5.使用合入lvgl主线的lv_anim_timeline，使用lv_anim_timeline_wrapper封装动画组
 * 6.更新StartUp页面，新的开机动画
 * 7.LV_IMG_CACHE_DEF_SIZE设置为0
+
+## [v1.5] - 2021-8-1
+* 1.lvgl更新
+* 2.调整Stack size: 0x1500 -> 0x2000，处理更大的JSON文件
+* 3.更新Storage节点，支持获取SD卡容量，支持自动获取地图缩放等级(OSM)
+* 4.优化GPS节点，减少在GPS信号不稳定时频繁的提示音
+* 5.优化SportStatus节点，支持在JSON文件中配置体重
+* 6.优化SysConfig节点，支持在JSON配置默认经纬度，地图源(Bing/OSM)，soundDisable -> soundEnable
+* 7.重构MapConv地图坐标转换器，支持动态配置地图源，地图坐标数据类型uint32_t -> int32_t，合并TileSystem和GPS_Transform
+* 8.HAL添加SD_GetCardSizeMB()
+* 9.更新Config.h，转移部分配置选项到JSON
+* 10.更新Dialplate页面，卡路里单位cal -> k，优化编码器交互wrap = false
+* 11.更新LiveMap页面，优化level自适应显示，使用SysConfig配置的默认位置
+* 12.更新SystemInfos页面，支持显示SD卡容量
+* 13.修复lv_fs_sdfat错误的指针类型转换，优化目录读取接口
+* 14.lvgl内存池 64K -> 72K
+* 15.WString使用lvgl的内存池
+* 16.修复GPX轨迹文件<\ele>丢失问题(可能是内存碎片和heap过小导致WString realloc失败)

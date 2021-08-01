@@ -5,13 +5,11 @@ using namespace Page;
 
 void LiveMapModel::Init()
 {
-    mapConv.SetMapFilePath(CONFIG_MAP_FILE_PATH);
-    mapConv.SetFileName(CONFIG_MAP_FILE_NAME);
-
     account = new Account("LiveMapModel", DataProc::Center(), 0, this);
     account->Subscribe("GPS");
     account->Subscribe("SportStatus");
     account->Subscribe("TrackFilter");
+    account->Subscribe("SysConfig");
     account->SetEventCallback(onEvent);
 }
 
@@ -34,8 +32,10 @@ void LiveMapModel::GetGPS_Info(HAL::GPS_Info_t* info)
     /* Default location : Tian An Men */
     if (!info->isVaild)
     {
-        info->longitude = CONFIG_LIVE_MAP_LNG_DEFAULT;
-        info->latitude = CONFIG_LIVE_MAP_LAT_DEFAULT;
+        DataProc::SysConfig_Info_t sysConfig;
+        account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+        info->longitude = sysConfig.longitudeDefault;
+        info->latitude = sysConfig.latitudeDefault;
     }
 }
 
@@ -85,8 +85,8 @@ void LiveMapModel::TrackReload()
 
     for (uint32_t i = 0; i < size; i++)
     {
-        uint32_t mapX, mapY;
-        mapConv.ConvertMapCoordinate(
+        int32_t mapX, mapY;
+        mapConv.GetConv()->ConvertMapCoordinate(
             points[i].longitude, points[i].latitude,
             &mapX, &mapY
         );
