@@ -3,7 +3,7 @@
 * VS模拟器: 使用Visual Studio 2019编译，配置为**Release x86**。下载地图生成的的**MAP**文件夹和**X-Track**文件夹放在同一个目录下，即可在模拟器中读取地图。录制的GPX轨迹文件也可以放在这个目录内，需要在Config.h里修改```CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH```宏定义指定被读取的GPX文件路径。
 
 ## 系统配置文件
-系统会在根目录下自动生成`SystemSave.json`的文件，由于储存和配置系统参数
+系统会在根目录下自动生成`SystemSave.json`的文件，用于储存和配置系统参数
 ```C
 {
   "sportStatus.totalDistance": 0,              //总里程(m)
