@@ -1,16 +1,18 @@
 # 地图下载说明
 
-* 在MapDownloadGen文件夹里打开maptile.exe执行文件，打开后根据你自己所在地区勾选范围（注意范围不要选太大，否则后续下载会等很久），鼠标左键单击勾选范围，选定后双击左键。点击确认后将地图保存在 X-TRACK 目录下。
+## 1.选择要下载的地图区域
+* 1.在MapDownloadGen文件夹里打开maptile.exe执行文件，打开后根据你自己所在地区勾选范围（注意范围不要选太大，否则地图文件会**很大**），鼠标左键单击勾选范围，选定后双击左键。点击确认后将地图保存在 X-TRACK 目录下。
 
 https://user-images.githubusercontent.com/33819388/120956796-f0893100-c786-11eb-9e0b-aac6e733e459.mp4
+
+## 2.下载地图
 
 * 打开Downloader.exe执行文件，将上一步保存的MapInfos.xmp拖入程序里，点击Download
 
 https://user-images.githubusercontent.com/33819388/120956786-ea935000-c786-11eb-9e22-5ec11aec1194.mp4
 
 
-
-### ＳＴＡＴＵＳ提示信息
+### ＳＴＡＴＵＳ提示信息：
 
 |  状态       | 含义        |
 |  ----     | ----         |
@@ -20,7 +22,16 @@ https://user-images.githubusercontent.com/33819388/120956786-ea935000-c786-11eb-
 |   L:0     |   下载下来的文件长度为零         |
 
 
-* 下载完成后，再使用Tools文件夹下的MapConv.bat和RenameBin.bat脚本转化地图格式，上述步骤无误后，便可将MAP文件夹拷贝到SD卡里
+## 3.转换地图文件
+* 下载完成后，使用Tools文件夹下的**TilesConverterForLVGL.exe**进行转换（[使用教程](https://github.com/FASTSHIFT/X-TRACK/tree/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)）
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/1.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/2.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/3.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/4.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/5.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/6.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/7.png)
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/8.png)
 
-
+* 转换完成后，再使用Tools文件夹下RenameBin.bat脚本批量重命名地图文件，上述步骤无误后，便可将MAP文件夹拷贝到SD卡里
    
