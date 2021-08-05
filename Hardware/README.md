@@ -19,6 +19,5 @@
 * Pad (非实体元件，只是焊接电池线的焊盘)
 * AON3400 (AO3400 N沟道MOS管)
 
-## 焊接建议
-* 不建议新手尝试自己焊接
-* SD卡座、旋转编码器、蜂鸣器建议用细尖头烙铁焊接，不容易烫坏元件
+## 焊接
+* [焊接教程](https://github.com/FASTSHIFT/X-TRACK/blob/main/Hardware/%E7%84%8A%E6%8E%A5%E8%B0%83%E8%AF%95%E6%8C%87%E5%8C%97.md)
