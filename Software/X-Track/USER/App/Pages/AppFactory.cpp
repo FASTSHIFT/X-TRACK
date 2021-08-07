@@ -25,7 +25,7 @@
 #include "LiveMap/LiveMap.h"
 #include "Dialplate/Dialplate.h"
 #include "SystemInfos/SystemInfos.h"
-#include "StartUp/StartUp.h"
+#include "Startup/Startup.h"
 
 #define APP_CLASS_MATCH(className)\
 do{\
@@ -41,7 +41,7 @@ PageBase* AppFactory::CreatePage(const char* name)
     APP_CLASS_MATCH(LiveMap);
     APP_CLASS_MATCH(Dialplate);
     APP_CLASS_MATCH(SystemInfos);
-    APP_CLASS_MATCH(StartUp);
+    APP_CLASS_MATCH(Startup);
 
     return nullptr;
 }

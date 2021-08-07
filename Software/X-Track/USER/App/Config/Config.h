@@ -40,22 +40,18 @@
 #define CONFIG_TRACK_FILTER_OFFSET_THRESHOLD  2 // pixel
 #define CONFIG_TRACK_RECORD_FILE_DIR_NAME     "Track"
 
-#define CONFIG_MAP_SOURCE_BING_NAME           "Bing"
-#define CONFIG_MAP_SOURCE_OSM_NAME            "OSM"
+#define CONFIG_MAP_USE_WGS84_DEFAULT          false
 
-#define CONFIG_MAP_SOURCE_DEFAULT             CONFIG_MAP_SOURCE_BING_NAME
+#define CONFIG_MAP_DIR_PATH                   "/MAP"
 
-#define CONFIG_MAP_OSM_FILE_DIR_NAME          CONFIG_MAP_SOURCE_OSM_NAME
-#define CONFIG_MAP_BING_FILE_DIR_NAME         "MAP"
-#define CONFIG_MAP_BING_LEVEL_MIN             3
-#define CONFIG_MAP_BING_LEVEL_MAX             15
+#define CONFIG_ARROW_THEME_DEFAULT            "default"
 
 #define CONFIG_LIVE_MAP_LEVEL_DEFAULT         16
 #define CONFIG_LIVE_MAP_VIEW_WIDTH            LV_HOR_RES
 #define CONFIG_LIVE_MAP_VIEW_HEIGHT           LV_VER_RES
 
 /* Simulator */
-#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx"
+#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRK_20210801_203324.gpx"
 
 /*=========================
    Hardware Configuration

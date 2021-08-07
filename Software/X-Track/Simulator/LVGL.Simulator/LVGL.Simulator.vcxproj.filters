@@ -328,9 +328,6 @@
     <Filter Include="App\Pages\SystemInfos">
       <UniqueIdentifier>{455f63df-c798-4e22-b9d7-b162bf754056}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Pages\StartUp">
-      <UniqueIdentifier>{a9f7a372-994a-40ce-ad80-ef374e6e28fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Utils\ArduinoJson">
       <UniqueIdentifier>{bc0b8967-981c-4e35-b927-8868332b09ba}</UniqueIdentifier>
     </Filter>
@@ -381,6 +378,9 @@
     </Filter>
     <Filter Include="App\Utils\MapConv\TileSystem">
       <UniqueIdentifier>{07f89167-2976-4ade-b85e-1cdb1267900e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Pages\Startup">
+      <UniqueIdentifier>{a9f7a372-994a-40ce-ad80-ef374e6e28fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -873,15 +873,6 @@
     <ClInclude Include="..\..\USER\App\Pages\SystemInfos\SystemInfosView.h">
       <Filter>App\Pages\SystemInfos</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUp.h">
-      <Filter>App\Pages\StartUp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUpModel.h">
-      <Filter>App\Pages\StartUp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\USER\App\Pages\StartUp\StartUpView.h">
-      <Filter>App\Pages\StartUp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\ArduinoJson\ArduinoJson.h">
       <Filter>App\Utils\ArduinoJson</Filter>
     </ClInclude>
@@ -954,17 +945,17 @@
     <ClInclude Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h">
       <Filter>App\Utils\MapConv\GPS_Transform</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv_Bing.h">
-      <Filter>App\Utils\MapConv</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv_OSM.h">
-      <Filter>App\Utils\MapConv</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.h">
       <Filter>App\Utils\MapConv\TileSystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConvBase.h">
-      <Filter>App\Utils\MapConv</Filter>
+    <ClInclude Include="..\..\USER\App\Pages\Startup\Startup.h">
+      <Filter>App\Pages\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\Startup\StartupModel.h">
+      <Filter>App\Pages\Startup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Pages\Startup\StartupView.h">
+      <Filter>App\Pages\Startup</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1703,9 +1694,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_battery.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow.c">
-      <Filter>App\Resource\Image</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_pin.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
@@ -1847,15 +1835,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Font\font_agencyb_36.c">
       <Filter>App\Resource\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUp.cpp">
-      <Filter>App\Pages\StartUp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUpModel.cpp">
-      <Filter>App\Pages\StartUp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Pages\StartUp\StartUpView.cpp">
-      <Filter>App\Pages\StartUp</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_Storage.cpp">
       <Filter>App\Common\DataProc</Filter>
     </ClCompile>
@@ -1937,23 +1916,32 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c">
       <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv_OSM.cpp">
-      <Filter>App\Utils\MapConv</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c">
       <Filter>App\Utils\MapConv\GPS_Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConvBase.cpp">
-      <Filter>App\Utils\MapConv</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv_Bing.cpp">
-      <Filter>App\Utils\MapConv</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp">
       <Filter>App\Utils\MapConv\TileSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp">
       <Filter>App\Utils\MapConv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\Startup\Startup.cpp">
+      <Filter>App\Pages\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\Startup\StartupModel.cpp">
+      <Filter>App\Pages\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Pages\Startup\StartupView.cpp">
+      <Filter>App\Pages\Startup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_dark.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_light.c">
+      <Filter>App\Resource\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_default.c">
+      <Filter>App\Resource\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2637,302 +2625,6 @@
     </None>
     <None Include="..\..\USER\App\Common\Music\MusicCode.h">
       <Filter>App\Common\Music</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="lv_examples">
-      <UniqueIdentifier>{1951d8d8-2a92-4cf9-95db-ac5150440b42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\.github">
-      <UniqueIdentifier>{9dbce5af-4dd6-4b4c-910d-7187d384342d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\.github\workflows">
-      <UniqueIdentifier>{ad906fc5-66e8-4566-a261-1874388f3517}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\docs">
-      <UniqueIdentifier>{a56706b8-6cd8-4e36-acdc-76259370b518}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\scripts">
-      <UniqueIdentifier>{48ebd86b-4a5c-4598-b9ce-92d988f44fc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src">
-      <UniqueIdentifier>{f0a1d8bc-36c4-4d68-bf28-228f4a69c0c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_benchmark">
-      <UniqueIdentifier>{e8996e9c-b7c7-4914-b63d-504f00824e22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_keypad_encoder">
-      <UniqueIdentifier>{8dcb36a0-3d8a-4a3a-8b80-bda741c1cbd3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_music">
-      <UniqueIdentifier>{3fd41182-2d34-48fc-985b-334fab1eaaf1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_music\assets">
-      <UniqueIdentifier>{faf13081-9e25-42a2-a6c8-7205caa0cc76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_music\assets\__pycache__">
-      <UniqueIdentifier>{1506478c-d847-428b-a5b2-3acdee16432f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_stress">
-      <UniqueIdentifier>{142708b2-744e-4f7b-aa1d-c3d23fb0c593}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_stress\assets">
-      <UniqueIdentifier>{5dc74f0f-a245-4867-a2a8-2bd212d31efd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_widgets">
-      <UniqueIdentifier>{767b06b3-0bf9-4d47-b4e1-5c839c69f084}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_examples\src\lv_demo_widgets\assets">
-      <UniqueIdentifier>{dcad8d9c-fbbc-44cc-8f7d-730bbb1bcc79}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.h">
-      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.h">
-      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_music\assets\spectrum_1.h">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_music\assets\spectrum_2.h">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_music\assets\spectrum_3.h">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_music\lv_demo_music.h">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_music\lv_demo_music_list.h">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_music\lv_demo_music_main.h">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_stress\lv_demo_stress.h">
-      <Filter>lv_examples\src\lv_demo_stress</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo_widgets\lv_demo_widgets.h">
-      <Filter>lv_examples\src\lv_demo_widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\src\lv_demo.h">
-      <Filter>lv_examples\src</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\lv_demo.h">
-      <Filter>lv_examples</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_examples\lv_demo_conf_template.h">
-      <Filter>lv_examples</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.c">
-      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.c">
-      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_list_pause.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_list_play.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_loop.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_next.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_pause.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_play.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_prev.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_btn_rnd.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_corner_left.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_corner_right.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_cover_1.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_cover_2.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_cover_3.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_1.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_2.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_3.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_icon_4.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_list_border.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_logo.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_slider_knob.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_bottom.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\assets\img_lv_demo_music_wave_top.c">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music.c">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music_list.c">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_music\lv_demo_music_main.c">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_12_compr_az.c">
-      <Filter>lv_examples\src\lv_demo_stress\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_16_compr_az.c">
-      <Filter>lv_examples\src\lv_demo_stress\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_28_compr_az.c">
-      <Filter>lv_examples\src\lv_demo_stress\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_stress\lv_demo_stress.c">
-      <Filter>lv_examples\src\lv_demo_stress</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_widgets\assets\img_clothes.c">
-      <Filter>lv_examples\src\lv_demo_widgets\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_widgets\assets\img_demo_widgets_avatar.c">
-      <Filter>lv_examples\src\lv_demo_widgets\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_widgets\assets\img_lvgl_logo.c">
-      <Filter>lv_examples\src\lv_demo_widgets\assets</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_examples\src\lv_demo_widgets\lv_demo_widgets.c">
-      <Filter>lv_examples\src\lv_demo_widgets</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lv_examples\.github\workflows\deploy.yml">
-      <Filter>lv_examples\.github\workflows</Filter>
-    </None>
-    <None Include="lv_examples\.github\auto-comment.yml">
-      <Filter>lv_examples\.github</Filter>
-    </None>
-    <None Include="lv_examples\.github\stale.yml">
-      <Filter>lv_examples\.github</Filter>
-    </None>
-    <None Include="lv_examples\docs\LICENSE.md">
-      <Filter>lv_examples\docs</Filter>
-    </None>
-    <None Include="lv_examples\scripts\build_all_examples.sh">
-      <Filter>lv_examples\scripts</Filter>
-    </None>
-    <None Include="lv_examples\scripts\examples.txt">
-      <Filter>lv_examples\scripts</Filter>
-    </None>
-    <None Include="lv_examples\scripts\genexamplestxt.sh">
-      <Filter>lv_examples\scripts</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_benchmark\README.md">
-      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_benchmark\screenshot1.png">
-      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_benchmark\screenshot2.png">
-      <Filter>lv_examples\src\lv_demo_benchmark</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_keypad_encoder\README.md">
-      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_keypad_encoder\screenshot1.gif">
-      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_keypad_encoder\screenshot1.png">
-      <Filter>lv_examples\src\lv_demo_keypad_encoder</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_music\assets\__pycache__\spectrum.cpython-36.pyc">
-      <Filter>lv_examples\src\lv_demo_music\assets\__pycache__</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_music\assets\spectrum.py">
-      <Filter>lv_examples\src\lv_demo_music\assets</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_music\README.md">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_music\screenshot1.gif">
-      <Filter>lv_examples\src\lv_demo_music</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_stress\README.md">
-      <Filter>lv_examples\src\lv_demo_stress</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_stress\screenshot1.gif">
-      <Filter>lv_examples\src\lv_demo_stress</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_stress\screenshot1.png">
-      <Filter>lv_examples\src\lv_demo_stress</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_widgets\assets\avatar.png">
-      <Filter>lv_examples\src\lv_demo_widgets\assets</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_widgets\assets\clothes.png">
-      <Filter>lv_examples\src\lv_demo_widgets\assets</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_widgets\assets\lvgl_logo.png">
-      <Filter>lv_examples\src\lv_demo_widgets\assets</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_widgets\lv_demo_widgets.py">
-      <Filter>lv_examples\src\lv_demo_widgets</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_widgets\screenshot1.gif">
-      <Filter>lv_examples\src\lv_demo_widgets</Filter>
-    </None>
-    <None Include="lv_examples\src\lv_demo_widgets\screenshot1.png">
-      <Filter>lv_examples\src\lv_demo_widgets</Filter>
-    </None>
-    <None Include="lv_examples\src\header.py">
-      <Filter>lv_examples\src</Filter>
-    </None>
-    <None Include="lv_examples\.git">
-      <Filter>lv_examples</Filter>
-    </None>
-    <None Include="lv_examples\.gitignore">
-      <Filter>lv_examples</Filter>
-    </None>
-    <None Include="lv_examples\CMakeLists.txt">
-      <Filter>lv_examples</Filter>
-    </None>
-    <None Include="lv_examples\library.properties">
-      <Filter>lv_examples</Filter>
-    </None>
-    <None Include="lv_examples\lv_demo.mk">
-      <Filter>lv_examples</Filter>
-    </None>
-    <None Include="lv_examples\README.md">
-      <Filter>lv_examples</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

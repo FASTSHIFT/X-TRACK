@@ -1,13 +1,19 @@
 #include "HAL.h"
 #include "Display/Display.h"
 
-/*ä¸Šä¸€æ¬¡æ“ä½œæ—¶é—´(ms)*/
+#define BATT_MIN_VOLTAGE            3300
+#define BATT_MAX_VOLTAGE            4200
+#define BATT_FULL_CHARGE_VOLTAGE    4100
+
+#define POWER_ADC                   ADC1
+
+/*ÉÏÒ»´Î²Ù×÷Ê±¼ä(ms)*/
 static uint32_t Power_LastHandleTime = 0;
 
-/*è‡ªåŠ¨å…³æœºæ—¶é—´(ç§’)*/
+/*×Ô¶¯¹Ø»úÊ±¼ä(Ãë)*/
 static uint16_t Power_AutoLowPowerTimeout = 60;
 
-/*è‡ªåŠ¨å…³æœºåŠŸèƒ½ä½¿èƒ½*/
+/*×Ô¶¯¹Ø»ú¹¦ÄÜÊ¹ÄÜ*/
 static bool Power_AutoLowPowerEnable = false;
 
 static bool Power_IsShutdown = false;
@@ -15,11 +21,6 @@ static bool Power_IsShutdown = false;
 static volatile uint16_t Power_ADCValue = 0;
 
 static HAL::Power_CallbackFunction_t Power_EventCallback = NULL;
-
-#define BATT_MAX_VOLTAGE    4100
-#define BATT_MIN_VOLTAGE    3300
-
-#define POWER_ADC           ADC1
 
 static void Power_ADC_Init()
 {
@@ -75,13 +76,13 @@ extern "C" {
 }
 
 /**
-  * @brief  ç”µæºåˆå§‹åŒ–
-  * @param  æ— 
-  * @retval æ— 
+  * @brief  µçÔ´³õÊ¼»¯
+  * @param  ÎÞ
+  * @retval ÎÞ
   */
 void HAL::Power_Init()
 {
-    /*ç”µæºä½¿èƒ½ä¿æŒ*/
+    /*µçÔ´Ê¹ÄÜ±£³Ö*/
     Serial.println("Power: Waiting...");
     pinMode(CONFIG_POWER_EN_PIN, OUTPUT);
     digitalWrite(CONFIG_POWER_EN_PIN, LOW);
@@ -89,7 +90,7 @@ void HAL::Power_Init()
     digitalWrite(CONFIG_POWER_EN_PIN, HIGH);
     Serial.println("Power: ON");
 
-    /*ç”µæ± æ£€æµ‹*/
+    /*µç³Ø¼ì²â*/
     Power_ADC_Init();
     pinMode(CONFIG_BAT_DET_PIN, INPUT_ANALOG);
     pinMode(CONFIG_BAT_CHG_DET_PIN, INPUT_PULLUP);
@@ -100,9 +101,9 @@ void HAL::Power_Init()
 }
 
 /**
-  * @brief  æ›´æ–°æ“ä½œæ—¶é—´
-  * @param  æ— 
-  * @retval æ— 
+  * @brief  ¸üÐÂ²Ù×÷Ê±¼ä
+  * @param  ÎÞ
+  * @retval ÎÞ
   */
 void HAL::Power_HandleTimeUpdate()
 {
@@ -110,9 +111,9 @@ void HAL::Power_HandleTimeUpdate()
 }
 
 /**
-  * @brief  è®¾ç½®è‡ªåŠ¨å…³æœºæ—¶é—´
-  * @param  sec:æ—¶é—´(ç§’)
-  * @retval æ— 
+  * @brief  ÉèÖÃ×Ô¶¯¹Ø»úÊ±¼ä
+  * @param  sec:Ê±¼ä(Ãë)
+  * @retval ÎÞ
   */
 void HAL::Power_SetAutoLowPowerTimeout(uint16_t sec)
 {
@@ -120,9 +121,9 @@ void HAL::Power_SetAutoLowPowerTimeout(uint16_t sec)
 }
 
 /**
-  * @brief  èŽ·å–è‡ªåŠ¨å…³æœºæ—¶é—´
-  * @param  æ— 
-  * @retval sec:æ—¶é—´(ç§’)
+  * @brief  »ñÈ¡×Ô¶¯¹Ø»úÊ±¼ä
+  * @param  ÎÞ
+  * @retval sec:Ê±¼ä(Ãë)
   */
 uint16_t HAL::Power_GetAutoLowPowerTimeout()
 {
@@ -130,9 +131,9 @@ uint16_t HAL::Power_GetAutoLowPowerTimeout()
 }
 
 /**
-  * @brief  è®¾ç½®è‡ªåŠ¨å…³æœºåŠŸèƒ½ä½¿èƒ½
-  * @param  en:ä½¿èƒ½
-  * @retval æ— 
+  * @brief  ÉèÖÃ×Ô¶¯¹Ø»ú¹¦ÄÜÊ¹ÄÜ
+  * @param  en:Ê¹ÄÜ
+  * @retval ÎÞ
   */
 void HAL::Power_SetAutoLowPowerEnable(bool en)
 {
@@ -141,9 +142,9 @@ void HAL::Power_SetAutoLowPowerEnable(bool en)
 }
 
 /**
-  * @brief  æ‰§è¡Œå…³æœº
-  * @param  æ— 
-  * @retval æ— 
+  * @brief  Ö´ÐÐ¹Ø»ú
+  * @param  ÎÞ
+  * @retval ÎÞ
   */
 void HAL::Power_Shutdown()
 {
@@ -153,9 +154,9 @@ void HAL::Power_Shutdown()
 }
 
 /**
-  * @brief  è‡ªåŠ¨å…³æœºç›‘æŽ§
-  * @param  æ— 
-  * @retval æ— 
+  * @brief  ×Ô¶¯¹Ø»ú¼à¿Ø
+  * @param  ÎÞ
+  * @retval ÎÞ
   */
 void HAL::Power_Update()
 {
@@ -195,9 +196,11 @@ void HAL::Power_GetInfo(Power_Info_t* info)
 
     int usage = map(
                     voltage,
-                    BATT_MIN_VOLTAGE, BATT_MAX_VOLTAGE,
+                    BATT_MIN_VOLTAGE, BATT_FULL_CHARGE_VOLTAGE,
                     0, 100
                 );
+
+    __LimitValue(usage, 0, 100);
 
     info->usage = usage;
     info->isCharging = !digitalRead(CONFIG_BAT_CHG_DET_PIN);

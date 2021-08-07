@@ -3,7 +3,7 @@
 #define MUSIC_DEF(name) static const TonePlayer::MusicNode_t Music_##name[] =
 
 /*开机音*/
-MUSIC_DEF(StartUp)
+MUSIC_DEF(Startup)
 {
     {M1, 80},
     {M6, 80},
@@ -106,7 +106,7 @@ typedef struct
 /*提示音地址储存列表*/
 static const MusicList_t MusicList[] =
 {
-    ADD_MUSIC(StartUp),
+    ADD_MUSIC(Startup),
     ADD_MUSIC(Shutdown),
     ADD_MUSIC(Error),
     ADD_MUSIC(Connect),

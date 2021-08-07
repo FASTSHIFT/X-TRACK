@@ -94,7 +94,7 @@
 * 9.GPS在未定位成功时，经纬度海拔统一置零
 * 10.HAL::Power添加关机事件回调
 * 11.CONTROLLER -> PRESENTER
-* 12.添加StartUp页面，展示开机动画
+* 12.添加Startup页面，展示开机动画
 * 13.LiveMap地图页面，在未定位成功时的默认位置为天安门
 * 14.StatusBar状态栏，函数AppearAnimStart -> Appear 
 * 15.解决SystemInfos页面在自动管理Cache时退出页面造成的Crash
@@ -145,7 +145,7 @@
 * 2.调整lvgl内存池，32KB -> 64KB
 * 3.HAL_GPS支持读取csv格式的文件，在PC上模拟位置变化
 * 4.更新LiveMap页面，支持实时绘制运动轨迹，支持自适应分辨率动态加载地图
-* 5.更新StartUp页面，移除默认样式，并在开机动画过程中屏蔽Encoder事件
+* 5.更新Startup页面，移除默认样式，并在开机动画过程中屏蔽Encoder事件
 * 6.修复SystemInfos页面因为忘记释放style.focus导致的内存泄漏
 * 7.优化DataCenter的Account的cache申请失败判断逻辑
 * 8.添加lv_allocator，使用lvgl接管std::vector内存管理实现
@@ -172,7 +172,7 @@
 
 ## [v1.1] - 2021-7-7
 * 1.支持在GPX中记录海拔和时间，可在GPXSee查看爬升和速度统计
-* 2.更新StartUp页面，使用匿名函数回调
+* 2.更新Startup页面，使用匿名函数回调
 * 3.更新SystemInfos页面，添加Author署名和Build时间，电池状态 State -> Status
 * 4.更新lvgl
 * 5.更新GPX生成库，添加遗漏的time_成员
@@ -198,7 +198,7 @@
 * 3.更新HAL::GPS模拟，支持航向和速度模拟
 * 4.修改HAL::GPS_Info_t的 compass -> course
 * 5.使用合入lvgl主线的lv_anim_timeline，使用lv_anim_timeline_wrapper封装动画组
-* 6.更新StartUp页面，新的开机动画
+* 6.更新Startup页面，新的开机动画
 * 7.LV_IMG_CACHE_DEF_SIZE设置为0
 
 ## [v1.5] - 2021-8-1
@@ -218,3 +218,21 @@
 * 14.lvgl内存池 64K -> 72K
 * 15.WString使用lvgl的内存池
 * 16.修复GPX轨迹文件<\ele>丢失问题(可能是内存碎片和heap过小导致WString realloc失败)
+	
+## [v1.6] - 2021-8-7
+* 1.更新ArtDesign，新的导航箭头设计
+* 2.更新lv_drivers，去除坐标超界警告
+* 3.去除lv_examples，减少工程体积
+* 4.调整模拟器的LV_FS_PC_PATH定义，指定到Software所在目录，方便读取地图
+* 5.开机页面重命名: StartUp -> Startup
+* 6.更新DP_SysConfig，mapSource -> mapDirPath指定地图目录，添加 WGS84/GCJ02 坐标系统切换，添加arrowTheme导航箭头主题切换
+* 7.更新DP_Storage，适配新的MapConv，支持所有地图源缩放level范围自适应
+* 8.更新DP_TrackFilter，适配新的MapConv
+* 9.HAL添加Backlight_ForceLit()，支持强制点亮屏幕背光
+* 10.更新模拟器的HAL_GPS，支持获取GPX点之间的时间差
+* 11.更新Config.h，去除旧的Bing地图配置
+* 12.更新LiveMap页面，支持修改导航箭头主题
+* 13.更新GPX_Parser，添加海拔和时间解析
+* 14.重构MapConv，废弃旧的Bing地图存放格式和地图下载器。使用[Crimson/地图下载器](https://gitee.com/CrimsonHu/java_map_download/)下载地图，文件存放格式为`/z/x/y.bin`
+* 15.更新DisplayFault，在进入HardFault状态时强制点亮背光
+* 16.更新HAL_Power，优化电压显示

@@ -24,9 +24,9 @@
  *********************/
 #ifndef LV_FS_PC_PATH
 # ifndef WIN32
-#  define LV_FS_PC_PATH "../../../" /*Projet root*/
+#  define LV_FS_PC_PATH "../../../../" /*Projet root*/
 # else
-#  define LV_FS_PC_PATH "../../../" /*Projet root*/
+#  define LV_FS_PC_PATH "../../../../" /*Projet root*/
 # endif
 #endif /*LV_FS_PATH*/
 

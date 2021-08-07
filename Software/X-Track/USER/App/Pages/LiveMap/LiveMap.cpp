@@ -36,8 +36,8 @@ void LiveMap::onViewLoad()
     View.Create(root, tileNum);
     lv_slider_set_range(
         View.ui.zoom.slider,
-        Model.mapConv.GetConv()->GetLevelMin(),
-        Model.mapConv.GetConv()->GetLevelMax()
+        Model.mapConv.GetLevelMin(),
+        Model.mapConv.GetLevelMax()
     );
     View.SetMapTile(tileSize, rect.width / tileSize);
 
@@ -59,7 +59,7 @@ void LiveMap::onViewLoad()
     lv_group_set_editing(priv.group, View.ui.zoom.slider);
 
     lv_slider_set_value(View.ui.zoom.slider, mapLevel, LV_ANIM_OFF);
-    Model.mapConv.GetConv()->SetLevel(mapLevel);
+    Model.mapConv.SetLevel(mapLevel);
     lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
 
     Model.pointFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
@@ -82,6 +82,10 @@ void LiveMap::onViewDidLoad()
 void LiveMap::onViewWillAppear()
 {
     Model.Init();
+
+    char theme[16];
+    Model.GetArrowTheme(theme, sizeof(theme));
+    View.SetArrowTheme(theme);
 
     priv.isTrackAvtive = Model.TrackGetFilterActive();
 
@@ -158,15 +162,15 @@ void LiveMap::MapUpdate()
     Model.GetGPS_Info(&gpsInfo);
 
     mapLevel = lv_slider_get_value(View.ui.zoom.slider);
-    if (mapLevel != Model.mapConv.GetConv()->GetLevel())
+    if (mapLevel != Model.mapConv.GetLevel())
     {
         priv.trackReloadReq = true;
     }
 
-    Model.mapConv.GetConv()->SetLevel(mapLevel);
+    Model.mapConv.SetLevel(mapLevel);
 
     int32_t mapX, mapY;
-    Model.mapConv.GetConv()->ConvertMapCoordinate(
+    Model.mapConv.ConvertMapCoordinate(
         gpsInfo.longitude, gpsInfo.latitude,
         &mapX, &mapY
     );
@@ -215,7 +219,7 @@ void LiveMap::MapUpdate()
         Model.tileConv.GetTilePos(i, &pos);
 
         char path[64];
-        Model.mapConv.GetConv()->ConvertMapPath(pos.x, pos.y, path, sizeof(path));
+        Model.mapConv.ConvertMapPath(pos.x, pos.y, path, sizeof(path));
 
         lv_img_set_src(View.ui.map.imgTiles[i], path);
     }
@@ -291,7 +295,7 @@ void LiveMap::onEvent(lv_event_t* event)
         if (code == LV_EVENT_VALUE_CHANGED)
         {
             int32_t level = lv_slider_get_value(obj);
-            int32_t levelMax = instance->Model.mapConv.GetConv()->GetLevelMax();
+            int32_t levelMax = instance->Model.mapConv.GetLevelMax();
             lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d/%d", level + 1, levelMax + 1);
 
             lv_obj_clear_state(instance->View.ui.zoom.cont, LV_STATE_USER_1);

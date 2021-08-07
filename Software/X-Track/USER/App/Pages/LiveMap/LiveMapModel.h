@@ -22,9 +22,12 @@ public:
     HAL::SportStatus_Info_t sportStatusInfo;
 
 public:
+    LiveMapModel();
+    ~LiveMapModel() {}
     void Init();
     void Deinit();
     void GetGPS_Info(HAL::GPS_Info_t* info);
+    void GetArrowTheme(char* buf, uint32_t size);
 
     bool TrackGetFilterActive()
     {

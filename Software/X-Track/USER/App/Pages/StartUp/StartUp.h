@@ -1,19 +1,19 @@
-#ifndef __START_UP_PRESENTER_H
-#define __START_UP_PRESENTER_H
+#ifndef __STARTUP_PRESENTER_H
+#define __STARTUP_PRESENTER_H
 
-#include "StartUpView.h"
-#include "StartUpModel.h"
+#include "StartupView.h"
+#include "StartupModel.h"
 
 namespace Page
 {
 
-class StartUp : public PageBase
+class Startup : public PageBase
 {
 public:
 
 public:
-    StartUp();
-    virtual ~StartUp();
+    Startup();
+    virtual ~Startup();
 
     virtual void onCustomAttrConfig();
     virtual void onViewLoad();
@@ -29,8 +29,8 @@ private:
     static void onEvent(lv_event_t* event);
 
 private:
-    StartUpView View;
-    StartUpModel Model;
+    StartupView View;
+    StartupModel Model;
 };
 
 }

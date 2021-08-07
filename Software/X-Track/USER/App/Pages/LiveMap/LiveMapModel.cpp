@@ -3,6 +3,11 @@
 
 using namespace Page;
 
+LiveMapModel::LiveMapModel()
+{
+
+}
+
 void LiveMapModel::Init()
 {
     account = new Account("LiveMapModel", DataProc::Center(), 0, this);
@@ -37,6 +42,13 @@ void LiveMapModel::GetGPS_Info(HAL::GPS_Info_t* info)
         info->longitude = sysConfig.longitudeDefault;
         info->latitude = sysConfig.latitudeDefault;
     }
+}
+
+void LiveMapModel::GetArrowTheme(char* buf, uint32_t size)
+{
+    DataProc::SysConfig_Info_t sysConfig;
+    account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+    strncpy(buf, sysConfig.arrowTheme, size);
 }
 
 int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
@@ -86,7 +98,7 @@ void LiveMapModel::TrackReload()
     for (uint32_t i = 0; i < size; i++)
     {
         int32_t mapX, mapY;
-        mapConv.GetConv()->ConvertMapCoordinate(
+        mapConv.ConvertMapCoordinate(
             points[i].longitude, points[i].latitude,
             &mapX, &mapY
         );

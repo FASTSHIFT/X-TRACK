@@ -1,10 +1,10 @@
-#include "StartUpView.h"
+#include "StartupView.h"
 
 using namespace Page;
 
 #define COLOR_ORANGE    lv_color_hex(0xff931e)
 
-void StartUpView::Create(lv_obj_t* root)
+void StartupView::Create(lv_obj_t* root)
 {
     lv_obj_remove_style_all(root);
     lv_obj_set_size(root, LV_HOR_RES, LV_VER_RES);
@@ -41,7 +41,7 @@ void StartUpView::Create(lv_obj_t* root)
     lv_anim_timeline_add_wrapper(ui.anim_timeline, wrapper);
 }
 
-void StartUpView::Delete()
+void StartupView::Delete()
 {
     if(ui.anim_timeline)
     {

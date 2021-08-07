@@ -61,7 +61,7 @@ void Display_Init()
     lv_port_indev_init();
     lv_fs_if_init();
 
-    /*±≥π‚Ω•¡¡*/
+    /* ±≥π‚Ω•¡¡ */
     HAL::Backlight_SetGradual(1000, 1000);
 }
 

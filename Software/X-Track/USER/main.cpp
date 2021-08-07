@@ -24,7 +24,6 @@
 #include "Display/Display.h"
 #include "HAL/HAL.h"
 #include "App/App.h"
-#include "lv_examples/lv_demo.h"
 #include "StackInfo/StackInfo.h"
 
 static void setup()
@@ -33,10 +32,6 @@ static void setup()
     Display_Init();
 
     App_Init();
-
-    //lv_demo_benchmark();
-    //lv_demo_widgets();
-    //lv_demo_keypad_encoder();
 
     HAL::Power_SetEventCallback(App_Uninit);
 }
@@ -70,7 +65,6 @@ int main(void)
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
     GPIO_JTAG_Disable();
     Delay_Init();
-    //ADCx_Init(ADC1);
     setup();
     for(;;)loop();
 }

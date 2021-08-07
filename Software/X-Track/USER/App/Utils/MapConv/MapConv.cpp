@@ -21,24 +21,80 @@
  * SOFTWARE.
  */
 #include "MapConv.h"
+#include <stdio.h>
+#include "GPS_Transform/GPS_Transform.h"
 
-MapConv_Bing MapConv::bingConv;
-MapConv_OSM MapConv::osmConv;
-MapConvBase* MapConv::base = &bingConv;
+#ifndef constrain
+#   define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#endif
 
-void MapConv::SetConv(const char* name)
+char MapConv::dirPath[MAP_CONV_DIR_PATH_MAX] = "/MAP";
+int16_t MapConv::levelMin = 0;
+int16_t MapConv::levelMax = 19;
+bool MapConv::coordTransformEnable = false;
+
+MapConv::MapConv()
 {
-    if (strcmp(name, CONFIG_MAP_SOURCE_BING_NAME) == 0)
-    {
-        base = &bingConv;
-    }
-    else if (strcmp(name, CONFIG_MAP_SOURCE_OSM_NAME) == 0)
-    {
-        base = &osmConv;
-    }
+    priv.level = 16;
+    priv.tileSize = 256;
 }
 
-MapConvBase* MapConv::GetConv()
+void MapConv::SetLevel(int level)
 {
-    return base;
+    priv.level = constrain(level, levelMin, levelMax);
+}
+
+void MapConv::GetMapTile(double longitude, double latitude, MapTile_t* mapTile)
+{
+    int32_t x, y;
+    ConvertMapCoordinate(longitude, latitude, &x, &y);
+    ConvertPosToTile(x, y, mapTile);
+}
+
+void MapConv::ConvertMapCoordinate(
+    double longitude, double latitude,
+    int32_t* mapX, int32_t* mapY
+)
+{
+    int pixelX, pixelY;
+
+    if (coordTransformEnable)
+    {
+        GPS_Transform(latitude, longitude, &latitude, &longitude);
+    }
+
+    LatLongToPixelXY(
+        latitude,
+        longitude,
+        priv.level,
+        &pixelX,
+        &pixelY
+    );
+
+    *mapX = pixelX;
+    *mapY = pixelY;
+};
+
+int MapConv::ConvertMapPath(int32_t x, int32_t y, char* path, uint32_t len)
+{
+    int32_t tileX = x / priv.tileSize;
+    int32_t tileY = y / priv.tileSize;
+    int ret = snprintf(
+                  path, len,
+                  "%s/%d/%d/%d.bin",
+                  dirPath,
+                  priv.level,
+                  tileX,
+                  tileY
+              );
+
+    return ret;
+}
+
+void MapConv::ConvertPosToTile(int32_t x, int32_t y, MapTile_t* mapTile)
+{
+    mapTile->tileX = x / priv.tileSize;
+    mapTile->tileY = y / priv.tileSize;
+    mapTile->subX = x % priv.tileSize;
+    mapTile->subY = y % priv.tileSize;
 }

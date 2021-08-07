@@ -24,6 +24,7 @@
 #include "cm_backtrace/cm_backtrace.h"
 #include "Adafruit_GFX_Library/Fonts/FreeMono12pt7b.h"
 #include "App/Version.h"
+#include "HAL/HAL.h"
 
 static SCREEN_CLASS* screen = NULL;
 
@@ -47,6 +48,8 @@ static void Reboot()
 
 static void DisplayError_SetReports(const char* report)
 {
+    HAL::Backlight_ForceLit(true);
+    
     screen->fillScreen(SCREEN_CLASS::Blue);
     screen->setTextColor(SCREEN_CLASS::White);
     screen->setFont(&FreeMono12pt7b);

@@ -56,6 +56,13 @@
 
 EXTERN_C bool lv_win32_quit_signal;
 
+EXTERN_C lv_indev_t* lv_win32_pointer_device_object;
+EXTERN_C lv_indev_t* lv_win32_keypad_device_object;
+EXTERN_C lv_indev_t* lv_win32_encoder_device_object;
+
+EXTERN_C void lv_win32_add_all_input_devices_to_group(
+    lv_group_t* group);
+
 EXTERN_C bool lv_win32_init(
     HINSTANCE instance_handle,
     int show_window_mode,

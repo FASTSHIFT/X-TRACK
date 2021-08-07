@@ -1,12 +1,12 @@
-#ifndef __START_UP_VIEW_H
-#define __START_UP_VIEW_H
+#ifndef __STARTUP_VIEW_H
+#define __STARTUP_VIEW_H
 
 #include "../Page.h"
 
 namespace Page
 {
 
-class StartUpView
+class StartupView
 {
 public:
     void Create(lv_obj_t* root);

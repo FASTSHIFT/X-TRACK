@@ -814,7 +814,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Pages/StartUp</GroupName>
+          <GroupName>Pages/Startup</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -886,34 +886,34 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>StartUp.cpp</FileName>
+              <FileName>Startup.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Pages\StartUp\StartUp.cpp</FilePath>
+              <FilePath>..\USER\App\Pages\Startup\Startup.cpp</FilePath>
             </File>
             <File>
-              <FileName>StartUp.h</FileName>
+              <FileName>Startup.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Pages\StartUp\StartUp.h</FilePath>
+              <FilePath>..\USER\App\Pages\Startup\Startup.h</FilePath>
             </File>
             <File>
-              <FileName>StartUpModel.cpp</FileName>
+              <FileName>StartupModel.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Pages\StartUp\StartUpModel.cpp</FilePath>
+              <FilePath>..\USER\App\Pages\Startup\StartupModel.cpp</FilePath>
             </File>
             <File>
-              <FileName>StartUpModel.h</FileName>
+              <FileName>StartupModel.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Pages\StartUp\StartUpModel.h</FilePath>
+              <FilePath>..\USER\App\Pages\Startup\StartupModel.h</FilePath>
             </File>
             <File>
-              <FileName>StartUpView.cpp</FileName>
+              <FileName>StartupView.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Pages\StartUp\StartUpView.cpp</FilePath>
+              <FilePath>..\USER\App\Pages\Startup\StartupView.cpp</FilePath>
             </File>
             <File>
-              <FileName>StartUpView.h</FileName>
+              <FileName>StartupView.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Pages\StartUp\StartUpView.h</FilePath>
+              <FilePath>..\USER\App\Pages\Startup\StartupView.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1451,9 +1451,19 @@
           <GroupName>Resource/Image</GroupName>
           <Files>
             <File>
-              <FileName>img_src_gps_arrow.c</FileName>
+              <FileName>img_src_gps_arrow_dark.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\App\Resource\Image\img_src_gps_arrow.c</FilePath>
+              <FilePath>..\USER\App\Resource\Image\img_src_gps_arrow_dark.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_gps_arrow_default.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_gps_arrow_default.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_src_gps_arrow_light.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Resource\Image\img_src_gps_arrow_light.c</FilePath>
             </File>
             <File>
               <FileName>img_src_gps_pin.c</FileName>
@@ -1737,36 +1747,6 @@
               <FileName>MapConv.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\MapConv\MapConv.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>MapConvBase.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConvBase.h</FilePath>
-            </File>
-            <File>
-              <FileName>MapConvBase.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConvBase.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>MapConv_Bing.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConv_Bing.h</FilePath>
-            </File>
-            <File>
-              <FileName>MapConv_Bing.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConv_Bing.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>MapConv_OSM.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConv_OSM.h</FilePath>
-            </File>
-            <File>
-              <FileName>MapConv_OSM.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\MapConv\MapConv_OSM.cpp</FilePath>
             </File>
             <File>
               <FileName>GPS_Transform.h</FileName>
@@ -3309,160 +3289,6 @@
               <FileName>lv_snapshot.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\others\snapshot\lv_snapshot.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>lv_examples</GroupName>
-          <GroupOption>
-            <CommonProperty>
-              <UseCPPCompiler>0</UseCPPCompiler>
-              <RVCTCodeConst>0</RVCTCodeConst>
-              <RVCTZI>0</RVCTZI>
-              <RVCTOtherData>0</RVCTOtherData>
-              <ModuleSelection>0</ModuleSelection>
-              <IncludeInBuild>0</IncludeInBuild>
-              <AlwaysBuild>2</AlwaysBuild>
-              <GenerateAssemblyFile>2</GenerateAssemblyFile>
-              <AssembleAssemblyFile>2</AssembleAssemblyFile>
-              <PublicsOnly>2</PublicsOnly>
-              <StopOnExitCode>11</StopOnExitCode>
-              <CustomArgument></CustomArgument>
-              <IncludeLibraryModules></IncludeLibraryModules>
-              <ComprImg>1</ComprImg>
-            </CommonProperty>
-            <GroupArmAds>
-              <Cads>
-                <interw>2</interw>
-                <Optim>0</Optim>
-                <oTime>2</oTime>
-                <SplitLS>2</SplitLS>
-                <OneElfS>2</OneElfS>
-                <Strict>2</Strict>
-                <EnumInt>2</EnumInt>
-                <PlainCh>2</PlainCh>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <wLevel>1</wLevel>
-                <uThumb>2</uThumb>
-                <uSurpInc>2</uSurpInc>
-                <uC99>2</uC99>
-                <uGnu>2</uGnu>
-                <useXO>2</useXO>
-                <v6Lang>0</v6Lang>
-                <v6LangP>0</v6LangP>
-                <vShortEn>2</vShortEn>
-                <vShortWch>2</vShortWch>
-                <v6Lto>2</v6Lto>
-                <v6WtE>2</v6WtE>
-                <v6Rtti>2</v6Rtti>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Cads>
-              <Aads>
-                <interw>2</interw>
-                <Ropi>2</Ropi>
-                <Rwpi>2</Rwpi>
-                <thumb>2</thumb>
-                <SplitLS>2</SplitLS>
-                <SwStkChk>2</SwStkChk>
-                <NoWarn>2</NoWarn>
-                <uSurpInc>2</uSurpInc>
-                <useXO>2</useXO>
-                <uClangAs>2</uClangAs>
-                <VariousControls>
-                  <MiscControls></MiscControls>
-                  <Define></Define>
-                  <Undefine></Undefine>
-                  <IncludePath></IncludePath>
-                </VariousControls>
-              </Aads>
-            </GroupArmAds>
-          </GroupOption>
-          <Files>
-            <File>
-              <FileName>lv_demo_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_demo_conf.h</FilePath>
-            </File>
-            <File>
-              <FileName>lv_demo_benchmark.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_benchmark\lv_demo_benchmark.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_demo_keypad_encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_keypad_encoder\lv_demo_keypad_encoder.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_12_compr_az.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_12_compr_az.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_16_compr_az.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_16_compr_az.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_font_montserrat_28_compr_az.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\assets\lv_font_montserrat_28_compr_az.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_demo_stress.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_stress\lv_demo_stress.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_clothes.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\assets\img_clothes.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_demo_widgets_avatar.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\assets\img_demo_widgets_avatar.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_lvgl_logo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\assets\img_lvgl_logo.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_demo_widgets.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lv_examples\src\lv_demo_widgets\lv_demo_widgets.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_alpha16.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_alpha16.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_argb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_argb.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_chroma_keyed.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_chroma_keyed.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_indexed16.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_indexed16.c</FilePath>
-            </File>
-            <File>
-              <FileName>img_cogwheel_rgb.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\examples\assets\img_cogwheel_rgb.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -14,6 +14,7 @@ void Backlight_Init();
 uint16_t Backlight_GetValue();
 void Backlight_SetValue(int16_t val);
 void Backlight_SetGradual(uint16_t target, uint16_t time = 500);
+void Backlight_ForceLit(bool en);
 
 /* I2C */
 void I2C_Scan(bool startScan);

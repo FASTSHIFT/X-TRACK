@@ -52,11 +52,11 @@ void App_Init()
     manager.Install("LiveMap",     "Pages/LiveMap");
     manager.Install("Dialplate",   "Pages/Dialplate");
     manager.Install("SystemInfos", "Pages/SystemInfos");
-    manager.Install("StartUp",     "Pages/StartUp");
+    manager.Install("Startup",     "Pages/Startup");
 
     manager.SetGlobalLoadAnimType(PageManager::LOAD_ANIM_OVER_TOP, 500);
 
-    manager.Push("Pages/StartUp");
+    manager.Push("Pages/Startup");
 
     ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_LOAD);
     ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_LOAD);

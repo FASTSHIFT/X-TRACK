@@ -45,7 +45,7 @@ bool HAL::SD_Init()
     pinMode(CONFIG_SD_CD_PIN, INPUT_PULLUP);
     if(digitalRead(CONFIG_SD_CD_PIN))
     {
-        Serial.println("SD: CARD was not insert");
+        Serial.println("SD: CARD was not inserted");
         retval = false;
     }
 

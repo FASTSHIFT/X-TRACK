@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 #include "lvgl/lvgl.h"
 #include "Utils/GPX_Parser/GPX_Parser.h"
 #include "Config/Config.h"
@@ -142,18 +143,50 @@ void HAL::GPS_Init()
     }
 }
 
+static time_t Clock_MakeTime(GPX_Parser::Time_t* time)
+{
+    struct tm t;
+    memset(&t, 0, sizeof(t));
+    t.tm_year = time->year - 1900;
+    t.tm_mon = time->month;
+    t.tm_mday = time->day;
+    t.tm_hour = time->hour;
+    t.tm_min = time->minute;
+    t.tm_sec = time->second;
+
+    return mktime(&t);
+}
+
+static double Clock_GetDiffTime(GPX_Parser::Time_t* time1, GPX_Parser::Time_t* time2)
+{
+    time_t t1 = Clock_MakeTime(time1);
+    time_t t2 = Clock_MakeTime(time2);
+    return difftime(t1, t2);
+}
+
 void HAL::GPS_Update()
 {
-    double speedKph = 0;
-    double course = 0;
+    static GPX_Parser::Point_t prePoint;
+    static bool isReset = false;
 
     GPX_Parser::Point_t point;
     if (gpxParser.ReadNext(&point))
     {
-        double distance = GPS_GetDistanceOffset(&gpsInfo, point.longitude, point.latitude);
-        speedKph = distance * 3.6;
+        if (!isReset)
+        {
+            gpsInfo.longitude = point.longitude;
+            gpsInfo.latitude = point.latitude;
+            gpsInfo.altitude = point.altitude;
+            prePoint = point;
+            isReset = true;
+            return;
+        }
 
-        course = courseTo(
+        double distance = GPS_GetDistanceOffset(&gpsInfo, point.longitude, point.latitude);
+
+        gpsInfo.speed = (float)(distance / Clock_GetDiffTime(&point.time, &prePoint.time) * 3.6);
+
+        gpsInfo.course = (float)courseTo(
             gpsInfo.latitude,
             gpsInfo.longitude,
             point.latitude,
@@ -162,15 +195,14 @@ void HAL::GPS_Update()
 
         gpsInfo.longitude = point.longitude;
         gpsInfo.latitude = point.latitude;
+        gpsInfo.altitude = point.altitude;
+        prePoint = point;
     }
     else
     {
         lv_fs_seek(&fileInfo.file, 0, LV_FS_SEEK_SET);
+        isReset = false;
     }
-
-    gpsInfo.course = (float)course;
-    gpsInfo.speed = (float)speedKph;
-    gpsInfo.altitude = (rand() % 1000) / 10.0f;
 }
 
 double HAL::GPS_GetDistanceOffset(GPS_Info_t* info, double preLong, double preLat)

@@ -82,7 +82,7 @@ void LiveMapView::Map_Create(lv_obj_t* par, uint32_t tileNum)
     TrackLine_Create(cont);
 
     lv_obj_t* img = lv_img_create(cont);
-    lv_img_set_src(img, Resource.GetImage("gps_arrow"));
+    lv_img_set_src(img, Resource.GetImage("gps_arrow_dark"));
 
     lv_img_t* imgOri = (lv_img_t*)img;
     lv_obj_set_pos(img, -imgOri->w, -imgOri->h);
@@ -108,6 +108,21 @@ void LiveMapView::SetMapTile(uint32_t tileSize, uint32_t widthCnt)
         lv_coord_t y = (i / widthCnt) * tileSize;
         lv_obj_set_pos(img, x, y);
     }
+}
+
+void LiveMapView::SetArrowTheme(const char* theme)
+{
+    char buf[32];
+    snprintf(buf, sizeof(buf), "gps_arrow_%s", theme);
+
+    const void* src = Resource.GetImage(buf);
+
+    if (src == nullptr)
+    {
+        Resource.GetImage("gps_arrow_default");
+    }
+
+    lv_img_set_src(ui.map.imgArrow, src);
 }
 
 void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)

@@ -31,7 +31,9 @@ do{\
         IMPORT_IMG(battery_info);
         IMPORT_IMG(bicycle);
         IMPORT_IMG(compass);
-        IMPORT_IMG(gps_arrow);
+        IMPORT_IMG(gps_arrow_default);
+        IMPORT_IMG(gps_arrow_dark);
+        IMPORT_IMG(gps_arrow_light);
         IMPORT_IMG(gps_pin);
         IMPORT_IMG(gyroscope);
         IMPORT_IMG(locate);

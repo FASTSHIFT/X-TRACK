@@ -11,10 +11,20 @@ class GPX_Parser : public Stream
 {
 public:
     typedef int (*Callback_t)(GPX_Parser* parser);
+    typedef struct {
+        uint16_t year;
+        uint8_t month;
+        uint8_t day;
+        uint8_t hour;
+        uint8_t minute;
+        uint8_t second;
+    }Time_t;
     typedef struct
     {
         float longitude;
         float latitude;
+        float altitude;
+        Time_t time;
     } Point_t;
 
 public:
@@ -47,6 +57,8 @@ private:
         return 0;
     }
     using Print::write;
+
+    bool readStringUntil(char terminator, String* str);
 };
 
 #endif

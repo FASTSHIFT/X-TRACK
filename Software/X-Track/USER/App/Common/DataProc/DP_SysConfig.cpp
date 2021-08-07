@@ -11,7 +11,9 @@ static SysConfig_Info_t sysConfig =
     .longitudeDefault = CONFIG_GPS_LNG_DEFAULT,
     .latitudeDefault = CONFIG_GPS_LAT_DEFAULT,
     .language = CONFIG_SYSTEM_LANGUAGE_DEFAULT,
-    .mapSource = CONFIG_MAP_SOURCE_DEFAULT
+    .mapDirPath = CONFIG_MAP_DIR_PATH,
+    .WGS84 = CONFIG_MAP_USE_WGS84_DEFAULT,
+    .arrowTheme = CONFIG_ARROW_THEME_DEFAULT,
 };
 
 static int onEvent(Account* account, Account::EventParam_t* param)
@@ -54,5 +56,7 @@ DATA_PROC_INIT_DEF(SysConfig)
     STORAGE_VALUE_REG(account, sysConfig.longitudeDefault, STORAGE_TYPE_DOUBLE);
     STORAGE_VALUE_REG(account, sysConfig.latitudeDefault, STORAGE_TYPE_DOUBLE);
     STORAGE_VALUE_REG(account, sysConfig.language, STORAGE_TYPE_STRING);
-    STORAGE_VALUE_REG(account, sysConfig.mapSource, STORAGE_TYPE_STRING);
+    STORAGE_VALUE_REG(account, sysConfig.mapDirPath, STORAGE_TYPE_STRING);
+    STORAGE_VALUE_REG(account, sysConfig.WGS84, STORAGE_TYPE_INT);
+    STORAGE_VALUE_REG(account, sysConfig.arrowTheme, STORAGE_TYPE_STRING);
 }

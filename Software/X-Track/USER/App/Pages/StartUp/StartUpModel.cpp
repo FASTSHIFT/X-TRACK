@@ -1,14 +1,14 @@
-#include "StartUpModel.h"
+#include "StartupModel.h"
 
 using namespace Page;
 
-void StartUpModel::Init()
+void StartupModel::Init()
 {
-    account = new Account("StartUpModel", DataProc::Center(), 0, this);
+    account = new Account("StartupModel", DataProc::Center(), 0, this);
     account->Subscribe("MusicPlayer");
 }
 
-void StartUpModel::Deinit()
+void StartupModel::Deinit()
 {
     if (account)
     {
@@ -17,7 +17,7 @@ void StartUpModel::Deinit()
     }
 }
 
-void StartUpModel::PlayMusic(const char* music)
+void StartupModel::PlayMusic(const char* music)
 {
     DataProc::MusicPlayer_Info_t info;
     info.music = music;

@@ -510,8 +510,8 @@ static int drm_open(const char *path)
 	/* check capability */
 	ret = drmGetCap(fd, DRM_CAP_DUMB_BUFFER, &has_dumb);
 	if (ret < 0 || has_dumb == 0) {
-		err("drmGetCap DRM_CAP_DUMB_BUFFER failed or doesn't have dumb "
-		    "buffer");
+		err("drmGetCap DRM_CAP_DUMB_BUFFER failed or \"%s\" doesn't have dumb "
+		    "buffer", path);
 		goto err;
 	}
 
@@ -524,8 +524,13 @@ err:
 static int drm_setup(unsigned int fourcc)
 {
 	int ret;
+	const char *device_path = NULL;
 
-	drm_dev.fd = drm_open(DRM_CARD);
+	device_path = getenv("DRM_CARD");
+	if (!device_path)
+		device_path = DRM_CARD;
+
+	drm_dev.fd = drm_open(device_path);
 	if (drm_dev.fd < 0)
 		return -1;
 

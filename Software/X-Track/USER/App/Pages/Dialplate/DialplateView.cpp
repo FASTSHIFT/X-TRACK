@@ -42,8 +42,11 @@ void DialplateView::Create(lv_obj_t* root)
 
 void DialplateView::Delete()
 {
-    lv_anim_timeline_del(ui.anim_timeline);
-    ui.anim_timeline = nullptr;
+    if(ui.anim_timeline)
+    {
+        lv_anim_timeline_del(ui.anim_timeline);
+        ui.anim_timeline = nullptr;
+    }
 }
 
 void DialplateView::TopInfo_Create(lv_obj_t* par)

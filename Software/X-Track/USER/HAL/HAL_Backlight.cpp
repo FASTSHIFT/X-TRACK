@@ -64,3 +64,14 @@ void HAL::Backlight_SetValue(int16_t val)
     __LimitValue(val, 0, 1000);
     analogWrite(CONFIG_SCREEN_BLK_PIN, val);
 }
+
+/**
+  * @brief  背光强制点亮
+  * @param  en: 背光使能
+  * @retval 无
+  */
+void HAL::Backlight_ForceLit(bool en)
+{
+    pinMode(CONFIG_SCREEN_BLK_PIN, OUTPUT);
+    digitalWrite(CONFIG_SCREEN_BLK_PIN, en);
+}

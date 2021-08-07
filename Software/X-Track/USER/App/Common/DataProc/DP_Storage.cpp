@@ -64,26 +64,21 @@ static void onLoad(Account* account)
     SysConfig_Info_t sysConfig;
     account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
 
-    if (strcmp(sysConfig.mapSource, CONFIG_MAP_SOURCE_BING_NAME) == 0)
-    {
-        MapConv::SetConv(CONFIG_MAP_SOURCE_BING_NAME);
-        MapConvBase::SetLevelRange(CONFIG_MAP_BING_LEVEL_MIN, CONFIG_MAP_BING_LEVEL_MAX);
-    }
-    else if (strcmp(sysConfig.mapSource, CONFIG_MAP_SOURCE_OSM_NAME) == 0)
-    {
-        int16_t levelMin = 19;
-        int16_t levelMax = 0;
-        MapConvGetRange("/" CONFIG_MAP_OSM_FILE_DIR_NAME, &levelMin, &levelMax);
+    MapConv::SetDirPath(sysConfig.mapDirPath);
+    MapConv::SetCoordTransformEnable(!sysConfig.WGS84);
 
-        MapConv::SetConv(CONFIG_MAP_SOURCE_OSM_NAME);
-        MapConvBase::SetLevelRange(levelMin, levelMax);
-    }
+    int16_t levelMin = 19;
+    int16_t levelMax = 0;
+    MapConvGetRange(sysConfig.mapDirPath, &levelMin, &levelMax);
+
+    MapConv::SetLevelRange(levelMin, levelMax);
 
     LV_LOG_USER(
-        "Map source: %s, level min = %d, max = %d",
-        sysConfig.mapSource,
-        MapConvBase::GetLevelMin(),
-        MapConvBase::GetLevelMax()
+        "Map path: %s, WGS84: %d, level min = %d, max = %d",
+        sysConfig.mapDirPath,
+        sysConfig.WGS84,
+        MapConv::GetLevelMin(),
+        MapConv::GetLevelMax()
     );
 }
 

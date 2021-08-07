@@ -1,5 +1,5 @@
-#ifndef __START_UP_MODEL_H
-#define __START_UP_MODEL_H
+#ifndef __STARTUP_MODEL_H
+#define __STARTUP_MODEL_H
 
 #include "Common/DataProc/DataProc.h"
 #include "Common/HAL/HAL.h"
@@ -7,7 +7,7 @@
 namespace Page
 {
 
-class StartUpModel
+class StartupModel
 {
 public:
     void Init();
