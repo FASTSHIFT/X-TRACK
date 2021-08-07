@@ -1,6 +1,6 @@
 ## 编译说明
 * MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（因为旧编译器不能完全支持**C++ 11**的语法）,并安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK->[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)。
-* VS模拟器: 使用**Visual Studio 2019**编译，配置为**Release x86**。在`Config.h`里修改`CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH`宏定义指定被读取的GPX文件路径。
+* VS模拟器: 使用**Visual Studio 2019**编译，配置为**Release x86**。在`Config.h`里修改`CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH`宏定义指定被读取的GPX文件的路径。
 
 ## 系统配置文件
 系统会在根目录下自动生成`SystemSave.json`的文件，用于储存和配置系统参数:
