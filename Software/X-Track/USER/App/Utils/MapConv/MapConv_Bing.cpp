@@ -30,7 +30,7 @@ MapConv_Bing::MapConv_Bing()
     SetDirPath("/" CONFIG_MAP_BING_FILE_DIR_NAME "/MapInfos");
 }
 
-int MapConv_Bing::ConvertMapPath(int32_t x, int32_t y, char* path, int32_t len)
+int MapConv_Bing::ConvertMapPath(int32_t x, int32_t y, char* path, uint32_t len)
 {
     int32_t tileX = x / priv.tileSize;
     int32_t tileY = y / priv.tileSize;
