@@ -4,6 +4,11 @@
 
 ## 2.选择要下载的地图区域
 
+
+https://user-images.githubusercontent.com/33819388/128639915-795a6f8b-8ccb-4eda-ac09-79d615fd4bd4.mp4
+
+
+
 ## 3.下载地图
 
 ## 4.转换地图文件
