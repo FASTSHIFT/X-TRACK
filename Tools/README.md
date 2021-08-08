@@ -16,8 +16,5 @@
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/6.png)
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/7.png)
 
-## 5.批量重命名地图文件
-* 转换完成后，使用`Tools`文件夹下`RenameBin.bat`脚本批量重命名地图文件。
-
 ### 上述步骤无误后，便可将MAP文件夹拷贝到SD卡里
    
