@@ -7,17 +7,17 @@
 ```C
 {
   "sportStatus.totalDistance": 0,              //总里程(m)
-  "sportStatus.totalTimeUINT32[0]": 0,         //总行驶时间(ms),低32位
-  "sportStatus.totalTimeUINT32[1]": 0,         //总行驶时间(ms),高32位
+  "sportStatus.totalTimeUINT32[0]": 0,         //总行驶时间(ms)，低32位
+  "sportStatus.totalTimeUINT32[1]": 0,         //总行驶时间(ms)，高32位
   "sportStatus.speedMaxKph": 0,                //最高时速(km/h)
   "sportStatus.weight": 65,                    //体重(kg)
   "GMT_OffsetHours": 8,                        //时区(GMT+)
-  "sysConfig.soundEnable": 1,                  //系统提示音使能
+  "sysConfig.soundEnable": 1,                  //系统提示音使能(1:开启，0:关闭)
   "sysConfig.longitudeDefault": 116.391332,    //默认位置(经度)
   "sysConfig.latitudeDefault": 39.907415,      //默认位置(纬度)
   "sysConfig.language": "en-GB",               //语言(尚不支持多语言切换)
   "sysConfig.mapDirPath": "/Bing",             //存放地图的文件夹路径
-  "sysConfig.WGS84": 1,                        //坐标系统配置(0: GCJ02, 1: WGS84)
-  "sysConfig.arrowTheme": "default"            //导航箭头主题(default: 全黑, dark: 橙底黑边, light: 橙底白边)
+  "sysConfig.WGS84": 1,                        //坐标系统配置(0:GCJ02, 1:WGS84)
+  "sysConfig.arrowTheme": "default"            //导航箭头主题(default:全黑，dark:橙底黑边，light:橙底白边)
 }
 ```
