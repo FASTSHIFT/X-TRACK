@@ -26,6 +26,6 @@
 ### 注意：
  * SD卡需要格式化为**FAT32格式**。
  * SD卡插入开机以后，会自动创建`SystemSave.json`文件。
- * 通过`"mapDirPath"`指定地图源文件夹，默认地图路径为`"/MAP"`。
+ * 通过`"mapDirPath"`切换地图源文件夹，默认路径为`"/MAP"`，SD卡可以储存多个地图源。
  * 通过`"WGS84"`切换坐标系统，如果发现地图偏移请尝试修改，详情见[编译说明](https://github.com/FASTSHIFT/X-TRACK/blob/main/Software/README.md)。
 ![json文件](https://user-images.githubusercontent.com/33819388/128737167-8242e2d3-d802-47d0-b693-78f68a49d3fb.png)
