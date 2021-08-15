@@ -3,6 +3,7 @@
 
 ## 硬件修改
 * 去除**D4**二极管，防止充电时自动开机，导致充电变慢和发热
+* 注意**D2**二极管方向，方向和其他二极管相反
 * GPS模块需要由**HT1818Z3G5L**更换为**ATGM336H**(购买链接在下方)，否则外壳放不下
 * 地磁计**LIS3MDL**和加速度计**LSM6DSM**在该系统中作用不大，又由于芯片涨价导致整机成本过高，可以不安装，但需要在源代码的**Config.h**中的**CONFIG_SENSOR_ENABLE**宏开关设置0，并重新编译固件
 * MCU: AT32F403ACGU7如果定不到货，可以尝试[@johnsbark](https://github.com/johnsbark)设计的[改进版硬件](https://github.com/FASTSHIFT/X-TRACK/tree/main/Hardware/X-TRACK%20%E6%94%B9%E8%BF%9B%E7%89%88)方案（红框内的MCU都可以进行尝试）
