@@ -1,5 +1,5 @@
 ## 编译说明
-* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（因为旧编译器不能完全支持**C++ 11**的语法）,并安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK->[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)。
+* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（因为旧编译器不能完全支持**C++ 11**的语法）,并安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK->[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.4.zip)(<< 必须要这个版本)。
   ### 注意
   **不要修改芯片选型**，因为修改芯片选型后启动文件会重新生成，堆栈大小会恢复默认值，而使用默认的栈大小会导致**栈溢出**。现象是启动后立即蓝屏，提示发生**HardFault**，串口会输出详细的错误信息。如果确实需要修改芯片选型，请参考工程原始的启动文件进行修改。
 * VS模拟器: 使用**Visual Studio 2019**编译，配置为**Release x86**。在`Config.h`里修改`CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH`宏定义指定被读取的GPX文件的路径。
