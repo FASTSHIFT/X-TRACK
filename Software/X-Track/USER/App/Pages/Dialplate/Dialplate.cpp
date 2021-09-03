@@ -4,6 +4,7 @@ using namespace Page;
 
 Dialplate::Dialplate()
     : recState(RECORD_STATE_READY)
+    , lastFocus(nullptr)
 {
 }
 
@@ -21,16 +22,6 @@ void Dialplate::onViewLoad()
     Model.Init();
     View.Create(root);
 
-    group = lv_group_create();
-
-    lv_group_set_wrap(group, false);
-
-    lv_group_add_obj(group, View.ui.btnCont.btnMap);
-    lv_group_add_obj(group, View.ui.btnCont.btnRec);
-    lv_group_add_obj(group, View.ui.btnCont.btnMenu);
-
-    lv_group_focus_obj(View.ui.btnCont.btnRec);
-
     AttachEvent(View.ui.btnCont.btnMap);
     AttachEvent(View.ui.btnCont.btnRec);
     AttachEvent(View.ui.btnCont.btnMenu);
@@ -43,9 +34,24 @@ void Dialplate::onViewDidLoad()
 
 void Dialplate::onViewWillAppear()
 {
-    StatusBar::SetStyle(StatusBar::STYLE_TRANSP);
+    lv_group_t* group = lv_group_get_default();
 
-    lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), group);
+    lv_group_set_wrap(group, false);
+
+    lv_group_add_obj(group, View.ui.btnCont.btnMap);
+    lv_group_add_obj(group, View.ui.btnCont.btnRec);
+    lv_group_add_obj(group, View.ui.btnCont.btnMenu);
+
+    if (lastFocus)
+    {
+        lv_group_focus_obj(lastFocus);
+    }
+    else
+    {
+        lv_group_focus_obj(View.ui.btnCont.btnRec);
+    }
+    
+    StatusBar::SetStyle(StatusBar::STYLE_TRANSP);
 
     Update();
 
@@ -59,6 +65,9 @@ void Dialplate::onViewDidAppear()
 
 void Dialplate::onViewWillDisappear()
 {
+    lv_group_t* group = lv_group_get_default();
+    lastFocus = lv_group_get_focused(group);
+    lv_group_remove_all_objs(group);
     lv_timer_del(timer);
     //View.AppearAnimStart(true);
 }
@@ -71,7 +80,6 @@ void Dialplate::onViewDidUnload()
 {
     Model.Deinit();
     View.Delete();
-    lv_group_del(group);
 }
 
 void Dialplate::AttachEvent(lv_obj_t* obj)

@@ -101,7 +101,6 @@ void cmb_printf(const char *__restrict __format, ...)
     Serial.print(printf_buff);
 }
 
-/* xFault handlers */
 extern "C"
 {
     /*
@@ -135,7 +134,7 @@ extern "C"
         mov r1, sp
         bl cm_backtrace_fault
         bl vApplicationHardFaultHook
-Fault_Loop
-        b Fault_Loop
+fault_loop
+        b fault_loop
     }
 }

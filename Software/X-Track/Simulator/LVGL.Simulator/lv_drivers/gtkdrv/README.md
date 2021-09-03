@@ -44,7 +44,7 @@ In "Project properties > C/C++ Build > Settings" set the followings:
 
 ## Init GDK in LVGL
 
-1. In `main.c` `#incude "lv_drivers/gdkdrv/gdkdrv.h"`
+1. In `main.c` `#include "lv_drivers/gtkdrv/gtkdrv.h"`
 2. Enable the GTK driver in `lv_drv_conf.h` with `USE_GTK 1`
 3. After `lv_init()` call `gdkdrv_init()`; 
 4. Add a display:

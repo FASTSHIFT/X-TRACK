@@ -1,5 +1,5 @@
 /**
- * @file sdl_kb.c
+ * @file keyboard.c
  *
  */
 
@@ -12,6 +12,9 @@
 /*********************
  *      DEFINES
  *********************/
+#ifndef KEYBOARD_BUFFER_SIZE
+#define KEYBOARD_BUFFER_SIZE SDL_TEXTINPUTEVENT_TEXT_SIZE
+#endif
 
 /**********************
  *      TYPEDEFS
@@ -20,13 +23,12 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static uint32_t keycode_to_ascii(uint32_t sdl_key);
+static uint32_t keycode_to_ctrl_key(SDL_Keycode sdl_key);
 
 /**********************
  *  STATIC VARIABLES
  **********************/
-static uint32_t last_key;
-static lv_indev_state_t state;
+static char buf[KEYBOARD_BUFFER_SIZE];
 
 /**********************
  *      MACROS
@@ -37,40 +39,67 @@ static lv_indev_state_t state;
  **********************/
 
 /**
- * Initialize the keyboard
+ * Initialize the keyboard and start accepting text input events.
  */
 void keyboard_init(void)
 {
-    /*Nothing to init*/
+    SDL_StartTextInput();
 }
 
 /**
- * Get the last pressed or released character from the PC's keyboard
+ * Get input from the keyboard. 
  * @param indev_drv pointer to the related input device driver
- * @param data store the read data here
- * @return false: because the points are not buffered, so no more data to be read
+ * @param data store the red data here
  */
 void keyboard_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 {
     (void) indev_drv;      /*Unused*/
-    data->state = state;
-    data->key = keycode_to_ascii(last_key);
+
+    static bool dummy_read = false;
+    const size_t len = strlen(buf);
+
+    /*Send a release manually*/
+    if (dummy_read) {
+        dummy_read = false;
+        data->state = LV_INDEV_STATE_RELEASED;
+        data->continue_reading = len > 0;
+    }
+    /*Send the pressed character*/
+    else if (len > 0) {
+        dummy_read = true;
+        data->state = LV_INDEV_STATE_PRESSED;        
+        data->key = buf[0];
+        memmove(buf, buf + 1, len);
+        data->continue_reading = true;
+    }
 }
 
 /**
- * It is called periodically from the SDL thread to check a key is pressed/released
+ * Called periodically from the SDL thread, store text input or control characters in the buffer.
  * @param event describes the event
  */
 void keyboard_handler(SDL_Event * event)
 {
-    /* We only care about SDL_KEYDOWN and SDL_KEYUP events */
+    /* We only care about SDL_KEYDOWN and SDL_TEXTINPUT events */
     switch(event->type) {
         case SDL_KEYDOWN:                       /*Button press*/
-            last_key = event->key.keysym.sym;   /*Save the pressed key*/
-            state = LV_INDEV_STATE_PRESSED;          /*Save the key is pressed now*/
-            break;
-        case SDL_KEYUP:                         /*Button release*/
-            state = LV_INDEV_STATE_RELEASED;         /*Save the key is released but keep the last key*/
+            {
+                const uint32_t ctrl_key = keycode_to_ctrl_key(event->key.keysym.sym);
+                if (ctrl_key == '\0')
+                    return;
+                const size_t len = strlen(buf);
+                if (len < KEYBOARD_BUFFER_SIZE - 1) {
+                    buf[len] = ctrl_key;
+                    buf[len + 1] = '\0';
+                }
+                break;
+            }
+        case SDL_TEXTINPUT:                     /*Text input*/
+            {
+                const size_t len = strlen(buf) + strlen(event->text.text);
+                if (len < KEYBOARD_BUFFER_SIZE - 1)
+                    strcat(buf, event->text.text);
+            }
             break;
         default:
             break;
@@ -83,11 +112,11 @@ void keyboard_handler(SDL_Event * event)
  **********************/
 
 /**
- * Convert the key code LV_KEY_... "codes" or leave them if they are not control characters
+ * Convert a SDL key code to it's LV_KEY_* counterpart or return '\0' if it's not a control character.
  * @param sdl_key the key code
- * @return
+ * @return LV_KEY_* control character or '\0'
  */
-static uint32_t keycode_to_ascii(uint32_t sdl_key)
+static uint32_t keycode_to_ctrl_key(SDL_Keycode sdl_key)
 {
     /*Remap some key to LV_KEY_... to manage groups*/
     switch(sdl_key) {
@@ -108,19 +137,17 @@ static uint32_t keycode_to_ascii(uint32_t sdl_key)
         case SDLK_ESCAPE:
             return LV_KEY_ESC;
 
-#ifdef  LV_KEY_BACKSPACE        /*For backward compatibility*/
         case SDLK_BACKSPACE:
             return LV_KEY_BACKSPACE;
-#endif
 
-#ifdef  LV_KEY_DEL        /*For backward compatibility*/
         case SDLK_DELETE:
             return LV_KEY_DEL;
-#endif
+
         case SDLK_KP_ENTER:
         case '\r':
             return LV_KEY_ENTER;
 
+        case SDLK_TAB:
         case SDLK_PAGEDOWN:
             return LV_KEY_NEXT;
 
@@ -128,7 +155,7 @@ static uint32_t keycode_to_ascii(uint32_t sdl_key)
             return LV_KEY_PREV;
 
         default:
-            return sdl_key;
+            return '\0';
     }
 }
 #endif

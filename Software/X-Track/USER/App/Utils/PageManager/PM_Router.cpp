@@ -286,7 +286,7 @@ bool PageManager::SwitchAnimStateCheck()
         PM_LOG_WARN(
             "Page switch busy[AnimState.IsSwitchReq = %d,"
             "AnimState.IsBusy = %d],"
-            "reqire is ignore",
+            "reqire ignored",
             AnimState.IsSwitchReq,
             AnimState.IsBusy
         );

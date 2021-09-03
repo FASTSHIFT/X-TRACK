@@ -31,7 +31,6 @@ public:
         item_t battery;
         item_t storage;
         item_t system;
-        lv_group_t* group;
     } ui;
 
 public:

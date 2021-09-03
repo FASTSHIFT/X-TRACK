@@ -24,11 +24,14 @@
 #include <stdio.h>
 #include "GPS_Transform/GPS_Transform.h"
 
+using namespace::Microsoft_MapPoint;
+
 #ifndef constrain
 #   define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #endif
 
-char MapConv::dirPath[MAP_CONV_DIR_PATH_MAX] = "/MAP";
+char MapConv::dirPath[] = "/MAP";
+char MapConv::extName[] = "bin";
 int16_t MapConv::levelMin = 0;
 int16_t MapConv::levelMax = 19;
 bool MapConv::coordTransformEnable = false;
@@ -63,7 +66,7 @@ void MapConv::ConvertMapCoordinate(
         GPS_Transform(latitude, longitude, &latitude, &longitude);
     }
 
-    LatLongToPixelXY(
+    TileSystem::LatLongToPixelXY(
         latitude,
         longitude,
         priv.level,
@@ -75,17 +78,36 @@ void MapConv::ConvertMapCoordinate(
     *mapY = pixelY;
 };
 
+void MapConv::ConvertMapPos(
+    int32_t* destX, int32_t* destY,
+    int32_t srcX, int32_t srcY, int srcLevel
+)
+{
+    int diffLevel = srcLevel - GetLevel();
+    if (diffLevel >= 0)
+    {
+        *destX = srcX >> diffLevel;
+        *destY = srcY >> diffLevel;
+    }
+    else
+    {
+        *destX = srcX << -diffLevel;
+        *destY = srcY << -diffLevel;
+    }
+}
+
 int MapConv::ConvertMapPath(int32_t x, int32_t y, char* path, uint32_t len)
 {
     int32_t tileX = x / priv.tileSize;
     int32_t tileY = y / priv.tileSize;
     int ret = snprintf(
                   path, len,
-                  "%s/%d/%d/%d.bin",
+                  "%s/%d/%d/%d.%s",
                   dirPath,
                   priv.level,
                   tileX,
-                  tileY
+                  tileY,
+                  extName
               );
 
     return ret;

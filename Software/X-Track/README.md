@@ -236,3 +236,36 @@
 * 14.重构MapConv，废弃旧的Bing地图存放格式和地图下载器。使用[Crimson/地图下载器](https://gitee.com/CrimsonHu/java_map_download/)下载地图，文件存放格式为`/z/x/y.bin`
 * 15.更新DisplayFault，在进入HardFault状态时强制点亮背光
 * 16.更新HAL_Power，优化电压显示
+
+## [v1.7] - 2021-9-3
+* 1.调整Heap_Size 0x00002000 -> 0x00000200
+* 2.调整lvgl内存池大小，LV_MEM_SIZE 72K -> 80K
+* 3.更新lv_drivers
+* 4.更新lvgl
+* 5.DataCneter使用lvgl内存池
+* 6.使用std::abs()替代宏实现的ABS()
+* 7.更新DP_Storage
+* 8.更新DP_SysConfig，调整结构体成员，添加timeZone和mapExtName，在关机时保存位置
+* 9.更新DP_TrackFilter，使用地图上的Point格式替代旧的经纬度
+* 10.更新DP_TzConv，GMT_OffsetHours -> sysCfg.timeZone
+* 11.更新HAL.h，添加Memory_DumpInfo()堆栈使用统计
+* 12.更新HAL_GPS模拟，修复diffTime = 0导致的gpsInfo.speed = inf
+* 13.更新Config.h，添加LiveMap的Debug模式配置，PNG解码库使能配置等。转移Hardware Configuration至HAL_Config.h
+* 14.更新Dialplate页面，使用lv_group_get_default()获取统一的group
+* 15.重构LiveMap页面，添加LiveMap的Debug模式，使用lv_group_get_default()获取统一的group，适配新的轨迹过滤算法
+* 16.更新StartUp页面，关闭LOGO滚动
+* 17.更新SystemInfos，使用lv_group_get_default()获取统一的group
+* 18.更新DataCenter，统一使用lv_allocator分配内存
+* 19.添加lv_lib_png，限于内存大小暂不使用
+* 20.添加lv_monkey，实现简单压力测试
+* 21.添加lv_multi_line，实现轨迹的多段线绘制，提升lv_line复用率，极大节省内存
+* 22.更新MapConv，支持自定义文件扩展名，添加ConvertMapPos实现不同level间的坐标换算
+* 23.更新TileSystem，使用namespace替换class，免去无意义的实例化
+* 24.添加new、delete重载，统一使用lvgl内存池
+* 25.扩展StorageService的内存，JSON_BUFFER_SIZE 1024->2048
+* 26.更新TrackFilter，修复二级滤波拐点丢失问题。使用TrackLineFilter实现可视区轨迹裁剪，节省内存，提升绘制效率。
+* 27.更新lv_fs_sdfat接口，使用new和delete替换lv_mem_alloc和lv_mem_free
+* 28.更新lv_port_indev，去除lv_port_indev_get()，创建全局默认group
+* 29.添加HAL::Memory_DumpInfo()，由于要使用__heapstats()读取heap信息，关闭microlib
+* 30.添加rt_sys.cpp，实现一些C底层接口
+* 31.读取StackInfo从main.cpp转移至HAL::Memory_DumpInfo()

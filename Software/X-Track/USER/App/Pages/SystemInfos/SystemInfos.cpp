@@ -39,7 +39,6 @@ void SystemInfos::onViewDidLoad()
 
 void SystemInfos::onViewWillAppear()
 {
-    lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), View.ui.group);
     StatusBar::SetStyle(StatusBar::STYLE_BLACK);
 
     timer = lv_timer_create(onTimerUpdate, 1000, this);
@@ -51,7 +50,7 @@ void SystemInfos::onViewWillAppear()
 
 void SystemInfos::onViewDidAppear()
 {
-    View.onFocus(View.ui.group);
+    View.onFocus(lv_group_get_default());
 }
 
 void SystemInfos::onViewWillDisappear()

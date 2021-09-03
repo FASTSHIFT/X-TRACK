@@ -22,7 +22,7 @@
     <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <EnableASAN>false</EnableASAN>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <EnableASAN>true</EnableASAN>
@@ -112,6 +112,10 @@
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_multi_line\lv_multi_line.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.h" />
@@ -338,6 +342,10 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_multi_line\lv_multi_line.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp" />

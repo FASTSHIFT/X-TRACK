@@ -77,7 +77,7 @@ Account* DataCenter::SearchAccount(const char* id)
   * @param  id:  Account ID
   * @retval If the search is successful, return the pointer of the account
   */
-Account* DataCenter::Find(std::vector<Account*>* vec, const char* id)
+Account* DataCenter::Find(Account::AccountVector_t* vec, const char* id)
 {
     for(auto iter : *vec)
     {
@@ -130,7 +130,7 @@ bool DataCenter::RemoveAccount(Account* account)
   * @param  id:  Account ID
   * @retval Return true if the removal is successful
   */
-bool DataCenter::Remove(std::vector<Account*>* vec, Account* account)
+bool DataCenter::Remove(Account::AccountVector_t* vec, Account* account)
 {
     auto iter = std::find(vec->begin(), vec->end(), account);
 

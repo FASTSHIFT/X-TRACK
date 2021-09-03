@@ -1,18 +1,21 @@
 #include "DataProc.h"
 #include "../HAL/HAL.h"
 
-static DataCenter dataCenter("CENTER");
+static DataCenter* dataCenter = nullptr;
 
 DataCenter* DataProc::Center()
 {
-    return &dataCenter;
+    return dataCenter;
 }
 
 void DataProc_Init()
 {
+    static DataCenter center("CENTER");
+
+    dataCenter = &center;
 
 #define DP_DEF(NodeName, bufferSize)\
-    Account* act##NodeName = new Account(#NodeName, &dataCenter, bufferSize);
+    Account* act##NodeName = new Account(#NodeName, dataCenter, bufferSize);
 #  include "DP_LIST.inc"
 #undef DP_DEF
 

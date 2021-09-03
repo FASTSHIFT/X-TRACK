@@ -134,25 +134,25 @@ void SystemInfosView::Create(lv_obj_t* root)
 
 void SystemInfosView::Group_Init()
 {
-    ui.group = lv_group_create();
-    lv_group_set_focus_cb(ui.group, onFocus);
-    lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), ui.group);
+    lv_group_t* group = lv_group_get_default();
+    lv_group_set_wrap(group, true);
+    lv_group_set_focus_cb(group, onFocus);
 
-    lv_group_add_obj(ui.group, ui.system.icon);
-    lv_group_add_obj(ui.group, ui.storage.icon);
-    lv_group_add_obj(ui.group, ui.battery.icon);
-    lv_group_add_obj(ui.group, ui.rtc.icon);
-    lv_group_add_obj(ui.group, ui.imu.icon);
-    lv_group_add_obj(ui.group, ui.mag.icon);
-    lv_group_add_obj(ui.group, ui.gps.icon);
-    lv_group_add_obj(ui.group, ui.sport.icon);
+    lv_group_add_obj(group, ui.system.icon);
+    lv_group_add_obj(group, ui.storage.icon);
+    lv_group_add_obj(group, ui.battery.icon);
+    lv_group_add_obj(group, ui.rtc.icon);
+    lv_group_add_obj(group, ui.imu.icon);
+    lv_group_add_obj(group, ui.mag.icon);
+    lv_group_add_obj(group, ui.gps.icon);
+    lv_group_add_obj(group, ui.sport.icon);
 
     lv_group_focus_obj(ui.sport.icon);
 }
 
 void SystemInfosView::Delete()
 {
-    lv_group_del(ui.group);
+    lv_group_set_focus_cb(lv_group_get_default(), nullptr);
     Style_Reset();
 }
 

@@ -43,9 +43,9 @@ private:
 private:
     DialplateView View;
     DialplateModel Model;
-    lv_group_t* group;
     lv_timer_t* timer;
     RecordState_t recState;
+    lv_obj_t* lastFocus;
 };
 
 }

@@ -24,12 +24,26 @@
 #include "Display/Display.h"
 #include "HAL/HAL.h"
 #include "App/App.h"
-#include "StackInfo/StackInfo.h"
+#include "Config/Config.h"
+#include "Utils/lv_monkey/lv_monkey.h"
+#include "Utils/lv_lib_png/lv_png.h"
 
 static void setup()
 {
     HAL::HAL_Init();
     Display_Init();
+    
+#if CONFIG_MAP_PNG_DECODE_ENABLE
+    lv_png_init();
+#endif
+
+#if CONFIG_MONKEY_TEST_ENABLE
+    lv_monkey_create(
+        CONFIG_MONKEY_INDEV_TYPE,
+        CONFIG_MONKEY_INTERVAL_TIME_MIN,
+        CONFIG_MONKEY_INTERVAL_TIME_MAX
+    );
+#endif
 
     App_Init();
 
@@ -40,18 +54,6 @@ static void loop()
 {
     HAL::HAL_Update();
     lv_task_handler();
-
-#if CONFIG_USE_STACK_INFO
-    __IntervalExecute(
-        Serial.printf(
-            "Stack: Use = %0.2f%% Free = %d\r\n",
-            StackInfo_GetMaxUtilization() * 100,
-            StackInfo_GetMinFreeSize()
-        ),
-        1000
-    );
-#endif
-
     __wfi();
 }
 

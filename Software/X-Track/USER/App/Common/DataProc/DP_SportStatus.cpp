@@ -5,16 +5,12 @@
 
 using namespace DataProc;
 
-#ifndef ABS
-#  define ABS(x) (((x)>0)?(x):-(x))
-#endif
-
 static HAL::SportStatus_Info_t sportStatus =
 {
     .weight = CONFIG_WEIGHT_DEFAULT
 };
 
-static double SportStatus_GetRealDistance(HAL::GPS_Info_t* gpsInfo, double dist)
+static double SportStatus_GetRealDistance(HAL::GPS_Info_t* gpsInfo, double predictDist)
 {
     static double preLongitude;
     static double preLatitude;
@@ -24,7 +20,7 @@ static double SportStatus_GetRealDistance(HAL::GPS_Info_t* gpsInfo, double dist)
     preLongitude = gpsInfo->longitude;
     preLatitude = gpsInfo->latitude;
 
-    double realDist = ABS(offset - dist) < 100 ? offset : dist;
+    double realDist = std::abs(offset - predictDist) < 100 ? offset : predictDist;
 
     return realDist;
 }
@@ -48,9 +44,9 @@ static void onTimer(Account* account)
     {
         sportStatus.singleTime += timeElaps;
         sportStatus.totalTime += timeElaps;
-        float dist = speedKph / 3.6f * timeElaps / 1000;
+        float predictDist = speedKph / 3.6f * timeElaps / 1000;
 
-        dist = (float)SportStatus_GetRealDistance(&gpsInfo, dist);
+        float dist = (float)SportStatus_GetRealDistance(&gpsInfo, predictDist);
 
         sportStatus.singleDistance += dist;
         sportStatus.totalDistance += dist;

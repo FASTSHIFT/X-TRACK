@@ -4,9 +4,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <cmath>
 #include "lvgl/lvgl.h"
 #include "Utils/GPX_Parser/GPX_Parser.h"
 #include "Config/Config.h"
+
+#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx"
 
 #define PI 3.1415926535897932384626433832795f
 #define HALF_PI 1.5707963267948966192313216916398f
@@ -124,8 +127,8 @@ void HAL::GPS_Init()
 {
     gpsInfo.isVaild = true;
     gpsInfo.satellites = 10;
-    gpsInfo.longitude = CONFIG_GPS_LNG_DEFAULT;
-    gpsInfo.latitude = CONFIG_GPS_LAT_DEFAULT;
+    gpsInfo.longitude = CONFIG_GPS_LONGITUDE_DEFAULT;
+    gpsInfo.latitude = CONFIG_GPS_LATITUDE_DEFAULT;
 
     bool success = Parser_Init(&gpxParser, &fileInfo);
 
@@ -170,6 +173,7 @@ void HAL::GPS_Update()
     static bool isReset = false;
 
     GPX_Parser::Point_t point;
+    memset(&point, 0, sizeof(point));
     if (gpxParser.ReadNext(&point))
     {
         if (!isReset)
@@ -183,8 +187,17 @@ void HAL::GPS_Update()
         }
 
         double distance = GPS_GetDistanceOffset(&gpsInfo, point.longitude, point.latitude);
+        double diffTime = CONFIG_GPS_REFR_PERIOD / 1000.0;
 
-        gpsInfo.speed = (float)(distance / Clock_GetDiffTime(&point.time, &prePoint.time) * 3.6);
+        if (point.time.year)
+        {
+            diffTime = Clock_GetDiffTime(&point.time, &prePoint.time) * 3.6;
+        }
+
+        if (std::abs(diffTime) >= 0.0001)
+        {
+            gpsInfo.speed = (float)(distance / diffTime);
+        }
 
         gpsInfo.course = (float)courseTo(
             gpsInfo.latitude,

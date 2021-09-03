@@ -1,4 +1,5 @@
 #include "HAL.h"
+#include "Config/Config.h"
 #include "SdFat.h"
 
 static SdFat SD(&CONFIG_SD_SPI);

@@ -28,21 +28,14 @@ public:
     } Point_t;
 
 public:
-    void* userData;
-
-public:
     GPX_Parser();
     ~GPX_Parser();
 
     void SetCallback(Callback_t avaliableCallback, Callback_t readCallback);
     bool ReadNext(Point_t* point);
 
-private:
-    struct
-    {
-        Callback_t avaliableCallback;
-        Callback_t readCallback;
-    } priv;
+public:
+    void* userData;
 
 private:
     virtual int available();
@@ -59,6 +52,13 @@ private:
     using Print::write;
 
     bool readStringUntil(char terminator, String* str);
+
+private:
+    struct
+    {
+        Callback_t avaliableCallback;
+        Callback_t readCallback;
+    } priv;
 };
 
 #endif

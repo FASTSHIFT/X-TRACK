@@ -1,4 +1,5 @@
 #include "LiveMapView.h"
+#include "Config/Config.h"
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -25,14 +26,17 @@ void LiveMapView::Create(lv_obj_t* root, uint32_t tileNum)
 
 void LiveMapView::Delete()
 {
+    if (ui.track.lineTrack)
+    {
+        delete ui.track.lineTrack;
+        ui.track.lineTrack = nullptr;
+    }
+
     if (ui.map.imgTiles)
     {
         lv_mem_free(ui.map.imgTiles);
         ui.map.imgTiles = nullptr;
     }
-
-    std::vector<lv_point_t, lv_allocator<lv_point_t>> vec;
-    ui.map.trackPoints.swap(vec);
 
     lv_style_reset(&ui.styleCont);
     lv_style_reset(&ui.styleLabel);
@@ -63,7 +67,7 @@ void LiveMapView::Map_Create(lv_obj_t* par, uint32_t tileNum)
 {
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
-#if 0
+#if CONFIG_LIVE_MAP_DEBUG_ENABLE
     lv_obj_set_style_outline_color(cont, lv_palette_main(LV_PALETTE_BLUE), 0);
     lv_obj_set_style_outline_width(cont, 2, 0);
 #endif
@@ -79,7 +83,7 @@ void LiveMapView::Map_Create(lv_obj_t* par, uint32_t tileNum)
         ui.map.imgTiles[i] = img;
     }
 
-    TrackLine_Create(cont);
+    Track_Create(cont);
 
     lv_obj_t* img = lv_img_create(cont);
     lv_img_set_src(img, Resource.GetImage("gps_arrow_dark"));
@@ -123,6 +127,20 @@ void LiveMapView::SetArrowTheme(const char* theme)
     }
 
     lv_img_set_src(ui.map.imgArrow, src);
+}
+
+void LiveMapView::SetLineActivePoint(lv_coord_t x, lv_coord_t y)
+{
+    lv_point_t end_point;
+    if (!ui.track.lineTrack->get_end_point(&end_point))
+    {
+        return;
+    }
+
+    ui.track.pointActive[0] = end_point;
+    ui.track.pointActive[1].x = x;
+    ui.track.pointActive[1].y = y;
+    lv_line_set_points(ui.track.lineActive, ui.track.pointActive, 2);
 }
 
 void LiveMapView::ZoomCtrl_Create(lv_obj_t* par)
@@ -205,48 +223,22 @@ lv_obj_t* LiveMapView::ImgLabel_Create(lv_obj_t* par, const void* img_src, lv_co
     return label;
 }
 
-void LiveMapView::TrackLine_Create(lv_obj_t* par)
+void LiveMapView::Track_Create(lv_obj_t* par)
 {
-    lv_obj_t* line = lv_line_create(par);
+    lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_remove_style_all(cont);
+    lv_obj_set_size(cont, LV_PCT(100), LV_PCT(100));
+    ui.track.cont = cont;
+
+    ui.track.lineTrack = new lv_multi_line(cont);
+
+    ui.track.lineTrack->set_style(&ui.styleLine);
+
+    lv_obj_t* line = lv_line_create(cont);
     lv_obj_remove_style_all(line);
     lv_obj_add_style(line, &ui.styleLine, 0);
-
-    ui.map.lineTrack = line;
-
-    line = lv_line_create(par);
-    lv_obj_remove_style_all(line);
-    lv_obj_add_style(line, &ui.styleLine, 0);
-
-    ui.map.lineActive = line;
-}
-
-void LiveMapView::TrackAddPoint(lv_coord_t x, lv_coord_t y)
-{
-    lv_point_t point = { x, y };
-    ui.map.trackPoints.push_back(point);
-}
-
-void LiveMapView::TrackReset()
-{
-    ui.map.trackPoints.clear();
-    lv_line_set_points(ui.map.lineTrack, nullptr, 0);
-    lv_line_set_points(ui.map.lineActive, nullptr, 0);
-}
-
-void LiveMapView::TrackSetActivePoint(lv_coord_t x, lv_coord_t y)
-{
-    if (ui.map.trackPoints.size())
-    {
-        lv_line_set_points(
-            ui.map.lineTrack,
-            &ui.map.trackPoints[0],
-            (uint16_t)ui.map.trackPoints.size()
-        );
-    }
-
-    lv_point_t end = ui.map.trackPoints.back();
-    ui.map.pointActive[0] = end;
-    ui.map.pointActive[1].x = x;
-    ui.map.pointActive[1].y = y;
-    lv_line_set_points(ui.map.lineActive, ui.map.pointActive, 2);
+#if CONFIG_LIVE_MAP_DEBUG_ENABLE
+    lv_obj_set_style_line_color(line, lv_palette_main(LV_PALETTE_BLUE), 0);
+#endif
+    ui.track.lineActive = line;
 }

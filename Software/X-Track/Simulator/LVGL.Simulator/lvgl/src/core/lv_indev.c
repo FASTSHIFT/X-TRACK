@@ -290,8 +290,9 @@ lv_obj_t * lv_indev_search_obj(lv_obj_t * obj, lv_point_t * point)
     /*If the point is on this object check its children too*/
     if(lv_obj_hit_test(obj, point)) {
         int32_t i;
-        for(i = lv_obj_get_child_cnt(obj) - 1; i >= 0; i--) {
-            lv_obj_t * child = lv_obj_get_child(obj, i);
+        uint32_t child_cnt = lv_obj_get_child_cnt(obj);
+        for(i = child_cnt - 1; i >= 0; i--) {
+            lv_obj_t * child = obj->spec_attr->children[i];
             found_p = lv_indev_search_obj(child, point);
 
             /*If a child was found then break*/
@@ -844,6 +845,11 @@ static void indev_proc_press(_lv_indev_proc_t * proc)
             if(indev_reset_check(proc)) return;
 
             if(indev_act->proc.wait_until_release) return;
+
+            /*Handle focus*/
+            indev_click_focus(&indev_act->proc);
+            if(indev_reset_check(proc)) return;
+
         }
     }
 
@@ -923,11 +929,6 @@ static void indev_proc_release(_lv_indev_proc_t * proc)
 
         /*Send CLICK if no scrolling*/
         if(scroll_obj == NULL) {
-
-            /*Handle focus*/
-            indev_click_focus(&indev_act->proc);
-            if(indev_reset_check(proc)) return;
-
             if(proc->long_pr_sent == 0) {
                 lv_event_send(indev_obj_act, LV_EVENT_SHORT_CLICKED, indev_act);
                 if(indev_reset_check(proc)) return;

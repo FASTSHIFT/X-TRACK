@@ -3,7 +3,7 @@
 
 using namespace Page;
 
-uint16_t LiveMap::mapLevel = CONFIG_LIVE_MAP_LEVEL_DEFAULT;
+uint16_t LiveMap::mapLevelCurrent = CONFIG_LIVE_MAP_LEVEL_DEFAULT;
 
 LiveMap::LiveMap()
 {
@@ -41,10 +41,10 @@ void LiveMap::onViewLoad()
     );
     View.SetMapTile(tileSize, rect.width / tileSize);
 
-#if 0
+#if CONFIG_LIVE_MAP_DEBUG_ENABLE
     lv_obj_t* contView = lv_obj_create(root);
     lv_obj_center(contView);
-    lv_obj_set_size(contView, MAP_VIEW_WIDTH, MAP_VIEW_HEIGHT);
+    lv_obj_set_size(contView, CONFIG_LIVE_MAP_VIEW_WIDTH, CONFIG_LIVE_MAP_VIEW_HEIGHT);
     lv_obj_set_style_border_color(contView, lv_palette_main(LV_PALETTE_RED), 0);
     lv_obj_set_style_border_width(contView, 1, 0);
 #endif
@@ -53,25 +53,26 @@ void LiveMap::onViewLoad()
     AttachEvent(View.ui.zoom.slider);
     AttachEvent(View.ui.sportInfo.cont);
 
-    priv.group = lv_group_create();
-    lv_indev_set_group(lv_get_indev(LV_INDEV_TYPE_ENCODER), priv.group);
-    lv_group_add_obj(priv.group, View.ui.zoom.slider);
-    lv_group_set_editing(priv.group, View.ui.zoom.slider);
+    lv_group_t* group = lv_group_get_default();
+    lv_group_add_obj(group, View.ui.zoom.slider);
+    lv_group_set_editing(group, View.ui.zoom.slider);
 
-    lv_slider_set_value(View.ui.zoom.slider, mapLevel, LV_ANIM_OFF);
-    Model.mapConv.SetLevel(mapLevel);
+    lv_slider_set_value(View.ui.zoom.slider, mapLevelCurrent, LV_ANIM_OFF);
+    Model.mapConv.SetLevel(mapLevelCurrent);
     lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
 
+    /* Point filter */
     Model.pointFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
     Model.pointFilter.SetOutputPointCallback([](TrackPointFilter * filter, const TrackPointFilter::Point_t* point)
     {
         LiveMap* instance = (LiveMap*)filter->userData;
-        instance->Model.TrackAddPoint((int32_t)point->x, (int32_t)point->y);
-        instance->TrackViewLineUpdate((int32_t)point->x, (int32_t)point->y);
+        instance->TrackLineAppendToEnd((int32_t)point->x, (int32_t)point->y);
     });
-
-
     Model.pointFilter.userData = this;
+
+    /* Line filter */
+    Model.lineFilter.SetOutputPointCallback(onTrackLineEvent);
+    Model.lineFilter.userData = this;
 }
 
 void LiveMap::onViewDidLoad()
@@ -87,7 +88,7 @@ void LiveMap::onViewWillAppear()
     Model.GetArrowTheme(theme, sizeof(theme));
     View.SetArrowTheme(theme);
 
-    priv.isTrackAvtive = Model.TrackGetFilterActive();
+    priv.isTrackAvtive = Model.GetTrackFilterActive();
 
     StatusBar::SetStyle(StatusBar::STYLE_BLACK);
     SportInfoUpdate();
@@ -110,7 +111,12 @@ void LiveMap::onViewDidAppear()
 
     priv.lastTileContOriPoint.x = 0;
     priv.lastTileContOriPoint.y = 0;
-    priv.trackReloadReq = true;
+
+    priv.isTrackAvtive = Model.GetTrackFilterActive();
+    if (!priv.isTrackAvtive)
+    {
+        Model.pointFilter.SetOutputPointCallback(nullptr);
+    }
 }
 
 void LiveMap::onViewWillDisappear()
@@ -128,7 +134,6 @@ void LiveMap::onViewDidDisappear()
 void LiveMap::onViewDidUnload()
 {
     View.Delete();
-    lv_group_del(priv.group);
 }
 
 void LiveMap::AttachEvent(lv_obj_t* obj)
@@ -141,7 +146,7 @@ void LiveMap::Update()
 {
     if (lv_tick_elaps(priv.lastMapUpdateTime) >= CONFIG_GPS_REFR_PERIOD)
     {
-        MapUpdate();
+        CheckPosition();
         SportInfoUpdate();
         priv.lastMapUpdateTime = lv_tick_get();
     }
@@ -151,110 +156,9 @@ void LiveMap::Update()
     }
 }
 
-void LiveMap::MapUpdateWait(uint32_t ms)
+void LiveMap::UpdateDelay(uint32_t ms)
 {
     priv.lastMapUpdateTime = lv_tick_get() - 1000 + ms;
-}
-
-void LiveMap::MapUpdate()
-{
-    HAL::GPS_Info_t gpsInfo;
-    Model.GetGPS_Info(&gpsInfo);
-
-    mapLevel = lv_slider_get_value(View.ui.zoom.slider);
-    if (mapLevel != Model.mapConv.GetLevel())
-    {
-        priv.trackReloadReq = true;
-    }
-
-    Model.mapConv.SetLevel(mapLevel);
-
-    int32_t mapX, mapY;
-    Model.mapConv.ConvertMapCoordinate(
-        gpsInfo.longitude, gpsInfo.latitude,
-        &mapX, &mapY
-    );
-    Model.tileConv.SetFocusPos(mapX, mapY);
-
-    TileConv::Point_t offset;
-    TileConv::Point_t oriPoint = { mapX, mapY };
-    Model.tileConv.GetOffset(&offset, &oriPoint);
-
-    /* track line */
-    if (priv.isTrackAvtive)
-    {
-        if (priv.trackReloadReq)
-        {
-            Model.TrackReload();
-            priv.trackReloadReq = false;
-        }
-
-        if (TrackCheckTileContReload())
-        {
-            TrackViewLineReload();
-        }
-
-        Model.pointFilter.PushPoint(mapX, mapY);
-        View.TrackSetActivePoint(offset.x, offset.y);
-    }
-
-    /* arrow */
-    lv_obj_t* img = View.ui.map.imgArrow;
-    Model.tileConv.GetFocusOffset(&offset);
-    lv_coord_t x = offset.x - lv_obj_get_width(img) / 2;
-    lv_coord_t y = offset.y - lv_obj_get_height(img) / 2;
-    View.SetImgArrowState(x, y, gpsInfo.course);
-
-    /* map cont */
-    Model.tileConv.GetTileContainerOffset(&offset);
-
-    lv_coord_t baseX = (LV_HOR_RES - CONFIG_LIVE_MAP_VIEW_WIDTH) / 2;
-    lv_coord_t baseY = (LV_VER_RES - CONFIG_LIVE_MAP_VIEW_HEIGHT) / 2;
-    lv_obj_set_pos(View.ui.map.cont, baseX - offset.x, baseY - offset.y);
-
-    /* tile src */
-    for (uint32_t i = 0; i < View.ui.map.tileNum; i++)
-    {
-        TileConv::Point_t pos;
-        Model.tileConv.GetTilePos(i, &pos);
-
-        char path[64];
-        Model.mapConv.ConvertMapPath(pos.x, pos.y, path, sizeof(path));
-
-        lv_img_set_src(View.ui.map.imgTiles[i], path);
-    }
-}
-
-void LiveMap::TrackViewLineUpdate(int32_t x, int32_t y)
-{
-    TileConv::Point_t oriPoint = { x, y };
-    TileConv::Point_t offset;
-
-    Model.tileConv.GetOffset(&offset, &oriPoint);
-    View.TrackAddPoint(offset.x, offset.y);
-}
-
-void LiveMap::TrackViewLineReload()
-{
-    uint32_t cnt = Model.TrackGetCnt();
-    TileConv::Point_t* points = Model.TrackGetPoints();
-    View.TrackReset();
-    for (uint32_t i = 0; i < cnt; i++)
-    {
-        TrackViewLineUpdate(points[i].x, points[i].y);
-    }
-}
-
-bool LiveMap::TrackCheckTileContReload()
-{
-    TileConv::Point_t pos;
-    Model.tileConv.GetTilePos(0, &pos);
-
-    bool ret = (pos.x != priv.lastTileContOriPoint.x || pos.y != priv.lastTileContOriPoint.y);
-
-    priv.lastTileContOriPoint = pos;
-
-    return ret;
 }
 
 void LiveMap::SportInfoUpdate()
@@ -278,6 +182,184 @@ void LiveMap::SportInfoUpdate()
     );
 }
 
+void LiveMap::CheckPosition()
+{
+    bool refreshMap = false;
+
+    HAL::GPS_Info_t gpsInfo;
+    Model.GetGPS_Info(&gpsInfo);
+
+    mapLevelCurrent = lv_slider_get_value(View.ui.zoom.slider);
+    if (mapLevelCurrent != Model.mapConv.GetLevel())
+    {
+        refreshMap = true;
+        Model.mapConv.SetLevel(mapLevelCurrent);
+    }
+
+    int32_t mapX, mapY;
+    Model.mapConv.ConvertMapCoordinate(
+        gpsInfo.longitude, gpsInfo.latitude,
+        &mapX, &mapY
+    );
+    Model.tileConv.SetFocusPos(mapX, mapY);
+
+    if (GetIsMapTileContChanged())
+    {
+        refreshMap = true;
+    }
+
+    if (refreshMap)
+    {
+        TileConv::Rect_t rect;
+        Model.tileConv.GetTileContainer(&rect);
+
+        Area_t area = {
+            .x0 = rect.x,
+            .y0 = rect.y,
+            .x1 = rect.x + rect.width - 1,
+            .y1 = rect.y + rect.height - 1
+        };
+
+        onMapTileContRefresh(&area, mapX, mapY);
+    }
+
+    MapTileContUpdate(mapX, mapY, gpsInfo.course);
+
+    if (priv.isTrackAvtive)
+    {
+        Model.pointFilter.PushPoint(mapX, mapY);
+    }
+}
+
+void LiveMap::onMapTileContRefresh(const Area_t* area, int32_t x, int32_t y)
+{
+    LV_LOG_USER(
+        "area: (%d, %d) [%dx%d]", 
+        area->x0, area->y0, 
+        area->x1 - area->x0 + 1,
+        area->y1 - area->y0 + 1
+    );
+
+    MapTileContReload();
+
+    if (priv.isTrackAvtive)
+    {
+        TrackLineReload(area, x, y);
+    }   
+}
+
+void LiveMap::MapTileContUpdate(int32_t mapX, int32_t mapY, float course)
+{
+    TileConv::Point_t offset;
+    TileConv::Point_t curPoint = { mapX, mapY };
+    Model.tileConv.GetOffset(&offset, &curPoint);
+
+    /* arrow */
+    lv_obj_t* img = View.ui.map.imgArrow;
+    Model.tileConv.GetFocusOffset(&offset);
+    lv_coord_t x = offset.x - lv_obj_get_width(img) / 2;
+    lv_coord_t y = offset.y - lv_obj_get_height(img) / 2;
+    View.SetImgArrowStatus(x, y, course);
+
+    /* active line */
+    if (priv.isTrackAvtive)
+    {
+        View.SetLineActivePoint((lv_coord_t)offset.x, (lv_coord_t)offset.y);
+    } 
+
+    /* map cont */
+    Model.tileConv.GetTileContainerOffset(&offset);
+
+    lv_coord_t baseX = (LV_HOR_RES - CONFIG_LIVE_MAP_VIEW_WIDTH) / 2;
+    lv_coord_t baseY = (LV_VER_RES - CONFIG_LIVE_MAP_VIEW_HEIGHT) / 2;
+    lv_obj_set_pos(View.ui.map.cont, baseX - offset.x, baseY - offset.y); 
+}
+
+void LiveMap::MapTileContReload()
+{
+    /* tile src */
+    for (uint32_t i = 0; i < View.ui.map.tileNum; i++)
+    {
+        TileConv::Point_t pos;
+        Model.tileConv.GetTilePos(i, &pos);
+
+        char path[64];
+        Model.mapConv.ConvertMapPath(pos.x, pos.y, path, sizeof(path));
+
+        lv_img_set_src(View.ui.map.imgTiles[i], path);
+    }
+}
+
+bool LiveMap::GetIsMapTileContChanged()
+{
+    TileConv::Point_t pos;
+    Model.tileConv.GetTilePos(0, &pos);
+
+    bool ret = (pos.x != priv.lastTileContOriPoint.x || pos.y != priv.lastTileContOriPoint.y);
+
+    priv.lastTileContOriPoint = pos;
+
+    return ret;
+}
+
+void LiveMap::TrackLineReload(const Area_t* area, int32_t x, int32_t y)
+{
+    Model.lineFilter.SetClipArea(area);
+    Model.lineFilter.Reset();
+    Model.TrackReload([](TrackPointFilter* filter, const TrackPointFilter::Point_t* point)
+    {
+        LiveMap* instance = (LiveMap*)filter->userData;
+        instance->Model.lineFilter.PushPoint((int32_t)point->x, (int32_t)point->y);
+    }, this);
+    Model.lineFilter.PushPoint(x, y);
+    Model.lineFilter.PushEnd();
+}
+
+void LiveMap::TrackLineAppend(int32_t x, int32_t y)
+{
+    TileConv::Point_t offset;
+    TileConv::Point_t curPoint = { x, y };
+    Model.tileConv.GetOffset(&offset, &curPoint);
+    View.ui.track.lineTrack->append((lv_coord_t)offset.x, (lv_coord_t)offset.y);
+}
+
+void LiveMap::TrackLineAppendToEnd(int32_t x, int32_t y)
+{
+    TileConv::Point_t offset;
+    TileConv::Point_t curPoint = { x, y };
+    Model.tileConv.GetOffset(&offset, &curPoint);
+    View.ui.track.lineTrack->append_to_end((lv_coord_t)offset.x, (lv_coord_t)offset.y);
+}
+
+void LiveMap::onTrackLineEvent(TrackLineFilter* filter, TrackLineFilter::Event_t* event)
+{
+    LiveMap* instance = (LiveMap*)filter->userData;
+    lv_multi_line* lineTrack = instance->View.ui.track.lineTrack;
+
+    switch (event->code)
+    {
+    case TrackLineFilter::EVENT_START_LINE:
+        lineTrack->start();
+        instance->TrackLineAppend(event->point->x, event->point->y);
+        break;
+    case TrackLineFilter::EVENT_APPEND_POINT:
+        instance->TrackLineAppend(event->point->x, event->point->y);
+        break;
+    case TrackLineFilter::EVENT_END_LINE:
+        if (event->point != nullptr)
+        {
+            instance->TrackLineAppend(event->point->x, event->point->y);
+        }
+        lineTrack->stop();
+        break;
+    case TrackLineFilter::EVENT_RESET:
+        lineTrack->reset();
+        break;
+    default:
+        break;
+    }
+}
+
 void LiveMap::onEvent(lv_event_t* event)
 {
     lv_obj_t* obj = lv_event_get_target(event);
@@ -296,11 +378,11 @@ void LiveMap::onEvent(lv_event_t* event)
         {
             int32_t level = lv_slider_get_value(obj);
             int32_t levelMax = instance->Model.mapConv.GetLevelMax();
-            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d/%d", level + 1, levelMax + 1);
+            lv_label_set_text_fmt(instance->View.ui.zoom.labelInfo, "%d/%d", level, levelMax);
 
             lv_obj_clear_state(instance->View.ui.zoom.cont, LV_STATE_USER_1);
             instance->priv.lastContShowTime = lv_tick_get();
-            instance->MapUpdateWait(200);
+            instance->UpdateDelay(200);
         }
         else if (code == LV_EVENT_PRESSED)
         {

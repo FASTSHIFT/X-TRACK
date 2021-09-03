@@ -76,6 +76,10 @@ static int fbfd = 0;
  *      MACROS
  **********************/
 
+#if USE_BSD_FBDEV
+#define FBIOBLANK FBIO_BLANK
+#endif /* USE_BSD_FBDEV */
+
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
@@ -89,6 +93,12 @@ void fbdev_init(void)
         return;
     }
     printf("The framebuffer device was opened successfully.\n");
+
+    // Make sure that the display is on.
+    if (ioctl(fbfd, FBIOBLANK, FB_BLANK_UNBLANK) != 0) {
+        perror("ioctl(FBIOBLANK)");
+        return;
+    }
 
 #if USE_BSD_FBDEV
     struct fbtype fb;

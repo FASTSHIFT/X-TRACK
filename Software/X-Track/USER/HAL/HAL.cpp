@@ -67,5 +67,6 @@ void HAL::HAL_Update()
     __IntervalExecute(HAL_SensorUpdate(), 1000);
 #endif
     __IntervalExecute(GPS_Update(), 200);
+    __IntervalExecute(Memory_DumpInfo(), 1000);
     Power_EventMonitor();
 }

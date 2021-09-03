@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file lv_conf.h
  * Configuration file for v8.0.0-dev
  */
@@ -46,10 +46,16 @@
 #endif
 #if LV_MEM_CUSTOM == 0
 /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
-#  define LV_MEM_SIZE    (72U * 1024U)          /*[bytes]*/
+#  define LV_MEM_SIZE    (80U * 1024U)          /*[bytes]*/
 
 /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
 #  define LV_MEM_ADR          0     /*0: unused*/
+/*Instead of an address give a memory allocator that will be called to get a memory pool for LVGL. E.g. my_malloc*/
+#if LV_MEM_ADR == 0
+//#define LV_MEM_POOL_INCLUDE   your_alloc_library  /* Uncomment if using an external allocator*/
+//#define LV_MEM_POOL_ALLOC     your_alloc          /* Uncomment if using an external allocator*/
+#endif
+
 #else       /*LV_MEM_CUSTOM*/
 #  define LV_MEM_CUSTOM_INCLUDE <stdlib.h>   /*Header for the dynamic memory function*/
 #  define LV_MEM_CUSTOM_ALLOC     malloc
@@ -103,7 +109,14 @@
 /*Allow buffering some shadow calculation.
  *LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer, where shadow size is `shadow_width + radius`
  *Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost*/
-#define LV_SHADOW_CACHE_SIZE    50
+#define LV_SHADOW_CACHE_SIZE    8
+
+/* Set number of maximally cached circle data.
+ * The circumference of 1/4 circle are saved for anti-aliasing
+ * radius * 4 bytes are used per circle (the most often used radiuses are saved)
+ * 0: to disable caching */
+#define LV_CIRCLE_CACHE_SIZE    8
+
 #endif /*LV_DRAW_COMPLEX*/
 
 /*Default image cache size. Image caching keeps the images opened.
@@ -336,10 +349,10 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Enable handling large font and/or fonts with a lot of characters.
  *The limit depends on the font size, font face and bpp.
  *Compiler error will be triggered if a font needs it.*/
-#define LV_FONT_FMT_TXT_LARGE   1
+#define LV_FONT_FMT_TXT_LARGE   0
 
 /*Enables/disables support for compressed fonts.*/
-#define LV_USE_FONT_COMPRESSED  1
+#define LV_USE_FONT_COMPRESSED  0
 
 /*Enable subpixel rendering*/
 #define LV_USE_FONT_SUBPX       0
@@ -379,7 +392,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_TXT_COLOR_CMD "#"
 
 /*Support bidirectional texts. Allows mixing Left-to-Right and Right-to-Left texts.
- *The direction will be processed according to the Unicode Bidirectioanl Algorithm:
+ *The direction will be processed according to the Unicode Bidirectional Algorithm:
  *https://www.w3.org/International/articles/inline-bidi-markup/uba-basics*/
 #define LV_USE_BIDI         0
 #if LV_USE_BIDI
@@ -402,7 +415,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 #define LV_USE_ARC          1
 
-#define LV_USE_ANIMIMG	    1
+#define LV_USE_ANIMIMG      1
 
 #define LV_USE_BAR          1
 
@@ -421,8 +434,8 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 #define LV_USE_LABEL        1
 #if LV_USE_LABEL
-#  define LV_LABEL_TEXT_SELECTION         1   /*Enable selecting text of the label*/
-#  define LV_LABEL_LONG_TXT_HINT    1   /*Store some extra info in labels to speed up drawing of very long texts*/
+#  define LV_LABEL_TEXT_SELECTION         0   /*Enable selecting text of the label*/
+#  define LV_LABEL_LONG_TXT_HINT    0   /*Store some extra info in labels to speed up drawing of very long texts*/
 #endif
 
 #define LV_USE_LINE         1

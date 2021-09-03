@@ -89,13 +89,15 @@ typedef enum
 typedef struct
 {
     SysConfig_Cmd_t cmd;
+    float longitude;
+    float latitude;
+    int16_t timeZone;
     bool soundEnable;
-    double longitudeDefault;
-    double latitudeDefault;
     char language[8];
-    char mapDirPath[32];
-    bool WGS84;
-    char arrowTheme[8];
+    char arrowTheme[16];
+    char mapDirPath[16];
+    char mapExtName[8];
+    bool mapWGS84;
 } SysConfig_Info_t;
 
 /* TrackFilter */
@@ -109,8 +111,8 @@ typedef enum
 
 typedef struct
 {
-    float longitude;
-    float latitude;
+    int32_t x;
+    int32_t y;
 } TrackFilter_Point_t;
 
 typedef struct
@@ -118,6 +120,7 @@ typedef struct
     TrackFilter_Cmd_t cmd;
     TrackFilter_Point_t* points;
     uint32_t size;
+    uint8_t level;
     bool isActive;
 } TrackFilter_Info_t;
 

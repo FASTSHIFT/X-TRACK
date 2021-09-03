@@ -37,7 +37,7 @@ public:
     typedef enum
     {
         EVENT_START_LINE,
-        EVENT_WRITE_POINT,
+        EVENT_APPEND_POINT,
         EVENT_END_LINE,
         EVENT_RESET
     } EventCode_t;
@@ -48,6 +48,14 @@ public:
         uint32_t lineIndex;
         const Point_t* point;
     } Event_t;
+
+    typedef struct
+    {
+        int32_t x0;
+        int32_t y0;
+        int32_t x1;
+        int32_t y1;
+    } Area_t;
 
     typedef void (*Callback_t)(TrackLineFilter* filter, Event_t* event);
 
@@ -65,18 +73,16 @@ public:
         PushPoint(&point);
     }
     void PushPoint(const Point_t* point);
-
-    void SetClipArea(int32_t x0, int32_t x1, int32_t y0, int32_t y1);
-    void SetOutputPointCallback(Callback_t callback);
-
-private:
-    typedef struct
+    void PushPointForce(int32_t x, int32_t y)
     {
-        int32_t x0;
-        int32_t y0;
-        int32_t x1;
-        int32_t y1;
-    } Area_t;
+        Point_t point = { x, y };
+        PushPointForce(&point);
+    }
+    void PushPointForce(const Point_t* point);
+    void PushEnd();
+
+    void SetClipArea(const Area_t* area);
+    void SetOutputPointCallback(Callback_t callback);
 
 private:
     struct

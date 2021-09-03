@@ -22,11 +22,9 @@
  */
 #include "PageManager.h"
 #include "PM_Log.h"
+#include <stdlib.h>
 
-#define ABS(x) (((x)>0)?(x):-(x))
 #define CONSTRAIN(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
-#define MIN(a,b) ((a)<(b)?(a):(b))
-#define MAX(a,b) ((a)>(b)?(a):(b))
 
 /* The distance threshold to trigger the drag */
 #define PM_INDEV_DEF_DRAG_THROW    20
@@ -71,8 +69,8 @@ void PageManager::onRootDragEvent(lv_event_t* event)
     {
         lv_coord_t cur = animAttr.getter(root);
 
-        lv_coord_t max = MAX(animAttr.pop.exit.start, animAttr.pop.exit.end);
-        lv_coord_t min = MIN(animAttr.pop.exit.start, animAttr.pop.exit.end);
+        lv_coord_t max = std::max(animAttr.pop.exit.start, animAttr.pop.exit.end);
+        lv_coord_t min = std::min(animAttr.pop.exit.start, animAttr.pop.exit.end);
 
         lv_point_t offset;
         lv_indev_get_vect(lv_indev_get_act(), &offset);
@@ -115,7 +113,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
             PM_LOG_INFO("Root drag y_predict = %d", end);
         }
 
-        if (ABS(end) > ABS(offset_sum) / 2)
+        if (std::abs(end) > std::abs((int)offset_sum) / 2)
         {
             lv_async_call(onRootAsyncLeave, base);
         }

@@ -65,7 +65,8 @@ static void onLoad(Account* account)
     account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
 
     MapConv::SetDirPath(sysConfig.mapDirPath);
-    MapConv::SetCoordTransformEnable(!sysConfig.WGS84);
+    MapConv::SetExtName(sysConfig.mapExtName);
+    MapConv::SetCoordTransformEnable(!sysConfig.mapWGS84);
 
     int16_t levelMin = 19;
     int16_t levelMax = 0;
@@ -76,10 +77,14 @@ static void onLoad(Account* account)
     LV_LOG_USER(
         "Map path: %s, WGS84: %d, level min = %d, max = %d",
         sysConfig.mapDirPath,
-        sysConfig.WGS84,
+        sysConfig.mapWGS84,
         MapConv::GetLevelMin(),
         MapConv::GetLevelMax()
     );
+    LV_LOG_USER("Map ext name: *.%s", sysConfig.mapExtName);
+#if CONFIG_MAP_PNG_DECODE_ENABLE
+    LV_LOG_USER("Map PNG decoder enable");
+#endif
 }
 
 static void onNotify(Account* account, Storage_Info_t* info)

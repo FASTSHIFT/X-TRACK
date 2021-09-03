@@ -27,6 +27,7 @@
 #include <vector>
 #include "PingPongBuffer/PingPongBuffer.h"
 #include "lvgl/lvgl.h"
+#include "Utils/lv_allocator/lv_allocator.h"
 
 class DataCenter;
 
@@ -48,7 +49,7 @@ public:
     /* Error type enumeration */
     typedef enum
     {
-        ERROR_NONE                = 0,
+        ERROR_NONE                =  0,
         ERROR_UNKNOW              = -1,
         ERROR_SIZE_MISMATCH       = -2,
         ERROR_UNSUPPORTED_REQUEST = -3,
@@ -72,6 +73,8 @@ public:
     /* Event callback function pointer */
     typedef int (*EventCallback_t)(Account* account, EventParam_t* param);
 
+    typedef std::vector<Account*, lv_allocator<Account*>> AccountVector_t;
+
 public:
     Account(
         const char* id,
@@ -92,16 +95,16 @@ public:
     void SetEventCallback(EventCallback_t callback);
     void SetTimerPeriod(uint32_t period);
     void SetTimerEnable(bool en);
-    uint32_t GetPublisherSize();
-    uint32_t GetSubscribeSize();
+    uint32_t GetPublishersSize();
+    uint32_t GetSubscribersSize();
 
 public:
     const char* ID;      /* Unique account ID */
     DataCenter* Center;  /* Pointer to the data center */
     void* UserData;
 
-    std::vector<Account*> publishers;  /* Followed publishers */
-    std::vector<Account*> subscribers; /* Followed subscribers */
+    AccountVector_t publishers;  /* Followed publishers */
+    AccountVector_t subscribers; /* Followed subscribers */
 
     struct
     {

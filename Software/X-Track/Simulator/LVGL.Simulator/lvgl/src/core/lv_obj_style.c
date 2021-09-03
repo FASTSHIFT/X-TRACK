@@ -457,6 +457,15 @@ lv_part_t lv_obj_style_get_selector_part(lv_style_selector_t selector)
     return selector & 0xFF0000;
 }
 
+
+lv_text_align_t lv_obj_calculate_style_text_align(const struct _lv_obj_t * obj, lv_part_t part, const char * txt)
+{
+    lv_text_align_t align = lv_obj_get_style_text_align(obj, part);
+    lv_base_dir_t base_dir = lv_obj_get_style_base_dir(obj, part);
+    lv_bidi_calculate_align(&align, &base_dir, txt);
+    return align;
+}
+
 /**********************
  *   STATIC FUNCTIONS
  **********************/
@@ -623,7 +632,7 @@ static void report_style_change_core(void * style, lv_obj_t * obj)
 
     uint32_t child_cnt = lv_obj_get_child_cnt(obj);
     for(i = 0; i < child_cnt; i++) {
-        report_style_change_core(style, lv_obj_get_child(obj, i));
+        report_style_change_core(style, obj->spec_attr->children[i]);
     }
 }
 
@@ -637,7 +646,7 @@ static void refresh_children_style(lv_obj_t * obj)
     uint32_t i;
     uint32_t child_cnt = lv_obj_get_child_cnt(obj);
     for(i = 0; i < child_cnt; i++) {
-        lv_obj_t * child = lv_obj_get_child(obj, i);
+        lv_obj_t * child = obj->spec_attr->children[i];
         lv_obj_invalidate(child);
         lv_event_send(child, LV_EVENT_STYLE_CHANGED, NULL);
         lv_obj_invalidate(child);

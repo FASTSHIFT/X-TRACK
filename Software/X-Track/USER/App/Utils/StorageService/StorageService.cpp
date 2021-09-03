@@ -25,7 +25,7 @@
 #include "lvgl/lvgl.h"
 #include <algorithm>
 
-#define JSON_BUFFER_SIZE 1024
+#define JSON_BUFFER_SIZE 2048
 
 #define VALUE_TO_DOC(type)\
 do{\
@@ -252,7 +252,7 @@ bool StorageService::SaveFile()
     }
 
     // Serialize JSON to file
-    if (serializeJsonPretty(doc, file) == 0)
+    if (!serializeJsonPretty(doc, file))
     {
         LV_LOG_USER("Failed to write to file");
         return false;

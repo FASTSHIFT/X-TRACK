@@ -22,8 +22,8 @@
  */
 #include "TrackPointFilter.h"
 #include <string.h>
+#include <cmath> 
 
-#define ABS(x)   (((x)>0)?(x):-(x))
 #define SQ(x)    ((x)*(x))
 #define FLOAT_0  0.00001
 
@@ -82,12 +82,17 @@ bool TrackPointFilter::PushPoint(const Point_t* point)
             LOG_PRINT("<---> offset detect!");
 
             retval = true;
+
+            if (priv.secondFilterMode)
+            {
+                OutputPoint(&priv.tailPoint);
+            }
+
             OutputPoint(&priv.prePoint);
             if (!GetLine(&priv.refLine, &priv.prePoint, point))
             {
                 return false;
             }
-
         }
         else
         {
@@ -141,6 +146,12 @@ bool TrackPointFilter::PushPoint(const Point_t* point)
                 DumpPoint("p2", point);
 
                 retval = true;
+
+                if (priv.secondFilterMode)
+                {
+                    OutputPoint(&priv.tailPoint);
+                }
+
                 OutputPoint(&priv.prePoint);
                 if (!GetLine(&priv.refLine, &priv.prePoint, point))
                 {
@@ -173,6 +184,11 @@ void TrackPointFilter::SetOutputPointCallback(Callback_t callback)
     priv.outputCallback = callback;
 }
 
+void TrackPointFilter::SetSecondFilterModeEnable(bool en)
+{
+    priv.secondFilterMode = en;
+}
+
 void TrackPointFilter::OutputPoint(const Point_t* point)
 {
     if (priv.outputCallback)
@@ -193,8 +209,8 @@ bool TrackPointFilter::GetLine(Line_t* line, const Point_t* point0, const Point_
     double y0 = point0->y;
     double y1 = point1->y;
 
-    double x_diff_abs = ABS(x0 - x1);
-    double y_diff_abs = ABS(y0 - y1);
+    double x_diff_abs = std::abs(x0 - x1);
+    double y_diff_abs = std::abs(y0 - y1);
 
     double a = 0;
     double b = 0;
@@ -254,7 +270,7 @@ void TrackPointFilter::GetVerticalLine(Line_t* verLine, const Line_t* oriLine, c
 double TrackPointFilter::GetOffset(const Line_t* line, const Point_t* point)
 {
     double temp = line->a * point->x + line->b * point->y + line->c;
-    double offset = ABS(temp) * QuickSort(SQ(line->a) + SQ(line->b));
+    double offset = std::abs(temp) * QuickSort(SQ(line->a) + SQ(line->b));
     return offset;
 }
 
@@ -275,7 +291,7 @@ bool TrackPointFilter::GetIsOnSameSide(const Line_t* line, const Point_t* point0
 bool TrackPointFilter::GetIsPointInLine(const Line_t* line, const Point_t* point)
 {
     double result = line->a * point->x + line->b * point->y + line->c;
-    return ABS(result) < FLOAT_0;
+    return std::abs(result) < FLOAT_0;
 }
 
 double TrackPointFilter::QuickSort(double num)

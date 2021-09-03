@@ -117,19 +117,16 @@ static void * fs_open (lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
         oflag = O_RDWR | O_CREAT;
     }
 
-    file_t* file_p = (file_t*)lv_mem_alloc(sizeof(file_t));
+    file_t* file_p = new file_t;
 
     if(file_p == NULL)
     {
         return NULL;
     }
 
-    file_t file;
-    *file_p = file;
-
     if(!file_p->open(path, oflag))
     {
-        lv_mem_free(file_p);
+        delete file_p;
         file_p = NULL;
     }
 
@@ -147,9 +144,7 @@ static void * fs_open (lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
 static lv_fs_res_t fs_close (lv_fs_drv_t * drv, void * file_p)
 {
     lv_fs_res_t res = SD_FILE(file_p)->close() ? LV_FS_RES_OK : LV_FS_RES_FS_ERR;
-//    SD_FILE(file_p)->~SdFile();
-    lv_mem_free(file_p);
-
+    delete SD_FILE(file_p);
     return res;
 }
 
@@ -254,19 +249,16 @@ static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p)
  */
 static void * fs_dir_open(lv_fs_drv_t * drv, const char * path)
 {
-    rddir_t * dir_p = (rddir_t *)lv_mem_alloc(sizeof(rddir_t));
+    rddir_t * dir_p = new rddir_t;
 
     if(dir_p == NULL)
     {
         return NULL;
     }
 
-    rddir_t dir;
-    *dir_p = dir;
-
     if(!dir_p->open(path))
     {
-        lv_mem_free(dir_p);
+        delete dir_p;
         dir_p = NULL;
     }
 
@@ -323,8 +315,6 @@ static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn)
 static lv_fs_res_t fs_dir_close (lv_fs_drv_t * drv, void * dir_p)
 {
     lv_res_t res = SD_DIR(dir_p)->close() ? LV_FS_RES_OK : LV_FS_RES_FS_ERR;
-
-    lv_mem_free(dir_p);
-
+    delete SD_DIR(dir_p);
     return res;
 }

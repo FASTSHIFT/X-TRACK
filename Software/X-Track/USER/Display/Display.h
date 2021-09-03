@@ -23,7 +23,7 @@
 #ifndef __DISPLAY_H
 #define __DISPLAY_H
 
-#include "Config/Config.h"
+#include "HAL/HAL_Config.h"
 #include "lvgl/lvgl.h"
 #include "lv_port/lv_port_indev.h"
 #include "Adafruit_ST7789/Adafruit_ST7789.h"

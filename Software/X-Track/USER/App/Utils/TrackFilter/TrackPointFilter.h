@@ -52,6 +52,7 @@ public:
     void PushEnd();
     void SetOffsetThreshold(double offset);
     void SetOutputPointCallback(Callback_t callback);
+    void SetSecondFilterModeEnable(bool en);
     void GetCounts(uint32_t* sum, uint32_t* output)
     {
         *sum = priv.pointCnt;
@@ -76,6 +77,7 @@ private:
         Line_t refLine;
         uint32_t pointCnt;
         uint32_t pointOutputCnt;
+        bool secondFilterMode;
     } priv;
 
 private:

@@ -76,7 +76,7 @@ static void onPublish(Account* account, HAL::GPS_Info_t* gps)
 
     if (pointFilter.PushPoint(mapX, mapY))
     {
-        TrackFilter_Point_t point = { (float)gps->longitude, (float)gps->latitude };
+        const TrackFilter_Point_t point = { mapX, mapY };
         veclocationPoints->push_back(point);
     }
 }
@@ -106,8 +106,9 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     case Account::EVENT_SUB_PULL:
     {
         TrackFilter_Info_t* info = (TrackFilter_Info_t*)param->data_p;
-        info->points = veclocationPoints->size() ? &(*veclocationPoints)[0] : nullptr;
+        info->points = veclocationPoints->size() ? &((*veclocationPoints)[0]) : nullptr;
         info->size = veclocationPoints->size();
+        info->level = (uint8_t)mapConv.GetLevel();
         info->isActive = filterStarted;
         break;
     }

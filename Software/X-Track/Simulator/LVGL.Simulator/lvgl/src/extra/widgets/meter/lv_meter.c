@@ -414,7 +414,7 @@ static void draw_ticks_and_labels(lv_obj_t * obj, const lv_area_t * clip_area, c
         lv_draw_mask_radius_init(&outer_mask, &area_outer, LV_RADIUS_CIRCLE, false);
         int16_t outer_mask_id = lv_draw_mask_add(&outer_mask, NULL);
 
-        int16_t inner_act_mask_id = -1; /*Will be added later*/
+        int16_t inner_act_mask_id = LV_MASK_ID_INV; /*Will be added later*/
 
         uint32_t minor_cnt = scale->tick_major_nth ? scale->tick_major_nth - 1 : 0xFFFF;
         for(i = 0; i < scale->tick_cnt; i++) {
@@ -530,6 +530,9 @@ static void draw_ticks_and_labels(lv_obj_t * obj, const lv_area_t * clip_area, c
             line_dsc.width = line_width_ori;
 
         }
+        lv_draw_mask_free_param(&inner_minor_mask);
+        lv_draw_mask_free_param(&inner_major_mask);
+        lv_draw_mask_free_param(&outer_mask);
         lv_draw_mask_remove_id(outer_mask_id);
     }
 }
@@ -627,6 +630,7 @@ static void inv_arc(lv_obj_t * obj, lv_meter_indicator_t * indic, int32_t old_va
 
     int32_t start_angle = lv_map(old_value, scale->min, scale->max, scale->rotation, scale->angle_range + scale->rotation);
     int32_t end_angle = lv_map(new_value, scale->min, scale->max, scale->rotation, scale->angle_range + scale->rotation);
+
     lv_area_t a;
     lv_draw_arc_get_area(scale_center.x, scale_center.y, r_out, LV_MIN(start_angle, end_angle), LV_MAX(start_angle, end_angle), indic->type_data.arc.width, rounded, &a);
     lv_obj_invalidate_area(obj, &a);

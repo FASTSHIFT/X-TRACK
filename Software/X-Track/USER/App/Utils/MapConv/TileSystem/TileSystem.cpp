@@ -6,22 +6,26 @@
 
 using namespace Microsoft_MapPoint;
 
-TileSystem::TileSystem()
-    : EarthRadius(6378137)
-    , MinLatitude(-85.05112878)
-    , MaxLatitude(85.05112878)
-    , MinLongitude(-180)
-    , MaxLongitude(180)
-    , MATH_PI(3.1415926535897932384626433832795)
-{
+static const double EarthRadius = 6378137;
+static const double MinLatitude = -85.05112878;
+static const double MaxLatitude = 85.05112878;
+static const double MinLongitude = -180;
+static const double MaxLongitude = 180;
+static const double MATH_PI = 3.1415926535897932384626433832795;
 
+/// <summary>  
+/// Clips a number to the specified minimum and maximum values.  
+/// </summary>  
+/// <param name="n">The number to clip.</param>  
+/// <param name="minValue">Minimum allowable value.</param>  
+/// <param name="maxValue">Maximum allowable value.</param>  
+/// <returns>The clipped value.</returns>  
+static double Clip(double n, double minValue, double maxValue)
+{
+    return std::min(std::max(n, minValue), maxValue);
 }
 
-TileSystem::~TileSystem()
-{
 
-}
- 
 uint32_t TileSystem::MapSize(int levelOfDetail)
 {
     return (uint32_t)256 << levelOfDetail;
@@ -134,9 +138,3 @@ void TileSystem::QuadKeyToTileXY(const char* quadKey, int* tileX, int* tileY, in
         }
     }
 }
-
-double TileSystem::Clip(double n, double minValue, double maxValue)
-{
-    return std::min(std::max(n, minValue), maxValue);
-}
-
