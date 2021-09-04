@@ -242,7 +242,7 @@
 * 2.调整lvgl内存池大小，LV_MEM_SIZE 72K -> 80K
 * 3.更新lv_drivers
 * 4.更新lvgl
-* 5.DataCneter使用lvgl内存池
+* 5.DataCenter使用lvgl内存池
 * 6.使用std::abs()替代宏实现的ABS()
 * 7.更新DP_Storage
 * 8.更新DP_SysConfig，调整结构体成员，添加timeZone和mapExtName，在关机时保存位置
