@@ -96,7 +96,7 @@ PageBase* PageManager::Pop()
         top->priv.IsCached = false;
     }
 
-    PM_LOG_INFO("Page(%s) pop << [Screen]  (stash = 0x%p)", top->Name, stash);
+    PM_LOG_INFO("Page(%s) pop << [Screen]", top->Name);
 
     /* Page popup */
     PageStack.pop();
@@ -286,7 +286,7 @@ bool PageManager::SwitchAnimStateCheck()
         PM_LOG_WARN(
             "Page switch busy[AnimState.IsSwitchReq = %d,"
             "AnimState.IsBusy = %d],"
-            "reqire ignored",
+            "request ignored",
             AnimState.IsSwitchReq,
             AnimState.IsBusy
         );

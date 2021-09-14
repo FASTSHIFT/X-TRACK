@@ -2520,26 +2520,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Display</GroupName>
-          <Files>
-            <File>
-              <FileName>Display.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\Display\Display.h</FilePath>
-            </File>
-            <File>
-              <FileName>Display.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\Display\Display.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>DisplayFault.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\Display\DisplayFault.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>HAL</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -2612,14 +2592,14 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>HAL.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\HAL\HAL.h</FilePath>
-            </File>
-            <File>
               <FileName>HAL_Config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\HAL\HAL_Config.h</FilePath>
+            </File>
+            <File>
+              <FileName>HAL.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\HAL\HAL.h</FilePath>
             </File>
             <File>
               <FileName>HAL.cpp</FileName>
@@ -2627,14 +2607,39 @@
               <FilePath>..\USER\HAL\HAL.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_Backlight.cpp</FileName>
+              <FileName>HAL_Audio.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Backlight.cpp</FilePath>
+              <FilePath>..\USER\HAL\HAL_Audio.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_Clock.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_Clock.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Backlight.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Backlight.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Buzz.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Buzz.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Display.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Display.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Encoder.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Encoder.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_FaultHandle.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_FaultHandle.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_GPS.cpp</FileName>
@@ -2657,6 +2662,11 @@
               <FilePath>..\USER\HAL\HAL_MAG.cpp</FilePath>
             </File>
             <File>
+              <FileName>HAL_Memory.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Memory.cpp</FilePath>
+            </File>
+            <File>
               <FileName>HAL_Power.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_Power.cpp</FilePath>
@@ -2665,26 +2675,6 @@
               <FileName>HAL_SD_CARD.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_SD_CARD.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_Buzz.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Buzz.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_Encoder.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Encoder.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_Audio.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Audio.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_Memory.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Memory.cpp</FilePath>
             </File>
             <File>
               <FileName>rt_sys.cpp</FileName>
@@ -3376,19 +3366,29 @@
           <GroupName>lv_port</GroupName>
           <Files>
             <File>
+              <FileName>lv_port.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\lv_port\lv_port.h</FilePath>
+            </File>
+            <File>
+              <FileName>lv_port.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\lv_port\lv_port.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lv_port_fs_sdfat.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\lv_port\lv_port_fs_sdfat.cpp</FilePath>
+            </File>
+            <File>
               <FileName>lv_port_disp.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\Display\lv_port\lv_port_disp.cpp</FilePath>
+              <FilePath>..\USER\lv_port\lv_port_disp.cpp</FilePath>
             </File>
             <File>
               <FileName>lv_port_indev.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\Display\lv_port\lv_port_indev.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>lv_fs_sdfat.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\Display\lv_port\lv_fs_sdfat.cpp</FilePath>
+              <FilePath>..\USER\lv_port\lv_port_indev.cpp</FilePath>
             </File>
           </Files>
         </Group>

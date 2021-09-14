@@ -5,14 +5,12 @@ static TonePlayer player;
 
 #include "App/Common/Music/MusicCode.h"
 
-static void Tone_Callback(uint32_t freq, uint16_t volume)
-{
-    HAL::Buzz_Tone(freq);
-}
-
 void HAL::Audio_Init()
 {
-    player.SetCallback(Tone_Callback);
+    player.SetCallback([](uint32_t freq, uint16_t volume)
+    {
+        HAL::Buzz_Tone(freq);
+    });
 }
 
 void HAL::Audio_Update()

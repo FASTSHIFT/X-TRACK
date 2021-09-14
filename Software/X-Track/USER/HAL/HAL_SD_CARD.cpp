@@ -5,7 +5,7 @@
 static SdFat SD(&CONFIG_SD_SPI);
 
 static bool SD_IsReady = false;
-static float SD_CardSizeMB = 0;
+static uint32_t SD_CardSize = 0;
 
 static HAL::SD_CallbackFunction_t SD_EventCallback = nullptr;
 
@@ -50,19 +50,24 @@ bool HAL::SD_Init()
         retval = false;
     }
 
+    Serial.print("SD: init...");
     retval = SD.begin(CONFIG_SD_CS_PIN, SD_SCK_MHZ(30));
 
     if(retval)
     {
-#define CONV_MB(size) (size*0.000512f)
-        SD_CardSizeMB = CONV_MB(SD.card()->cardSize());
+
+        SD_CardSize = SD.card()->cardSize();
         SdFile::dateTimeCallback(SD_GetDateTime);
         SD_CheckDir(CONFIG_TRACK_RECORD_FILE_DIR_NAME);
-        Serial.println("SD: Init success");
+        Serial.printf(
+            "success, Type: %s, Size: %0.2f GB\r\n",
+            SD_GetTypeName(),
+            SD_GetCardSizeMB() / 1024.0f
+        );
     }
     else
     {
-        Serial.println("SD: CARD ERROR");
+        Serial.println("failed");
     }
 
     SD_IsReady = retval;
@@ -77,7 +82,39 @@ bool HAL::SD_GetReady()
 
 float HAL::SD_GetCardSizeMB()
 {
-    return SD_CardSizeMB;
+#   define CONV_MB(size) (size*0.000512f)
+    return CONV_MB(SD_CardSize);
+}
+
+const char* HAL::SD_GetTypeName()
+{
+    const char* type = "Unknown";
+
+    if(!SD_CardSize)
+    {
+        goto failed;
+    }
+
+    switch (SD.card()->type())
+    {
+    case SD_CARD_TYPE_SD1:
+        type = "SD1";
+        break;
+
+    case SD_CARD_TYPE_SD2:
+        type = "SD2";
+        break;
+
+    case SD_CARD_TYPE_SDHC:
+        type = (SD_CardSize < 70000000) ? "SDHC" : "SDXC";
+        break;
+
+    default:
+        break;
+    }
+
+failed:
+    return type;
 }
 
 static void SD_Check(bool isInsert)
@@ -100,6 +137,7 @@ static void SD_Check(bool isInsert)
         if(SD_EventCallback)
         {
             SD_EventCallback(false);
+            SD_CardSize = 0;
         }
 
         HAL::Audio_PlayMusic("DevicePullout");

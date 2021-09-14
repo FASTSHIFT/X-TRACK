@@ -7,14 +7,13 @@
 
 using namespace DataProc;
 
-static StorageService storageService(CONFIG_SYSTEM_SAVE_FILE_PATH);
+static StorageService storageService(CONFIG_SYSTEM_SAVE_FILE_PATH, 4096);
 
 static void MapConvGetRange(const char* dirName, int16_t* min, int16_t* max)
 {
     lv_fs_dir_t dir;
-    lv_fs_res_t res = lv_fs_dir_open(&dir, dirName);
 
-    if (res == LV_FS_RES_OK)
+    if (lv_fs_dir_open(&dir, dirName) == LV_FS_RES_OK)
     {
         LV_LOG_USER("%s open success", dirName);
 
@@ -24,8 +23,8 @@ static void MapConvGetRange(const char* dirName, int16_t* min, int16_t* max)
         char name[128];
         while (1)
         {
-            lv_fs_dir_read(&dir, name);
-            if (name[0] == '\0')
+            lv_fs_res_t res = lv_fs_dir_read(&dir, name);
+            if (name[0] == '\0' || res != LV_FS_RES_OK)
             {
                 break;
             }
@@ -53,7 +52,7 @@ static void MapConvGetRange(const char* dirName, int16_t* min, int16_t* max)
     }
     else
     {
-        LV_LOG_USER("%s open faild", dirName);
+        LV_LOG_ERROR("%s open faild", dirName);
     }
 }
 
@@ -126,6 +125,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         info->isDetect = HAL::SD_GetReady();
         info->totalSizeMB = HAL::SD_GetCardSizeMB();
         info->freeSizeMB = 0.0f;
+        info->type = HAL::SD_GetTypeName();
         return 0;
     }
 

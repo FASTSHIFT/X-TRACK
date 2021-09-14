@@ -15,10 +15,7 @@ namespace DataProc
 DataCenter* Center();
 uint32_t    GetTick();
 uint32_t    GetTickElaps(uint32_t prevTick);
-const char* ConvTime(uint64_t ms, char* buf, uint16_t len);
-
-void IMU_Commit(HAL::IMU_Info_t* info);
-void MAG_Commit(HAL::MAG_Info_t* info);
+const char* MakeTimeString(uint64_t ms, char* buf, uint16_t len);
 
 }
 

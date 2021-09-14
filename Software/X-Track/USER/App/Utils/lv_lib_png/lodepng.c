@@ -81,7 +81,7 @@ static void* lodepng_malloc(size_t size)
 #ifdef LODEPNG_MAX_ALLOC
     if(size > LODEPNG_MAX_ALLOC) return 0;
 #endif
-    return malloc(size);
+    return lv_mem_alloc(size);
 }
 
 /* NOTE: when realloc returns NULL, it leaves the original memory untouched */
@@ -90,12 +90,12 @@ static void* lodepng_realloc(void* ptr, size_t new_size)
 #ifdef LODEPNG_MAX_ALLOC
     if(new_size > LODEPNG_MAX_ALLOC) return 0;
 #endif
-    return realloc(ptr, new_size);
+    return lv_mem_realloc(ptr, new_size);
 }
 
 static void lodepng_free(void* ptr)
 {
-    free(ptr);
+    lv_mem_free(ptr);
 }
 #else /*LODEPNG_COMPILE_ALLOCATORS*/
 /* TODO: support giving additional void* payload to the custom allocators */

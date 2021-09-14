@@ -5,9 +5,9 @@ typedef struct _lv_monkey{
     lv_indev_drv_t indev_drv;
     lv_indev_data_t indev_data;
     lv_timer_t * timer;
-    uint32_t timer_interval_min;
-    uint32_t timer_interval_max;
     lv_group_t * group;
+    lv_monkey_range_t time;
+    lv_monkey_range_t input_range;
 }lv_monkey_t;
 
 static const lv_key_t lv_key_map[] = {
@@ -35,7 +35,7 @@ static void lv_monkey_read_cb(lv_indev_drv_t * indev_drv, lv_indev_data_t * data
     data->state = monkey->indev_data.state;
 }
 
-static int32_t random(int32_t howsmall, int32_t howbig)
+static int32_t lv_monkey_random(int32_t howsmall, int32_t howbig)
 {
     if (howsmall >= howbig)
     {
@@ -58,17 +58,17 @@ static void lv_monkey_timer_cb(lv_timer_t * timer)
     switch (monkey->indev_drv.type)
     {
     case LV_INDEV_TYPE_POINTER:
-        data->point.x = (lv_coord_t)random(0, hor_res);
-        data->point.y = (lv_coord_t)random(0, ver_res);
+        data->point.x = (lv_coord_t)lv_monkey_random(0, hor_res);
+        data->point.y = (lv_coord_t)lv_monkey_random(0, ver_res);
         break;
     case LV_INDEV_TYPE_ENCODER:
-        data->enc_diff = (lv_coord_t)random(-5, 5);
+        data->enc_diff = (lv_coord_t)lv_monkey_random(monkey->input_range.min, monkey->input_range.max);
         break;
     case LV_INDEV_TYPE_BUTTON:
-        data->btn_id = (uint32_t)random(0, 6);
+        data->btn_id = (uint32_t)lv_monkey_random(0, monkey->input_range.max);
         break;
     case LV_INDEV_TYPE_KEYPAD: {
-        int index = random(0, sizeof(lv_key_map) / sizeof(lv_key_t));
+        int index = lv_monkey_random(0, sizeof(lv_key_map) / sizeof(lv_key_t));
         data->key = lv_key_map[index];
         break;
     } 
@@ -76,33 +76,41 @@ static void lv_monkey_timer_cb(lv_timer_t * timer)
         break;
     }
 
-    data->state = random(0, 100) < 50 ? LV_INDEV_STATE_RELEASED : LV_INDEV_STATE_PRESSED;
+    data->state = lv_monkey_random(0, 100) < 50 ? LV_INDEV_STATE_RELEASED : LV_INDEV_STATE_PRESSED;
 
-    lv_timer_set_period(monkey->timer, random(monkey->timer_interval_min, monkey->timer_interval_max));
+    lv_timer_set_period(monkey->timer, lv_monkey_random(monkey->time.min, monkey->time.max));
 }
 
-lv_monkey_t * lv_monkey_create(lv_indev_type_t type, uint32_t interval_min, uint32_t interval_max)
+void lv_monkey_config_init(lv_monkey_config_t * config)
+{
+    config->type = LV_INDEV_TYPE_POINTER;
+    config->time.min = 100;
+    config->time.max = 1000;
+    config->input_range.min = 0;
+    config->input_range.max = 0;
+}
+
+lv_monkey_t * lv_monkey_create(const lv_monkey_config_t * config)
 {
     lv_monkey_t * monkey = (lv_monkey_t *)lv_mem_alloc(sizeof(lv_monkey_t));
-    if (monkey == NULL)
-    {
-        LV_LOG_ERROR("monkey alloc failed");
-        return NULL;
-    }
+    LV_ASSERT_MALLOC(monkey);
 
     lv_memset_00(monkey, sizeof(lv_monkey_t));
 
+    monkey->time = config->time;
+    monkey->input_range = config->input_range;
+
     lv_indev_drv_t * drv = &monkey->indev_drv;
     lv_indev_drv_init(drv);
-    drv->type = type;
+    drv->type = config->type;
     drv->read_cb = lv_monkey_read_cb;
     drv->user_data = monkey;
 
-    monkey->timer = lv_timer_create(lv_monkey_timer_cb, 1000, monkey);
+    monkey->timer = lv_timer_create(lv_monkey_timer_cb, monkey->time.min, monkey);
 
     lv_indev_t * indev = lv_indev_drv_register(drv);
 
-    if (type == LV_INDEV_TYPE_ENCODER || type == LV_INDEV_TYPE_KEYPAD)
+    if (config->type == LV_INDEV_TYPE_ENCODER || config->type == LV_INDEV_TYPE_KEYPAD)
     {
         lv_group_t * group = lv_group_create();
         lv_indev_set_group(indev, group);

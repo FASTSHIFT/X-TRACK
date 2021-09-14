@@ -33,7 +33,7 @@
 extern const int CSTACK_BLOCK_START(CSTACK_BLOCK_NAME);
 extern const int CSTACK_BLOCK_END(CSTACK_BLOCK_NAME);
 
-uint32_t StackInfo_GetSize(void)
+uint32_t StackInfo_GetTotalSize(void)
 {
     uint32_t stackBaseAddr = (uint32_t)&CSTACK_BLOCK_START(CSTACK_BLOCK_NAME);
     uint32_t stackSize = (uint32_t)&CSTACK_BLOCK_END(CSTACK_BLOCK_NAME) - stackBaseAddr;
@@ -44,7 +44,7 @@ uint32_t StackInfo_GetMaxUsageSize(void)
 {
     static uint32_t stackMaxUsage = 0;
     uint32_t stackBaseAddr = (uint32_t)&CSTACK_BLOCK_START(CSTACK_BLOCK_NAME);
-    uint32_t stackSize = StackInfo_GetSize();
+    uint32_t stackSize = StackInfo_GetTotalSize();
 
     volatile uint32_t* stackBase = (uint32_t*)stackBaseAddr;
 
@@ -70,10 +70,10 @@ uint32_t StackInfo_GetMaxUsageSize(void)
 
 uint32_t StackInfo_GetMinFreeSize(void)
 {
-    return StackInfo_GetSize() - StackInfo_GetMaxUsageSize();
+    return StackInfo_GetTotalSize() - StackInfo_GetMaxUsageSize();
 }
 
 float StackInfo_GetMaxUtilization(void)
 {
-    return (float)StackInfo_GetMaxUsageSize() / StackInfo_GetSize();
+    return (float)StackInfo_GetMaxUsageSize() / StackInfo_GetTotalSize();
 }

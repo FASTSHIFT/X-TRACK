@@ -5,6 +5,7 @@
     <RootNamespace>LVGL</RootNamespace>
     <MileProjectType>ConsoleApplication</MileProjectType>
     <MileProjectManifestFile>LVGL.Simulator.manifest</MileProjectManifestFile>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <EnableASAN>true</EnableASAN>
@@ -108,7 +109,6 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX\GPX.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_allocator\lv_allocator.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
@@ -139,6 +139,7 @@
     <ClInclude Include="..\..\USER\App\Utils\WString\WCharacter.h" />
     <ClInclude Include="..\..\USER\App\Utils\WString\WString.h" />
     <ClInclude Include="..\..\USER\App\Version.h" />
+    <ClInclude Include="HAL\HAL.h" />
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h" />
     <ClInclude Include="lvgl\examples\layouts\flex\lv_example_flex.h" />
     <ClInclude Include="lvgl\examples\layouts\grid\lv_example_grid.h" />
@@ -278,16 +279,6 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SysConfig.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TrackFilter.cpp" />
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TzConv.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Buzz.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Clock.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Encoder.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_MAG.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Power.cpp" />
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_SD_CARD.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\AppFactory.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\Dialplate\Dialplate.cpp" />
     <ClCompile Include="..\..\USER\App\Pages\Dialplate\DialplateModel.cpp" />
@@ -349,6 +340,7 @@
     <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\new\new.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Base.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Drag.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Router.cpp" />
@@ -366,6 +358,16 @@
     <ClCompile Include="..\..\USER\App\Utils\TrackFilter\TrackPointFilter.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\WString\dtostrf.c" />
     <ClCompile Include="..\..\USER\App\Utils\WString\WString.cpp" />
+    <ClCompile Include="HAL\HAL.cpp" />
+    <ClCompile Include="HAL\HAL_Audio.cpp" />
+    <ClCompile Include="HAL\HAL_Buzz.cpp" />
+    <ClCompile Include="HAL\HAL_Clock.cpp" />
+    <ClCompile Include="HAL\HAL_Encoder.cpp" />
+    <ClCompile Include="HAL\HAL_GPS.cpp" />
+    <ClCompile Include="HAL\HAL_IMU.cpp" />
+    <ClCompile Include="HAL\HAL_MAG.cpp" />
+    <ClCompile Include="HAL\HAL_Power.cpp" />
+    <ClCompile Include="HAL\HAL_SD_CARD.cpp" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_mid.c" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_right.c" />

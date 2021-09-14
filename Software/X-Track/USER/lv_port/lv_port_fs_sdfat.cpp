@@ -1,4 +1,5 @@
-#include "../Display.h"
+#include "lv_port.h"
+#include "lvgl/lvgl.h"
 #include "SdFat.h"
 #include "HAL/HAL.h"
 
@@ -47,7 +48,7 @@ static lv_fs_res_t fs_dir_close(lv_fs_drv_t * drv, void * dir_p);
  *   GLOBAL FUNCTIONS
  **********************/
 
-void lv_fs_if_init(void)
+void lv_port_fs_init(void)
 {
     /*----------------------------------------------------
      * Initialize your storage device and File System

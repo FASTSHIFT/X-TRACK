@@ -1,4 +1,4 @@
-﻿/**
+/**
   * Reference link: http://www.josuttis.com/cppcode/myalloc.hpp.html
   * The following code example is taken from the book
   * The C++ Standard Library - A Tutorial and Reference
@@ -69,6 +69,11 @@ public:
     // allocate but don't initialize num elements of type T
     pointer allocate(size_type num, const void* = 0)
     {
+        if(!lv_is_initialized())
+        {
+            lv_init();
+        }
+        
         // print message and allocate memory with global new
         //
         //std::cerr << "allocate " << num << " element(s)" << " of size " << sizeof(T) << std::endl;

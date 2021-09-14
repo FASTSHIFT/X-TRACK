@@ -1,4 +1,4 @@
-#include "HAL.h"
+﻿#include "HAL.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -9,7 +9,7 @@
 #include "Utils/GPX_Parser/GPX_Parser.h"
 #include "Config/Config.h"
 
-#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRACK_2021-05-16_16-26-38.gpx"
+#define CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH    "/TRK_20210801_203324.gpx"
 
 #define PI 3.1415926535897932384626433832795f
 #define HALF_PI 1.5707963267948966192313216916398f
@@ -134,8 +134,6 @@ void HAL::GPS_Init()
 
     if (success)
     {
-        GPS_Update();
-        GPS_Update();
         lv_timer_create(
             [](lv_timer_t* timer) {
                 GPS_Update();
@@ -174,13 +172,17 @@ void HAL::GPS_Update()
 
     GPX_Parser::Point_t point;
     memset(&point, 0, sizeof(point));
-    if (gpxParser.ReadNext(&point))
+
+    int parserFlag = gpxParser.ReadNext(&point);
+
+    if (parserFlag & GPX_Parser::PARSER_FLAG_LAT && parserFlag & GPX_Parser::PARSER_FLAG_LNG)
     {
         if (!isReset)
         {
             gpsInfo.longitude = point.longitude;
             gpsInfo.latitude = point.latitude;
             gpsInfo.altitude = point.altitude;
+
             prePoint = point;
             isReset = true;
             return;
@@ -189,14 +191,14 @@ void HAL::GPS_Update()
         double distance = GPS_GetDistanceOffset(&gpsInfo, point.longitude, point.latitude);
         double diffTime = CONFIG_GPS_REFR_PERIOD / 1000.0;
 
-        if (point.time.year)
+        if (parserFlag & GPX_Parser::PARSER_FLAG_TIME)
         {
-            diffTime = Clock_GetDiffTime(&point.time, &prePoint.time) * 3.6;
+            diffTime = Clock_GetDiffTime(&point.time, &prePoint.time);
         }
 
         if (std::abs(diffTime) >= 0.0001)
         {
-            gpsInfo.speed = (float)(distance / diffTime);
+            gpsInfo.speed = (float)(distance / diffTime) * 3.6f;
         }
 
         gpsInfo.course = (float)courseTo(
@@ -211,7 +213,7 @@ void HAL::GPS_Update()
         gpsInfo.altitude = point.altitude;
         prePoint = point;
     }
-    else
+    else if (parserFlag & GPX_Parser::PARSER_FLAG_EOF)
     {
         lv_fs_seek(&fileInfo.file, 0, LV_FS_SEEK_SET);
         isReset = false;

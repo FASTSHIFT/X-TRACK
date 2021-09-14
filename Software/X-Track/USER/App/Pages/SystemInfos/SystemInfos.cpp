@@ -119,15 +119,17 @@ void SystemInfos::Update()
 
     /* Storage */
     bool detect;
-    Model.GetStorageInfo(&detect, buf, sizeof(buf));
+    const char* type = "-";
+    Model.GetStorageInfo(&detect, &type, buf, sizeof(buf));
     View.SetStorage(
-        detect ? "YES" : "NO",
+        detect ? "OK" : "ERROR",
         buf,
+        type,
         VERSION_FILESYSTEM
     );
 
     /* System */
-    DataProc::ConvTime(lv_tick_get(), buf, sizeof(buf));
+    DataProc::MakeTimeString(lv_tick_get(), buf, sizeof(buf));
     View.SetSystem(
         VERSION_FIRMWARE_NAME " " VERSION_SOFTWARE,
         VERSION_AUTHOR_NAME,

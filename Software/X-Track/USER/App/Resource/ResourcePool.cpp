@@ -55,7 +55,6 @@ do{\
 
 void ResourcePool::Init()
 {
-    Font_.SetDefault((void*)&lv_font_montserrat_14);
-
     Resource_Init();
+    Font_.SetDefault((void*)&lv_font_montserrat_14);
 }

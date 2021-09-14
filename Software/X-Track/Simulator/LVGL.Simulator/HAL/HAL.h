@@ -1,4 +1,4 @@
-/*
+﻿/*
  * MIT License
  * Copyright (c) 2021 _VIFEXTech
  *
@@ -20,19 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DISPLAY_H
-#define __DISPLAY_H
+#ifndef __HAL_SIM_H
+#define __HAL_SIM_H
 
-#include "HAL/HAL_Config.h"
-#include "lvgl/lvgl.h"
-#include "lv_port/lv_port_indev.h"
-#include "Adafruit_ST7789/Adafruit_ST7789.h"
-
-typedef Adafruit_ST7789 SCREEN_CLASS;
-
-void Display_Init();
-void DisplayFault_Init(SCREEN_CLASS* scr);
-void lv_port_disp_init(SCREEN_CLASS* scr);
-void lv_fs_if_init(void);
+#include "Common/HAL/HAL.h"
 
 #endif

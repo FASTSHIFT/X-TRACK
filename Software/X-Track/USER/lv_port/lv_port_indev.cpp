@@ -9,9 +9,8 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_port_indev.h"
-#include "Arduino.h"
-#include "Config/Config.h"
+#include "lv_port.h"
+#include "lvgl/lvgl.h"
 #include "HAL/HAL.h"
 
 /*********************

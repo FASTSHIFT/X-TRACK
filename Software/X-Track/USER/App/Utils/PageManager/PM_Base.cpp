@@ -74,7 +74,7 @@ PageBase* PageManager::FindPageInPool(const char* name)
   */
 PageBase* PageManager::FindPageInStack(const char* name)
 {
-    std::stack<PageBase*> stk = PageStack;
+    decltype(PageStack) stk = PageStack;
     while (!stk.empty())
     {
         PageBase* base = stk.top();

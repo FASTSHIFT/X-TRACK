@@ -9,16 +9,10 @@
  */
 
 #include <Windows.h>
-
+#include <stdio.h>
 #include "resource.h"
-
-#include "Config/Config.h"
 #include "App.h"
 #include "Common/HAL/HAL.h"
-#include "Utils/lv_monkey/lv_monkey.h"
-#include "Utils/lv_lib_png/lv_png.h"
-
-#include <stdio.h>
 
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
@@ -45,10 +39,6 @@ int main()
 
     lv_fs_if_init();
 
-#if CONFIG_MAP_PNG_DECODE_ENABLE
-    lv_png_init();
-#endif
-
     if (!lv_win32_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
@@ -60,14 +50,6 @@ int main()
     }
 
     lv_win32_add_all_input_devices_to_group(NULL);
-
-#if CONFIG_MONKEY_TEST_ENABLE
-    lv_monkey_create(
-        CONFIG_MONKEY_INDEV_TYPE,
-        CONFIG_MONKEY_INTERVAL_TIME_MIN,
-        CONFIG_MONKEY_INTERVAL_TIME_MAX
-    );
-#endif
 
     HAL::HAL_Init();  
 

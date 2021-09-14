@@ -109,8 +109,9 @@ void SystemInfosView::Create(lv_obj_t* root)
         "Storage",
         "storage",
 
-        "Detect\n"
+        "Status\n"
         "Size\n"
+        "Type\n"
         "Version"
     );
 
@@ -392,6 +393,7 @@ void SystemInfosView::SetBattery(
 void SystemInfosView::SetStorage(
     const char* detect,
     const char* size,
+    const char* type,
     const char* version
 )
 {
@@ -399,9 +401,11 @@ void SystemInfosView::SetStorage(
         ui.storage.labelData,
         "%s\n"
         "%s\n"
+        "%s\n"
         "%s",
         detect,
         size,
+        type,
         version
     );
 }

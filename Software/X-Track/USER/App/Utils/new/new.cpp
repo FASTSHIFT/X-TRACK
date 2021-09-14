@@ -21,6 +21,8 @@
  * SOFTWARE.
  */
 
+#if defined(ARDUINO) || defined(NDEBUG)
+
 #include "lvgl/lvgl.h"
 
 typedef void* (*alloc_func_t)(size_t);
@@ -31,7 +33,11 @@ static alloc_func_t alloc_func = first_alloc;
 
 static void* first_alloc(size_t size)
 {
-    lv_init();
+    if(!lv_is_initialized())
+    {
+        lv_init();
+    }
+
     void* ptr = lv_mem_alloc(size);
     alloc_func = lv_mem_alloc;
     return ptr;
@@ -56,3 +62,5 @@ void operator delete[](void* ptr)
 {
     lv_mem_free(ptr);
 }
+
+#endif

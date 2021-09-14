@@ -1,19 +1,20 @@
 #include "HAL.h"
 #include "LSM6DSM/LSM6DSM.h"
 
-namespace DataProc
-{
-
-void IMU_Commit(HAL::IMU_Info_t* info);
-
-}
-
 static LSM6DSM imu;
+static HAL::CommitFunc_t CommitFunc;
+static void* UserData;
 
 void HAL::IMU_Init()
 {
     Serial.print("IMU: init...");
     Serial.println(imu.Init() ? "success" : "failed");
+}
+
+void HAL::IMU_SetCommitCallback(CommitFunc_t func, void* userData)
+{
+    CommitFunc = func;
+    UserData = userData;
 }
 
 void HAL::IMU_Update()
@@ -29,6 +30,9 @@ void HAL::IMU_Update()
 //    );
 
     imuInfo.steps = imu.GetCurrentStep();
-
-    DataProc::IMU_Commit(&imuInfo);
+    
+    if(CommitFunc)
+    {
+        CommitFunc(&imuInfo, UserData);
+    }
 }

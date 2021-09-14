@@ -37,7 +37,7 @@
 #ifdef ARDUINO
 #  define CONFIG_GPS_REFR_PERIOD              1000 // ms
 #else
-#  define CONFIG_GPS_REFR_PERIOD              1000 // ms
+#  define CONFIG_GPS_REFR_PERIOD              10 // ms
 #endif 
 
 #define CONFIG_GPS_LONGITUDE_DEFAULT          116.391332f
@@ -67,8 +67,10 @@
 #define CONFIG_MONKEY_TEST_ENABLE             0
 #if CONFIG_MONKEY_TEST_ENABLE
 #  define CONFIG_MONKEY_INDEV_TYPE            LV_INDEV_TYPE_ENCODER
-#  define CONFIG_MONKEY_INTERVAL_TIME_MIN     100
-#  define CONFIG_MONKEY_INTERVAL_TIME_MAX     1000
+#  define CONFIG_MONKEY_TIME_MIN              10
+#  define CONFIG_MONKEY_TIME_MAX              300
+#  define CONFIG_MONKEY_INPUT_RANGE_MIN       -5
+#  define CONFIG_MONKEY_INPUT_RANGE_MAX       5
 #endif
 
 #endif

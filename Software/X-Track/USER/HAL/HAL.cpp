@@ -30,6 +30,10 @@ void HAL::HAL_Init()
     Serial.println("Version: " VERSION_SOFTWARE);
     Serial.println("Author: " VERSION_AUTHOR_NAME);
     Serial.println("Project: " VERSION_PROJECT_LINK);
+    
+    FaultHandle_Init();
+    
+    Memory_DumpInfo();
 
     Power_Init();
     Backlight_Init();
@@ -42,6 +46,8 @@ void HAL::HAL_Init()
 #endif
     Audio_Init();
     SD_Init();
+
+    Display_Init();
 
     Timer_SetInterrupt(CONFIG_HAL_UPDATE_TIM, 10 * 1000, HAL_InterrputUpdate);
     TIM_Cmd(CONFIG_HAL_UPDATE_TIM, ENABLE);

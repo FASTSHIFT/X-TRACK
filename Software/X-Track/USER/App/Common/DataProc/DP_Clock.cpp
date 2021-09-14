@@ -12,7 +12,7 @@ uint32_t DataProc::GetTickElaps(uint32_t prevTick)
     return lv_tick_elaps(prevTick);
 }
 
-const char* DataProc::ConvTime(uint64_t ms, char* buf, uint16_t len)
+const char* DataProc::MakeTimeString(uint64_t ms, char* buf, uint16_t len)
 {
     uint64_t ss = ms / 1000;
     uint64_t mm = ss / 60;

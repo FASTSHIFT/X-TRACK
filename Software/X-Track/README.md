@@ -269,3 +269,43 @@
 * 29.添加HAL::Memory_DumpInfo()，由于要使用__heapstats()读取heap信息，关闭microlib
 * 30.添加rt_sys.cpp，实现一些C底层接口
 * 31.读取StackInfo从main.cpp转移至HAL::Memory_DumpInfo()
+
+## [v1.8] - 2021-9-14
+* 1.StackInfo库 StackInfo_GetSize -> StackInfo_GetTotalSize
+* 2.移除多余的RTE/Device
+* 3.Common/HAL模拟器实现转移到Simulator\LVGL.Simulator\HAL
+* 4.VS模拟器HAL_GPS适配新的GPX_Parser
+* 5.更新lv_conf.h LV_SHADOW_CACHE_SIZE 8 -> 32, LV_CIRCLE_CACHE_SIZE 8 -> 32
+* 6.更新lv_fs_pc，去除无用代码
+* 7.更新LVGL.Simulator，lv_png_init和lv_monkey_create转移至App_Init初始化
+* 8.更新lvgl主程序
+* 9.更新App初始化，调整Storage和SysConfig的初始化顺序，修复错误的全屏滑动
+* 10.更新DataProc初始化，center实例化转移到函数外部，DP_DEF宏全大写
+* 11.更新DataProc声明，ConvTime -> MakeTimeString，去除IMU_Commit和MAG_Commit
+* 12.更新Storage_Basic_Info_t，添加type成员，支持获取SD卡类型
+* 13.更新DP_Clock，ConvTime -> MakeTimeString
+* 14.更新DP_IMU，去除IMU_Commit机制，使用回调进行数据提交
+* 15.更新DP_MAG，同上
+* 16.更新DP_Recorder，合并变量至Recorder_t结构体，添加RECORDER_GPX宏配置
+* 17.更新DP_Storage，适配新的StorageService，添加SD卡类型获取
+* 18.更新DP_TrackFilter，PointVector_t不再使用lv_allocator
+* 19.更新HAL，添加Display和FaultHandle抽象层，以及IMU和MAG的CommitCallback，获取SD卡类型的函数
+* 20.去除lv_allocator依赖，统一使用重载的new和delete进行分配
+* 21.更新SystemInfos页面，SD卡状态指示 "Detect" -> "Status"，支持显示SD卡类型，在Sensor Config未开启时数据全部置0
+* 22.调整ResourcePool的Font Default设置
+* 23.ArduinoJson库的DynamicJsonDocument使用lvgl内存池分配内存
+* 24.更新DataCenter/Account，"Push" -> "Publish"
+* 25.更新DataCenter和PageManager的LOG写法
+* 26.更新GPX_Parser，添加错误码
+* 27.lv_lib_png使用lvgl内存池分配内存
+* 28.更新lv_monkey，添加新的配置选项
+* 29.更新MapConv，ConvertMapPos -> ConvertMapLevelPos
+* 30.在VS模拟器上对new/delete进行重载，但是由于ASAN导致重定义冲突，只在Release下重载
+* 31.更新PageManager，解决lv_anim_exec_xcb_t回调的lv_coord_t和int32_t混用问题，修复LOAD_ANIM_NONE页面切换的BUG
+* 32.更新StorageService，支持静态和动态内存分配切换
+* 33.去除USER/Display，转移至HAL层
+* 34.优化lv_port，使用统一的初始化函数，与硬件驱动解耦，lv_fs_sdfat -> lv_port_fs_sdfat
+* 35.修复HAL_Buzz静音模式下的错误开机音
+* 36.更新HAL_Config，支持GPS缓冲区过载检测，支持配置Power的开关机延时时间
+* 37.更新HAL_Power，合并变量到Power_t
+* 38.更新HAL_SD_CARD，支持获取SD卡类型，SD_CardSizeMB -> SD_CardSize

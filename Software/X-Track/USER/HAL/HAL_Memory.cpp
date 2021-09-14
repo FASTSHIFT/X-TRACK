@@ -7,15 +7,16 @@
 static void Memory_ShowStackInfo()
 {
     Serial.printf(
-        "Stack: Use = %0.2f%% Free = %d\r\n",
+        "Stack: %0.2f%% used (total: 0x%x, free: 0x%x)\r\n",
         StackInfo_GetMaxUtilization() * 100,
+        StackInfo_GetTotalSize(),
         StackInfo_GetMinFreeSize()
     );
 }
 #endif
 
 #if CONFIG_SHOW_HEAP_INFO
-static int HeapPrint(void* param, char const* format, ...)
+static int Memory_HeapPrint(void* param, char const* format, ...)
 {
     char printf_buff[64];
 
@@ -35,7 +36,7 @@ static int HeapPrint(void* param, char const* format, ...)
 static void Memory_ShowHeapInfo()
 {
     int size = 0;
-    __heapstats((__heapprt)HeapPrint, &size);
+    __heapstats((__heapprt)Memory_HeapPrint, &size);
 }
 #endif
 

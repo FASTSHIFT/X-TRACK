@@ -25,7 +25,10 @@
 #include "lvgl/lvgl.h"
 #include <algorithm>
 
-#define JSON_BUFFER_SIZE 2048
+#define USE_STATIC_JSON_DOC        1
+#if USE_STATIC_JSON_DOC
+#  define STATIC_JSON_DOC_BUF_SIZE 2048
+#endif
 
 #define VALUE_TO_DOC(type)\
 do{\
@@ -92,9 +95,10 @@ private:
     lv_fs_file_t file;
 };
 
-StorageService::StorageService(const char* filepath)
+StorageService::StorageService(const char* filepath, uint32_t bufferSize)
 {
     FilePath = filepath;
+    BufferSize = bufferSize;
 }
 
 StorageService::~StorageService()
@@ -149,17 +153,21 @@ bool StorageService::LoadFile()
 
     if (!file)
     {
-        LV_LOG_USER("Failed to open file: %s", FilePath);
+        LV_LOG_ERROR("Failed to open file: %s", FilePath);
         return false;
     }
 
-    StaticJsonDocument<JSON_BUFFER_SIZE> doc;
+#if USE_STATIC_JSON_DOC
+    StaticJsonDocument<STATIC_JSON_DOC_BUF_SIZE> doc;
+#else
+    DynamicJsonDocument doc(BufferSize);
+#endif
 
     // Deserialize the JSON document
     DeserializationError error = deserializeJson(doc, file);
     if (error)
     {
-        LV_LOG_USER("Failed to read file: %s", FilePath);
+        LV_LOG_ERROR("Failed to read file: %s", FilePath);
         return false;
     }
 
@@ -168,7 +176,7 @@ bool StorageService::LoadFile()
     {
         if (!doc.containsKey(iter->key))
         {
-            LV_LOG_USER("NOT contains key: %s, use default value", iter->key);
+            LV_LOG_WARN("NOT contains key: %s, use default value", iter->key);
             continue;
         }
 
@@ -212,14 +220,19 @@ bool StorageService::SaveFile()
     FileWrapper file(FilePath, LV_FS_MODE_WR | LV_FS_MODE_RD);
     if (!file)
     {
-        LV_LOG_USER("Failed to open file");
+        LV_LOG_ERROR("Failed to open file");
         return false;
     }
 
     // Allocate a temporary JsonDocument
     // Don't forget to change the capacity to match your requirements.
     // Use https://arduinojson.org/assistant to compute the capacity.
-    StaticJsonDocument<JSON_BUFFER_SIZE> doc;
+
+#if USE_STATIC_JSON_DOC
+    StaticJsonDocument<STATIC_JSON_DOC_BUF_SIZE> doc;
+#else
+    DynamicJsonDocument doc(BufferSize);
+#endif
 
     // Set the values in the document
     for (auto iter : NodePool)
@@ -254,7 +267,7 @@ bool StorageService::SaveFile()
     // Serialize JSON to file
     if (!serializeJsonPretty(doc, file))
     {
-        LV_LOG_USER("Failed to write to file");
+        LV_LOG_ERROR("Failed to write to file");
         return false;
     }
 

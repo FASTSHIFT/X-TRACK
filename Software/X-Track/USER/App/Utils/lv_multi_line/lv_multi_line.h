@@ -3,7 +3,6 @@
 
 #include "lvgl/lvgl.h"
 #include <vector>
-#include "Utils/lv_allocator/lv_allocator.h"
 
 class lv_multi_line
 {
@@ -37,7 +36,7 @@ private:
     typedef struct
     {
         lv_obj_t* line;
-        std::vector<lv_point_t, lv_allocator<lv_point_t>> points;
+        std::vector<lv_point_t> points;
     } single_line_t;
 
 private:
@@ -47,7 +46,7 @@ private:
     const lv_point_t* get_points(single_line_t* single_line);
 
 private:
-    std::vector<single_line_t, lv_allocator<single_line_t>> multi_line;
+    std::vector<single_line_t> multi_line;
     uint32_t current_index;
     lv_style_t* styleLine;
     lv_obj_t* parent;

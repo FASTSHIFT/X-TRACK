@@ -41,6 +41,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
 
     if (base == nullptr)
     {
+        PM_LOG_ERROR("Page base is NULL");
         return;
     }
 
@@ -50,6 +51,7 @@ void PageManager::onRootDragEvent(lv_event_t* event)
 
     if (!manager->GetCurrentLoadAnimAttr(&animAttr))
     {
+        PM_LOG_ERROR("Can't get current anim attr");
         return;
     }
 

@@ -92,9 +92,10 @@ void LiveMapModel::TrackReload(TrackPointFilter::Callback_t callback, void* user
     for (uint32_t i = 0; i < size; i++)
     {
         int32_t mapX, mapY;
-        mapConv.ConvertMapPos(
+        mapConv.ConvertMapLevelPos(
             &mapX, &mapY,
-            points[i].x, points[i].y, info.level
+            points[i].x, points[i].y, 
+            info.level
         );
 
         ptFilter.PushPoint(mapX, mapY);

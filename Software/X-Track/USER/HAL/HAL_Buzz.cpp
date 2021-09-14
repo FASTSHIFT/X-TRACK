@@ -9,13 +9,20 @@ void HAL::Buzz_init()
 
 void HAL::Buzz_SetEnable(bool en)
 {
+    if(!en)
+    {
+        Buzz_Tone(0);
+    }
+
     IsEnable = en;
 }
 
 void HAL::Buzz_Tone(uint32_t freq, int32_t duration)
 {
     if(!IsEnable)
+    {
         return;
+    }
 
     if(duration >= 0)
     {

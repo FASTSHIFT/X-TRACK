@@ -36,21 +36,25 @@ bool GPX_Parser::readStringUntil(char terminator, String* str)
     return retval;
 }
 
-bool GPX_Parser::ReadNext(Point_t* point)
+int GPX_Parser::ReadNext(Point_t* point)
 {
+    String str;
+    int flag = PARSER_FLAG_NONE;
+
     if (!find((char*)"<trkpt"))
     {
-        return false;
+        flag |= PARSER_FLAG_UNMATCHED;
+        flag |= PARSER_FLAG_EOF;
+        goto failed;
     }
-
-    String str;
-
 
     while (true)
     {
-        if (!readStringUntil('>', &str))
+        bool ret = readStringUntil('>', &str);
+        if (!ret)
         {
-            return false;
+            flag |= PARSER_FLAG_UNMATCHED;
+            goto failed;
         }
 
         int index = str.indexOf("lat=");
@@ -58,10 +62,12 @@ bool GPX_Parser::ReadNext(Point_t* point)
         {
             String lat = str.substring(str.indexOf('"') + 1);
             point->latitude = lat.toFloat();
+            flag |= PARSER_FLAG_LAT;
 
             String lon = str.substring(str.indexOf("lon="));
             lon = lon.substring(lon.indexOf('"') + 1);
             point->longitude = lon.toFloat();
+            flag |= PARSER_FLAG_LNG;
             continue;
         }
 
@@ -70,10 +76,12 @@ bool GPX_Parser::ReadNext(Point_t* point)
         {
             if (!readStringUntil('>', &str))
             {
-                return false;
+                flag |= PARSER_FLAG_UNMATCHED;
+                goto failed;
             }
             String ele = str;
             point->altitude = ele.toFloat();
+            flag |= PARSER_FLAG_ALT;
             continue;
         }
 
@@ -82,7 +90,8 @@ bool GPX_Parser::ReadNext(Point_t* point)
         {
             if (!readStringUntil('>', &str))
             {
-                return false;
+                flag |= PARSER_FLAG_UNMATCHED;
+                goto failed;
             }
             String time = str;
             int year, month, day, hour, minute, second;
@@ -102,12 +111,13 @@ bool GPX_Parser::ReadNext(Point_t* point)
             point->time.hour = hour;
             point->time.minute = minute;
             point->time.second = second;
+            flag |= PARSER_FLAG_TIME;
             continue;
         }
 
         if (str.length() == 0)
-        {
-            return false;
+        {     
+            goto failed;
         }
 
         if (str.indexOf("</trkpt") >= 0)
@@ -116,7 +126,8 @@ bool GPX_Parser::ReadNext(Point_t* point)
         }
     }
 
-    return true;
+failed:
+    return flag;
 }
 
 int GPX_Parser::available()

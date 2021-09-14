@@ -34,6 +34,7 @@ void Dialplate::onViewDidLoad()
 
 void Dialplate::onViewWillAppear()
 {
+    lv_indev_wait_release(lv_indev_get_act());
     lv_group_t* group = lv_group_get_default();
 
     lv_group_set_wrap(group, false);
@@ -95,7 +96,7 @@ void Dialplate::Update()
     lv_label_set_text_fmt(View.ui.bottomInfo.labelInfoGrp[0].lableValue, "%0.1f km/h", Model.GetAvgSpeed());
     lv_label_set_text(
         View.ui.bottomInfo.labelInfoGrp[1].lableValue,
-        DataProc::ConvTime(Model.sportStatusInfo.singleTime, buf, sizeof(buf))
+        DataProc::MakeTimeString(Model.sportStatusInfo.singleTime, buf, sizeof(buf))
     );
     lv_label_set_text_fmt(
         View.ui.bottomInfo.labelInfoGrp[2].lableValue,
@@ -137,7 +138,7 @@ void Dialplate::onRecord(bool longPress)
         {
             if (!Model.GetGPSReady())
             {
-                LV_LOG_USER("GPS has not ready, can't start record");
+                LV_LOG_WARN("GPS has not ready, can't start record");
                 Model.PlayMusic("Error");
                 return;
             }

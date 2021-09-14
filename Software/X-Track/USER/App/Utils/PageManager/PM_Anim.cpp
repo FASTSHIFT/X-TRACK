@@ -24,27 +24,6 @@
 #include "PM_Log.h"
 
 /**
-  * @brief  Set the transparency of obj
-  * @param  obj: Pointer to obj
-  * @param  opa_scale: Transparency value
-  * @retval None
-  */
-static void _lv_obj_set_opa_scale(lv_obj_t* obj, int32_t opa_scale)
-{
-    lv_obj_set_style_bg_opa(obj, (lv_opa_t)opa_scale, LV_PART_MAIN);
-}
-
-/**
-  * @brief  Get obj transparency
-  * @param  obj: Pointer to obj
-  * @retval Transparency value
-  */
-static int32_t _lv_obj_get_opa_scale(lv_obj_t* obj)
-{
-    return lv_obj_get_style_bg_opa(obj, LV_PART_MAIN);
-}
-
-/**
   * @brief  Get page loading animation properties
   * @param  anim: Animation type
   * @param  attr: Pointer to attribute
@@ -185,7 +164,7 @@ bool PageManager::GetLoadAnimAttr(uint8_t anim, LoadAnimAttr_t* attr)
 
     case LOAD_ANIM_NONE:
         memset(attr, 0, sizeof(LoadAnimAttr_t));
-        break;
+        return true;
 
     default:
         PM_LOG_ERROR("Load anim type error: %d", anim);
@@ -195,18 +174,36 @@ bool PageManager::GetLoadAnimAttr(uint8_t anim, LoadAnimAttr_t* attr)
     /* Determine the setter and getter of the animation */
     if (attr->dragDir == ROOT_DRAG_DIR_HOR)
     {
-        attr->setter = (lv_anim_setter_t)lv_obj_set_x;
-        attr->getter = (lv_anim_getter_t)lv_obj_get_x;
+        attr->setter = [](void* obj, int32_t v)
+        {
+            lv_obj_set_x((lv_obj_t*)obj, v);
+        };
+        attr->getter = [](void* obj)
+        {
+            return (int32_t)lv_obj_get_x((lv_obj_t*)obj);
+        };
     }
     else if (attr->dragDir == ROOT_DRAG_DIR_VER)
     {
-        attr->setter = (lv_anim_setter_t)lv_obj_set_y;
-        attr->getter = (lv_anim_getter_t)lv_obj_get_y;
+        attr->setter = [](void* obj, int32_t v)
+        {
+            lv_obj_set_y((lv_obj_t*)obj, v);
+        };
+        attr->getter = [](void* obj)
+        {
+            return (int32_t)lv_obj_get_y((lv_obj_t*)obj);
+        };
     }
     else
     {
-        attr->setter = (lv_anim_setter_t)_lv_obj_set_opa_scale;
-        attr->getter = (lv_anim_getter_t)_lv_obj_get_opa_scale;
+        attr->setter = [](void* obj, int32_t v)
+        {
+            lv_obj_set_style_bg_opa((lv_obj_t*)obj, (lv_opa_t)v, LV_PART_MAIN);
+        };
+        attr->getter = [](void* obj)
+        {
+            return (int32_t)lv_obj_get_style_bg_opa((lv_obj_t*)obj, LV_PART_MAIN);
+        };
     }
 
     return true;

@@ -21,33 +21,21 @@
  * SOFTWARE.
  */
 #include "Arduino.h"
-#include "Display/Display.h"
-#include "HAL/HAL.h"
 #include "App/App.h"
-#include "Config/Config.h"
-#include "Utils/lv_monkey/lv_monkey.h"
-#include "Utils/lv_lib_png/lv_png.h"
+#include "HAL/HAL.h"
+#include "lvgl/lvgl.h"
+#include "lv_port/lv_port.h"
 
 static void setup()
 {
     HAL::HAL_Init();
-    Display_Init();
-    
-#if CONFIG_MAP_PNG_DECODE_ENABLE
-    lv_png_init();
-#endif
-
-#if CONFIG_MONKEY_TEST_ENABLE
-    lv_monkey_create(
-        CONFIG_MONKEY_INDEV_TYPE,
-        CONFIG_MONKEY_INTERVAL_TIME_MIN,
-        CONFIG_MONKEY_INTERVAL_TIME_MAX
-    );
-#endif
+    lv_init();
+    lv_port_init();
 
     App_Init();
 
     HAL::Power_SetEventCallback(App_Uninit);
+    HAL::Memory_DumpInfo();
 }
 
 static void loop()

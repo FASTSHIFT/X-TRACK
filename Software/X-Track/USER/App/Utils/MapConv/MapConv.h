@@ -94,7 +94,7 @@ public:
         double longitude, double latitude,
         int32_t* mapX, int32_t* mapY
     );
-    void ConvertMapPos(
+    void ConvertMapLevelPos(
         int32_t* destX, int32_t* destY,
         int32_t srcX, int32_t srcY, int srcLevel
     );
