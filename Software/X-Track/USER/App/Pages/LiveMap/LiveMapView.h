@@ -3,7 +3,6 @@
 
 #include "../Page.h"
 #include <vector>
-#include "Utils/lv_allocator/lv_allocator.h"
 #include "Utils/lv_multi_line/lv_multi_line.h"
 
 namespace Page

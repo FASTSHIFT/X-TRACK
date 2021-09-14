@@ -1,5 +1,5 @@
-#include "Display/Display.h"
 #include "HAL.h"
+#include "lvgl/lvgl.h"
 
 /**
   * @brief  背光亮度渐变，受lv_anim控制

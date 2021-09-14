@@ -51,6 +51,7 @@ public:
 
     void GetStorageInfo(
         bool* detect,
+        const char** type,
         char* size, uint32_t len
     );
 

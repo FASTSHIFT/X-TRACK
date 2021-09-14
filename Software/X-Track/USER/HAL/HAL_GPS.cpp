@@ -18,22 +18,29 @@ void HAL::GPS_Init()
 
 void HAL::GPS_Update()
 {
-#if GPS_USE_TRANSPARENT
+#if CONFIG_GPS_BUF_OVERLOAD_CHK && !GPS_USE_TRANSPARENT
+    int available = GPS_SERIAL.available();
+    DEBUG_SERIAL.printf("GPS: Buffer available = %d", available);
+    if(available >= SERIAL_RX_BUFFER_SIZE / 2)
+    {
+        DEBUG_SERIAL.print(", maybe overload!");
+    }
+    DEBUG_SERIAL.println();
+#endif
+
     while (GPS_SERIAL.available() > 0)
     {
-        DEBUG_SERIAL.write(GPS_SERIAL.read());
+        char c = GPS_SERIAL.read();
+#if GPS_USE_TRANSPARENT
+        DEBUG_SERIAL.write(c);
+#endif
+        gps.encode(c);
     }
 
+#if GPS_USE_TRANSPARENT
     while (DEBUG_SERIAL.available() > 0)
     {
         GPS_SERIAL.write(DEBUG_SERIAL.read());
-    }
-#else
-    while (GPS_SERIAL.available() > 0)
-    {
-        if (gps.encode(GPS_SERIAL.read()))
-        {
-        }
     }
 #endif
 }

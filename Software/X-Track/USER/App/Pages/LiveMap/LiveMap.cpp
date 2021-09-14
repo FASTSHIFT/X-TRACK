@@ -53,10 +53,6 @@ void LiveMap::onViewLoad()
     AttachEvent(View.ui.zoom.slider);
     AttachEvent(View.ui.sportInfo.cont);
 
-    lv_group_t* group = lv_group_get_default();
-    lv_group_add_obj(group, View.ui.zoom.slider);
-    lv_group_set_editing(group, View.ui.zoom.slider);
-
     lv_slider_set_value(View.ui.zoom.slider, mapLevelCurrent, LV_ANIM_OFF);
     Model.mapConv.SetLevel(mapLevelCurrent);
     lv_obj_add_flag(View.ui.map.cont, LV_OBJ_FLAG_HIDDEN);
@@ -117,6 +113,10 @@ void LiveMap::onViewDidAppear()
     {
         Model.pointFilter.SetOutputPointCallback(nullptr);
     }
+    
+    lv_group_t* group = lv_group_get_default();
+    lv_group_add_obj(group, View.ui.zoom.slider);
+    lv_group_set_editing(group, View.ui.zoom.slider);
 }
 
 void LiveMap::onViewWillDisappear()
@@ -178,7 +178,7 @@ void LiveMap::SportInfoUpdate()
     char buf[16];
     lv_label_set_text(
         View.ui.sportInfo.labelTime,
-        DataProc::ConvTime(Model.sportStatusInfo.singleTime, buf, sizeof(buf))
+        DataProc::MakeTimeString(Model.sportStatusInfo.singleTime, buf, sizeof(buf))
     );
 }
 
@@ -233,7 +233,7 @@ void LiveMap::CheckPosition()
 
 void LiveMap::onMapTileContRefresh(const Area_t* area, int32_t x, int32_t y)
 {
-    LV_LOG_USER(
+    LV_LOG_INFO(
         "area: (%d, %d) [%dx%d]", 
         area->x0, area->y0, 
         area->x1 - area->x0 + 1,

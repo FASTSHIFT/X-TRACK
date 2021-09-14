@@ -78,7 +78,7 @@ void MapConv::ConvertMapCoordinate(
     *mapY = pixelY;
 };
 
-void MapConv::ConvertMapPos(
+void MapConv::ConvertMapLevelPos(
     int32_t* destX, int32_t* destY,
     int32_t srcX, int32_t srcY, int srcLevel
 )

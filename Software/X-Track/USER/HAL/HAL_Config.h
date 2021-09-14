@@ -59,6 +59,7 @@
 /* GPS */
 #define CONFIG_GPS_SERIAL           Serial2
 #define CONFIG_GPS_USE_TRANSPARENT  0
+#define CONFIG_GPS_BUF_OVERLOAD_CHK 0
 #define CONFIG_GPS_TX_PIN           PA3
 #define CONFIG_GPS_RX_PIN           PA2
 
@@ -77,6 +78,8 @@
 
 /* Power */
 #define CONFIG_POWER_EN_PIN         PA12
+#define CONFIG_POWER_WAIT_TIME      1000
+#define CONFIG_POWER_SHUTDOWM_DELAY 5000
 
 /* Debug USART */
 #define CONFIG_DEBUG_SERIAL         Serial

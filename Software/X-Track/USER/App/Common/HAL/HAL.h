@@ -28,6 +28,8 @@
 
 namespace HAL {
     
+typedef bool (*CommitFunc_t)(void* info, void* userData);
+    
 void HAL_Init();
 void HAL_Update();
 
@@ -38,15 +40,29 @@ void Backlight_SetValue(int16_t val);
 void Backlight_SetGradual(uint16_t target, uint16_t time = 500);
 void Backlight_ForceLit(bool en);
 
+/* Display */
+void Display_Init();
+void Display_DumpCrashInfo(const char* info);
+void Display_SetAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+void Display_SendPixels(uint16_t* pixels, uint32_t len);
+    
+typedef void(*Display_CallbackFunc_t)(void);
+void Display_SetSendFinishCallback(Display_CallbackFunc_t func);
+    
+/* FaultHandle */
+void FaultHandle_Init();
+
 /* I2C */
 void I2C_Scan(bool startScan);
 
 /* IMU */
 void IMU_Init();
+void IMU_SetCommitCallback(CommitFunc_t func, void* userData);
 void IMU_Update();
     
 /* MAG */
 void MAG_Init();
+void MAG_SetCommitCallback(CommitFunc_t func, void* userData);
 void MAG_Update();
 
 /* SD */
@@ -54,6 +70,7 @@ bool SD_Init();
 void SD_Update();
 bool SD_GetReady();
 float SD_GetCardSizeMB();
+const char* SD_GetTypeName();
 typedef void(*SD_CallbackFunction_t)(bool insert);
 void SD_SetEventCallback(SD_CallbackFunction_t callback);
 

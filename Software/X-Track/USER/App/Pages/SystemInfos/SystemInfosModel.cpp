@@ -34,7 +34,7 @@ void SystemInfosModel::GetSportInfo(
     HAL::SportStatus_Info_t sport;
     account->Pull("SportStatus", &sport, sizeof(sport));
     *trip = sport.totalDistance / 1000;
-    DataProc::ConvTime(sport.totalTime, time, len);
+    DataProc::MakeTimeString(sport.totalTime, time, len);
     *maxSpd = sport.speedMaxKph;
 }
 
@@ -74,6 +74,7 @@ void SystemInfosModel::GetMAGInfo(
 )
 {
     HAL::MAG_Info_t mag;
+    memset(&mag, 0, sizeof(mag));
     account->Pull("MAG", &mag, sizeof(mag));
 
     *dir = 0;
@@ -88,6 +89,7 @@ void SystemInfosModel::GetIMUInfo(
 )
 {
     HAL::IMU_Info_t imu;
+    memset(&imu, 0, sizeof(imu));
     account->Pull("IMU", &imu, sizeof(imu));
     *step = imu.steps;
     snprintf(
@@ -137,12 +139,14 @@ void SystemInfosModel::GetBatteryInfo(
 
 void SystemInfosModel::GetStorageInfo(
     bool* detect,
+    const char** type,
     char* usage, uint32_t len
 )
 {
     DataProc::Storage_Basic_Info_t info;
     account->Pull("Storage", &info, sizeof(info));
     *detect = info.isDetect;
+    *type = info.type;
     snprintf(
         usage, len,
         "%0.1f GB",

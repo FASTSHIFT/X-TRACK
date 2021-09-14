@@ -64,6 +64,7 @@ typedef struct
     bool isDetect;
     float totalSizeMB;
     float freeSizeMB;
+    const char* type;
 } Storage_Basic_Info_t;
 
 /* StatusBar */

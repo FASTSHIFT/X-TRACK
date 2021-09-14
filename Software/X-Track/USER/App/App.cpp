@@ -20,14 +20,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Utils/PageManager/PageManager.h"
+#include "Config/Config.h"
 #include "Common/DataProc/DataProc.h"
 #include "Resource/ResourcePool.h"
 #include "Pages/AppFactory.h"
 #include "Pages/StatusBar/StatusBar.h"
+#include "Utils/PageManager/PageManager.h"
 
-static AppFactory factory;
-static PageManager manager(&factory);
+#if CONFIG_MAP_PNG_DECODE_ENABLE
+#  include "Utils/lv_lib_png/lv_png.h"
+#endif
+
+#if CONFIG_MONKEY_TEST_ENABLE
+#  include "Utils/lv_monkey/lv_monkey.h"
+#endif
 
 #define ACCOUNT_SEND_CMD(ACT, CMD)\
 do{\
@@ -39,9 +45,33 @@ do{\
 
 void App_Init()
 {
+    static AppFactory factory;
+    static PageManager manager(&factory);
+
+#if CONFIG_MAP_PNG_DECODE_ENABLE
+    lv_png_init();
+#endif
+
+#if CONFIG_MONKEY_TEST_ENABLE
+    lv_monkey_config_t config;
+    lv_monkey_config_init(&config);
+    config.type = CONFIG_MONKEY_INDEV_TYPE;
+    config.time.min = CONFIG_MONKEY_TIME_MIN;
+    config.time.max = CONFIG_MONKEY_TIME_MAX;
+    config.input_range.min = CONFIG_MONKEY_INPUT_RANGE_MIN;
+    config.input_range.max = CONFIG_MONKEY_INPUT_RANGE_MAX;
+    lv_monkey_create(&config);
+    LV_LOG_WARN("lv_monkey test started!");
+#endif
+
     DataProc_Init();
 
-    lv_obj_remove_style_all(lv_scr_act());
+    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_LOAD);
+    ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_LOAD);
+
+    lv_obj_t* scr = lv_scr_act();
+    lv_obj_remove_style_all(scr);
+    lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
     lv_disp_set_bg_color(lv_disp_get_default(), lv_color_black());
 
     Resource.Init();
@@ -57,9 +87,6 @@ void App_Init()
     manager.SetGlobalLoadAnimType(PageManager::LOAD_ANIM_OVER_TOP, 500);
 
     manager.Push("Pages/Startup");
-
-    ACCOUNT_SEND_CMD(Storage, STORAGE_CMD_LOAD);
-    ACCOUNT_SEND_CMD(SysConfig, SYSCONFIG_CMD_LOAD);
 }
 
 void App_Uninit()

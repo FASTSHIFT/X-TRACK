@@ -239,13 +239,13 @@ int Account::Publish()
     param.data_p = rBuf;
     param.size = priv.BufferSize;
 
-    /* Push messages to subscribers */
+    /* Publish messages to subscribers */
     for(auto iter : subscribers)
     {
         Account* sub = iter;
         EventCallback_t callback = sub->priv.eventCallback;
 
-        DC_LOG_INFO("pub[%s] push >> data(0x%p)[%d] >> sub[%s]...",
+        DC_LOG_INFO("pub[%s] publish >> data(0x%p)[%d] >> sub[%s]...",
                     ID, param.data_p, param.size, sub->ID);
 
         if (callback != nullptr)
@@ -253,7 +253,7 @@ int Account::Publish()
             param.recv = sub;
             int ret = callback(sub, &param);
 
-            DC_LOG_INFO("push done: %d", ret);
+            DC_LOG_INFO("publish done: %d", ret);
             retval = ret;
         }
         else

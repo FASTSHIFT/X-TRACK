@@ -349,9 +349,6 @@
     <Filter Include="App\Utils\TrackFilter">
       <UniqueIdentifier>{0f735ffd-c9ba-452c-9f1f-22a7fadd18ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utils\lv_allocator">
-      <UniqueIdentifier>{89d42a3a-b6a0-4bfc-9a9e-00a9a67bbc8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Utils\TileConv">
       <UniqueIdentifier>{ab575e4a-7eec-467a-beec-da885672c5f5}</UniqueIdentifier>
     </Filter>
@@ -390,6 +387,12 @@
     </Filter>
     <Filter Include="App\Utils\lv_lib_png">
       <UniqueIdentifier>{81e9e579-c620-49c7-a471-e94f6b488ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HAL">
+      <UniqueIdentifier>{83526f90-0302-468a-b87c-d5988d8c85c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\new">
+      <UniqueIdentifier>{940bd30d-f74e-44d2-8a0d-b0c01bf5853b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -912,9 +915,6 @@
     <ClInclude Include="..\..\USER\App\Utils\TrackFilter\TrackFilter.h">
       <Filter>App\Utils\TrackFilter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_allocator\lv_allocator.h">
-      <Filter>App\Utils\lv_allocator</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\TileConv\TileConv.h">
       <Filter>App\Utils\TileConv</Filter>
     </ClInclude>
@@ -977,6 +977,9 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h">
       <Filter>App\Utils\lv_lib_png</Filter>
+    </ClInclude>
+    <ClInclude Include="HAL\HAL.h">
+      <Filter>HAL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1652,18 +1655,6 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_SportStatus.cpp">
       <Filter>App\Common\DataProc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Audio.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Clock.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_GPS.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Power.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\Account.cpp">
       <Filter>App\Utils\DataCenter</Filter>
     </ClCompile>
@@ -1847,12 +1838,6 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_MAG.cpp">
       <Filter>App\Common\DataProc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_IMU.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_MAG.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Resource\Font\font_agencyb_36.c">
       <Filter>App\Resource\Font</Filter>
     </ClCompile>
@@ -1874,12 +1859,6 @@
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_MusicPlayer.cpp">
       <Filter>App\Common\DataProc</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Buzz.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL.cpp">
-      <Filter>App\Common\HAL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\Time\DateStrings.cpp">
       <Filter>App\Utils\Time</Filter>
     </ClCompile>
@@ -1888,9 +1867,6 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Common\DataProc\DP_TzConv.cpp">
       <Filter>App\Common\DataProc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_SD_CARD.cpp">
-      <Filter>App\Common\HAL</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\src\extra\themes\mono\lv_theme_mono.c">
       <Filter>lvgl\src\extra\themes\mono</Filter>
@@ -1903,9 +1879,6 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\TrackFilter\TrackPointFilter.cpp">
       <Filter>App\Utils\TrackFilter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Common\HAL\HAL_Encoder.cpp">
-      <Filter>App\Common\HAL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\TileConv\TileConv.cpp">
       <Filter>App\Utils\TileConv</Filter>
@@ -1975,6 +1948,39 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c">
       <Filter>App\Utils\lv_lib_png</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_Audio.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_Buzz.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_Clock.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_Encoder.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_GPS.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_IMU.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_MAG.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_Power.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="HAL\HAL_SD_CARD.cpp">
+      <Filter>HAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\new\new.cpp">
+      <Filter>App\Utils\new</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

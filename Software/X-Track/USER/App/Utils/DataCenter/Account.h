@@ -27,7 +27,6 @@
 #include <vector>
 #include "PingPongBuffer/PingPongBuffer.h"
 #include "lvgl/lvgl.h"
-#include "Utils/lv_allocator/lv_allocator.h"
 
 class DataCenter;
 
@@ -73,7 +72,7 @@ public:
     /* Event callback function pointer */
     typedef int (*EventCallback_t)(Account* account, EventParam_t* param);
 
-    typedef std::vector<Account*, lv_allocator<Account*>> AccountVector_t;
+    typedef std::vector<Account*> AccountVector_t;
 
 public:
     Account(

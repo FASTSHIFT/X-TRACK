@@ -1,7 +1,7 @@
 #include "HAL.h"
 #include "ButtonEvent/ButtonEvent.h"
 
-static ButtonEvent EncoderPush(5000);
+static ButtonEvent EncoderPush(CONFIG_POWER_SHUTDOWM_DELAY);
 
 static bool EncoderEnable = true;
 static volatile int32_t EncoderDiff = 0;

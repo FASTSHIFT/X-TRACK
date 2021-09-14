@@ -23,11 +23,7 @@
  *      DEFINES
  *********************/
 #ifndef LV_FS_PC_PATH
-# ifndef WIN32
 #  define LV_FS_PC_PATH "../../../../" /*Projet root*/
-# else
-#  define LV_FS_PC_PATH "../../../../" /*Projet root*/
-# endif
 #endif /*LV_FS_PATH*/
 
 /**********************
@@ -118,13 +114,8 @@ static void * fs_open (lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode)
 
 	/*Make the path relative to the current directory (the projects root folder)*/
 
-#ifndef WIN32
-	char buf[256];
-	sprintf(buf, LV_FS_PC_PATH "/%s", path);
-#else
-	char buf[256];
-	sprintf(buf, LV_FS_PC_PATH "\\%s", path);
-#endif
+    char buf[256];
+    sprintf(buf, LV_FS_PC_PATH "/%s", path);
 
 	FILE * f = fopen(buf, flags);
 	if(f == NULL) return NULL;
@@ -235,61 +226,6 @@ static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p)
 }
 
 /**
- * Delete a file
- * @param drv pointer to a driver where this function belongs
- * @param path path of the file to delete
- * @return  LV_FS_RES_OK or any error from lv_fs_res_t enum
- */
-static lv_fs_res_t fs_remove (lv_fs_drv_t * drv, const char *path)
-{
-	(void) drv;		/*Unused*/
-	lv_fs_res_t res = LV_FS_RES_NOT_IMP;
-
-	/* Add your code here*/
-
-	return res;
-}
-
-/**
- * Truncate the file size to the current position of the read write pointer
- * @param drv pointer to a driver where this function belongs
- * @param file_p pointer to an 'ufs_file_t' variable. (opened with lv_fs_open )
- * @return LV_FS_RES_OK: no error, the file is read
- *         any error from lv_fs_res_t enum
- */
-static lv_fs_res_t fs_trunc (lv_fs_drv_t * drv, void * file_p)
-{
-	(void) drv;		/*Unused*/
-
-	fflush(file_p);                    /*If not syncronized fclose can write the truncated part*/
-	uint32_t p  = ftell(file_p);
-	//ftruncate(fileno(file_p), p);
-	return LV_FS_RES_OK;
-}
-
-/**
- * Rename a file
- * @param drv pointer to a driver where this function belongs
- * @param oldname path to the file
- * @param newname path with the new name
- * @return LV_FS_RES_OK or any error from 'fs_res_t'
- */
-static lv_fs_res_t fs_rename (lv_fs_drv_t * drv, const char * oldname, const char * newname)
-{
-	(void) drv;		/*Unused*/
-	static char new[512];
-	static char old[512];
-
-	sprintf(old, LV_FS_PC_PATH "/%s", oldname);
-	sprintf(new, LV_FS_PC_PATH "/%s", newname);
-
-	int r = rename(old, new);
-
-	if(r == 0) return LV_FS_RES_OK;
-	else return LV_FS_RES_UNKNOWN;
-}
-
-/**
  * Get the free and total size of a driver in kB
  * @param drv pointer to a driver where this function belongs
  * @param letter the driver letter
@@ -307,11 +243,6 @@ static lv_fs_res_t fs_free (lv_fs_drv_t * drv, uint32_t * total_p, uint32_t * fr
 	return res;
 }
 
-
-#ifdef WIN32
-static char next_fn[256];
-#endif
-
 /**
  * Initialize a 'fs_read_dir_t' variable for directory reading
  * @param drv pointer to a driver where this function belongs
@@ -321,39 +252,10 @@ static char next_fn[256];
  */
 static void * fs_dir_open (lv_fs_drv_t * drv, const char *path)
 {
-	(void) drv;		/*Unused*/
-#ifndef xWIN32
-	/*Make the path relative to the current directory (the projects root folder)*/
-	char buf[256];
-	sprintf(buf, LV_FS_PC_PATH "/%s", path);
-	return opendir(buf);
-#else
-	HANDLE d = INVALID_HANDLE_VALUE;
-	WIN32_FIND_DATA fdata;
-
-	/*Make the path relative to the current directory (the projects root folder)*/
-	char buf[256];
-	sprintf(buf, LV_FS_PC_PATH "\\%s\\*", path);
-
-	strcpy(next_fn, "");
-	d = FindFirstFile(buf, &fdata);
-	do {
-		if (strcmp(fdata.cFileName, ".") == 0 || strcmp(fdata.cFileName, "..") == 0) {
-			continue;
-		} else {
-
-			if (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			{
-				sprintf(next_fn, "/%s", fdata.cFileName);
-			} else {
-				sprintf(next_fn, "%s", fdata.cFileName);
-			}
-			break;
-		}
-	} while(FindNextFileA(d, &fdata));
-
-	return d;
-#endif
+    /*Make the path relative to the current directory (the projects root folder)*/
+    char buf[256];
+    sprintf(buf, LV_FS_PC_PATH "/%s", path);
+    return opendir(buf);
 }
 
 /**
@@ -367,42 +269,18 @@ static void * fs_dir_open (lv_fs_drv_t * drv, const char *path)
 static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn)
 {
 	(void) drv;		/*Unused*/
+    struct dirent* entry;
+    do {
+        entry = readdir(dir_p);
 
-#ifndef xWIN32
-	struct dirent *entry;
-	do {
-		entry = readdir(dir_p);
-
-		if(entry) {
-			if(entry->d_type == DT_DIR) sprintf(fn, "/%s", entry->d_name);
-			else strcpy(fn, entry->d_name);
-		} else {
-			strcpy(fn, "");
-		}
-	} while(strcmp(fn, "/.") == 0 || strcmp(fn, "/..") == 0);
-#else
-	strcpy(fn, next_fn);
-
-	strcpy(next_fn, "");
-	WIN32_FIND_DATA fdata;
-
-	if(FindNextFile(dir_p, &fdata) == false) return LV_FS_RES_OK;
-	do {
-		if (strcmp(fdata.cFileName, ".") == 0 || strcmp(fdata.cFileName, "..") == 0) {
-			continue;
-		} else {
-
-			if (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			{
-				sprintf(next_fn, "/%s", fdata.cFileName);
-			} else {
-				sprintf(next_fn, "%s", fdata.cFileName);
-			}
-			break;
-		}
-	} while(FindNextFile(dir_p, &fdata));
-
-#endif
+        if (entry) {
+            if (entry->d_type == DT_DIR) sprintf(fn, "/%s", entry->d_name);
+            else strcpy(fn, entry->d_name);
+        }
+        else {
+            strcpy(fn, "");
+        }
+    } while (strcmp(fn, "/.") == 0 || strcmp(fn, "/..") == 0);
 	return LV_FS_RES_OK;
 }
 
@@ -415,13 +293,9 @@ static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn)
 static lv_fs_res_t fs_dir_close (lv_fs_drv_t * drv, void * dir_p)
 {
 	(void) drv;		/*Unused*/
-#ifndef xWIN32
-	closedir(dir_p);
-#else
-	FindClose(dir_p);
-#endif
+    closedir(dir_p);
 	return LV_FS_RES_OK;
 }
 
 #endif	/*LV_USE_FS_IF*/
-#endif  /*LV_FS_IF_FATFS*/
+#endif  /*LV_FS_IF_PC*/

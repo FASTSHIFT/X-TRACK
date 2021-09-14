@@ -1,4 +1,4 @@
-#include "HAL.h"
+﻿#include "HAL.h"
 
 bool HAL::SD_Init()
 {
@@ -13,6 +13,11 @@ bool HAL::SD_GetReady()
 float HAL::SD_GetCardSizeMB()
 {
     return 32 * 1024;
+}
+
+const char* HAL::SD_GetTypeName()
+{
+    return "SDHC";
 }
 
 static void SD_Check(bool isInsert)

@@ -68,10 +68,10 @@ public:
     } RootDragDir_t;
 
     /* Animated setter  */
-    typedef lv_anim_exec_xcb_t lv_anim_setter_t;
+    typedef void(*lv_anim_setter_t)(void*, int32_t);
 
     /* Animated getter  */
-    typedef lv_coord_t(*lv_anim_getter_t)(void*);
+    typedef int32_t(*lv_anim_getter_t)(void*);
 
     /* Animation switching record  */
     typedef struct
@@ -79,15 +79,15 @@ public:
         /* As the entered party */
         struct
         {
-            lv_coord_t start;
-            lv_coord_t end;
+            int32_t start;
+            int32_t end;
         } enter;
 
         /* As the exited party */
         struct
         {
-            lv_coord_t start;
-            lv_coord_t end;
+            int32_t start;
+            int32_t end;
         } exit;
     } AnimValue_t;
 

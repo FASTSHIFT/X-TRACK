@@ -1,10 +1,10 @@
-#include "HAL.h"
+﻿#include "HAL.h"
 #include "Utils/TonePlayer/TonePlayer.h"
 #include "lvgl/lvgl.h"
 
 static TonePlayer player;
 
-#include "../Music/MusicCode.h"
+#include "Common/Music/MusicCode.h"
 
 static void Tone_Callback(uint32_t freq, uint16_t volume)
 {

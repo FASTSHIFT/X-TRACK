@@ -1,14 +1,9 @@
 #include "HAL.h"
 #include "LIS3MDL/LIS3MDL.h"
 
-namespace DataProc
-{
-
-void MAG_Commit(HAL::MAG_Info_t* info);
-
-}
-
 static LIS3MDL mag;
+static HAL::CommitFunc_t CommitFunc;
+static void* UserData;
 
 void HAL::MAG_Init()
 {
@@ -16,6 +11,12 @@ void HAL::MAG_Init()
     Serial.println(mag.init() ? "success" : "failed");
 
     mag.enableDefault();
+}
+
+void HAL::MAG_SetCommitCallback(CommitFunc_t func, void* userData)
+{
+    CommitFunc = func;
+    UserData = userData;
 }
 
 void HAL::MAG_Update()
@@ -28,6 +29,9 @@ void HAL::MAG_Update()
     magInfo.x = mag.m.x;
     magInfo.y = mag.m.y;
     magInfo.z = mag.m.z;
-
-    DataProc::MAG_Commit(&magInfo);
+    
+    if(CommitFunc)
+    {
+        CommitFunc(&magInfo, UserData);
+    }
 }
