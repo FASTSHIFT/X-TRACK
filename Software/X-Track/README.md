@@ -275,7 +275,7 @@
 * 2.移除多余的RTE/Device
 * 3.Common/HAL模拟器实现转移到Simulator\LVGL.Simulator\HAL
 * 4.VS模拟器HAL_GPS适配新的GPX_Parser
-* 5.更新lv_conf.h LV_SHADOW_CACHE_SIZE 8 -> 32, LV_CIRCLE_CACHE_SIZE 8 -> 32
+* 5.更新lv_conf.h LV_CIRCLE_CACHE_SIZE 8 -> 32
 * 6.更新lv_fs_pc，去除无用代码
 * 7.更新LVGL.Simulator，lv_png_init和lv_monkey_create转移至App_Init初始化
 * 8.更新lvgl主程序
