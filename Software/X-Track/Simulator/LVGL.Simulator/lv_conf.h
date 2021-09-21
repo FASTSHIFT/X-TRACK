@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file lv_conf.h
  * Configuration file for v8.0.0-dev
  */
@@ -109,7 +109,7 @@
 /*Allow buffering some shadow calculation.
  *LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer, where shadow size is `shadow_width + radius`
  *Caching has LV_SHADOW_CACHE_SIZE^2 RAM cost*/
-#define LV_SHADOW_CACHE_SIZE    32
+#define LV_SHADOW_CACHE_SIZE    8
 
 /* Set number of maximally cached circle data.
  * The circumference of 1/4 circle are saved for anti-aliasing
