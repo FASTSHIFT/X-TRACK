@@ -1,3 +1,3 @@
-[submodule "Software/X-Track/STM32F4XX_Lib"]
+[submodule "Software/X-Track/stm32/STM32F4XX_Lib"]
 	path = Software/X-Track/stm32/STM32F4XX_Lib
 	url = https://github.com/shawnchain/STM32F4XX_Lib
