@@ -376,7 +376,7 @@ while(0)
     TIMx_IRQn_DEF(9, TIM1_BRK_TIM9_IRQn);
     TIMx_IRQn_DEF(10, TIM1_UP_TIM10_IRQn);
     TIMx_IRQn_DEF(11, TIM1_TRG_COM_TIM11_IRQn);
-#ifdef defined(TIM8_BRK_TIM12_IRQn)
+#if defined(TIM8_BRK_TIM12_IRQn)
     TIMx_IRQn_DEF(12, TIM8_BRK_TIM12_IRQn);
 #endif
 #if defined(TIM8_UP_TIM13_IRQn)
