@@ -25,12 +25,6 @@
 
 #define CFG_SERIAL_RX_BUFFER_SIZE   512
 
-#if defined(STM32F429_439xx)
-    #define CFG_SPI1_CLOCK (F_CPU/2)
-    #define CFG_SPI2_CLOCK (F_CPU/4)
-    #define CFG_SPI3_CLOCK (F_CPU/4)
-#endif
-
 // #define CFG_ENABLE_ADC_DMA 0
 
 // #define CFG_ENABLE_RTC_CLKSRC_HSE

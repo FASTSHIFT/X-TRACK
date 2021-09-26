@@ -23,15 +23,15 @@
 #include "SPI.h"
 
 #ifndef CFG_SPI1_CLOCK
-    #define CFG_SPI1_CLOCK (F_CPU)
+    #define CFG_SPI1_CLOCK (F_CPU/2)
 #endif
 
 #ifndef CFG_SPI2_CLOCK
-    #define CFG_SPI2_CLOCK (F_CPU/2)
+    #define CFG_SPI2_CLOCK (F_CPU/4)
 #endif
 
 #ifndef CFG_SPI3_CLOCK
-    #define CFG_SPI3_CLOCK (F_CPU/2)
+    #define CFG_SPI3_CLOCK (F_CPU/4)
 #endif
 
 #define SPI1_CLOCK  CFG_SPI1_CLOCK
