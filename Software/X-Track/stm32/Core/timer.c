@@ -233,7 +233,6 @@ static void Timer_TimeToArrPsc(
 void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction_t function)
 {
     uint16_t period, prescaler;
-    uint32_t clock = (IS_APB2_TIM(TIMx) ? F_CPU : (F_CPU / 2));
 
     if(!IS_TIM_ALL_PERIPH(TIMx) || time == 0)
         return;
@@ -241,7 +240,7 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
     /*将定时中断时间转换为重装值和时钟分频值*/
     Timer_TimeToArrPsc(
         time,
-        clock,
+        F_CPU,
         &period,
         &prescaler
     );
@@ -266,14 +265,13 @@ void Timer_SetInterrupt(TIM_TypeDef* TIMx, uint32_t time, Timer_CallbackFunction
 void Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
 {
     uint16_t period = 1, prescaler = 1;
-    uint32_t clock = (IS_APB2_TIM(TIMx) ? F_CPU : (F_CPU / 2));
 
     if(!IS_TIM_ALL_PERIPH(TIMx) || freq == 0)
         return;
 
     Timer_FreqToArrPsc(
         freq,
-        clock,
+        F_CPU,
         &period,
         &prescaler
     );
@@ -288,11 +286,10 @@ void Timer_SetInterruptFreqUpdate(TIM_TypeDef* TIMx, uint32_t freq)
   */
 uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 {
-    uint32_t clock = (IS_APB2_TIM(TIMx) ? F_CPU : (F_CPU / 2));
     if(!IS_TIM_ALL_PERIPH(TIMx))
         return 0;
 
-    return (clock / ((TIMx->ARR + 1) * (TIMx->PSC + 1)));
+    return (F_CPU / ((TIMx->ARR + 1) * (TIMx->PSC + 1)));
 }
 
 /**
@@ -304,14 +301,13 @@ uint32_t Timer_GetClockOut(TIM_TypeDef* TIMx)
 void Timer_SetInterruptTimeUpdate(TIM_TypeDef* TIMx, uint32_t time)
 {
     uint16_t period, prescaler;
-    uint32_t clock = (IS_APB2_TIM(TIMx) ? F_CPU : (F_CPU / 2));
 
     if(!IS_TIM_ALL_PERIPH(TIMx))
         return;
 
     Timer_TimeToArrPsc(
         time,
-        clock,
+        F_CPU,
         &period,
         &prescaler
     );
