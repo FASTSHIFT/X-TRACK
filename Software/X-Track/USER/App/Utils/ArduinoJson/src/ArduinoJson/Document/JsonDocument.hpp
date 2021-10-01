@@ -32,7 +32,7 @@ class JsonDocument : public Visitable {
 
   void clear() {
     _pool.clear();
-    _data.setNull();
+    _data.init();
   }
 
   template <typename T>
@@ -304,15 +304,15 @@ class JsonDocument : public Visitable {
 
  protected:
   JsonDocument() : _pool(0, 0) {
-    _data.setNull();
+    _data.init();
   }
 
   JsonDocument(MemoryPool pool) : _pool(pool) {
-    _data.setNull();
+    _data.init();
   }
 
   JsonDocument(char* buf, size_t capa) : _pool(buf, capa) {
-    _data.setNull();
+    _data.init();
   }
 
   ~JsonDocument() {}
@@ -337,8 +337,8 @@ class JsonDocument : public Visitable {
   JsonDocument& operator=(const JsonDocument&);
 };
 
-inline bool convertToJson(const JsonDocument& src, VariantRef dst) {
-  return dst.set(src.as<VariantConstRef>());
+inline void convertToJson(const JsonDocument& src, VariantRef dst) {
+  dst.set(src.as<VariantConstRef>());
 }
 
 }  // namespace ARDUINOJSON_NAMESPACE

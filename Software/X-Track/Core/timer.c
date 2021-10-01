@@ -346,8 +346,8 @@ void Timer_SetInterruptBase(
 {
     TMR_TimerBaseInitType  TMR_TimeBaseStructure;
     NVIC_InitType NVIC_InitStructure;
-    uint8_t TMRx_IRQn;
-    TIMER_Type TIMERx;
+    uint8_t TMRx_IRQn = 0;
+    TIMER_Type TIMERx = TIMER1;
 
     if(!IS_TMR_ALL_PERIPH(TIMx))
         return;

@@ -74,7 +74,7 @@ void App_Init()
     lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
     lv_disp_set_bg_color(lv_disp_get_default(), lv_color_black());
 
-    Resource.Init();
+    ResourcePool::Init();
 
     StatusBar::Init(lv_layer_top());
 

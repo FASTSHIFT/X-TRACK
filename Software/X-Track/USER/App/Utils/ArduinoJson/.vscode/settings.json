@@ -1,0 +1,19 @@
+{
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+  "cmake.generator": "Ninja",
+  "git.inputValidationLength": 80,
+  "git.inputValidationSubjectLength": 72,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.associations": {
+    "fstream": "cpp",
+    "iomanip": "cpp",
+    "string": "cpp",
+    "system_error": "cpp",
+    "vector": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xloctime": "cpp",
+    "xstring": "cpp"
+  }
+}

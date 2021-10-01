@@ -149,7 +149,7 @@ void HAL::Display_Init()
     Serial.println("success");
 }
 
-void HAL::Display_DumpCrashInfo(const char* report)
+void HAL::Display_DumpCrashInfo(const char* info)
 {
 #   define TEXT_HEIGHT_1   8
 #   define TEXT_WIDTH_1    6
@@ -166,7 +166,7 @@ void HAL::Display_DumpCrashInfo(const char* report)
 
     screen.setTextSize(1);
     screen.setCursor(0, screen.height() / 2 - TEXT_HEIGHT_1 - 5);
-    screen.println(report);
+    screen.println(info);
     screen.print("Press KEY to reboot..");
 
     screen.setCursor(0, screen.height() - TEXT_HEIGHT_1 * 6);
@@ -188,7 +188,7 @@ void HAL::Display_SendPixels(uint16_t* pixels, uint32_t len)
     digitalWrite_LOW(CONFIG_SCREEN_CS_PIN);
     digitalWrite_HIGH(CONFIG_SCREEN_DC_PIN);
 
-    Display_SPI_DMA_Send(pixels, len);
+    Display_SPI_DMA_Send(pixels, len * sizeof(uint16_t));
 }
 
 void HAL::Display_SetSendFinishCallback(Display_CallbackFunc_t func)

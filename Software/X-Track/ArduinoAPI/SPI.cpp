@@ -39,7 +39,8 @@ void SPIClass::SPI_Settings(    SPI_Type* SPIx,
                                 uint16_t SPI_BaudRatePrescaler_x,
                                 uint16_t SPI_FirstBit_x)
 {
-    uint16_t SPI_CPOL_x, SPI_CPHA_x;
+    uint16_t SPI_CPOL_x = SPI_CPOL_LOW;
+    uint16_t SPI_CPHA_x = SPI_CPHA_1EDGE;
     SPI_Enable(SPIx, DISABLE);
 
     switch(SPI_MODEx)
@@ -229,7 +230,8 @@ void SPIClass::setDataMode(uint8_t dataMode)
 
     If someone finds this is not the case or sees a logic error with this let me know ;-)
      */
-    uint16_t SPI_CPOL_x, SPI_CPHA_x;
+    uint16_t SPI_CPOL_x = SPI_CPOL_LOW;
+    uint16_t SPI_CPHA_x = SPI_CPHA_1EDGE;
     SPI_Enable(SPIx, DISABLE);
 
     switch(dataMode)

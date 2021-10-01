@@ -115,7 +115,7 @@
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_multi_line\lv_multi_line.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.h" />
@@ -124,6 +124,7 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PageManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PointContainer\PointContainer.h" />
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
     <ClInclude Include="..\..\USER\App\Utils\Stream\Print.h" />
     <ClInclude Include="..\..\USER\App\Utils\Stream\Printable.h" />
@@ -336,7 +337,7 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.c" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_multi_line\lv_multi_line.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp" />
@@ -347,6 +348,7 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_State.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\PointContainer\PointContainer.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Stream\Print.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Stream\Stream.cpp" />

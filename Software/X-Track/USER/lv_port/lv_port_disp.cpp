@@ -10,7 +10,7 @@ static void disp_flush_cb(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t
 
     const lv_coord_t w = (area->x2 - area->x1 + 1);
     const lv_coord_t h = (area->y2 - area->y1 + 1);
-    const uint32_t size = w * h * sizeof(lv_color_t);
+    const uint32_t size = w * h;
 
     HAL::Display_SetAddrWindow(area->x1, area->y1, area->x2, area->y2);
 
@@ -27,11 +27,6 @@ static void disp_wait_cb(lv_disp_drv_t* disp_drv)
     __wfi();
 }
 
-/**
-  * @brief  屏幕初始化
-  * @param  无
-  * @retval 无
-  */
 void lv_port_disp_init()
 {
     HAL::Display_SetSendFinishCallback(disp_send_finish_callback);

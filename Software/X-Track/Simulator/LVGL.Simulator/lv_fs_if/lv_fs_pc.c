@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include "dirent.h"
-#include "unistd.h"
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -38,12 +37,7 @@ static lv_fs_res_t fs_close (lv_fs_drv_t * drv, void * file_p);
 static lv_fs_res_t fs_read (lv_fs_drv_t * drv, void * file_p, void * buf, uint32_t btr, uint32_t * br);
 static lv_fs_res_t fs_write(lv_fs_drv_t * drv, void * file_p, const void * buf, uint32_t btw, uint32_t * bw);
 static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos, lv_fs_whence_t whence);
-static lv_fs_res_t fs_size (lv_fs_drv_t * drv, void * file_p, uint32_t * size_p);
-static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p);
-static lv_fs_res_t fs_remove (lv_fs_drv_t * drv, const char *path);
-static lv_fs_res_t fs_trunc (lv_fs_drv_t * drv, void * file_p);
-static lv_fs_res_t fs_rename (lv_fs_drv_t * drv, const char * oldname, const char * newname);
-static lv_fs_res_t fs_free (lv_fs_drv_t * drv, uint32_t * total_p, uint32_t * free_p);
+static lv_fs_res_t fs_tell(lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p);
 static void * fs_dir_open (lv_fs_drv_t * drv, const char *path);
 static lv_fs_res_t fs_dir_read (lv_fs_drv_t * drv, void * dir_p, char *fn);
 static lv_fs_res_t fs_dir_close (lv_fs_drv_t * drv, void * dir_p);
@@ -190,27 +184,6 @@ static lv_fs_res_t fs_seek (lv_fs_drv_t * drv, void * file_p, uint32_t pos, lv_f
 }
 
 /**
- * Give the size of a file bytes
- * @param drv pointer to a driver where this function belongs
- * @param file_p pointer to a file_t variable
- * @param size pointer to a variable to store the size
- * @return LV_FS_RES_OK or any error from lv_fs_res_t enum
- */
-static lv_fs_res_t fs_size (lv_fs_drv_t * drv, void * file_p, uint32_t * size_p)
-{
-	(void) drv;		/*Unused*/
-
-	uint32_t cur = ftell(file_p);
-
-	fseek(file_p, 0L, SEEK_END);
-	*size_p = ftell(file_p);
-
-	/*Restore file pointer*/
-	fseek(file_p, cur, SEEK_SET);
-
-	return LV_FS_RES_OK;
-}
-/**
  * Give the position of the read write pointer
  * @param drv pointer to a driver where this function belongs
  * @param file_p pointer to a file_t variable.
@@ -223,24 +196,6 @@ static lv_fs_res_t fs_tell (lv_fs_drv_t * drv, void * file_p, uint32_t * pos_p)
 	(void) drv;		/*Unused*/
 	*pos_p = ftell(file_p);
 	return LV_FS_RES_OK;
-}
-
-/**
- * Get the free and total size of a driver in kB
- * @param drv pointer to a driver where this function belongs
- * @param letter the driver letter
- * @param total_p pointer to store the total size [kB]
- * @param free_p pointer to store the free size [kB]
- * @return LV_FS_RES_OK or any error from lv_fs_res_t enum
- */
-static lv_fs_res_t fs_free (lv_fs_drv_t * drv, uint32_t * total_p, uint32_t * free_p)
-{
-	(void) drv;		/*Unused*/
-	lv_fs_res_t res = LV_FS_RES_NOT_IMP;
-
-	/* Add your code here*/
-
-	return res;
 }
 
 /**

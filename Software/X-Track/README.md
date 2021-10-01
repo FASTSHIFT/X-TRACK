@@ -309,3 +309,17 @@
 * 36.更新HAL_Config，支持GPS缓冲区过载检测，支持配置Power的开关机延时时间
 * 37.更新HAL_Power，合并变量到Power_t
 * 38.更新HAL_SD_CARD，支持获取SD卡类型，SD_CardSizeMB -> SD_CardSize
+
+## [v1.9] - 2021-10-1
+* 1.修复ArduinoAPI中未初始化变量
+* 2.去除lv_fs_pc中未使用的函数
+* 3.去除unistd.h
+* 4.更新lvgl主程序
+* 5.Resource管理器，Resource. -> ResourcePool::
+* 6.添加Utils/PointContainer组件
+* 7.DP_Storage添加地图缩放级别错误检查
+* 8.DP_TackFilter添加PointContainer组件适配，减少75%内存占用，极大提升轨迹录制容量
+* 9.多段线组件lv_multi_line -> lv_poly_line
+* 10.更新ArduinoJson
+* 11.Display_DumpCrashInfo report -> info
+* 12.更新HAL_Power，不使用ADC中断模式

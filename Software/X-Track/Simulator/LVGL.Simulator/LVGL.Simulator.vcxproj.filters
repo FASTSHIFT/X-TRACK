@@ -379,9 +379,6 @@
     <Filter Include="App\Pages\Startup">
       <UniqueIdentifier>{a9f7a372-994a-40ce-ad80-ef374e6e28fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utils\lv_multi_line">
-      <UniqueIdentifier>{a01b3944-3a79-4911-a5b1-805a4b2a2977}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Utils\lv_monkey">
       <UniqueIdentifier>{1731e9bf-118c-4c4e-96d4-5eb37dac5e2c}</UniqueIdentifier>
     </Filter>
@@ -393,6 +390,12 @@
     </Filter>
     <Filter Include="App\Utils\new">
       <UniqueIdentifier>{940bd30d-f74e-44d2-8a0d-b0c01bf5853b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\PointContainer">
+      <UniqueIdentifier>{7d1cbbef-c41c-4364-b771-2c8523db03cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\lv_poly_line">
+      <UniqueIdentifier>{a01b3944-3a79-4911-a5b1-805a4b2a2977}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -966,9 +969,6 @@
     <ClInclude Include="..\..\USER\App\Pages\Startup\StartupView.h">
       <Filter>App\Pages\Startup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_multi_line\lv_multi_line.h">
-      <Filter>App\Utils\lv_multi_line</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.h">
       <Filter>App\Utils\lv_monkey</Filter>
     </ClInclude>
@@ -980,6 +980,12 @@
     </ClInclude>
     <ClInclude Include="HAL\HAL.h">
       <Filter>HAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\PointContainer\PointContainer.h">
+      <Filter>App\Utils\PointContainer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.h">
+      <Filter>App\Utils\lv_poly_line</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1937,9 +1943,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_default.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_multi_line\lv_multi_line.cpp">
-      <Filter>App\Utils\lv_multi_line</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.c">
       <Filter>App\Utils\lv_monkey</Filter>
     </ClCompile>
@@ -1981,6 +1984,12 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\new\new.cpp">
       <Filter>App\Utils\new</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\PointContainer\PointContainer.cpp">
+      <Filter>App\Utils\PointContainer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp">
+      <Filter>App\Utils\lv_poly_line</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

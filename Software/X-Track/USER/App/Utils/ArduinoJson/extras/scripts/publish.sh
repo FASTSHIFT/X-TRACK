@@ -59,6 +59,10 @@ commit_new_version
 add_tag
 push
 
-extras/scripts/build-arduino-package.sh
-extras/scripts/build-single-header.sh
-extras/scripts/wandbox/publish.sh "../ArduinoJson-$TAG.h"
+extras/scripts/build-arduino-package.sh . "../ArduinoJson-$TAG.zip"
+extras/scripts/build-single-header.sh "src/ArduinoJson.h" "../ArduinoJson-$TAG.h"
+extras/scripts/build-single-header.sh "src/ArduinoJson.hpp" "../ArduinoJson-$TAG.hpp"
+extras/scripts/wandbox/publish.sh "../ArduinoJson-$TAG.h" > "../ArduinoJson-$TAG-wandbox.txt"
+extras/scripts/get-release-page.sh "$VERSION" "CHANGELOG.md" "../ArduinoJson-$TAG-wandbox.txt" > "../ArduinoJson-$TAG.md"
+
+echo "You can now copy ../ArduinoJson-$TAG.md into arduinojson.org/collections/_versions/$VERSION.md"

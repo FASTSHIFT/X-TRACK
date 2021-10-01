@@ -196,7 +196,7 @@ void Dialplate::onRecord(bool longPress)
 
 void Dialplate::SetBtnRecImgSrc(const char* srcName)
 {
-    lv_obj_set_style_bg_img_src(View.ui.btnCont.btnRec, Resource.GetImage(srcName), 0);
+    lv_obj_set_style_bg_img_src(View.ui.btnCont.btnRec, ResourcePool::GetImage(srcName), 0);
 }
 
 void Dialplate::onEvent(lv_event_t* event)

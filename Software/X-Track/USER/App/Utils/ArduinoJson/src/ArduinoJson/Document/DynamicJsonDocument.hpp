@@ -6,22 +6,21 @@
 
 #include <ArduinoJson/Document/BasicJsonDocument.hpp>
 
-//#include <stdlib.h>  // malloc, free
-#include "lvgl/lvgl.h"
+#include <stdlib.h>  // malloc, free
 
 namespace ARDUINOJSON_NAMESPACE {
 
 struct DefaultAllocator {
   void* allocate(size_t size) {
-    return lv_mem_alloc(size);
+    return malloc(size);
   }
 
   void deallocate(void* ptr) {
-      lv_mem_free(ptr);
+    free(ptr);
   }
 
   void* reallocate(void* ptr, size_t new_size) {
-    return lv_mem_realloc(ptr, new_size);
+    return realloc(ptr, new_size);
   }
 };
 
