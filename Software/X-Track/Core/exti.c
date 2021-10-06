@@ -32,7 +32,7 @@ static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
   */
 static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
 {
-    IRQn_Type EXTIx_IRQn;
+    IRQn_Type EXTIx_IRQn = EXTI0_IRQn;
     uint8_t Pinx = GPIO_GetPinNum(Pin);
 
     if(Pinx <= 4)

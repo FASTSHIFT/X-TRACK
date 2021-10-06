@@ -40,9 +40,6 @@ static void Power_ADC_Init()
 
     ADC_ClearFlag(POWER_ADC, ADC_FLAG_EC);
 
-    ADC_INTConfig(POWER_ADC, ADC_INT_EC, ENABLE);
-    NVIC_EnableIRQ(ADC1_2_IRQn);
-
     ADC_Ctrl(POWER_ADC, ENABLE);
     ADC_RstCalibration(POWER_ADC);
     while(ADC_GetResetCalibrationStatus(POWER_ADC));
@@ -50,25 +47,35 @@ static void Power_ADC_Init()
     while(ADC_GetCalibrationStatus(POWER_ADC));
 }
 
-static void Power_ADC_TrigUpdate()
+static uint16_t Power_ADC_GetValue()
 {
-    ADC_RegularChannelConfig(
-        POWER_ADC,
-        PIN_MAP[CONFIG_BAT_DET_PIN].ADC_Channel,
-        1,
-        ADC_SampleTime_41_5
-    );
-    ADC_SoftwareStartConvCtrl(POWER_ADC, ENABLE);
+    uint16_t retval = 0;
+    if(ADC_GetFlagStatus(POWER_ADC, ADC_FLAG_EC))
+    {
+        retval = ADC_GetConversionValue(POWER_ADC);
+    }
+    return retval;
 }
 
-extern "C" {
-    void ADC1_2_IRQHandler(void)
+static void Power_ADC_Update()
+{
+    static bool isStartConv = false;
+
+    if(!isStartConv)
     {
-        if(ADC_GetINTStatus(POWER_ADC, ADC_INT_EC) != RESET)
-        {
-            Power.ADCValue = ADC_GetConversionValue(POWER_ADC);
-            ADC_ClearINTPendingBit(POWER_ADC, ADC_INT_EC);
-        }
+        ADC_RegularChannelConfig(
+            POWER_ADC,
+            PIN_MAP[CONFIG_BAT_DET_PIN].ADC_Channel,
+            1,
+            ADC_SampleTime_41_5
+        );
+        ADC_SoftwareStartConvCtrl(POWER_ADC, ENABLE);
+        isStartConv = true;
+    }
+    else
+    {
+        Power.ADCValue = Power_ADC_GetValue();
+        isStartConv = false;
     }
 }
 
@@ -114,13 +121,12 @@ void HAL::Power_SetAutoLowPowerEnable(bool en)
 void HAL::Power_Shutdown()
 {
     Backlight_SetGradual(0, 500);
-    digitalWrite(CONFIG_POWER_EN_PIN, LOW);
     Power.IsShutdown = true;
 }
 
 void HAL::Power_Update()
 {
-    __IntervalExecute(Power_ADC_TrigUpdate(), 1000);
+    __IntervalExecute(Power_ADC_Update(), 1000);
 
     if(!Power.AutoLowPowerEnable)
         return;
@@ -136,9 +142,13 @@ void HAL::Power_Update()
 
 void HAL::Power_EventMonitor()
 {
-    if(Power.IsShutdown && Power.EventCallback)
+    if(Power.IsShutdown)
     {
-        Power.EventCallback();
+        if(Power.EventCallback)
+        {
+            Power.EventCallback();
+        }
+        digitalWrite(CONFIG_POWER_EN_PIN, LOW);
     }
 }
 

@@ -14,7 +14,7 @@ void LiveMapView::Create(lv_obj_t* root, uint32_t tileNum)
 
     lv_obj_t* label = lv_label_create(root);
     lv_obj_center(label);
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_17"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_17"), 0);
     lv_label_set_text(label, "LOADING...");
     ui.labelInfo = label;
 
@@ -53,7 +53,7 @@ void LiveMapView::Style_Create()
     lv_style_set_shadow_color(&ui.styleCont, lv_color_black());
 
     lv_style_init(&ui.styleLabel);
-    lv_style_set_text_font(&ui.styleLabel, Resource.GetFont("bahnschrift_17"));
+    lv_style_set_text_font(&ui.styleLabel, ResourcePool::GetFont("bahnschrift_17"));
     lv_style_set_text_color(&ui.styleLabel, lv_color_white());
 
     lv_style_init(&ui.styleLine);
@@ -86,7 +86,7 @@ void LiveMapView::Map_Create(lv_obj_t* par, uint32_t tileNum)
     Track_Create(cont);
 
     lv_obj_t* img = lv_img_create(cont);
-    lv_img_set_src(img, Resource.GetImage("gps_arrow_dark"));
+    lv_img_set_src(img, ResourcePool::GetImage("gps_arrow_dark"));
 
     lv_img_t* imgOri = (lv_img_t*)img;
     lv_obj_set_pos(img, -imgOri->w, -imgOri->h);
@@ -119,11 +119,11 @@ void LiveMapView::SetArrowTheme(const char* theme)
     char buf[32];
     snprintf(buf, sizeof(buf), "gps_arrow_%s", theme);
 
-    const void* src = Resource.GetImage(buf);
+    const void* src = ResourcePool::GetImage(buf);
 
     if (src == nullptr)
     {
-        Resource.GetImage("gps_arrow_default");
+        ResourcePool::GetImage("gps_arrow_default");
     }
 
     lv_img_set_src(ui.map.imgArrow, src);
@@ -194,19 +194,19 @@ void LiveMapView::SportInfo_Create(lv_obj_t* par)
     /* speed */
     lv_obj_t* label = lv_label_create(obj);
     lv_label_set_text(label, "00");
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_32"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_32"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_obj_align(label, LV_ALIGN_LEFT_MID, 20, -10);
     ui.sportInfo.labelSpeed = label;
 
     label = lv_label_create(obj);
     lv_label_set_text(label, "km/h");
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_13"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_13"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_obj_align_to(label, ui.sportInfo.labelSpeed, LV_ALIGN_OUT_BOTTOM_MID, 0, 3);
 
-    ui.sportInfo.labelTrip = ImgLabel_Create(obj, Resource.GetImage("trip"), 5, 10);
-    ui.sportInfo.labelTime = ImgLabel_Create(obj, Resource.GetImage("alarm"), 5, 30);
+    ui.sportInfo.labelTrip = ImgLabel_Create(obj, ResourcePool::GetImage("trip"), 5, 10);
+    ui.sportInfo.labelTime = ImgLabel_Create(obj, ResourcePool::GetImage("alarm"), 5, 30);
 }
 
 lv_obj_t* LiveMapView::ImgLabel_Create(lv_obj_t* par, const void* img_src, lv_coord_t x_ofs, lv_coord_t y_ofs)
@@ -230,7 +230,7 @@ void LiveMapView::Track_Create(lv_obj_t* par)
     lv_obj_set_size(cont, LV_PCT(100), LV_PCT(100));
     ui.track.cont = cont;
 
-    ui.track.lineTrack = new lv_multi_line(cont);
+    ui.track.lineTrack = new lv_poly_line(cont);
 
     ui.track.lineTrack->set_style(&ui.styleLine);
 

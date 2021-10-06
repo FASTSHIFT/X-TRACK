@@ -2,99 +2,80 @@
 // Copyright Benoit Blanchon 2014-2021
 // MIT License
 
+#define ARDUINOJSON_ENABLE_PROGMEM 1
+#define ARDUINOJSON_ENABLE_ARDUINO_STRING 1
+
 #include "custom_string.hpp"
 #include "progmem_emulation.hpp"
 #include "weird_strcmp.hpp"
 
-#include <ArduinoJson/Strings/ArduinoStringAdapter.hpp>
-#include <ArduinoJson/Strings/ConstRamStringAdapter.hpp>
-#include <ArduinoJson/Strings/FlashStringAdapter.hpp>
-#include <ArduinoJson/Strings/SizedRamStringAdapter.hpp>
-#include <ArduinoJson/Strings/StdStringAdapter.hpp>
+#include <ArduinoJson/Strings/StringAdapters.hpp>
 
 #include <catch.hpp>
 
 using namespace ARDUINOJSON_NAMESPACE;
 
-TEST_CASE("ConstRamStringAdapter") {
+TEST_CASE("const char*") {
   SECTION("null") {
-    ConstRamStringAdapter adapter(NULL);
+    StringAdapter<const char*> adapter(NULL);
 
     CHECK(adapter.compare("bravo") < 0);
     CHECK(adapter.compare(NULL) == 0);
-
-    CHECK(adapter.equals(NULL));
-    CHECK_FALSE(adapter.equals("charlie"));
 
     CHECK(adapter.size() == 0);
   }
 
   SECTION("non-null") {
-    ConstRamStringAdapter adapter("bravo");
+    StringAdapter<const char*> adapter("bravo");
 
     CHECK(adapter.compare(NULL) > 0);
     CHECK(adapter.compare("alpha") > 0);
     CHECK(adapter.compare("bravo") == 0);
     CHECK(adapter.compare("charlie") < 0);
 
-    CHECK(adapter.equals("bravo"));
-    CHECK_FALSE(adapter.equals("charlie"));
-
     CHECK(adapter.size() == 5);
   }
 }
 
-TEST_CASE("SizedRamStringAdapter") {
+TEST_CASE("const char* + size") {
   SECTION("null") {
-    SizedRamStringAdapter adapter(NULL, 10);
+    StringAdapter<const char*, true> adapter(NULL, 10);
 
     CHECK(adapter.compare("bravo") < 0);
     CHECK(adapter.compare(NULL) == 0);
-
-    CHECK(adapter.equals(NULL));
-    CHECK_FALSE(adapter.equals("charlie"));
 
     CHECK(adapter.size() == 10);
   }
 
   SECTION("non-null") {
-    SizedRamStringAdapter adapter("bravo", 5);
+    StringAdapter<const char*, true> adapter("bravo", 5);
 
     CHECK(adapter.compare(NULL) > 0);
     CHECK(adapter.compare("alpha") > 0);
     CHECK(adapter.compare("bravo") == 0);
     CHECK(adapter.compare("charlie") < 0);
-
-    CHECK(adapter.equals("bravo"));
-    CHECK_FALSE(adapter.equals("charlie"));
 
     CHECK(adapter.size() == 5);
   }
 }
 
-TEST_CASE("FlashStringAdapter") {
+TEST_CASE("const __FlashStringHelper*") {
   SECTION("null") {
-    FlashStringAdapter adapter(NULL);
+    StringAdapter<const __FlashStringHelper*> adapter(NULL);
 
     CHECK(adapter.compare("bravo") < 0);
     CHECK(adapter.compare(NULL) == 0);
-
-    CHECK(adapter.equals(NULL));
-    CHECK_FALSE(adapter.equals("charlie"));
 
     CHECK(adapter.size() == 0);
   }
 
   SECTION("non-null") {
-    FlashStringAdapter adapter = adaptString(F("bravo"));
+    StringAdapter<const __FlashStringHelper*> adapter = adaptString(F("bravo"));
 
     CHECK(adapter.compare(NULL) > 0);
     CHECK(adapter.compare("alpha") > 0);
     CHECK(adapter.compare("bravo") == 0);
     CHECK(adapter.compare("charlie") < 0);
-
-    CHECK(adapter.equals("bravo"));
-    CHECK_FALSE(adapter.equals("charlie"));
 
     CHECK(adapter.size() == 5);
   }
@@ -102,45 +83,36 @@ TEST_CASE("FlashStringAdapter") {
 
 TEST_CASE("std::string") {
   std::string str("bravo");
-  StdStringAdapter<std::string> adapter = adaptString(str);
+  StringAdapter<std::string> adapter(str);
 
   CHECK(adapter.compare(NULL) > 0);
   CHECK(adapter.compare("alpha") > 0);
   CHECK(adapter.compare("bravo") == 0);
   CHECK(adapter.compare("charlie") < 0);
-
-  CHECK(adapter.equals("bravo"));
-  CHECK_FALSE(adapter.equals("charlie"));
 
   CHECK(adapter.size() == 5);
 }
 
 TEST_CASE("Arduino String") {
   ::String str("bravo");
-  ArduinoStringAdapter adapter = adaptString(str);
+  StringAdapter< ::String> adapter(str);
 
   CHECK(adapter.compare(NULL) > 0);
   CHECK(adapter.compare("alpha") > 0);
   CHECK(adapter.compare("bravo") == 0);
   CHECK(adapter.compare("charlie") < 0);
-
-  CHECK(adapter.equals("bravo"));
-  CHECK_FALSE(adapter.equals("charlie"));
 
   CHECK(adapter.size() == 5);
 }
 
 TEST_CASE("custom_string") {
   custom_string str("bravo");
-  StdStringAdapter<custom_string> adapter = adaptString(str);
+  StringAdapter<custom_string> adapter(str);
 
   CHECK(adapter.compare(NULL) > 0);
   CHECK(adapter.compare("alpha") > 0);
   CHECK(adapter.compare("bravo") == 0);
   CHECK(adapter.compare("charlie") < 0);
-
-  CHECK(adapter.equals("bravo"));
-  CHECK_FALSE(adapter.equals("charlie"));
 
   CHECK(adapter.size() == 5);
 }

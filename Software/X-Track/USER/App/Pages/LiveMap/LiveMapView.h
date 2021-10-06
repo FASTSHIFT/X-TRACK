@@ -3,7 +3,7 @@
 
 #include "../Page.h"
 #include <vector>
-#include "Utils/lv_multi_line/lv_multi_line.h"
+#include "Utils/lv_poly_line/lv_poly_line.h"
 
 namespace Page
 {
@@ -30,7 +30,7 @@ public:
         struct
         {
             lv_obj_t* cont;
-            lv_multi_line* lineTrack;
+            lv_poly_line* lineTrack;
             lv_obj_t* lineActive;
             lv_point_t pointActive[2];
         } track;

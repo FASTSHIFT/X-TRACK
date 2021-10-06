@@ -21,7 +21,7 @@ void StartupView::Create(lv_obj_t* root)
     ui.cont = cont;
 
     lv_obj_t* label = lv_label_create(cont);
-    lv_obj_set_style_text_font(label, Resource.GetFont("agencyb_36"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("agencyb_36"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_label_set_text(label, "X-TRACK");
     lv_obj_center(label);

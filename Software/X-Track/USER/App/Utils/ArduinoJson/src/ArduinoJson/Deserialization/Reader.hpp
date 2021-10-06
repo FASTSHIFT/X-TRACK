@@ -17,7 +17,7 @@ struct Reader {
   Reader(TSource& source) : _source(&source) {}
 
   int read() {
-    return _source->read();
+    return _source->read();  // Error here? You passed an unsupported input type
   }
 
   size_t readBytes(char* buffer, size_t length) {
@@ -40,17 +40,17 @@ struct BoundedReader {
 #include <ArduinoJson/Deserialization/Readers/VariantReader.hpp>
 
 #if ARDUINOJSON_ENABLE_ARDUINO_STREAM
-#include <ArduinoJson/Deserialization/Readers/ArduinoStreamReader.hpp>
+#  include <ArduinoJson/Deserialization/Readers/ArduinoStreamReader.hpp>
 #endif
 
 #if ARDUINOJSON_ENABLE_ARDUINO_STRING
-#include <ArduinoJson/Deserialization/Readers/ArduinoStringReader.hpp>
+#  include <ArduinoJson/Deserialization/Readers/ArduinoStringReader.hpp>
 #endif
 
 #if ARDUINOJSON_ENABLE_PROGMEM
-#include <ArduinoJson/Deserialization/Readers/FlashReader.hpp>
+#  include <ArduinoJson/Deserialization/Readers/FlashReader.hpp>
 #endif
 
 #if ARDUINOJSON_ENABLE_STD_STREAM
-#include <ArduinoJson/Deserialization/Readers/StdStreamReader.hpp>
+#  include <ArduinoJson/Deserialization/Readers/StdStreamReader.hpp>
 #endif

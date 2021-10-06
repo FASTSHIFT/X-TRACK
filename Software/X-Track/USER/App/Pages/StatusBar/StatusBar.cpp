@@ -213,11 +213,11 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     static lv_style_t style;
     lv_style_init(&style);
     lv_style_set_text_color(&style, lv_color_white());
-    lv_style_set_text_font(&style, Resource.GetFont("bahnschrift_13"));
+    lv_style_set_text_font(&style, ResourcePool::GetFont("bahnschrift_13"));
 
     /* satellite */
     lv_obj_t* img = lv_img_create(cont);
-    lv_img_set_src(img, Resource.GetImage("satellite"));
+    lv_img_set_src(img, ResourcePool::GetImage("satellite"));
     lv_obj_align(img, LV_ALIGN_LEFT_MID, 14, 0);
     ui.satellite.img = img;
 
@@ -229,7 +229,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
 
     /* sd card */
     img = lv_img_create(cont);
-    lv_img_set_src(img, Resource.GetImage("sd_card"));
+    lv_img_set_src(img, ResourcePool::GetImage("sd_card"));
     lv_obj_align(img, LV_ALIGN_LEFT_MID, 50, -1);
     lv_obj_add_flag(img, LV_OBJ_FLAG_HIDDEN);
     ui.imgSD = img;
@@ -251,7 +251,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
 
     /* battery */
     img = lv_img_create(cont);
-    lv_img_set_src(img, Resource.GetImage("battery"));
+    lv_img_set_src(img, ResourcePool::GetImage("battery"));
     lv_obj_align(img, LV_ALIGN_RIGHT_MID, -30, 0);
     lv_img_t* img_ext = (lv_img_t*)img;
     lv_obj_set_size(img, img_ext->w, img_ext->h);

@@ -1,5 +1,6 @@
 #include "LiveMapModel.h"
 #include "Config/Config.h"
+#include "Utils/PointContainer/PointContainer.h"
 
 using namespace Page;
 
@@ -72,11 +73,14 @@ void LiveMapModel::TrackReload(TrackPointFilter::Callback_t callback, void* user
     DataProc::TrackFilter_Info_t info;
     account->Pull("TrackFilter", &info, sizeof(info));
 
-    if (!info.isActive)
+    if (!info.isActive || info.pointCont == nullptr)
     {
         return;
     }
 
+    PointContainer* pointContainer = (PointContainer*)info.pointCont;
+
+    pointContainer->PopStart();
     pointFilter.Reset();
 
     TrackPointFilter ptFilter;
@@ -86,15 +90,13 @@ void LiveMapModel::TrackReload(TrackPointFilter::Callback_t callback, void* user
     ptFilter.SetSecondFilterModeEnable(true);
     ptFilter.userData = userData;
 
-    uint32_t size = info.size;
-    DataProc::TrackFilter_Point_t* points = info.points;
-
-    for (uint32_t i = 0; i < size; i++)
-    {
+    int32_t pointX, pointY;
+    while (pointContainer->PopPoint(&pointX, &pointY))
+    { 
         int32_t mapX, mapY;
         mapConv.ConvertMapLevelPos(
             &mapX, &mapY,
-            points[i].x, points[i].y, 
+            pointX, pointY,
             info.level
         );
 

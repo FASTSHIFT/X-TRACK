@@ -63,14 +63,14 @@ void DialplateView::TopInfo_Create(lv_obj_t* par)
     ui.topInfo.cont = cont;
 
     lv_obj_t* label = lv_label_create(cont);
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_65"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_65"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_label_set_text(label, "00");
     lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 63);
     ui.topInfo.labelSpeed = label;
 
     label = lv_label_create(cont);
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_17"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_17"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_label_set_text(label, "km/h");
     lv_obj_align_to(label, ui.topInfo.labelSpeed, LV_ALIGN_OUT_BOTTOM_MID, 0, 8);
@@ -129,12 +129,12 @@ void DialplateView::SubInfoGrp_Create(lv_obj_t* par, SubInfo_t* info, const char
     );
 
     lv_obj_t* label = lv_label_create(cont);
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_17"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_17"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     info->lableValue = label;
 
     label = lv_label_create(cont);
-    lv_obj_set_style_text_font(label, Resource.GetFont("bahnschrift_13"), 0);
+    lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_13"), 0);
     lv_obj_set_style_text_color(label, lv_color_hex(0xb3b3b3), 0);
     lv_label_set_text(label, unitText);
     info->lableUnit = label;
@@ -159,9 +159,9 @@ void DialplateView::BtnCont_Create(lv_obj_t* par)
 
     ui.btnCont.cont = cont;
 
-    ui.btnCont.btnMap = Btn_Create(cont, Resource.GetImage("locate"), -80);
-    ui.btnCont.btnRec = Btn_Create(cont, Resource.GetImage("start"), 0);
-    ui.btnCont.btnMenu = Btn_Create(cont, Resource.GetImage("menu"), 80);
+    ui.btnCont.btnMap = Btn_Create(cont, ResourcePool::GetImage("locate"), -80);
+    ui.btnCont.btnRec = Btn_Create(cont, ResourcePool::GetImage("start"), 0);
+    ui.btnCont.btnMenu = Btn_Create(cont, ResourcePool::GetImage("menu"), 80);
 }
 
 lv_obj_t* DialplateView::Btn_Create(lv_obj_t* par, const void* img_src, lv_coord_t x_ofs)

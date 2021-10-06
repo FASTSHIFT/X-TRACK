@@ -10,8 +10,8 @@
 #include <ArduinoJson/Variant/VariantTo.hpp>
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4522)
+#  pragma warning(push)
+#  pragma warning(disable : 4522)
 #endif
 
 namespace ARDUINOJSON_NAMESPACE {
@@ -178,8 +178,8 @@ class ElementProxy : public VariantOperators<ElementProxy<TArray> >,
     return _array.getOrAddElement(_index);
   }
 
-  friend bool convertToJson(const this_type& src, VariantRef dst) {
-    return dst.set(src.getUpstreamElement());
+  friend void convertToJson(const this_type& src, VariantRef dst) {
+    dst.set(src.getUpstreamElement());
   }
 
   TArray _array;
@@ -189,5 +189,5 @@ class ElementProxy : public VariantOperators<ElementProxy<TArray> >,
 }  // namespace ARDUINOJSON_NAMESPACE
 
 #ifdef _MSC_VER
-#pragma warning(pop)
+#  pragma warning(pop)
 #endif

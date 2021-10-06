@@ -12,8 +12,8 @@
 #include <ArduinoJson/Variant/VariantTo.hpp>
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4522)
+#  pragma warning(push)
+#  pragma warning(disable : 4522)
 #endif
 
 namespace ARDUINOJSON_NAMESPACE {
@@ -187,8 +187,8 @@ class MemberProxy : public VariantOperators<MemberProxy<TObject, TStringRef> >,
     return _object.getOrAddMember(_key);
   }
 
-  friend bool convertToJson(const this_type &src, VariantRef dst) {
-    return dst.set(src.getUpstreamMember());
+  friend void convertToJson(const this_type &src, VariantRef dst) {
+    dst.set(src.getUpstreamMember());
   }
 
   TObject _object;
@@ -198,5 +198,5 @@ class MemberProxy : public VariantOperators<MemberProxy<TObject, TStringRef> >,
 }  // namespace ARDUINOJSON_NAMESPACE
 
 #ifdef _MSC_VER
-#pragma warning(pop)
+#  pragma warning(pop)
 #endif

@@ -62,9 +62,9 @@ inline bool CollectionData::copyFrom(const CollectionData& src,
     VariantData* var;
     if (s->key() != 0) {
       if (s->ownsKey())
-        var = addMember(RamStringAdapter(s->key()), pool);
+        var = addMember(adaptString(const_cast<char*>(s->key())), pool);
       else
-        var = addMember(ConstRamStringAdapter(s->key()), pool);
+        var = addMember(adaptString(s->key()), pool);
     } else {
       var = addElement(pool);
     }
@@ -107,7 +107,7 @@ template <typename TAdaptedString>
 inline VariantSlot* CollectionData::getSlot(TAdaptedString key) const {
   VariantSlot* slot = _head;
   while (slot) {
-    if (key.equals(slot->key()))
+    if (key.compare(slot->key()) == 0)
       break;
     slot = slot->next();
   }

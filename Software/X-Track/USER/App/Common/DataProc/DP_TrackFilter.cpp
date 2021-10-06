@@ -1,22 +1,22 @@
 #include "DataProc.h"
 #include "Utils/MapConv/MapConv.h"
 #include "Utils/TrackFilter/TrackFilter.h"
+#include "Utils/PointContainer/PointContainer.h"
 #include "Config/Config.h"
 
 #include <vector>
 
 using namespace DataProc;
 
-static MapConv mapConv;
+typedef struct {
+    MapConv mapConv;
+    TrackPointFilter pointFilter;
+    PointContainer* pointContainer;
+    bool isStarted;
+    bool isActive;
+}TrackFilter_t;
 
-static TrackPointFilter pointFilter;
-
-static bool filterStarted = false;
-static bool filterActive = false;
-
-typedef std::vector<TrackFilter_Point_t> PointVector_t;
-
-static PointVector_t veclocationPoints;
+static TrackFilter_t trackFilter;
 
 static int onNotify(Account* account, TrackFilter_Info_t* info)
 {
@@ -25,29 +25,33 @@ static int onNotify(Account* account, TrackFilter_Info_t* info)
     switch (info->cmd)
     {
     case TRACK_FILTER_CMD_START:
-        pointFilter.Reset();
-        filterActive = true;
-        filterStarted = true;
+        trackFilter.pointContainer = new PointContainer;
+        trackFilter.pointFilter.Reset();
+        trackFilter.isActive = true;
+        trackFilter.isStarted = true;
         LV_LOG_USER("Track filter start");
         break;
     case TRACK_FILTER_CMD_PAUSE:
-        filterActive = false;
+        trackFilter.isActive = false;
         LV_LOG_USER("Track filter pause");
         break;
     case TRACK_FILTER_CMD_CONTINUE:
-        filterActive = true;
+        trackFilter.isActive = true;
         LV_LOG_USER("Track filter continue");
         break;
     case TRACK_FILTER_CMD_STOP:
     {
-        filterStarted = false;
-        filterActive = false;
+        trackFilter.isStarted = false;
+        trackFilter.isActive = false;
 
-        decltype(veclocationPoints) vec;
-        veclocationPoints.swap(vec);
+        if (trackFilter.pointContainer)
+        {
+            delete trackFilter.pointContainer;
+            trackFilter.pointContainer = nullptr;
+        }
 
         uint32_t sum = 0, output = 0;
-        pointFilter.GetCounts(&sum, &output);
+        trackFilter.pointFilter.GetCounts(&sum, &output);
         LV_LOG_USER(
             "Track filter stop, filted(%d%%): sum = %d, output = %d",
             sum ? (100 - output * 100 / sum) : 0,
@@ -66,18 +70,16 @@ static int onNotify(Account* account, TrackFilter_Info_t* info)
 static void onPublish(Account* account, HAL::GPS_Info_t* gps)
 {
     int32_t mapX, mapY;
-    mapConv.ConvertMapCoordinate(
+    trackFilter.mapConv.ConvertMapCoordinate(
         gps->longitude,
         gps->latitude,
         &mapX,
         &mapY
     );
 
-    if (pointFilter.PushPoint(mapX, mapY))
-    {
-        const TrackFilter_Point_t point = { mapX, mapY };
-        veclocationPoints.push_back(point);
-        //LV_LOG_USER("pointFilter output x = %d, y = %d", mapX, mapY);
+    if (trackFilter.pointFilter.PushPoint(mapX, mapY))
+    {      
+        trackFilter.pointContainer->PushPoint(mapX, mapY);
     }
 }
 
@@ -88,7 +90,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     if (param->event == Account::EVENT_PUB_PUBLISH
      && param->size == sizeof(HAL::GPS_Info_t))
     {
-        if (filterActive)
+        if (trackFilter.isActive)
         {
             onPublish(account, (HAL::GPS_Info_t*)param->data_p);
         }
@@ -106,10 +108,9 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     case Account::EVENT_SUB_PULL:
     {
         TrackFilter_Info_t* info = (TrackFilter_Info_t*)param->data_p;
-        info->points = veclocationPoints.size() ? &(veclocationPoints[0]) : nullptr;
-        info->size = veclocationPoints.size();
-        info->level = (uint8_t)mapConv.GetLevel();
-        info->isActive = filterStarted;
+        info->pointCont = trackFilter.pointContainer;
+        info->level = (uint8_t)trackFilter.mapConv.GetLevel();
+        info->isActive = trackFilter.isStarted;
         break;
     }
     case Account::EVENT_NOTIFY:
@@ -128,7 +129,7 @@ DATA_PROC_INIT_DEF(TrackFilter)
     account->Subscribe("GPS");
     account->SetEventCallback(onEvent);
 
-    mapConv.SetLevel(CONFIG_LIVE_MAP_LEVEL_DEFAULT);
+    trackFilter.mapConv.SetLevel(CONFIG_LIVE_MAP_LEVEL_DEFAULT);
 
-    pointFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
+    trackFilter.pointFilter.SetOffsetThreshold(CONFIG_TRACK_FILTER_OFFSET_THRESHOLD);
 }

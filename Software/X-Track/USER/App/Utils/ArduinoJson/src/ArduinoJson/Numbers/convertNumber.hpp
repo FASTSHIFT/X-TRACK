@@ -5,13 +5,13 @@
 #pragma once
 
 #if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wconversion"
+#  pragma clang diagnostic push
+#  pragma clang diagnostic ignored "-Wconversion"
 #elif defined(__GNUC__)
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
-#pragma GCC diagnostic push
-#endif
-#pragma GCC diagnostic ignored "-Wconversion"
+#  if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#    pragma GCC diagnostic push
+#  endif
+#  pragma GCC diagnostic ignored "-Wconversion"
 #endif
 
 #include <ArduinoJson/Numbers/Float.hpp>
@@ -71,9 +71,23 @@ canConvertNumber(TIn) {
 }
 
 // int32 -> uint32
+// int32 -> uint64
 template <typename TOut, typename TIn>
 typename enable_if<is_integral<TIn>::value && is_signed<TIn>::value &&
-                       is_integral<TOut>::value && is_unsigned<TOut>::value,
+                       is_integral<TOut>::value && is_unsigned<TOut>::value &&
+                       sizeof(TOut) >= sizeof(TIn),
+                   bool>::type
+canConvertNumber(TIn value) {
+  if (value < 0)
+    return false;
+  return TOut(value) <= numeric_limits<TOut>::highest();
+}
+
+// int32 -> uint16
+template <typename TOut, typename TIn>
+typename enable_if<is_integral<TIn>::value && is_signed<TIn>::value &&
+                       is_integral<TOut>::value && is_unsigned<TOut>::value &&
+                       sizeof(TOut) < sizeof(TIn),
                    bool>::type
 canConvertNumber(TIn value) {
   if (value < 0)
@@ -99,9 +113,9 @@ TOut convertNumber(TIn value) {
 }  // namespace ARDUINOJSON_NAMESPACE
 
 #if defined(__clang__)
-#pragma clang diagnostic pop
+#  pragma clang diagnostic pop
 #elif defined(__GNUC__)
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
-#pragma GCC diagnostic pop
-#endif
+#  if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+#    pragma GCC diagnostic pop
+#  endif
 #endif

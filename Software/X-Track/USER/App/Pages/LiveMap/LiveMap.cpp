@@ -334,7 +334,7 @@ void LiveMap::TrackLineAppendToEnd(int32_t x, int32_t y)
 void LiveMap::onTrackLineEvent(TrackLineFilter* filter, TrackLineFilter::Event_t* event)
 {
     LiveMap* instance = (LiveMap*)filter->userData;
-    lv_multi_line* lineTrack = instance->View.ui.track.lineTrack;
+    lv_poly_line* lineTrack = instance->View.ui.track.lineTrack;
 
     switch (event->code)
     {

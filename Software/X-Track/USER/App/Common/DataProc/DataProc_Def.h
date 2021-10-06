@@ -112,15 +112,8 @@ typedef enum
 
 typedef struct
 {
-    int32_t x;
-    int32_t y;
-} TrackFilter_Point_t;
-
-typedef struct
-{
     TrackFilter_Cmd_t cmd;
-    TrackFilter_Point_t* points;
-    uint32_t size;
+    void* pointCont;
     uint8_t level;
     bool isActive;
 } TrackFilter_Info_t;

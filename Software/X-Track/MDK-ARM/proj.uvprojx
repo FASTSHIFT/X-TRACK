@@ -1778,6 +1778,75 @@
         </Group>
         <Group>
           <GroupName>Utils/lv_lib_png</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>0</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
           <Files>
             <File>
               <FileName>lodepng.c</FileName>
@@ -1802,7 +1871,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Utils/llv_multi_line</GroupName>
+          <GroupName>Utils/llv_poly_line</GroupName>
           <GroupOption>
             <CommonProperty>
               <UseCPPCompiler>0</UseCPPCompiler>
@@ -1874,14 +1943,14 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>lv_multi_line.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_multi_line\lv_multi_line.h</FilePath>
+              <FileName>lv_poly_line.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp</FilePath>
             </File>
             <File>
-              <FileName>lv_multi_line.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\lv_multi_line\lv_multi_line.cpp</FilePath>
+              <FileName>lv_poly_line.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_poly_line\lv_poly_line.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2140,6 +2209,90 @@
               <FileName>ResourceManager.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\PageManager\ResourceManager.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/PointContainer</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <uClangAs>2</uClangAs>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>PointContainer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\PointContainer\PointContainer.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PointContainer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\PointContainer\PointContainer.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -3662,91 +3815,91 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="ADC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="BKPR" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH BKPR">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="DMA" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="EXTI" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="FMC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="GPIO" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH GPIO">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="PWR" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RCC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RTC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RTC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="SPI" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="TIMER" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="USART" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -3774,19 +3927,19 @@
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\at32f4xx_conf.h</instance>
         <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos/>
       </file>
       <file attr="config" category="source" condition="AT32F403ACGT7" name="Device\Source\ARM\startup_at32f403acgt7.s" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\startup_at32f403acgt7.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\system_at32f4xx.c</instance>
         <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.4"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
         <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">

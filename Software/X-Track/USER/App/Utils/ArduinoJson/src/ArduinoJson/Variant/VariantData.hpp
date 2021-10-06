@@ -7,17 +7,17 @@
 #include <ArduinoJson/Memory/MemoryPool.hpp>
 #include <ArduinoJson/Misc/SerializedValue.hpp>
 #include <ArduinoJson/Numbers/convertNumber.hpp>
-#include <ArduinoJson/Strings/RamStringAdapter.hpp>
+#include <ArduinoJson/Strings/StringAdapters.hpp>
 #include <ArduinoJson/Variant/VariantContent.hpp>
 
 // VariantData can't have a constructor (to be a POD), so we have no way to fix
 // this warning
 #if defined(__GNUC__)
-#if __GNUC__ >= 7
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-#pragma GCC diagnostic ignored "-Wuninitialized"
-#endif
+#  if __GNUC__ >= 7
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    pragma GCC diagnostic ignored "-Wuninitialized"
+#  endif
 #endif
 
 namespace ARDUINOJSON_NAMESPACE {
@@ -33,7 +33,7 @@ class VariantData {
   // - no virtual
   // - no inheritance
   void init() {
-    _flags = 0;
+    _flags = VALUE_IS_NULL;
   }
 
   template <typename TVisitor>
@@ -103,7 +103,8 @@ class VariantData {
       case VALUE_IS_OBJECT:
         return toObject().copyFrom(src._content.asCollection, pool);
       case VALUE_IS_OWNED_STRING:
-        return setString(RamStringAdapter(src._content.asString), pool);
+        return setString(adaptString(const_cast<char *>(src._content.asString)),
+                         pool);
       case VALUE_IS_OWNED_RAW:
         return setOwnedRaw(
             serialized(src._content.asRaw.data, src._content.asRaw.size), pool);
@@ -362,7 +363,7 @@ class VariantData {
 }  // namespace ARDUINOJSON_NAMESPACE
 
 #if defined(__GNUC__)
-#if __GNUC__ >= 8
-#pragma GCC diagnostic pop
-#endif
+#  if __GNUC__ >= 8
+#    pragma GCC diagnostic pop
+#  endif
 #endif

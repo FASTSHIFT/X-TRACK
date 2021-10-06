@@ -7,6 +7,7 @@
 #include <ArduinoJson/Memory/Alignment.hpp>
 #include <ArduinoJson/Polyfills/assert.hpp>
 #include <ArduinoJson/Polyfills/mpl/max.hpp>
+#include <ArduinoJson/Strings/StringAdapters.hpp>
 #include <ArduinoJson/Variant/VariantSlot.hpp>
 
 #include <string.h>  // memmove
@@ -37,7 +38,8 @@ class MemoryPool {
   }
 
   void* buffer() {
-    return _begin;
+    return _begin;  // NOLINT(clang-analyzer-unix.Malloc)
+                    // movePointers() alters this pointer
   }
 
   // Gets the capacity of the memoryPool in bytes
@@ -63,7 +65,7 @@ class MemoryPool {
       return 0;
 
 #if ARDUINOJSON_ENABLE_STRING_DEDUPLICATION
-    const char* existingCopy = findString(str.begin());
+    const char* existingCopy = findString(str);
     if (existingCopy)
       return existingCopy;
 #endif
@@ -85,7 +87,7 @@ class MemoryPool {
 
   const char* saveStringFromFreeZone(size_t len) {
 #if ARDUINOJSON_ENABLE_STRING_DEDUPLICATION
-    const char* dup = findString(_left);
+    const char* dup = findString(adaptString(_left));
     if (dup)
       return dup;
 #endif
@@ -162,16 +164,11 @@ class MemoryPool {
   }
 
 #if ARDUINOJSON_ENABLE_STRING_DEDUPLICATION
-  template <typename TIterator>
-  const char* findString(TIterator str) {
+  template <typename TAdaptedString>
+  const char* findString(const TAdaptedString& str) {
     for (char* next = _begin; next < _left; ++next) {
-      char* begin = next;
-
-      // try to match
-      for (TIterator it = str; *it == *next; ++it) {
-        if (*next++ == 0)
-          return begin;
-      }
+      if (str.compare(next) == 0)
+        return next;
 
       // jump to next terminator
       while (*next) ++next;
