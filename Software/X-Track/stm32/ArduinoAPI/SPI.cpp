@@ -51,7 +51,8 @@ void SPIClass::SPI_Settings(    SPI_TypeDef* SPIx,
                                 uint16_t SPI_BaudRatePrescaler_x,
                                 uint16_t SPI_FirstBit_x)
 {
-    uint16_t SPI_CPOL_x, SPI_CPHA_x;
+    uint16_t SPI_CPOL_x = SPI_CPOL_Low;
+    uint16_t SPI_CPHA_x = SPI_CPHA_1Edge;
     SPI_Cmd(SPIx, DISABLE);
 
     switch(SPI_MODEx)
@@ -74,18 +75,18 @@ void SPIClass::SPI_Settings(    SPI_TypeDef* SPIx,
         break;
     }
 
-    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //����SPI�������˫�������ģʽ
-    SPI_InitStructure.SPI_Mode = SPI_Mode_x;        //����SPI����ģʽ:(SPI_Mode_Master,SPI_Mode_Slave)
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;        //����SPI�����ݴ�С:SPI���ͽ���xλ֡�ṹ
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;        //ѡ���˴���ʱ�ӵ���̬
-    SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;    //���ݲ���ʱ����
-    SPI_InitStructure.SPI_NSS = SPI_NSS_x;      //NSS�ź���Ӳ����NSS�ܽţ�����������ʹ��SSIλ������:�ڲ�NSS�ź���SSIλ����(SPI_NSS_Soft,SPI_NSS_Hard)
-    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;      //���岨����Ԥ��Ƶ��ֵ
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;    //ָ�����ݴ����MSBλ����LSBλ��ʼ:���ݴ����MSBλ��ʼ(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
-    SPI_InitStructure.SPI_CRCPolynomial = 3;    //CRCֵ����Ķ���ʽ
-    SPI_Init(SPIx, &SPI_InitStructure);  //����SPI_InitStruct��ָ���Ĳ�����ʼ������SPIx�Ĵ���
+    SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;  //设置SPI单向或者双向的数据模式
+    SPI_InitStructure.SPI_Mode = SPI_Mode_x;        //设置SPI工作模式:(SPI_Mode_Master,SPI_Mode_Slave)
+    SPI_InitStructure.SPI_DataSize = SPI_DataSize_x;        //设置SPI的数据大小:SPI发送接收x位帧结构
+    SPI_InitStructure.SPI_CPOL = SPI_CPOL_x;        //选择了串行时钟的稳态
+    SPI_InitStructure.SPI_CPHA = SPI_CPHA_x;    //数据捕获时钟沿
+    SPI_InitStructure.SPI_NSS = SPI_NSS_x;      //NSS信号由硬件（NSS管脚）还是软件（使用SSI位）管理:内部NSS信号有SSI位控制(SPI_NSS_Soft,SPI_NSS_Hard)
+    SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_x;      //定义波特率预分频的值
+    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_x;    //指定数据传输从MSB位还是LSB位开始:数据传输从MSB位开始(SPI_FirstBit_MSB,SPI_FirstBit_LSB)
+    SPI_InitStructure.SPI_CRCPolynomial = 3;    //CRC值计算的多项式
+    SPI_Init(SPIx, &SPI_InitStructure);  //根据SPI_InitStruct中指定的参数初始化外设SPIx寄存器
 
-    SPI_Cmd(SPIx, ENABLE); //ʹ��SPI����
+    SPI_Cmd(SPIx, ENABLE); //使能SPI外设
 }
 
 void SPIClass::begin(void)
