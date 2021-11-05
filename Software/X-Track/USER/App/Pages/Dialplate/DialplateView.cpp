@@ -82,7 +82,8 @@ void DialplateView::BottomInfo_Create(lv_obj_t* par)
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
     lv_obj_set_style_bg_color(cont, lv_color_black(), 0);
-    lv_obj_set_size(cont, LV_HOR_RES, 90);
+    // lv_obj_set_size(cont, LV_HOR_RES, 90); // XXX For 1.54' Screen (240x240)
+    lv_obj_set_size(cont, LV_HOR_RES, 90 + 80); // XXX For 2.0' Screen (320x240)
     lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, 106);
 
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW_WRAP);
@@ -101,7 +102,7 @@ void DialplateView::BottomInfo_Create(lv_obj_t* par)
         "AVG",
         "Time",
         "Trip",
-        "Calorie"
+        "Calorie",
     };
 
     for (int i = 0; i < ARRAY_SIZE(ui.bottomInfo.labelInfoGrp); i++)
