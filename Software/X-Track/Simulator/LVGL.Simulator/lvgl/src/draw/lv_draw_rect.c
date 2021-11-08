@@ -1080,7 +1080,7 @@ void draw_border_generic(const lv_area_t * clip_area, const lv_area_t * outer_ar
 {
     opa = opa >= LV_OPA_COVER ? LV_OPA_COVER : opa;
 
-    if(rout == 0 || rin == 0) {
+    if(rout == 0 && rin == 0) {
         draw_border_simple(clip_area, outer_area, inner_area, color, opa);
         return;
     }
@@ -1129,7 +1129,7 @@ void draw_border_generic(const lv_area_t * clip_area, const lv_area_t * outer_ar
     if(mask_any) {
         blend_area.x1 = draw_area.x1;
         blend_area.x2 = draw_area.x2;
-        for(h = draw_area.y1; h < draw_area.y2; h++) {
+        for(h = draw_area.y1; h <= draw_area.y2; h++) {
             if(!top_side && h < core_area.y1) continue;
             if(!bottom_side && h > core_area.y2) break;
 

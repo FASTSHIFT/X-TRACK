@@ -22,13 +22,13 @@ typedef struct
 /* GPS */
 typedef struct
 {
-    bool isVaild;
     double longitude;
     double latitude;
     float altitude;
     float course;
     float speed;
     int16_t satellites;
+    bool isVaild;
     Clock_Info_t clock;
 } GPS_Info_t;
 

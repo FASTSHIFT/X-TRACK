@@ -27,7 +27,7 @@
 using namespace::Microsoft_MapPoint;
 
 #ifndef constrain
-#   define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+#  define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #endif
 
 char MapConv::dirPath[] = "/MAP";

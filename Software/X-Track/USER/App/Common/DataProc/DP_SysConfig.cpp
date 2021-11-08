@@ -4,25 +4,13 @@
 
 using namespace DataProc;
 
-static SysConfig_Info_t sysConfig =
-{
-    .cmd         = SYSCONFIG_CMD_LOAD,
-    .longitude   = CONFIG_GPS_LONGITUDE_DEFAULT,
-    .latitude    = CONFIG_GPS_LATITUDE_DEFAULT,
-    .timeZone    = CONFIG_SYSTEM_TIME_ZONE_DEFAULT,
-    .soundEnable = CONFIG_SYSTEM_SOUND_ENABLE_DEFAULT,
-    .language    = CONFIG_SYSTEM_LANGUAGE_DEFAULT,
-    .arrowTheme  = CONFIG_ARROW_THEME_DEFAULT,
-    .mapDirPath  = CONFIG_MAP_DIR_PATH_DEFAULT,
-    .mapExtName  = CONFIG_MAP_EXT_NAME_DEFAULT,
-    .mapWGS84    = CONFIG_MAP_USE_WGS84_DEFAULT,
-};
+static SysConfig_Info_t sysConfig;
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
     if (param->size != sizeof(SysConfig_Info_t))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     SysConfig_Info_t* info = (SysConfig_Info_t*)param->data_p;
@@ -39,7 +27,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         {
             HAL::GPS_Info_t gpsInfo;
             account->Pull("GPS", &gpsInfo, sizeof(gpsInfo));
-            
+
             if(gpsInfo.isVaild)
             {
                 sysConfig.longitude = (float)gpsInfo.longitude;
@@ -54,7 +42,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     }
     break;
     default:
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     return 0;
@@ -66,6 +54,21 @@ DATA_PROC_INIT_DEF(SysConfig)
     account->Subscribe("GPS");
     account->SetEventCallback(onEvent);
 
+    memset(&sysConfig, 0, sizeof(sysConfig));
+
+#   define SYSCGF_STRCPY(dest, src) strncpy(dest, src, sizeof(dest));
+
+    sysConfig.cmd         = SYSCONFIG_CMD_LOAD;
+    sysConfig.longitude   = CONFIG_GPS_LONGITUDE_DEFAULT;
+    sysConfig.latitude    = CONFIG_GPS_LATITUDE_DEFAULT;
+    sysConfig.timeZone    = CONFIG_SYSTEM_TIME_ZONE_DEFAULT;
+    sysConfig.soundEnable = CONFIG_SYSTEM_SOUND_ENABLE_DEFAULT;
+    SYSCGF_STRCPY(sysConfig.language, CONFIG_SYSTEM_LANGUAGE_DEFAULT);
+    SYSCGF_STRCPY(sysConfig.arrowTheme, CONFIG_ARROW_THEME_DEFAULT);
+    SYSCGF_STRCPY(sysConfig.mapDirPath, CONFIG_MAP_DIR_PATH_DEFAULT);
+    SYSCGF_STRCPY(sysConfig.mapExtName, CONFIG_MAP_EXT_NAME_DEFAULT);
+    sysConfig.mapWGS84    = CONFIG_MAP_USE_WGS84_DEFAULT;
+
     STORAGE_VALUE_REG(account, sysConfig.longitude, STORAGE_TYPE_FLOAT);
     STORAGE_VALUE_REG(account, sysConfig.latitude, STORAGE_TYPE_FLOAT);
 
@@ -75,5 +78,5 @@ DATA_PROC_INIT_DEF(SysConfig)
     STORAGE_VALUE_REG(account, sysConfig.arrowTheme, STORAGE_TYPE_STRING);
     STORAGE_VALUE_REG(account, sysConfig.mapDirPath, STORAGE_TYPE_STRING);
     STORAGE_VALUE_REG(account, sysConfig.mapExtName, STORAGE_TYPE_STRING);
-    STORAGE_VALUE_REG(account, sysConfig.mapWGS84, STORAGE_TYPE_INT);   
+    STORAGE_VALUE_REG(account, sysConfig.mapWGS84, STORAGE_TYPE_INT);
 }

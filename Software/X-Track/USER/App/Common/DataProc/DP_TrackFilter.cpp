@@ -8,13 +8,14 @@
 
 using namespace DataProc;
 
-typedef struct {
+typedef struct
+{
     MapConv mapConv;
     TrackPointFilter pointFilter;
     PointContainer* pointContainer;
     bool isStarted;
     bool isActive;
-}TrackFilter_t;
+} TrackFilter_t;
 
 static TrackFilter_t trackFilter;
 
@@ -55,11 +56,11 @@ static int onNotify(Account* account, TrackFilter_Info_t* info)
         LV_LOG_USER(
             "Track filter stop, filted(%d%%): sum = %d, output = %d",
             sum ? (100 - output * 100 / sum) : 0,
-            sum, 
+            sum,
             output
         );
         break;
-    }    
+    }
     default:
         break;
     }
@@ -78,29 +79,29 @@ static void onPublish(Account* account, HAL::GPS_Info_t* gps)
     );
 
     if (trackFilter.pointFilter.PushPoint(mapX, mapY))
-    {      
+    {
         trackFilter.pointContainer->PushPoint(mapX, mapY);
     }
 }
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    int retval = Account::ERROR_UNKNOW;
+    int retval = Account::RES_UNKNOW;
 
     if (param->event == Account::EVENT_PUB_PUBLISH
-     && param->size == sizeof(HAL::GPS_Info_t))
+            && param->size == sizeof(HAL::GPS_Info_t))
     {
         if (trackFilter.isActive)
         {
             onPublish(account, (HAL::GPS_Info_t*)param->data_p);
         }
-        
+
         return 0;
     }
 
     if (param->size != sizeof(TrackFilter_Info_t))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     switch (param->event)
@@ -128,6 +129,10 @@ DATA_PROC_INIT_DEF(TrackFilter)
 {
     account->Subscribe("GPS");
     account->SetEventCallback(onEvent);
+
+    trackFilter.pointContainer = nullptr;
+    trackFilter.isActive = false;
+    trackFilter.isStarted = false;
 
     trackFilter.mapConv.SetLevel(CONFIG_LIVE_MAP_LEVEL_DEFAULT);
 

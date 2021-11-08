@@ -60,12 +60,12 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 {
     if (param->event != Account::EVENT_NOTIFY)
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     if (param->size != sizeof(DataProc::StatusBar_Info_t))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     DataProc::StatusBar_Info_t* info = (DataProc::StatusBar_Info_t*)param->data_p;

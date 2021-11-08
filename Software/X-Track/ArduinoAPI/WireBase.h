@@ -44,7 +44,9 @@
 
 #include "Arduino.h"
 
-#define WIRE_BUFSIZ 32
+#ifndef WIRE_BUFF_SIZE
+#  define WIRE_BUFF_SIZE 32
+#endif
 
 /* return codes from endTransmission() */
 #define SUCCESS   0        /* transmission was successful */
@@ -55,7 +57,8 @@
 
 struct i2c_msg;
 
-typedef struct i2c_msg {
+typedef struct i2c_msg
+{
     uint16_t addr;                /**< Address */
 
 #define I2C_MSG_READ            0x1
@@ -71,14 +74,15 @@ typedef struct i2c_msg {
     uint8_t *data;                /**< Data */
 } i2c_msg;
 
-class WireBase { // Abstraction is awesome!
+class WireBase   // Abstraction is awesome!
+{
 protected:
     i2c_msg itc_msg;
-    uint8_t rx_buf[WIRE_BUFSIZ];      /* receive buffer */
+    uint8_t rx_buf[WIRE_BUFF_SIZE];      /* receive buffer */
     uint8_t rx_buf_idx;               /* first unread idx in rx_buf */
     uint8_t rx_buf_len;               /* number of bytes read */
 
-    uint8_t tx_buf[WIRE_BUFSIZ];      /* transmit buffer */
+    uint8_t tx_buf[WIRE_BUFF_SIZE];      /* transmit buffer */
     uint8_t tx_buf_idx;  // next idx available in tx_buf, -1 overflow
     boolean tx_buf_overflow;
 
@@ -92,7 +96,7 @@ public:
      * Initialises the class interface
      */
     // Allow derived classes to overwrite begin function
-    virtual void begin(uint8_t = 0x00);
+    void begin(uint8_t = 0x00);
 
     void setClock(uint32_t);
 
@@ -111,6 +115,11 @@ public:
      * buffer has not overflowed.
      */
     uint8_t endTransmission(void);
+
+    inline uint8_t endTransmission(uint8_t)
+    {
+        return endTransmission();
+    }
 
     /*
      * Request bytes from a slave device and process the request,

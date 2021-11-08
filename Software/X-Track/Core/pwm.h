@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2019 _VIFEXTech
+ * Copyright (c) 2019 - 2021 _VIFEXTech
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,20 +23,16 @@
 #ifndef __PWM_H
 #define __PWM_H
 
+#include "mcu_type.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+#define pwmWrite(pin, value) PWM_Write(pin, value)
 
-#include "mcu_type.h"
-
-uint8_t PWM_Init(uint8_t Pin, uint16_t PWM_DutyCycle, uint32_t PWM_Frequency);
-uint16_t pwmWrite(uint8_t Pin, uint16_t val);
-void TIMx_OCxInit(TIM_TypeDef* TIMx, uint16_t arr, uint16_t psc, uint8_t TimerChannel);
-
-uint16_t timer_get_compare(TIM_TypeDef* TIMx, uint8_t TimerChannel);
-void timer_set_prescaler(TIM_TypeDef* TIMx, uint16_t psc);
-void timer_set_reload(TIM_TypeDef* TIMx, uint16_t arr);
-void timer_generate_update(TIM_TypeDef* TIMx);
+uint8_t PWM_Init(uint8_t Pin, uint32_t Resolution, uint32_t Frequency);
+void PWM_Write(uint8_t Pin, uint32_t Value);
 
 #ifdef __cplusplus
 }

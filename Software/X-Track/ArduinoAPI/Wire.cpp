@@ -43,8 +43,42 @@
 
 #include "Wire.h"
 
+#if WIRE_USE_FULL_SPEED_I2C
+#  define I2C_DELAY(x)
+#  define SET_SDA(state)    digitalWrite_##state(this->sda_pin)
+#  define SET_SCL(state)    digitalWrite_##state(this->scl_pin)
+#else
+#  define I2C_DELAY(x)      delayMicroseconds(x)
+#  define SET_SDA(state)    set_sda(state)
+#  define SET_SCL(state)    set_scl(state)
+#endif
+
 #define I2C_WRITE 0
 #define I2C_READ  1
+
+// TODO: Add in Error Handling if pins is out of range for other Maples
+// TODO: Make delays more capable
+TwoWire::TwoWire(uint8_t scl, uint8_t sda, uint8_t delay) : i2c_delay(delay)
+{
+    this->scl_pin = scl;
+    this->sda_pin = sda;
+}
+
+TwoWire::~TwoWire()
+{
+}
+
+bool TwoWire::begin(uint8_t self_addr)
+{
+    WireBase::begin(self_addr);
+    pinMode(this->scl_pin, OUTPUT_OPEN_DRAIN);
+    pinMode(this->sda_pin, OUTPUT_OPEN_DRAIN);
+
+    bool success = set_scl(HIGH, WIRE_BEGIN_TIMEOUT);
+    set_sda(HIGH);
+
+    return success;
+}
 
 /* low level conventions:
  * - SDA/SCL idle high (expected high)
@@ -62,6 +96,26 @@ void TwoWire::set_scl(bool state)
     }
 }
 
+bool TwoWire::set_scl(bool state, uint32_t timeout)
+{
+    I2C_DELAY(this->i2c_delay);
+    digitalWrite(this->scl_pin, state);
+
+    uint32_t start = millis();
+
+    if (state == HIGH)
+    {
+        while(digitalRead(this->scl_pin) == LOW)
+        {
+            if(millis() - start >= timeout)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 void TwoWire::set_sda(bool state)
 {
     I2C_DELAY(this->i2c_delay);
@@ -70,95 +124,53 @@ void TwoWire::set_sda(bool state)
 
 void TwoWire::i2c_start()
 {
-#ifdef FULL_SPEED_I2C
-    digitalWrite_LOW(this->sda_pin);
-    digitalWrite_LOW(this->scl_pin);
-#else
-    set_sda(LOW);
-    set_scl(LOW);
-#endif
+    SET_SDA(LOW);
+    SET_SCL(LOW);
 }
 
 void TwoWire::i2c_stop()
 {
-#ifdef FULL_SPEED_I2C
-    digitalWrite_LOW(this->sda_pin);
-    digitalWrite_HIGH(this->scl_pin);
-    digitalWrite_HIGH(this->sda_pin);
-#else
-    set_sda(LOW);
-    set_scl(HIGH);
-    set_sda(HIGH);
-#endif
+    SET_SDA(LOW);
+    SET_SCL(HIGH);
+    SET_SDA(HIGH);
 }
 
 bool TwoWire::i2c_get_ack()
 {
-#ifdef FULL_SPEED_I2C
-    digitalWrite_LOW(this->scl_pin);
-    digitalWrite_HIGH(this->sda_pin);
-    digitalWrite_HIGH(this->scl_pin);
-#else
-    set_scl(LOW);
-    set_sda(HIGH);
-    set_scl(HIGH);
-#endif
-
+    SET_SCL(LOW);
+    SET_SDA(HIGH);
+    SET_SCL(HIGH);
     bool ret = !digitalRead(this->sda_pin);
-#ifdef FULL_SPEED_I2C
-    digitalWrite_LOW(this->scl_pin);
-#else
-    set_scl(LOW);
-#endif
+    SET_SCL(LOW);
     return ret;
 }
 
 void TwoWire::i2c_send_ack()
 {
-#ifdef FULL_SPEED_I2C
-    digitalWrite_LOW(this->sda_pin);
-    digitalWrite_HIGH(this->scl_pin);
-    digitalWrite_LOW(this->scl_pin);
-#else
-    set_sda(LOW);
-    set_scl(HIGH);
-    set_scl(LOW);
-#endif
+    SET_SDA(LOW);
+    SET_SCL(HIGH);
+    SET_SCL(LOW);
 }
 
 void TwoWire::i2c_send_nack()
 {
-#ifdef FULL_SPEED_I2C
-    digitalWrite_HIGH(this->sda_pin);
-    digitalWrite_HIGH(this->scl_pin);
-    digitalWrite_LOW(this->scl_pin);
-#else
-    set_sda(HIGH);
-    set_scl(HIGH);
-    set_scl(LOW);
-#endif
+    SET_SDA(HIGH);
+    SET_SCL(HIGH);
+    SET_SCL(LOW);
 }
 
 uint8_t TwoWire::i2c_shift_in()
 {
     uint8_t data = 0;
-#ifdef FULL_SPEED_I2C
-    digitalWrite_HIGH(this->sda_pin);
-#else
-    set_sda(HIGH);
-#endif
+
+    SET_SDA(HIGH);
+
     int i;
     for (i = 0; i < 8; i++)
     {
-#ifdef FULL_SPEED_I2C
-        digitalWrite_HIGH(this->scl_pin);
+        SET_SCL(HIGH);
         data |= digitalRead(this->sda_pin) << (7 - i);
-        digitalWrite_LOW(this->scl_pin);
-#else
-        set_scl(HIGH);
-        data |= digitalRead(this->sda_pin) << (7 - i);
-        set_scl(LOW);
-#endif
+        SET_SCL(LOW);
     }
 
     return data;
@@ -170,13 +182,8 @@ void TwoWire::i2c_shift_out(uint8_t val)
     for (i = 0; i < 8; i++)
     {
         set_sda(!!(val & (1 << (7 - i)) ) );
-#ifdef FULL_SPEED_I2C
-        digitalWrite_HIGH(this->scl_pin);
-        digitalWrite_LOW(this->scl_pin);
-#else
-        set_scl(HIGH);
-        set_scl(LOW);
-#endif
+        SET_SCL(HIGH);
+        SET_SCL(LOW);
     }
 }
 
@@ -231,32 +238,5 @@ uint8_t TwoWire::process(void)
     return SUCCESS;
 }
 
-// TODO: Add in Error Handling if pins is out of range for other Maples
-// TODO: Make delays more capable
-TwoWire::TwoWire(uint8_t scl, uint8_t sda, uint8_t delay) : i2c_delay(delay)
-{
-    this->scl_pin = scl;
-    this->sda_pin = sda;
-}
-
-void TwoWire::begin(uint8_t self_addr)
-{
-    tx_buf_idx = 0;
-    tx_buf_overflow = false;
-    rx_buf_idx = 0;
-    rx_buf_len = 0;
-    pinMode(this->scl_pin, OUTPUT_OPEN_DRAIN);
-    pinMode(this->sda_pin, OUTPUT_OPEN_DRAIN);
-    set_scl(HIGH);
-    set_sda(HIGH);
-}
-
-TwoWire::~TwoWire()
-{
-    this->scl_pin = 0;
-    this->sda_pin = 0;
-}
-
 // Declare the instance that the users of the library can use
-TwoWire Wire(SCL_Pin, SDA_Pin, SOFT_FAST);
-//TwoWire Wire(PB6, PB7, SOFT_STANDARD);
+TwoWire Wire(WIRE_SCL_PIN, WIRE_SDA_PIN, WIRE_DELAY);

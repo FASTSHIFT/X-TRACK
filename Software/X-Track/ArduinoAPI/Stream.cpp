@@ -18,15 +18,16 @@
 
  Created July 2011
  parsing functions based on TextFinder library by Michael Margolis
+
+ findMulti/findUntil routines written by Jim Leonard/Xuth
  */
 
-#include "Stream.h"
 #include "Arduino.h"
+#include "Stream.h"
 
 #define PARSE_TIMEOUT 1000  // default number of milli-seconds to wait
-#define NO_SKIP_CHAR  1  // a magic char not found in a valid ASCII numeric field
 
-// private method to read stream with timeout
+// protected method to read stream with timeout
 int Stream::timedRead()
 {
     int c;
@@ -40,7 +41,7 @@ int Stream::timedRead()
     return -1;     // -1 indicates timeout
 }
 
-// private method to peek stream with timeout
+// protected method to peek stream with timeout
 int Stream::timedPeek()
 {
     int c;
@@ -56,15 +57,36 @@ int Stream::timedPeek()
 
 // returns peek of the next digit in the stream or -1 if timeout
 // discards non-numeric characters
-int Stream::peekNextDigit()
+int Stream::peekNextDigit(LookaheadMode lookahead, bool detectDecimal)
 {
     int c;
     while (1)
     {
         c = timedPeek();
-        if (c < 0) return c;  // timeout
-        if (c == '-') return c;
-        if (c >= '0' && c <= '9') return c;
+
+        if( c < 0 ||
+                c == '-' ||
+                (c >= '0' && c <= '9') ||
+                (detectDecimal && c == '.')) return c;
+
+        switch( lookahead )
+        {
+        case SKIP_NONE:
+            return -1; // Fail code.
+        case SKIP_WHITESPACE:
+            switch( c )
+            {
+            case ' ':
+            case '\t':
+            case '\r':
+            case '\n':
+                break;
+            default:
+                return -1; // Fail code.
+            }
+        case SKIP_ALL:
+            break;
+        }
         read();  // discard non-numeric
     }
 }
@@ -80,7 +102,7 @@ void Stream::setTimeout(unsigned long timeout)  // sets the maximum number of mi
 // find returns true if the target string is found
 bool  Stream::find(char *target)
 {
-    return findUntil(target, (char*)"");
+    return findUntil(target, strlen(target), NULL, 0);
 }
 
 // reads data from the stream until the target string of given length is found
@@ -101,64 +123,38 @@ bool  Stream::findUntil(char *target, char *terminator)
 // returns true if target string is found, false if terminated or timed out
 bool Stream::findUntil(char *target, size_t targetLen, char *terminator, size_t termLen)
 {
-    size_t index = 0;  // maximum target string length is 64k bytes!
-    size_t termIndex = 0;
-    int c;
-
-    if( *target == 0)
-        return true;   // return true if target is a null string
-    while( (c = timedRead()) > 0)
+    if (terminator == NULL)
     {
-
-        if(c != target[index])
-            index = 0; // reset index if any char does not match
-
-        if( c == target[index])
-        {
-            //////Serial.print("found "); Serial.write(c); Serial.print("index now"); Serial.println(index+1);
-            if(++index >= targetLen)  // return true if all chars in the target match
-            {
-                return true;
-            }
-        }
-
-        if(termLen > 0 && c == terminator[termIndex])
-        {
-            if(++termIndex >= termLen)
-                return false;       // return false if terminate string found before target string
-        }
-        else
-            termIndex = 0;
+        MultiTarget t[1] = {{target, targetLen, 0}};
+        return findMulti(t, 1) == 0 ? true : false;
     }
-    return false;
+    else
+    {
+        MultiTarget t[2] = {{target, targetLen, 0}, {terminator, termLen, 0}};
+        return findMulti(t, 2) == 0 ? true : false;
+    }
 }
-
 
 // returns the first valid (long) integer value from the current position.
-// initial characters that are not digits (or the minus sign) are skipped
-// function is terminated by the first character that is not a digit.
-long Stream::parseInt()
+// lookahead determines how parseInt looks ahead in the stream.
+// See LookaheadMode enumeration at the top of the file.
+// Lookahead is terminated by the first character that is not a valid part of an integer.
+// Once parsing commences, 'ignore' will be skipped in the stream.
+long Stream::parseInt(LookaheadMode lookahead, char ignore)
 {
-    return parseInt(NO_SKIP_CHAR); // terminate on first non-digit character (or timeout)
-}
-
-// as above but a given skipChar is ignored
-// this allows format characters (typically commas) in values to be ignored
-long Stream::parseInt(char skipChar)
-{
-    boolean isNegative = false;
+    bool isNegative = false;
     long value = 0;
     int c;
 
-    c = peekNextDigit();
+    c = peekNextDigit(lookahead, false);
     // ignore non numeric leading characters
     if(c < 0)
         return 0; // zero returned if timeout
 
     do
     {
-        if(c == skipChar)
-            ; // ignore this charactor
+        if(c == ignore)
+            ; // ignore this character
         else if(c == '-')
             isNegative = true;
         else if(c >= '0' && c <= '9')        // is c a digit?
@@ -166,38 +162,30 @@ long Stream::parseInt(char skipChar)
         read();  // consume the character we got with peek
         c = timedPeek();
     }
-    while( (c >= '0' && c <= '9') || c == skipChar );
+    while( (c >= '0' && c <= '9') || c == ignore );
 
     if(isNegative)
         value = -value;
     return value;
 }
 
-
 // as parseInt but returns a floating point value
-float Stream::parseFloat()
+float Stream::parseFloat(LookaheadMode lookahead, char ignore)
 {
-    return parseFloat(NO_SKIP_CHAR);
-}
-
-// as above but the given skipChar is ignored
-// this allows format characters (typically commas) in values to be ignored
-float Stream::parseFloat(char skipChar)
-{
-    boolean isNegative = false;
-    boolean isFraction = false;
+    bool isNegative = false;
+    bool isFraction = false;
     long value = 0;
     int c;
-    float fraction = 1.0f;
+    float fraction = 1.0;
 
-    c = peekNextDigit();
+    c = peekNextDigit(lookahead, true);
     // ignore non numeric leading characters
     if(c < 0)
         return 0; // zero returned if timeout
 
     do
     {
-        if(c == skipChar)
+        if(c == ignore)
             ; // ignore
         else if(c == '-')
             isNegative = true;
@@ -212,7 +200,7 @@ float Stream::parseFloat(char skipChar)
         read();  // consume the character we got with peek
         c = timedPeek();
     }
-    while( (c >= '0' && c <= '9')  || c == '.' || c == skipChar );
+    while( (c >= '0' && c <= '9')  || (c == '.' && !isFraction) || c == ignore );
 
     if(isNegative)
         value = -value;
@@ -247,7 +235,6 @@ size_t Stream::readBytes(char *buffer, size_t length)
 
 size_t Stream::readBytesUntil(char terminator, char *buffer, size_t length)
 {
-    if (length < 1) return 0;
     size_t index = 0;
     while (index < length)
     {
@@ -282,7 +269,6 @@ String Stream::readStringUntil(char terminator)
     }
     return ret;
 }
-
 
 int Stream::findMulti( struct Stream::MultiTarget *targets, int tCount)
 {
@@ -356,5 +342,5 @@ int Stream::findMulti( struct Stream::MultiTarget *targets, int tCount)
         }
     }
     // unreachable
-//  return -1;
+    //return -1;
 }

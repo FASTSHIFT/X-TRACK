@@ -53,7 +53,7 @@ void Display_SetSendFinishCallback(Display_CallbackFunc_t func);
 void FaultHandle_Init();
 
 /* I2C */
-void I2C_Scan(bool startScan);
+int I2C_Scan();
 
 /* IMU */
 void IMU_Init();

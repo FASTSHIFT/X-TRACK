@@ -39,12 +39,12 @@ public:
     } DataType_t;
 
 public:
-    StorageService(const char* filepath, uint32_t bufferSize = 1024);
+    StorageService(const char* filePath, uint32_t bufferSize = 1024);
     ~StorageService();
 
     bool Add(const char* key, void* value, uint16_t size, DataType_t type);
     bool Remove(const char* key);
-    bool SaveFile();
+    bool SaveFile(const char* backupPath = nullptr);
     bool LoadFile();
 
 private:

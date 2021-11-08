@@ -22,24 +22,11 @@
 #ifndef String_class_h
 #define String_class_h
 #ifdef __cplusplus
-extern "C" {
-#include "dtostrf.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-}
-#include "itoa.h"
-
-#define SUPPORTS_WSTRING_SPRINTF
-
-//#include <pgmspace.h>
-
-#define  PGM_P   const char *
-
-#define  PGM_VOID_P   const void *
-
-//#define  PSTR(s)   ((const PROGMEM char *)(s))
-
+#include <avr/pgmspace.h>
 
 // When compiling programs with this class, the following gcc parameters
 // dramatically increase performance and memory (RAM) efficiency, typically
@@ -111,7 +98,7 @@ public:
 
     // returns true on success, false on failure (in which case, the string
     // is left unchanged).  if the argument is null or invalid, the
-    // concatenation is considered unsucessful.
+    // concatenation is considered unsuccessful.
     unsigned char concat(const String &str);
     unsigned char concat(const char *cstr);
     unsigned char concat(char c);
@@ -227,7 +214,7 @@ public:
     unsigned char startsWith(const String &prefix, unsigned int offset) const;
     unsigned char endsWith(const String &suffix) const;
 
-    // character acccess
+    // character access
     char charAt(unsigned int index) const;
     void setCharAt(unsigned int index, char c);
     char operator [] (unsigned int index) const;
@@ -237,7 +224,7 @@ public:
     {
         getBytes((unsigned char *)buf, bufsize, index);
     }
-    const char * c_str() const
+    const char* c_str() const
     {
         return buffer;
     }
@@ -285,9 +272,7 @@ public:
     // parsing/conversion
     long toInt(void) const;
     float toFloat(void) const;
-
-    //sprintf support
-    int sprintf(const char *__restrict __format, ...);
+    double toDouble(void) const;
 
 protected:
     char *buffer;           // the actual char array

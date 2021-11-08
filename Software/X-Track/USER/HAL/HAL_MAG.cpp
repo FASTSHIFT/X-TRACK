@@ -2,8 +2,8 @@
 #include "LIS3MDL/LIS3MDL.h"
 
 static LIS3MDL mag;
-static HAL::CommitFunc_t CommitFunc;
-static void* UserData;
+static HAL::CommitFunc_t CommitFunc = nullptr;
+static void* UserData = nullptr;
 
 void HAL::MAG_Init()
 {

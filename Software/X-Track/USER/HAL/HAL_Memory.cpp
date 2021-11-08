@@ -1,9 +1,9 @@
 #include "HAL.h"
-#include "StackInfo/StackInfo.h"
-#include <stdarg.h>
-#include <stdlib.h>
 
 #if CONFIG_SHOW_STACK_INFO
+
+#include "StackInfo/StackInfo.h"
+
 static void Memory_ShowStackInfo()
 {
     Serial.printf(
@@ -16,6 +16,10 @@ static void Memory_ShowStackInfo()
 #endif
 
 #if CONFIG_SHOW_HEAP_INFO
+
+#include <stdarg.h>
+#include <stdlib.h>
+
 static int Memory_HeapPrint(void* param, char const* format, ...)
 {
     char printf_buff[64];

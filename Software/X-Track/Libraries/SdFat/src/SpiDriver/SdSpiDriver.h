@@ -35,7 +35,7 @@
 //------------------------------------------------------------------------------
 /** SDCARD_SPI is defined if board has built-in SD card socket */
 #ifndef SDCARD_SPI
-#define SDCARD_SPI SPI_2
+#define SDCARD_SPI SPI
 #endif  // SDCARD_SPI
 //------------------------------------------------------------------------------
 /**

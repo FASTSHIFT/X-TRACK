@@ -33,7 +33,7 @@ int DialplateModel::onEvent(Account* account, Account::EventParam_t* param)
 {
     if (param->event != Account::EVENT_PUB_PUBLISH)
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     if (strcmp(param->tran->ID, "SportStatus") != 0

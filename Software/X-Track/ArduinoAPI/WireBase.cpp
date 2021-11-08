@@ -84,9 +84,9 @@ uint8_t WireBase::endTransmission(void)
 // to bulk send
 uint8_t WireBase::requestFrom(uint8_t address, int num_bytes)
 {
-    if (num_bytes > WIRE_BUFSIZ)
+    if (num_bytes > WIRE_BUFF_SIZE)
     {
-        num_bytes = WIRE_BUFSIZ;
+        num_bytes = WIRE_BUFF_SIZE;
     }
     itc_msg.addr = address;
     itc_msg.flags = I2C_MSG_READ;
@@ -105,7 +105,7 @@ uint8_t WireBase::requestFrom(int address, int numBytes)
 
 void WireBase::write(uint8_t value)
 {
-    if (tx_buf_idx == WIRE_BUFSIZ)
+    if (tx_buf_idx == WIRE_BUFF_SIZE)
     {
         tx_buf_overflow = true;
         return;

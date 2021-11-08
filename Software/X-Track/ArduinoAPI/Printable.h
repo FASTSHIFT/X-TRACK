@@ -32,7 +32,7 @@ class Print;
 
 class Printable
 {
-public:
+  public:
     virtual size_t printTo(Print& p) const = 0;
 };
 

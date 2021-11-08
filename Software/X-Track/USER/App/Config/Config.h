@@ -28,6 +28,7 @@
  *=========================*/
 
 #define CONFIG_SYSTEM_SAVE_FILE_PATH          "/SystemSave.json"
+#define CONFIG_SYSTEM_SAVE_FILE_BACKUP_PATH   "/.SystemSaveBackup.json"
 #define CONFIG_SYSTEM_LANGUAGE_DEFAULT        "en-GB"
 #define CONFIG_SYSTEM_TIME_ZONE_DEFAULT       8    // GMT+ 8
 #define CONFIG_SYSTEM_SOUND_ENABLE_DEFAULT    true
@@ -64,11 +65,11 @@
 #  define CONFIG_LIVE_MAP_VIEW_HEIGHT         LV_VER_RES
 #endif
 
-#define CONFIG_MONKEY_TEST_ENABLE             0
+#define CONFIG_MONKEY_TEST_ENABLE             1
 #if CONFIG_MONKEY_TEST_ENABLE
 #  define CONFIG_MONKEY_INDEV_TYPE            LV_INDEV_TYPE_ENCODER
 #  define CONFIG_MONKEY_TIME_MIN              10
-#  define CONFIG_MONKEY_TIME_MAX              300
+#  define CONFIG_MONKEY_TIME_MAX              100
 #  define CONFIG_MONKEY_INPUT_RANGE_MIN       -5
 #  define CONFIG_MONKEY_INPUT_RANGE_MAX       5
 #endif

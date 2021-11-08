@@ -20,18 +20,16 @@
 */
 
 #include "WString.h"
+#include "itoa.h"
+#include "dtostrf.h"
+#include "mcu_config.h"
 
-#define WS_USE_STD_LIB    0
-
-#if WS_USE_STD_LIB
-#  define WS_MEM_REALLOC(ptr, new_size) realloc(ptr, new_size)
-#  define WS_MEM_FREE(ptr)              free(ptr)
+#if WSTRING_MEM_CUSTOM
+#  include WSTRING_MEM_INCLUDE
 #else
-#include "lvgl/lvgl.h"
-#  define WS_MEM_REALLOC(ptr, new_size) lv_mem_realloc(ptr, new_size)
-#  define WS_MEM_FREE(ptr)              lv_mem_free(ptr) 
+#  define WSTRING_MEM_REALLOC realloc
+#  define WSTRING_MEM_FREE    free
 #endif
-
 
 /*********************************************/
 /*  Constructors                             */
@@ -133,7 +131,7 @@ String::String(double value, unsigned char decimalPlaces)
 
 String::~String()
 {
-    WS_MEM_FREE(buffer);
+    if (buffer) WSTRING_MEM_FREE(buffer);
 }
 
 /*********************************************/
@@ -149,7 +147,7 @@ inline void String::init(void)
 
 void String::invalidate(void)
 {
-    if (buffer) WS_MEM_FREE(buffer);
+    if (buffer) WSTRING_MEM_FREE(buffer);
     buffer = NULL;
     capacity = len = 0;
 }
@@ -167,7 +165,7 @@ unsigned char String::reserve(unsigned int size)
 
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
-    char *newbuffer = (char *)WS_MEM_REALLOC(buffer, maxStrLen + 1);
+    char *newbuffer = (char *)WSTRING_MEM_REALLOC(buffer, maxStrLen + 1);
     if (newbuffer)
     {
         buffer = newbuffer;
@@ -201,7 +199,7 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
         return *this;
     }
     len = length;
-    strcpy(buffer, (PGM_P)pstr);//strcpy_P
+    strcpy(buffer, (PGM_P)pstr);
     return *this;
 }
 
@@ -219,7 +217,7 @@ void String::move(String &rhs)
         }
         else
         {
-            WS_MEM_FREE(buffer);
+            WSTRING_MEM_FREE(buffer);
         }
     }
     buffer = rhs.buffer;
@@ -265,7 +263,7 @@ String & String::operator = (const char *cstr)
 
 String & String::operator = (const __FlashStringHelper *pstr)
 {
-    if (pstr) copy(pstr, strlen((PGM_P)pstr));//strlen_P
+    if (pstr) copy(pstr, strlen((PGM_P)pstr));
     else invalidate();
 
     return *this;
@@ -789,31 +787,11 @@ long String::toInt(void) const
 
 float String::toFloat(void) const
 {
-    if (buffer) return float(atof(buffer));
+    return float(toDouble());
+}
+
+double String::toDouble(void) const
+{
+    if (buffer) return atof(buffer);
     return 0;
 }
-
-#ifdef SUPPORTS_WSTRING_SPRINTF
-extern "C" {
-#include <stdio.h>
-#include <stdarg.h>
-}
-
-#define SPRINTF_BUFFER_LENGTH 100
-
-// Work in progress to support printf.
-// Need to implement stream FILE to write individual chars to chosen serial port
-int String::sprintf (const char *__restrict __format, ...)
-{
-    char printf_buff[SPRINTF_BUFFER_LENGTH];
-
-    va_list args;
-    va_start(args, __format);
-    int ret_status = vsnprintf(printf_buff, sizeof(printf_buff), __format, args);
-    va_end(args);
-    copy(printf_buff, strlen(printf_buff));
-
-    return ret_status;
-}
-
-#endif

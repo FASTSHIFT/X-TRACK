@@ -3,26 +3,33 @@
 #include "../HAL/HAL.h"
 #include "Config/Config.h"
 
+#define CALORIC_CORFFICIENT 0.5f
+
 using namespace DataProc;
 
-static HAL::SportStatus_Info_t sportStatus =
-{
-    .weight = CONFIG_WEIGHT_DEFAULT
-};
+static HAL::SportStatus_Info_t sportStatus;
 
-static double SportStatus_GetRealDistance(HAL::GPS_Info_t* gpsInfo, double predictDist)
+static double SportStatus_GetDistanceOffset(HAL::GPS_Info_t* gpsInfo)
 {
+    static bool isFirst = true;
     static double preLongitude;
     static double preLatitude;
 
-    double offset = HAL::GPS_GetDistanceOffset(gpsInfo, preLongitude, preLatitude);
+    double offset = 0.0f;
+
+    if (!isFirst)
+    {
+        offset = HAL::GPS_GetDistanceOffset(gpsInfo, preLongitude, preLatitude);
+    }
+    else
+    {
+        isFirst = false;
+    }
 
     preLongitude = gpsInfo->longitude;
     preLatitude = gpsInfo->latitude;
 
-    double realDist = std::abs(offset - predictDist) < 100 ? offset : predictDist;
-
-    return realDist;
+    return offset;
 }
 
 static void onTimer(Account* account)
@@ -33,6 +40,7 @@ static void onTimer(Account* account)
     uint32_t timeElaps = DataProc::GetTickElaps(sportStatus.lastTick);
 
     float speedKph = 0.0f;
+    bool isSignalInterruption = (gpsInfo.isVaild && (gpsInfo.satellites == 0));
 
     if (gpsInfo.satellites >= 3)
     {
@@ -40,27 +48,29 @@ static void onTimer(Account* account)
         speedKph = spd > 1 ? spd : 0;
     }
 
-    if (speedKph > 0.0f)
+    if (speedKph > 0.0f || isSignalInterruption)
     {
         sportStatus.singleTime += timeElaps;
         sportStatus.totalTime += timeElaps;
-        float predictDist = speedKph / 3.6f * timeElaps / 1000;
 
-        float dist = (float)SportStatus_GetRealDistance(&gpsInfo, predictDist);
-
-        sportStatus.singleDistance += dist;
-        sportStatus.totalDistance += dist;
-
-        if (speedKph > sportStatus.speedMaxKph)
+        if (speedKph > 0.0f)
         {
-            sportStatus.speedMaxKph = speedKph;
+            float dist = (float)SportStatus_GetDistanceOffset(&gpsInfo);
+
+            sportStatus.singleDistance += dist;
+            sportStatus.totalDistance += dist;
+
+            float meterPerSec = sportStatus.singleDistance * 1000 / sportStatus.singleTime;
+            sportStatus.speedAvgKph = meterPerSec * 3.6f;
+
+            if (speedKph > sportStatus.speedMaxKph)
+            {
+                sportStatus.speedMaxKph = speedKph;
+            }
+
+            float calorie = speedKph * sportStatus.weight * CALORIC_CORFFICIENT * timeElaps / 1000 / 3600;
+            sportStatus.singleCalorie += calorie;
         }
-
-        float meterPerSec = sportStatus.singleDistance * 1000 / sportStatus.singleTime;
-        sportStatus.speedAvgKph = meterPerSec * 3.6f;
-
-        float calorie = speedKph * sportStatus.weight * 1.05f * timeElaps / 1000 / 3600;
-        sportStatus.singleCalorie += calorie;
     }
 
     sportStatus.speedKph = speedKph;
@@ -80,12 +90,12 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (param->event != Account::EVENT_SUB_PULL)
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     if (param->size != sizeof(sportStatus))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     memcpy(param->data_p, &sportStatus, param->size);
@@ -94,6 +104,9 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
 DATA_PROC_INIT_DEF(SportStatus)
 {
+    memset(&sportStatus, 0, sizeof(sportStatus));
+    sportStatus.weight = CONFIG_WEIGHT_DEFAULT;
+
     account->Subscribe("GPS");
     account->Subscribe("Storage");
 

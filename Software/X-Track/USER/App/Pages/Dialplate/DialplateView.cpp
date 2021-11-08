@@ -16,10 +16,10 @@ void DialplateView::Create(lv_obj_t* root)
     ui.anim_timeline = lv_anim_timeline_create();
 
 #define ANIM_DEF(start_time, obj, attr, start, end) \
-     {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
+    {start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true}
 
 #define ANIM_OPA_DEF(start_time, obj) \
-     ANIM_DEF(start_time, obj, opa_scale, LV_OPA_TRANSP, LV_OPA_COVER)
+    ANIM_DEF(start_time, obj, opa_scale, LV_OPA_TRANSP, LV_OPA_COVER)
 
     lv_coord_t y_tar_top = lv_obj_get_y(ui.topInfo.cont);
     lv_coord_t y_tar_bottom = lv_obj_get_y(ui.bottomInfo.cont);

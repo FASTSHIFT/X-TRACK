@@ -61,14 +61,14 @@ public:
 
     uint8_t read()
     {
-        uint8_t data;
+        uint8_t data = 0;
         readBytes(&data, 1);
         return data;
     }
 
     size_t readBytes(void* buffer, size_t length)
     {
-        uint32_t br;
+        uint32_t br = 0;
         lv_fs_read(&file, buffer, length, &br);
         return br;
     }
@@ -80,7 +80,7 @@ public:
 
     size_t write(const uint8_t* s, size_t n)
     {
-        uint32_t bw;
+        uint32_t bw = 0;
         lv_fs_write(&file, s, n, &bw);
         return bw;
     }
@@ -95,9 +95,9 @@ private:
     lv_fs_file_t file;
 };
 
-StorageService::StorageService(const char* filepath, uint32_t bufferSize)
+StorageService::StorageService(const char* filePath, uint32_t bufferSize)
 {
-    FilePath = filepath;
+    FilePath = filePath;
     BufferSize = bufferSize;
 }
 
@@ -150,6 +150,7 @@ bool StorageService::Remove(const char* key)
 bool StorageService::LoadFile()
 {
     FileWrapper file(FilePath, LV_FS_MODE_RD);
+    bool retval = true;
 
     if (!file)
     {
@@ -177,6 +178,7 @@ bool StorageService::LoadFile()
         if (!doc.containsKey(iter->key))
         {
             LV_LOG_WARN("NOT contains key: %s, use default value", iter->key);
+            retval = false;
             continue;
         }
 
@@ -207,17 +209,20 @@ bool StorageService::LoadFile()
             break;
         }
         default:
+            LV_LOG_ERROR("Unknow type: %d", iter->type);
             break;
         }
     }
 
-    return true;
+    return retval;
 }
 
-bool StorageService::SaveFile()
+bool StorageService::SaveFile(const char* backupPath)
 {
+    const char* path = backupPath ? backupPath : FilePath;
+
     // Open file for writing
-    FileWrapper file(FilePath, LV_FS_MODE_WR | LV_FS_MODE_RD);
+    FileWrapper file(path, LV_FS_MODE_WR | LV_FS_MODE_RD);
     if (!file)
     {
         LV_LOG_ERROR("Failed to open file");
@@ -260,6 +265,7 @@ bool StorageService::SaveFile()
             break;
         }
         default:
+            LV_LOG_ERROR("Unknow type: %d", iter->type);
             break;
         }
     }

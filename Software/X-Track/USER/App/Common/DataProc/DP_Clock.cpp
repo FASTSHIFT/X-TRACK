@@ -59,12 +59,12 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (param->event != Account::EVENT_SUB_PULL)
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     if (param->size != sizeof(HAL::Clock_Info_t))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     HAL::Clock_Info_t* info = (HAL::Clock_Info_t*)param->data_p;

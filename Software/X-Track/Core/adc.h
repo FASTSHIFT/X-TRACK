@@ -1,17 +1,17 @@
 /*
  * MIT License
- * Copyright (c) 2019 _VIFEXTech
- * 
+ * Copyright (c) 2019 - 2021 _VIFEXTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,18 +23,26 @@
 #ifndef __ADC_H
 #define __ADC_H
 
+#include "mcu_type.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "mcu_type.h"
+typedef enum
+{
+    ADC_DMA_RES_OK                                = 0,
+    ADC_DMA_RES_NOT_ADC_CHANNEL                   = -1,
+    ADC_DMA_RES_DUPLICATE_REGISTRATION            = -2,
+    ADC_DMA_RES_MAX_NUM_OF_REGISTRATIONS_EXCEEDED = -3,
+} ADC_DMA_Res_Type;
 
-void ADC_DMA_Init(void);
-int16_t ADC_DMA_Register(uint8_t ADC_Channel);
-uint16_t ADC_DMA_GetValue(uint8_t ADC_Channel);
-
-void ADCx_Init(ADC_Type* ADCx);
-uint16_t ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel);
+void             ADCx_Init(ADC_Type* ADCx);
+uint16_t         ADCx_GetValue(ADC_Type* ADCx, uint16_t ADC_Channel);
+void             ADC_DMA_Init(void);
+ADC_DMA_Res_Type ADC_DMA_Register(uint8_t ADC_Channel);
+uint16_t         ADC_DMA_GetValue(uint8_t ADC_Channel);
+uint8_t          ADC_DMA_GetRegisterCount(void);
 
 #ifdef __cplusplus
 }

@@ -1,17 +1,17 @@
 /*
  * MIT License
- * Copyright (c) 2019 _VIFEXTech
- * 
+ * Copyright (c) 2019-2021 _VIFEXTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -181,7 +181,12 @@ const PinInfo_TypeDef PIN_MAP[PIN_MAX] =
   * @param  GPIO_Speed_x: GPIO速度
   * @retval 无
   */
-void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMode_x, GPIOMaxSpeed_Type GPIO_Speed_x)
+void GPIOx_Init(
+    GPIO_TypeDef* GPIOx,
+    uint16_t GPIO_Pin_x,
+    PinMode_TypeDef Mode,
+    GPIOMaxSpeed_Type GPIO_Speed_x
+)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     uint32_t RCC_APB2PERIPH_GPIOx;
@@ -202,35 +207,35 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
 #endif /*GPIOG*/
     else return;
 
-    if(pinMode_x == INPUT)
+    if(Mode == INPUT)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_FLOATING;
     }
-    else if(pinMode_x == INPUT_PULLUP)
+    else if(Mode == INPUT_PULLUP)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_PU;
     }
-    else if(pinMode_x == INPUT_PULLDOWN)
+    else if(Mode == INPUT_PULLDOWN)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_PD;
     }
-    else if(pinMode_x == INPUT_ANALOG)
+    else if(Mode == INPUT_ANALOG)
     {
         GPIO_Mode_x  = GPIO_Mode_IN_ANALOG;
     }
-    else if(pinMode_x == OUTPUT)
+    else if(Mode == OUTPUT)
     {
         GPIO_Mode_x  = GPIO_Mode_OUT_PP;
     }
-    else if(pinMode_x == OUTPUT_OPEN_DRAIN)
+    else if(Mode == OUTPUT_OPEN_DRAIN)
     {
         GPIO_Mode_x  = GPIO_Mode_OUT_OD;
     }
-    else if(pinMode_x == OUTPUT_AF_PP)
+    else if(Mode == OUTPUT_AF_PP)
     {
         GPIO_Mode_x  = GPIO_Mode_AF_PP;
     }
-    else if(pinMode_x == OUTPUT_AF_OD)
+    else if(Mode == OUTPUT_AF_OD)
     {
         GPIO_Mode_x  = GPIO_Mode_AF_OD;
     }
@@ -239,6 +244,7 @@ void GPIOx_Init(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin_x, pinMode_TypeDef pinMod
         return;
     }
 
+    GPIO_StructInit(&GPIO_InitStructure);
     GPIO_InitStructure.GPIO_Pins = GPIO_Pin_x;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_x;
     GPIO_InitStructure.GPIO_MaxSpeed = GPIO_Speed_x;
@@ -265,20 +271,37 @@ void GPIO_JTAG_Disable(void)
   */
 uint8_t GPIO_GetPortNum(uint8_t Pin)
 {
-    if(PIN_MAP[Pin].GPIOx == GPIOA)return 0;
-    else if(PIN_MAP[Pin].GPIOx == GPIOB)return 1;
-    else if(PIN_MAP[Pin].GPIOx == GPIOC)return 2;
-    else if(PIN_MAP[Pin].GPIOx == GPIOD)return 3;
+    uint8_t retval = 0xFF;
+    uint8_t index;
+    GPIO_Type* GPIOx = PIN_MAP[Pin].GPIOx;
+
+    GPIO_Type* GPIO_Map[] =
+    {
+        GPIOA,
+        GPIOB,
+        GPIOC,
+        GPIOD,
 #ifdef GPIOE
-    else if(PIN_MAP[Pin].GPIOx == GPIOE)return 4;
-#endif /*GPIOE*/
+        GPIOE,
+#endif
 #ifdef GPIOF
-    else if(PIN_MAP[Pin].GPIOx == GPIOF)return 5;
-#endif /*GPIOF*/
+        GPIOF,
+#endif
 #ifdef GPIOG
-    else if(PIN_MAP[Pin].GPIOx == GPIOG)return 6;
-#endif /*GPIOG*/
-    else return 0xFF;
+        GPIOG
+#endif
+    };
+
+    for(index = 0; index < sizeof(GPIO_Map) / sizeof(GPIO_Map[0]); index++)
+    {
+        if(GPIOx == GPIO_Map[index])
+        {
+            retval = index;
+            break;
+        }
+    }
+
+    return retval;
 }
 
 /**
@@ -288,7 +311,7 @@ uint8_t GPIO_GetPortNum(uint8_t Pin)
   */
 uint8_t GPIO_GetPinSource(uint16_t GPIO_Pin_x)
 {
-    uint16_t PinSource = 0;
+    uint8_t PinSource = 0;
     while(GPIO_Pin_x > 1)
     {
         GPIO_Pin_x >>= 1;
