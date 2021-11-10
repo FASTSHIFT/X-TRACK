@@ -58,7 +58,7 @@
 
 /* GPS */
 #define CONFIG_GPS_SERIAL           Serial2
-#define CONFIG_GPS_USE_TRANSPARENT  0
+#define CONFIG_GPS_USE_TRANSPARENT  1  // ENABLE transport GPS Module Serial Data (TX and RX)
 #define CONFIG_GPS_BUF_OVERLOAD_CHK 0
 #define CONFIG_GPS_TX_PIN           PA3
 #define CONFIG_GPS_RX_PIN           PA2

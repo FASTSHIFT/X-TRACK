@@ -28,10 +28,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <stdlib.h>
 #include <math.h>
 
-#define _GPRMCterm   "GPRMC"
-#define _GPGGAterm   "GPGGA"
-#define _GNRMCterm   "GNRMC"
-#define _GNGGAterm   "GNGGA"
+#define _GPRMCterm   "GPRMC"    // GPS      --- Position, Velocity, and Time
+#define _GPGGAterm   "GPGGA"    // GPS      --- Time, position, and fix related data
+#define _GNRMCterm   "GNRMC"    // GNSS     --- Position, Velocity, and Time
+#define _GNGGAterm   "GNGGA"    // GNSS     --- Time, position, and fix related data
+#define _GLRMCterm   "GLRMC"    // GLONASS  --- Position, Velocity, and Time
+#define _GLGGAterm   "GLGGA"    // GLONASS  --- Time, position, and fix related data
+#define _BDRMCterm   "BDRMC"    // BeiDou   --- Position, Velocity, and Time
+#define _BDGGAterm   "BDGGA"    // BeiDou   --- Time, position, and fix related data
+
 
 TinyGPSPlus::TinyGPSPlus()
   :  parity(0)
@@ -210,9 +215,9 @@ bool TinyGPSPlus::endOfTermHandler()
   // the first term determines the sentence type
   if (curTermNumber == 0)
   {
-    if (!strcmp(term, _GPRMCterm) || !strcmp(term, _GNRMCterm))
+    if (!strcmp(term, _GPRMCterm) || !strcmp(term, _GNRMCterm) || !strcmp(term, _GLRMCterm) || !strcmp(term, _BDRMCterm))
       curSentenceType = GPS_SENTENCE_GPRMC;
-    else if (!strcmp(term, _GPGGAterm) || !strcmp(term, _GNGGAterm))
+    else if (!strcmp(term, _GPGGAterm) || !strcmp(term, _GNGGAterm) || !strcmp(term, _GLGGAterm) || !strcmp(term, _BDGGAterm))
       curSentenceType = GPS_SENTENCE_GPGGA;
     else
       curSentenceType = GPS_SENTENCE_OTHER;

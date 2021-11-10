@@ -5,7 +5,7 @@
 #define DEBUG_SERIAL           CONFIG_DEBUG_SERIAL
 #define GPS_USE_TRANSPARENT    CONFIG_GPS_USE_TRANSPARENT
 
-static TinyGPSPlus gps;
+static TinyGPSPlus gps_decoder;
 
 void HAL::GPS_Init()
 {
@@ -34,7 +34,7 @@ void HAL::GPS_Update()
 #if GPS_USE_TRANSPARENT
         DEBUG_SERIAL.write(c);
 #endif
-        gps.encode(c);
+        gps_decoder.encode(c);
     }
 
 #if GPS_USE_TRANSPARENT
@@ -49,30 +49,31 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 {
     memset(info, 0, sizeof(GPS_Info_t));
 
-    info->isVaild = gps.location.isValid();
-    info->longitude = gps.location.lng();
-    info->latitude = gps.location.lat();
-    info->altitude = gps.altitude.meters();
-    info->speed = gps.speed.kmph();
-    info->course = gps.course.deg();
+    info->isVaild = gps_decoder.location.isValid();
+    info->longitude = gps_decoder.location.lng();
+    info->latitude = gps_decoder.location.lat();
+    info->altitude = gps_decoder.altitude.meters();
+    info->speed = gps_decoder.speed.kmph();
+    info->course = gps_decoder.course.deg();
 
-    info->clock.year = gps.date.year();
-    info->clock.month = gps.date.month();
-    info->clock.day = gps.date.day();
-    info->clock.hour = gps.time.hour();
-    info->clock.minute = gps.time.minute();
-    info->clock.second = gps.time.second();
-    info->satellites = gps.satellites.value();
+    info->clock.year = ll
+    .date.year();
+    info->clock.month = gps_decoder.date.month();
+    info->clock.day = gps_decoder.date.day();
+    info->clock.hour = gps_decoder.time.hour();
+    info->clock.minute = gps_decoder.time.minute();
+    info->clock.second = gps_decoder.time.second();
+    info->satellites = gps_decoder.satellites.value();
 
     return info->isVaild;
 }
 
 bool HAL::GPS_LocationIsValid()
 {
-    return gps.location.isValid();
+    return gps_decoder.location.isValid();
 }
 
 double HAL::GPS_GetDistanceOffset(GPS_Info_t* info,  double preLong, double preLat)
 {
-    return gps.distanceBetween(info->latitude, info->longitude, preLat, preLong);
+    return gps_decoder.distanceBetween(info->latitude, info->longitude, preLat, preLong);
 }
