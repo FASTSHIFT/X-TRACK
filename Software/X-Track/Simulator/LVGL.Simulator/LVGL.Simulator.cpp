@@ -43,7 +43,7 @@ int main()
         GetModuleHandleW(NULL),
         SW_SHOW,
         240,
-        320,
+        240,
         LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
     {
         return -1;

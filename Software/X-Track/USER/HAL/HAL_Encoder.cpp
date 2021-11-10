@@ -43,7 +43,7 @@ static void Encoder_EventHandler()
         return;
     }
 
-    int dir = (digitalRead(CONFIG_ENCODER_B_PIN) == LOW ? -1 : +1);
+    int dir = (digitalRead(CONFIG_ENCODER_B_PIN) == LOW ? +1 : -1);
     EncoderDiff += dir;
     Buzz_Handler(dir);
 }

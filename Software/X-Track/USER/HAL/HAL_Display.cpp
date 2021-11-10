@@ -130,7 +130,7 @@ void HAL::Display_Init()
 {
     Serial.print("Display: init...");
     screen.begin();
-    screen.setRotation(0);
+    screen.setRotation(1);
     screen.fillScreen(screen.Black);
 
     screen.setTextWrap(true);
