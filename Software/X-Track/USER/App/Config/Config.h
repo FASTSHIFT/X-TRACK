@@ -65,7 +65,7 @@
 #  define CONFIG_LIVE_MAP_VIEW_HEIGHT         LV_VER_RES
 #endif
 
-#define CONFIG_MONKEY_TEST_ENABLE             1
+#define CONFIG_MONKEY_TEST_ENABLE             0
 #if CONFIG_MONKEY_TEST_ENABLE
 #  define CONFIG_MONKEY_INDEV_TYPE            LV_INDEV_TYPE_ENCODER
 #  define CONFIG_MONKEY_TIME_MIN              10

@@ -41,7 +41,7 @@ extern "C" {
  */
 enum {
     LV_RES_INV = 0, /*Typically indicates that the object is deleted (become invalid) in the action
-                       function or an operation was failed*/
+                      function or an operation was failed*/
     LV_RES_OK,      /*The object is valid (no deleted) after the action*/
 };
 typedef uint8_t lv_res_t;
@@ -69,7 +69,7 @@ typedef uint32_t lv_uintptr_t;
  *      MACROS
  **********************/
 
-#define LV_UNUSED(x) ((void) x)
+#define LV_UNUSED(x) ((void)x)
 
 #define _LV_CONCAT(x, y) x ## y
 #define LV_CONCAT(x, y) _LV_CONCAT(x, y)
@@ -77,15 +77,15 @@ typedef uint32_t lv_uintptr_t;
 #define _LV_CONCAT3(x, y, z) x ## y ## z
 #define LV_CONCAT3(x, y, z) _LV_CONCAT3(x, y, z)
 
-//#if defined(PYCPARSER)
-//#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)
-//#elif defined(__GNUC__) && ((__GNUC__ == 4 && __GNUC_MINOR__ >= 4) || __GNUC__ > 4)
-//#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(gnu_printf, fmtstr, vararg)))
-//#elif (defined(__clang__) || defined(__GNUC__) || defined(__GNUG__))
-//#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(printf, fmtstr, vararg)))
-//#else
+#if defined(PYCPARSER)
 #define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)
-//#endif
+#elif defined(__GNUC__) && ((__GNUC__ == 4 && __GNUC_MINOR__ >= 4) || __GNUC__ > 4)
+#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) //__attribute__((format(gnu_printf, fmtstr, vararg)))
+#elif (defined(__clang__) || defined(__GNUC__) || defined(__GNUG__))
+#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(printf, fmtstr, vararg)))
+#else
+#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)
+#endif
 
 #ifdef __cplusplus
 } /*extern "C"*/ 
