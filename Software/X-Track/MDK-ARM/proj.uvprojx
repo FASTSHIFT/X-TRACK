@@ -333,7 +333,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--gnu  --diag_warning=4017</MiscControls>
+              <MiscControls>--gnu</MiscControls>
               <Define>LIBRARY_VERSION,ARDUINO=111</Define>
               <Undefine></Undefine>
               <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER;..\Libraries\SdFat\src;..\Simulator\LVGL.Simulator;..\USER\App</IncludePath>

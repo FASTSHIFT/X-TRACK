@@ -175,7 +175,7 @@ void HAL::Power_GetInfo(Power_Info_t* info)
     __LimitValue(usage, 0, 100);
 
     info->usage = usage;
-    info->isCharging = (usage == 100) ? false : digitalRead(CONFIG_BAT_CHG_DET_PIN);
+    info->isCharging = !digitalRead(CONFIG_BAT_CHG_DET_PIN);
     info->voltage = voltage;
 }
 
