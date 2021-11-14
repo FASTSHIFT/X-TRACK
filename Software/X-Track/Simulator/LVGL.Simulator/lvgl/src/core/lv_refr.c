@@ -57,9 +57,9 @@ static lv_disp_t * disp_refr; /*Display being refreshed*/
  *      MACROS
  **********************/
 #if LV_LOG_TRACE_DISP_REFR
-    #define TRACE_REFR(...) LV_LOG_TRACE( __VA_ARGS__)
+    #define REFR_TRACE(...) LV_LOG_TRACE(__VA_ARGS__)
 #else
-    #define TRACE_REFR(...)
+    #define REFR_TRACE(...)
 #endif
 
 /**********************
@@ -86,13 +86,13 @@ void lv_refr_now(lv_disp_t * disp)
     lv_anim_refr_now();
 
     if(disp) {
-        _lv_disp_refr_timer(disp->refr_timer);
+        if(disp->refr_timer) _lv_disp_refr_timer(disp->refr_timer);
     }
     else {
         lv_disp_t * d;
         d = lv_disp_get_next(NULL);
         while(d) {
-            _lv_disp_refr_timer(d->refr_timer);
+            if(d->refr_timer) _lv_disp_refr_timer(d->refr_timer);
             d = lv_disp_get_next(d);
         }
     }
@@ -131,7 +131,7 @@ void _lv_inv_area(lv_disp_t * disp, const lv_area_t * area_p)
     if(disp->driver->full_refresh) {
         disp->inv_areas[0] = scr_area;
         disp->inv_p = 1;
-        lv_timer_resume(disp->refr_timer);
+        if(disp->refr_timer) lv_timer_resume(disp->refr_timer);
         return;
     }
 
@@ -152,7 +152,7 @@ void _lv_inv_area(lv_disp_t * disp, const lv_area_t * area_p)
         lv_area_copy(&disp->inv_areas[disp->inv_p], &scr_area);
     }
     disp->inv_p++;
-    lv_timer_resume(disp->refr_timer);
+    if(disp->refr_timer) lv_timer_resume(disp->refr_timer);
 }
 
 /**
@@ -181,20 +181,24 @@ void _lv_refr_set_disp_refreshing(lv_disp_t * disp)
  */
 void _lv_disp_refr_timer(lv_timer_t * tmr)
 {
-    TRACE_REFR("begin");
+    REFR_TRACE("begin");
 
     uint32_t start = lv_tick_get();
     volatile uint32_t elaps = 0;
 
-    disp_refr = tmr->user_data;
-
+    if(tmr) {
+        disp_refr = tmr->user_data;
 #if LV_USE_PERF_MONITOR == 0 && LV_USE_MEM_MONITOR == 0
-    /**
-     * Ensure the timer does not run again automatically.
-     * This is done before refreshing in case refreshing invalidates something else.
-     */
-    lv_timer_pause(tmr);
+        /**
+         * Ensure the timer does not run again automatically.
+         * This is done before refreshing in case refreshing invalidates something else.
+         */
+        lv_timer_pause(tmr);
 #endif
+    }
+    else {
+        disp_refr = lv_disp_get_default();
+    }
 
     /*Refresh the screen's layout if required*/
     lv_obj_update_layout(disp_refr->act_scr);
@@ -207,7 +211,7 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
     if(disp_refr->act_scr == NULL) {
         disp_refr->inv_p = 0;
         LV_LOG_WARN("there is no active screen");
-        TRACE_REFR("finished");
+        REFR_TRACE("finished");
         return;
     }
 
@@ -253,7 +257,7 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
         lv_obj_set_style_pad_right(perf_label, 3, 0);
         lv_obj_set_style_text_align(perf_label, LV_TEXT_ALIGN_RIGHT, 0);
         lv_label_set_text(perf_label, "?");
-        lv_obj_align(perf_label, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+        lv_obj_align(perf_label, LV_USE_PERF_MONITOR_POS, 0, 0);
     }
 
     static uint32_t perf_last_time = 0;
@@ -268,7 +272,7 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
     else {
         perf_last_time = lv_tick_get();
         uint32_t fps_limit = 1000 / disp_refr->refr_timer->period;
-        uint32_t fps;
+        unsigned int fps;
 
         if(elaps_sum == 0) elaps_sum = 1;
         if(frame_cnt == 0) fps = fps_limit;
@@ -279,8 +283,8 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
 
         fps_sum_all += fps;
         fps_sum_cnt ++;
-        uint32_t cpu = 100 - lv_timer_get_idle();
-        lv_label_set_text_fmt(perf_label, "%d FPS\n%d%% CPU", fps, cpu);
+        unsigned int cpu = 100 - lv_timer_get_idle();
+        lv_label_set_text_fmt(perf_label, "%u FPS\n%u%% CPU", fps, cpu);
     }
 #endif
 
@@ -296,7 +300,7 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
         lv_obj_set_style_pad_left(mem_label, 3, 0);
         lv_obj_set_style_pad_right(mem_label, 3, 0);
         lv_label_set_text(mem_label, "?");
-        lv_obj_align(mem_label, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+        lv_obj_align(mem_label, LV_USE_MEM_MONITOR_POS, 0, 0);
     }
 
     static uint32_t mem_last_time = 0;
@@ -307,12 +311,13 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
         uint32_t used_size = mon.total_size - mon.free_size;;
         uint32_t used_kb = used_size / 1024;
         uint32_t used_kb_tenth = (used_size - (used_kb * 1024)) / 102;
-        lv_label_set_text_fmt(mem_label, "%d.%d kB used (%d %%)\n%d%% frag.", used_kb,  used_kb_tenth, mon.used_pct,
+        lv_label_set_text_fmt(mem_label, "%" LV_PRIu32 ".%" LV_PRIu32 " kB used (%d %%)\n" \
+                              "%d%% frag.", used_kb, used_kb_tenth, mon.used_pct,
                               mon.frag_pct);
     }
 #endif
 
-    TRACE_REFR("finished");
+    REFR_TRACE("finished");
 }
 
 #if LV_USE_PERF_MONITOR
@@ -457,31 +462,43 @@ static void lv_refr_area(const lv_area_t * area_p)
         }
     }
 
-    /*Always use the full row*/
-    lv_coord_t row;
-    lv_coord_t row_last = 0;
-    for(row = area_p->y1; row + max_row - 1 <= y2; row += max_row) {
-        /*Calc. the next y coordinates of draw_buf*/
-        draw_buf->area.x1 = area_p->x1;
-        draw_buf->area.x2 = area_p->x2;
-        draw_buf->area.y1 = row;
-        draw_buf->area.y2 = row + max_row - 1;
-        if(draw_buf->area.y2 > y2) draw_buf->area.y2 = y2;
-        row_last = draw_buf->area.y2;
-        if(y2 == row_last) disp_refr->driver->draw_buf->last_part = 1;
+    /*In direct mode draw directly on the absolute coordinates of the buffer*/
+    if(disp_refr->driver->direct_mode) {
+        draw_buf->area.x1 = 0;
+        draw_buf->area.x2 = lv_disp_get_hor_res(disp_refr) - 1;
+        draw_buf->area.y1 = 0;
+        draw_buf->area.y2 = lv_disp_get_ver_res(disp_refr) - 1;
+        disp_refr->driver->draw_buf->last_part = disp_refr->driver->draw_buf->last_area;
         lv_refr_area_part(area_p);
     }
+    /*Else assume the buffer starts at the given area*/
+    else {
+        /*Always use the full row*/
+        lv_coord_t row;
+        lv_coord_t row_last = 0;
+        for(row = area_p->y1; row + max_row - 1 <= y2; row += max_row) {
+            /*Calc. the next y coordinates of draw_buf*/
+            draw_buf->area.x1 = area_p->x1;
+            draw_buf->area.x2 = area_p->x2;
+            draw_buf->area.y1 = row;
+            draw_buf->area.y2 = row + max_row - 1;
+            if(draw_buf->area.y2 > y2) draw_buf->area.y2 = y2;
+            row_last = draw_buf->area.y2;
+            if(y2 == row_last) disp_refr->driver->draw_buf->last_part = 1;
+            lv_refr_area_part(area_p);
+        }
 
-    /*If the last y coordinates are not handled yet ...*/
-    if(y2 != row_last) {
-        /*Calc. the next y coordinates of draw_buf*/
-        draw_buf->area.x1 = area_p->x1;
-        draw_buf->area.x2 = area_p->x2;
-        draw_buf->area.y1 = row;
-        draw_buf->area.y2 = y2;
+        /*If the last y coordinates are not handled yet ...*/
+        if(y2 != row_last) {
+            /*Calc. the next y coordinates of draw_buf*/
+            draw_buf->area.x1 = area_p->x1;
+            draw_buf->area.x2 = area_p->x2;
+            draw_buf->area.y1 = row;
+            draw_buf->area.y2 = y2;
 
-        disp_refr->driver->draw_buf->last_part = 1;
-        lv_refr_area_part(area_p);
+            disp_refr->driver->draw_buf->last_part = 1;
+            lv_refr_area_part(area_p);
+        }
     }
 }
 
@@ -962,7 +979,15 @@ static void draw_buf_flush(void)
 
 static void call_flush_cb(lv_disp_drv_t * drv, const lv_area_t * area, lv_color_t * color_p)
 {
-    TRACE_REFR("Calling flush_cb on (%d;%d)(%d;%d) area with %p image pointer", area->x1, area->y1, area->x2, area->y2,
-               color_p);
-    drv->flush_cb(drv, area, color_p);
+    REFR_TRACE("Calling flush_cb on (%d;%d)(%d;%d) area with %p image pointer", area->x1, area->y1, area->x2, area->y2,
+               (void *)color_p);
+
+    lv_area_t offset_area = {
+        .x1 = area->x1 + drv->offset_x,
+        .y1 = area->y1 + drv->offset_y,
+        .x2 = area->x2 + drv->offset_x,
+        .y2 = area->y2 + drv->offset_y
+    };
+
+    drv->flush_cb(drv, &offset_area, color_p);
 }

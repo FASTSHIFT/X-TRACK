@@ -1,17 +1,21 @@
 #include "HAL.h"
 #include "App/Version.h"
+#include "MillisTaskManager/MillisTaskManager.h"
 
-static void HAL_InterrputUpdate()
-{
-    HAL::Power_Update();
-    HAL::Encoder_Update();
-    HAL::Audio_Update();
-}
+static MillisTaskManager taskManager;
 
 #if CONFIG_SENSOR_ENABLE
+static bool IsWireInitSuccess = false;
+
 static void HAL_Sensor_Init()
 {
-    HAL::I2C_Scan(true);
+    IsWireInitSuccess = (HAL::I2C_Scan() > 0);
+
+    if(!IsWireInitSuccess)
+    {
+        Serial.println("I2C: disable sensors");
+        return;
+    }
 
 #if CONFIG_SENSOR_IMU_ENABLE
     HAL::IMU_Init();
@@ -21,18 +25,41 @@ static void HAL_Sensor_Init()
     HAL::MAG_Init();
 #endif
 }
+
+static void HAL_SensorUpdate()
+{
+    if(!IsWireInitSuccess)
+    {
+        return;
+    }
+
+#if CONFIG_SENSOR_IMU_ENABLE
+    HAL::IMU_Update();
 #endif
+
+#if CONFIG_SENSOR_MAG_ENABLE
+    HAL::MAG_Update();
+#endif
+}
+#endif
+
+static void HAL_TimerInterrputUpdate()
+{
+    HAL::Power_Update();
+    HAL::Encoder_Update();
+    HAL::Audio_Update();
+}
 
 void HAL::HAL_Init()
 {
     Serial.begin(115200);
     Serial.println(VERSION_FIRMWARE_NAME);
     Serial.println("Version: " VERSION_SOFTWARE);
-    Serial.println("Author: " VERSION_AUTHOR_NAME);
+    Serial.println("Author: "  VERSION_AUTHOR_NAME);
     Serial.println("Project: " VERSION_PROJECT_LINK);
-    
+
     FaultHandle_Init();
-    
+
     Memory_DumpInfo();
 
     Power_Init();
@@ -48,31 +75,20 @@ void HAL::HAL_Init()
     SD_Init();
 
     Display_Init();
-
-    Timer_SetInterrupt(CONFIG_HAL_UPDATE_TIM, 10 * 1000, HAL_InterrputUpdate);
-    TIM_Cmd(CONFIG_HAL_UPDATE_TIM, ENABLE);
-}
-
+    
+    taskManager.Register(Power_EventMonitor, 100);
+    taskManager.Register(GPS_Update, 200);
+    taskManager.Register(SD_Update, 500);
 #if CONFIG_SENSOR_ENABLE
-static void HAL_SensorUpdate()
-{
-#if CONFIG_SENSOR_IMU_ENABLE
-    HAL::IMU_Update();
+    taskManager.Register(HAL_SensorUpdate, 1000);
 #endif
+    taskManager.Register(Memory_DumpInfo, 1000);
 
-#if CONFIG_SENSOR_MAG_ENABLE
-    HAL::MAG_Update();
-#endif
+    Timer_SetInterrupt(CONFIG_HAL_UPDATE_TIM, 10 * 1000, HAL_TimerInterrputUpdate);
+    Timer_SetEnable(CONFIG_HAL_UPDATE_TIM, true);
 }
-#endif
 
 void HAL::HAL_Update()
 {
-    __IntervalExecute(SD_Update(), 500);
-#if CONFIG_SENSOR_ENABLE
-    __IntervalExecute(HAL_SensorUpdate(), 1000);
-#endif
-    __IntervalExecute(GPS_Update(), 200);
-    __IntervalExecute(Memory_DumpInfo(), 1000);
-    Power_EventMonitor();
+    taskManager.Running(millis());
 }

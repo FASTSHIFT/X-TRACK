@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file lv_conf.h
  * Configuration file for v8.0.0-dev
  */
@@ -31,8 +31,12 @@
  *Requires `LV_COLOR_DEPTH = 32` colors and the screen's `bg_opa` should be set to non LV_OPA_COVER value*/
 #define LV_COLOR_SCREEN_TRANSP    0
 
-/*Images pixels with this color will not be drawn if they are  chroma keyed)*/
-#define LV_COLOR_CHROMA_KEY    lv_color_hex(0x00ff00)         /*pure green*/
+/* Adjust color mix functions rounding. GPUs might calculate color mix (blending) differently.
+ * 0: round down, 64: round up from x.75, 128: round up from half, 192: round up from x.25, 254: round up */
+#define LV_COLOR_MIX_ROUND_OFS (LV_COLOR_DEPTH == 32 ? 0: 128)
+
+/*Images pixels with this color will not be drawn if they are chroma keyed)*/
+#define LV_COLOR_CHROMA_KEY lv_color_hex(0x00ff00)         /*pure green*/
 
 /*=========================
    MEMORY SETTINGS
@@ -42,7 +46,7 @@
 #ifdef ARDUINO
 #  define LV_MEM_CUSTOM      0
 #else
-#  define LV_MEM_CUSTOM      1
+#  define LV_MEM_CUSTOM      0
 #endif
 #if LV_MEM_CUSTOM == 0
 /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
@@ -64,7 +68,7 @@
 #endif     /*LV_MEM_CUSTOM*/
 
 /*Use the standard `memcpy` and `memset` instead of LVGL's own functions. (Might or might not be faster).*/
-#define LV_MEMCPY_MEMSET_STD    0
+#define LV_MEMCPY_MEMSET_STD    1
 
 /*====================
    HAL SETTINGS
@@ -154,6 +158,15 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 /*Use NXP's VG-Lite GPU iMX RTxxx platforms*/
 #define LV_USE_GPU_NXP_VG_LITE   0
 
+/*Use exnternal renderer*/
+#define LV_USE_EXTERNAL_RENDERER 0
+
+/*Use SDL renderer API. Requires LV_USE_EXTERNAL_RENDERER*/
+#define LV_USE_GPU_SDL 0
+#if LV_USE_GPU_SDL
+#  define LV_GPU_SDL_INCLUDE_PATH <SDL2/SDL.h>
+#endif
+
 /*-------------
  * Logging
  *-----------*/
@@ -223,11 +236,17 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
  *-----------*/
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
-#define LV_USE_PERF_MONITOR     0
+#define LV_USE_PERF_MONITOR 0
+#if LV_USE_PERF_MONITOR
+#define LV_USE_PERF_MONITOR_POS LV_ALIGN_BOTTOM_RIGHT
+#endif
 
-/*1: Show the used memory and the memory fragmentation  in the left bottom corner
+/*1: Show the used memory and the memory fragmentation in the left bottom corner
  * Requires LV_MEM_CUSTOM = 0*/
-#define LV_USE_MEM_MONITOR      0
+#define LV_USE_MEM_MONITOR 0
+#if LV_USE_MEM_MONITOR
+#define LV_USE_MEM_MONITOR_POS LV_ALIGN_BOTTOM_LEFT
+#endif
 
 /*1: Draw random colored rectangles over the redrawn areas*/
 #define LV_USE_REFR_DEBUG       0
@@ -251,9 +270,6 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #  define LV_GC_INCLUDE "gc.h"                           /*Include Garbage Collector related things*/
 #endif /*LV_ENABLE_GC*/
 
-/*1: Enable API to take snapshot for object*/
-#define LV_USE_SNAPSHOT         0
-
 /*=====================
  *  COMPILER SETTINGS
  *====================*/
@@ -271,7 +287,7 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 #define LV_ATTRIBUTE_FLUSH_READY
 
 /*Required alignment size for buffers*/
-#define LV_ATTRIBUTE_MEM_ALIGN_SIZE
+#define LV_ATTRIBUTE_MEM_ALIGN_SIZE 1
 
 /*Will be added where memories needs to be aligned (with -Os data might not be aligned to boundary by default).
  * E.g. __attribute__((aligned(4)))*/
@@ -541,6 +557,57 @@ e.g. "stm32f769xx.h" or "stm32f429xx.h"*/
 
 /*A layout similar to Grid in CSS.*/
 #define LV_USE_GRID     1
+
+/*---------------------
+ * 3rd party libraries
+ *--------------------*/
+
+/*File system interfaces for common APIs
+ *To enable set a driver letter for that API*/
+#define LV_USE_FS_STDIO '\0'        /*Uses fopen, fread, etc*/
+//#define LV_FS_STDIO_PATH "/home/john/"    /*Set the working directory. If commented it will be "./" */
+
+#define LV_USE_FS_POSIX '\0'        /*Uses open, read, etc*/
+//#define LV_FS_POSIX_PATH "/home/john/"    /*Set the working directory. If commented it will be "./" */
+
+#define LV_USE_FS_WIN32 '\0'        /*Uses CreateFile, ReadFile, etc*/
+//#define LV_FS_WIN32_PATH "C:\\Users\\john\\"    /*Set the working directory. If commented it will be ".\\" */
+
+#define LV_USE_FS_FATFS '\0'        /*Uses f_open, f_read, etc*/
+
+/*PNG decoder library*/
+#define LV_USE_PNG 0
+
+/*BMP decoder library*/
+#define LV_USE_BMP 0
+
+/* JPG + split JPG decoder library.
+ * Split JPG is a custom format optimized for embedded systems. */
+#define LV_USE_SJPG 0
+
+/*GIF decoder library*/
+#define LV_USE_GIF 0
+
+/*QR code library*/
+#define LV_USE_QRCODE 0
+
+/*FreeType library*/
+#define LV_USE_FREETYPE 0
+#if LV_USE_FREETYPE
+/*Memory used by FreeType to cache characters [bytes] (-1: no caching)*/
+# define LV_FREETYPE_CACHE_SIZE (16 * 1024)
+#endif
+
+/*Rlottie library*/
+#define LV_USE_RLOTTIE 0
+
+/*-----------
+ * Others
+ *----------*/
+
+/*1: Enable API to take snapshot for object*/
+#define LV_USE_SNAPSHOT 1
+
 
 /*==================
 * EXAMPLES

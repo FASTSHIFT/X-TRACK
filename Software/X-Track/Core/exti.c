@@ -1,17 +1,17 @@
 /*
  * MIT License
- * Copyright (c) 2019 _VIFEXTech
- * 
+ * Copyright (c) 2019-2021 _VIFEXTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,8 +21,11 @@
  * SOFTWARE.
  */
 #include "exti.h"
+#include "gpio.h"
 
-/*外部中断回调函数指针数组*/
+#define EXTI_GetPortSourceGPIOx(Pin) GPIO_GetPortNum(Pin)
+#define EXTI_GetPinSourcex(Pin)      GPIO_GetPinNum(Pin)
+
 static EXTI_CallbackFunction_t EXTI_Function[16] = {0};
 
 /**
@@ -57,23 +60,33 @@ static IRQn_Type EXTI_GetIRQn(uint8_t Pin)
         }
     }
     else if(Pinx >= 5 && Pinx <= 9)
+    {
         EXTIx_IRQn = EXTI9_5_IRQn;
+    }
     else if(Pinx >= 10 && Pinx <= 15)
+    {
         EXTIx_IRQn = EXTI15_10_IRQn;
-    
+    }
+
     return EXTIx_IRQn;
 }
 
 /**
   * @brief  外部中断初始化
   * @param  Pin: 引脚编号
-  * @param  function: 回调函数
+  * @param  Function: 回调函数
   * @param  Trigger_Mode: 触发方式
   * @param  PreemptionPriority: 抢占优先级
   * @param  SubPriority: 子优先级
   * @retval 无
   */
-void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_Type Trigger_Mode, uint8_t PreemptionPriority, uint8_t SubPriority)
+void EXTIx_Init(
+    uint8_t Pin,
+    EXTI_CallbackFunction_t Function,
+    EXTITrigger_Type Trigger_Mode,
+    uint8_t PreemptionPriority,
+    uint8_t SubPriority
+)
 {
     EXTI_InitType EXTI_InitStructure;
     NVIC_InitType NVIC_InitStructure;
@@ -86,23 +99,23 @@ void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_Type 
 
     if(Pinx > 15)
         return;
-    
-    EXTI_Function[Pinx] = function;
 
-    //GPIO中断线以及中断初始化配置
+    EXTI_Function[Pinx] = Function;
+
     RCC_APB2PeriphClockCmd(RCC_APB2PERIPH_AFIO, ENABLE);
     GPIO_EXTILineConfig(GPIO_GetPortNum(Pin), Pinx);
 
-    EXTI_InitStructure.EXTI_Line = EXTI_GetLinex(Pin);//设置中断线
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;//设置触发模式，中断触发（事件触发）
-    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;//设置触发方式
+    EXTI_StructInit(&EXTI_InitStructure);
+    EXTI_InitStructure.EXTI_Line = 1 << Pinx;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = Trigger_Mode;
     EXTI_InitStructure.EXTI_LineEnable = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);     //根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
+    EXTI_Init(&EXTI_InitStructure);
 
-    NVIC_InitStructure.NVIC_IRQChannel = EXTI_GetIRQn(Pin);                    //使能所在的外部中断通道
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;      //抢占优先级
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;                //子优先级
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;                     //使能外部中断通道
+    NVIC_InitStructure.NVIC_IRQChannel = EXTI_GetIRQn(Pin);
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = PreemptionPriority;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = SubPriority;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
 
@@ -113,9 +126,15 @@ void EXTIx_Init(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_Type 
   * @param  Trigger_Mode: 触发方式
   * @retval 无
   */
-void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t function, EXTITrigger_Type Trigger_Mode)
+void attachInterrupt(uint8_t Pin, EXTI_CallbackFunction_t Function, EXTITrigger_Type Trigger_Mode)
 {
-    EXTIx_Init(Pin, function, Trigger_Mode, EXTI_PreemptionPriority_Default, EXTI_SubPriority_Default);
+    EXTIx_Init(
+        Pin,
+        Function,
+        Trigger_Mode,
+        EXTI_PREEMPTIONPRIORITY_DEFAULT,
+        EXTI_SUBPRIORITY_DEFAULT
+    );
 }
 
 /**
@@ -127,7 +146,7 @@ void detachInterrupt(uint8_t Pin)
 {
     if(!IS_PIN(Pin))
         return;
-    
+
     NVIC_DisableIRQ(EXTI_GetIRQn(Pin));
 }
 

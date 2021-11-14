@@ -323,3 +323,18 @@
 * 10.更新ArduinoJson
 * 11.Display_DumpCrashInfo report -> info
 * 12.更新HAL_Power，不使用ADC中断模式
+
+## [v2.0] - 2021-11-14
+* 1.Arduino API底层重构
+* 2.添加MillisTaskManager任务调度器
+* 3.lvgl使用标准memset和memcpy
+* 4.更新lvgl v8.1.0
+* 5.DataCenter错误码枚举 ERROR_XXX -> RES_XXX
+* 6.修改DP节点的结构体初始化方式，不使用默认初始化
+* 7.优化DP_SportStatus在临时信号丢时的数据统计处理
+* 8.修复StorageService文件结尾读取错误导致的crash
+* 9.添加lv_settings，暂未移植
+* 10.添加传感器自动扫描，防止未安装传感器导致的开机卡死
+* 11.使用event携带user_data
+* 12.优化new重载
+* 13.修复HAL_Power错误的关机处理

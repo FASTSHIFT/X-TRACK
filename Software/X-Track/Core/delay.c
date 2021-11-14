@@ -1,17 +1,17 @@
 /*
  * MIT License
- * Copyright (c) 2019 _VIFEXTech
- * 
+ * Copyright (c) 2019-2021 _VIFEXTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,9 +22,15 @@
  */
 #include "delay.h"
 
-#define SysTick_LoadValue (F_CPU / 1000U)
+#ifndef SYSTICK_TICK_FREQ
+#  define SYSTICK_TICK_FREQ     1000 // Hz
+#endif
 
-volatile static uint32_t System_ms = 0;
+#define SYSTICK_TICK_INTERVAL   (1000 / SYSTICK_TICK_FREQ)
+#define SYSTICK_LOAD_VALUE      (F_CPU / SYSTICK_TICK_FREQ)
+#define SYSTICK_MILLIS          (SystemTickCount * SYSTICK_TICK_INTERVAL)
+
+static volatile uint32_t SystemTickCount = 0;
 
 /**
   * @brief  系统滴答定时器初始化，定时1ms
@@ -32,10 +38,10 @@ volatile static uint32_t System_ms = 0;
   * @retval 无
   */
 void Delay_Init(void)
-{    
+{
     SystemCoreClockUpdate();
-    SysTick_Config(SysTick_LoadValue);
-    NVIC_SetPriority(SysTick_IRQn, 0);
+    SysTick_Config(SYSTICK_LOAD_VALUE);
+    NVIC_SetPriority(SysTick_IRQn, SYSTICK_PRIORITY);
 }
 
 /**
@@ -45,7 +51,7 @@ void Delay_Init(void)
   */
 void SysTick_Handler(void)
 {
-    System_ms++;
+    SystemTickCount++;
 }
 
 /**
@@ -55,7 +61,7 @@ void SysTick_Handler(void)
   */
 uint32_t millis(void)
 {
-    return System_ms;
+    return SYSTICK_MILLIS;
 }
 
 /**
@@ -65,7 +71,7 @@ uint32_t millis(void)
   */
 uint32_t micros(void)
 {
-    return (System_ms * 1000 + (SysTick_LoadValue - SysTick->VAL) / CYCLES_PER_MICROSECOND);
+    return (SYSTICK_MILLIS * 1000 + (SYSTICK_LOAD_VALUE - SysTick->VAL) / CYCLES_PER_MICROSECOND);
 }
 
 /**
@@ -75,8 +81,12 @@ uint32_t micros(void)
   */
 void delay_ms(uint32_t ms)
 {
-    uint32_t Stop_TimePoint = System_ms + ms;
-    while(System_ms < Stop_TimePoint);
+    uint32_t tickstart = SystemTickCount;
+    uint32_t wait = ms / SYSTICK_TICK_INTERVAL;
+
+    while((SystemTickCount - tickstart) < wait)
+    {
+    }
 }
 
 /**
@@ -100,7 +110,7 @@ start:
     }
     else
     {
-        total += diff + SysTick_LoadValue;
+        total += diff + SYSTICK_LOAD_VALUE;
     }
     if(total > target)
     {

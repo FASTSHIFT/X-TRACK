@@ -77,6 +77,10 @@ void lv_disp_drv_init(lv_disp_drv_t * driver)
 
     driver->hor_res          = 320;
     driver->ver_res          = 240;
+    driver->physical_hor_res = -1;
+    driver->physical_ver_res = -1;
+    driver->offset_x         = 0;
+    driver->offset_y         = 0;
     driver->antialiasing     = LV_COLOR_DEPTH > 8 ? 1 : 0;
     driver->screen_transp    = LV_COLOR_SCREEN_TRANSP;
     driver->dpi              = LV_DPI_DEF;
@@ -153,6 +157,8 @@ lv_disp_t * lv_disp_drv_register(lv_disp_drv_t * driver)
     if(lv_theme_default_is_inited() == false) {
         disp->theme = lv_theme_default_init(disp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                             LV_THEME_DEFAULT_DARK, LV_FONT_DEFAULT);
+    } else {
+        disp->theme = lv_theme_default_get();
     }
 #endif
 
@@ -253,7 +259,7 @@ void lv_disp_remove(lv_disp_t * disp)
     }
 
     _lv_ll_remove(&LV_GC_ROOT(_lv_disp_ll), disp);
-    lv_timer_del(disp->refr_timer);
+    if(disp->refr_timer) lv_timer_del(disp->refr_timer);
     lv_mem_free(disp);
 
     if(was_default) lv_disp_set_default(_lv_ll_get_head(&LV_GC_ROOT(_lv_disp_ll)));
@@ -319,6 +325,104 @@ lv_coord_t lv_disp_get_ver_res(lv_disp_t * disp)
                 return disp->driver->hor_res;
             default:
                 return disp->driver->ver_res;
+        }
+    }
+}
+
+/**
+ * Get the full / physical horizontal resolution of a display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the full / physical horizontal resolution of the display
+ */
+lv_coord_t lv_disp_get_physical_hor_res(lv_disp_t * disp)
+{
+    if(disp == NULL) disp = lv_disp_get_default();
+
+    if(disp == NULL) {
+        return 0;
+    }
+    else {
+        switch(disp->driver->rotated) {
+            case LV_DISP_ROT_90:
+            case LV_DISP_ROT_270:
+                return disp->driver->physical_ver_res > 0 ? disp->driver->physical_ver_res : disp->driver->ver_res;
+            default:
+                return disp->driver->physical_hor_res > 0 ? disp->driver->physical_hor_res : disp->driver->hor_res;
+        }
+    }
+}
+
+/**
+ * Get the full / physical vertical resolution of a display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the full / physical vertical resolution of the display
+ */
+lv_coord_t lv_disp_get_physical_ver_res(lv_disp_t * disp)
+{
+    if(disp == NULL) disp = lv_disp_get_default();
+
+    if(disp == NULL) {
+        return 0;
+    }
+    else {
+        switch(disp->driver->rotated) {
+            case LV_DISP_ROT_90:
+            case LV_DISP_ROT_270:
+                return disp->driver->physical_hor_res > 0 ? disp->driver->physical_hor_res : disp->driver->hor_res;
+            default:
+                return disp->driver->physical_ver_res > 0 ? disp->driver->physical_ver_res : disp->driver->ver_res;
+        }
+    }
+}
+
+/**
+ * Get the horizontal offset from the full / physical display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the horizontal offset from the full / physical display
+ */
+lv_coord_t lv_disp_get_offset_x(lv_disp_t * disp)
+{
+    if(disp == NULL) disp = lv_disp_get_default();
+
+    if(disp == NULL) {
+        return 0;
+    }
+    else {
+        switch(disp->driver->rotated) {
+            case LV_DISP_ROT_90:
+                return disp->driver->offset_y;
+            case LV_DISP_ROT_180:
+                return lv_disp_get_physical_hor_res(disp) - disp->driver->offset_x;
+            case LV_DISP_ROT_270:
+                return lv_disp_get_physical_hor_res(disp) - disp->driver->offset_y;
+            default:
+                return disp->driver->offset_x;
+        }
+    }
+}
+
+/**
+ * Get the vertical offset from the full / physical display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the horizontal offset from the full / physical display
+ */
+lv_coord_t lv_disp_get_offset_y(lv_disp_t * disp)
+{
+    if(disp == NULL) disp = lv_disp_get_default();
+
+    if(disp == NULL) {
+        return 0;
+    }
+    else {
+        switch(disp->driver->rotated) {
+            case LV_DISP_ROT_90:
+                return disp->driver->offset_x;
+            case LV_DISP_ROT_180:
+                return lv_disp_get_physical_ver_res(disp) - disp->driver->offset_y;
+            case LV_DISP_ROT_270:
+                return lv_disp_get_physical_ver_res(disp) - disp->driver->offset_x;
+            default:
+                return disp->driver->offset_y;
         }
     }
 }

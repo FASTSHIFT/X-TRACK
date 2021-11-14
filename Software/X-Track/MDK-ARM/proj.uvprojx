@@ -132,12 +132,12 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <Capability>1</Capability>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -381,6 +381,11 @@
           <GroupName>USER</GroupName>
           <Files>
             <File>
+              <FileName>mcu_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\mcu_config.h</FilePath>
+            </File>
+            <File>
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\main.cpp</FilePath>
@@ -569,14 +574,14 @@
               <FilePath>..\USER\App\Common\DataProc\DataProc.h</FilePath>
             </File>
             <File>
-              <FileName>DataProc.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Common\DataProc\DataProc.cpp</FilePath>
-            </File>
-            <File>
               <FileName>DataProc_Def.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Common\DataProc\DataProc_Def.h</FilePath>
+            </File>
+            <File>
+              <FileName>DataProc.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DataProc.cpp</FilePath>
             </File>
             <File>
               <FileName>DP_Clock.cpp</FileName>
@@ -589,21 +594,6 @@
               <FilePath>..\USER\App\Common\DataProc\DP_GPS.cpp</FilePath>
             </File>
             <File>
-              <FileName>DP_Power.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Common\DataProc\DP_Power.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>DP_SportStatus.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Common\DataProc\DP_SportStatus.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>DP_Recorder.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Common\DataProc\DP_Recorder.cpp</FilePath>
-            </File>
-            <File>
               <FileName>DP_IMU.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_IMU.cpp</FilePath>
@@ -614,24 +604,39 @@
               <FilePath>..\USER\App\Common\DataProc\DP_MAG.cpp</FilePath>
             </File>
             <File>
-              <FileName>DP_Storage.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Common\DataProc\DP_Storage.cpp</FilePath>
-            </File>
-            <File>
               <FileName>DP_MusicPlayer.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_MusicPlayer.cpp</FilePath>
             </File>
             <File>
-              <FileName>DP_TzConv.cpp</FileName>
+              <FileName>DP_Power.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\App\Common\DataProc\DP_TzConv.cpp</FilePath>
+              <FilePath>..\USER\App\Common\DataProc\DP_Power.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_Recorder.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_Recorder.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_SportStatus.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_SportStatus.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_Storage.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_Storage.cpp</FilePath>
             </File>
             <File>
               <FileName>DP_SysConfig.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_SysConfig.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>DP_TzConv.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_TzConv.cpp</FilePath>
             </File>
             <File>
               <FileName>DP_TrackFilter.cpp</FileName>
@@ -3559,6 +3564,11 @@
               <FilePath>..\Libraries\Adafruit_ST7789\Adafruit_ST7789.cpp</FilePath>
             </File>
             <File>
+              <FileName>ButtonEvent.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\ButtonEvent\ButtonEvent.cpp</FilePath>
+            </File>
+            <File>
               <FileName>LIS3MDL.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Libraries\LIS3MDL\LIS3MDL.cpp</FilePath>
@@ -3569,14 +3579,14 @@
               <FilePath>..\Libraries\LSM6DSM\LSM6DSM.cpp</FilePath>
             </File>
             <File>
+              <FileName>MillisTaskManager.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\MillisTaskManager\MillisTaskManager.cpp</FilePath>
+            </File>
+            <File>
               <FileName>TinyGPS++.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\Libraries\TinyGPSPlus\src\TinyGPS++.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ButtonEvent.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\Libraries\ButtonEvent\ButtonEvent.cpp</FilePath>
             </File>
             <File>
               <FileName>StackInfo.c</FileName>
@@ -3694,11 +3704,6 @@
               <FilePath>..\ArduinoAPI\itoa.c</FilePath>
             </File>
             <File>
-              <FileName>HardwareSerial.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\ArduinoAPI\HardwareSerial.cpp</FilePath>
-            </File>
-            <File>
               <FileName>Print.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\ArduinoAPI\Print.cpp</FilePath>
@@ -3707,16 +3712,6 @@
               <FileName>Stream.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\ArduinoAPI\Stream.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>SPI.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\ArduinoAPI\SPI.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>Tone.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\ArduinoAPI\Tone.cpp</FilePath>
             </File>
             <File>
               <FileName>Wire.cpp</FileName>
@@ -3743,6 +3738,16 @@
         <Group>
           <GroupName>Core</GroupName>
           <Files>
+            <File>
+              <FileName>mcu_type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_type.h</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_config_template.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Core\mcu_config_template.h</FilePath>
+            </File>
             <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
@@ -3782,6 +3787,21 @@
               <FileName>extend_SRAM.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\extend_SRAM.c</FilePath>
+            </File>
+            <File>
+              <FileName>HardwareSerial.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\HardwareSerial.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>SPI.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\SPI.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>Tone.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Core\Tone.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -238,6 +238,13 @@ void lv_obj_add_flag(lv_obj_t * obj, lv_obj_flag_t f)
     if((was_on_layout != lv_obj_is_layout_positioned(obj)) || (f & (LV_OBJ_FLAG_LAYOUT_1 |  LV_OBJ_FLAG_LAYOUT_2))) {
         lv_obj_mark_layout_as_dirty(lv_obj_get_parent(obj));
     }
+
+    if(f & LV_OBJ_FLAG_SCROLLABLE) {
+        lv_area_t hor_area, ver_area;
+        lv_obj_get_scrollbar_area(obj, &hor_area, &ver_area);
+        lv_obj_invalidate_area(obj, &hor_area);
+        lv_obj_invalidate_area(obj, &ver_area);
+    }
 }
 
 void lv_obj_clear_flag(lv_obj_t * obj, lv_obj_flag_t f)
@@ -245,6 +252,12 @@ void lv_obj_clear_flag(lv_obj_t * obj, lv_obj_flag_t f)
     LV_ASSERT_OBJ(obj, MY_CLASS);
 
     bool was_on_layout = lv_obj_is_layout_positioned(obj);
+    if(f & LV_OBJ_FLAG_SCROLLABLE) {
+        lv_area_t hor_area, ver_area;
+        lv_obj_get_scrollbar_area(obj, &hor_area, &ver_area);
+        lv_obj_invalidate_area(obj, &hor_area);
+        lv_obj_invalidate_area(obj, &ver_area);
+    }
 
     obj->flags &= (~f);
 
@@ -562,6 +575,7 @@ static void lv_obj_draw(lv_event_t * e)
             draw_dsc.bg_opa = LV_OPA_TRANSP;
             draw_dsc.outline_opa = LV_OPA_TRANSP;
             draw_dsc.shadow_opa = LV_OPA_TRANSP;
+            draw_dsc.bg_img_opa = LV_OPA_TRANSP;
             lv_obj_init_draw_rect_dsc(obj, LV_PART_MAIN, &draw_dsc);
 
             lv_coord_t w = lv_obj_get_style_transform_width(obj, LV_PART_MAIN);
@@ -685,7 +699,7 @@ static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)
     LV_UNUSED(class_p);
 
     lv_event_code_t code = lv_event_get_code(e);
-    lv_obj_t * obj = lv_event_get_target(e);
+    lv_obj_t * obj = lv_event_get_current_target(e);
     if(code == LV_EVENT_PRESSED) {
         lv_obj_add_state(obj, LV_STATE_PRESSED);
     }
@@ -787,6 +801,12 @@ static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)
     }
     else if(code == LV_EVENT_SCROLL_END) {
         lv_obj_clear_state(obj, LV_STATE_SCROLLED);
+        if(lv_obj_get_scrollbar_mode(obj) == LV_SCROLLBAR_MODE_ACTIVE) {
+            lv_area_t hor_area, ver_area;
+            lv_obj_get_scrollbar_area(obj, &hor_area, &ver_area);
+            lv_obj_invalidate_area(obj, &hor_area);
+            lv_obj_invalidate_area(obj, &ver_area);
+        }
     }
     else if(code == LV_EVENT_DEFOCUSED) {
         lv_obj_clear_state(obj, LV_STATE_FOCUSED | LV_STATE_EDITED | LV_STATE_FOCUS_KEY);
@@ -812,11 +832,6 @@ static void lv_obj_event(const lv_obj_class_t * class_p, lv_event_t * e)
         uint16_t layout = lv_obj_get_style_layout(obj, LV_PART_MAIN);
         if(layout || align || w == LV_SIZE_CONTENT || h == LV_SIZE_CONTENT) {
             lv_obj_mark_layout_as_dirty(obj);
-        }
-    }
-    else if(code == LV_EVENT_SCROLL_END) {
-        if(lv_obj_get_scrollbar_mode(obj) == LV_SCROLLBAR_MODE_ACTIVE) {
-            lv_obj_invalidate(obj);
         }
     }
     else if(code == LV_EVENT_REFR_EXT_DRAW_SIZE) {

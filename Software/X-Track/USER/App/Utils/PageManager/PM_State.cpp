@@ -98,7 +98,8 @@ PageBase::State_t PageManager::StateLoadExecute(PageBase* base)
     lv_obj_t* root_obj = lv_obj_create(lv_scr_act());
     lv_obj_set_size(root_obj, LV_HOR_RES, LV_VER_RES);
     lv_obj_clear_flag(root_obj, LV_OBJ_FLAG_SCROLLABLE);
-    root_obj->user_data = base;
+    lv_obj_set_user_data(root_obj, base);
+
     base->root = root_obj;
     base->onViewLoad();
 

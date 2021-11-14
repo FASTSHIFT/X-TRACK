@@ -113,7 +113,7 @@ void LiveMap::onViewDidAppear()
     {
         Model.pointFilter.SetOutputPointCallback(nullptr);
     }
-    
+
     lv_group_t* group = lv_group_get_default();
     lv_group_add_obj(group, View.ui.zoom.slider);
     lv_group_set_editing(group, View.ui.zoom.slider);
@@ -138,7 +138,6 @@ void LiveMap::onViewDidUnload()
 
 void LiveMap::AttachEvent(lv_obj_t* obj)
 {
-    obj->user_data = this;
     lv_obj_add_event_cb(obj, onEvent, LV_EVENT_ALL, this);
 }
 
@@ -213,7 +212,8 @@ void LiveMap::CheckPosition()
         TileConv::Rect_t rect;
         Model.tileConv.GetTileContainer(&rect);
 
-        Area_t area = {
+        Area_t area =
+        {
             .x0 = rect.x,
             .y0 = rect.y,
             .x1 = rect.x + rect.width - 1,
@@ -234,8 +234,8 @@ void LiveMap::CheckPosition()
 void LiveMap::onMapTileContRefresh(const Area_t* area, int32_t x, int32_t y)
 {
     LV_LOG_INFO(
-        "area: (%d, %d) [%dx%d]", 
-        area->x0, area->y0, 
+        "area: (%d, %d) [%dx%d]",
+        area->x0, area->y0,
         area->x1 - area->x0 + 1,
         area->y1 - area->y0 + 1
     );
@@ -245,7 +245,7 @@ void LiveMap::onMapTileContRefresh(const Area_t* area, int32_t x, int32_t y)
     if (priv.isTrackAvtive)
     {
         TrackLineReload(area, x, y);
-    }   
+    }
 }
 
 void LiveMap::MapTileContUpdate(int32_t mapX, int32_t mapY, float course)
@@ -265,14 +265,14 @@ void LiveMap::MapTileContUpdate(int32_t mapX, int32_t mapY, float course)
     if (priv.isTrackAvtive)
     {
         View.SetLineActivePoint((lv_coord_t)offset.x, (lv_coord_t)offset.y);
-    } 
+    }
 
     /* map cont */
     Model.tileConv.GetTileContainerOffset(&offset);
 
     lv_coord_t baseX = (LV_HOR_RES - CONFIG_LIVE_MAP_VIEW_WIDTH) / 2;
     lv_coord_t baseY = (LV_VER_RES - CONFIG_LIVE_MAP_VIEW_HEIGHT) / 2;
-    lv_obj_set_pos(View.ui.map.cont, baseX - offset.x, baseY - offset.y); 
+    lv_obj_set_pos(View.ui.map.cont, baseX - offset.x, baseY - offset.y);
 }
 
 void LiveMap::MapTileContReload()
@@ -306,7 +306,7 @@ void LiveMap::TrackLineReload(const Area_t* area, int32_t x, int32_t y)
 {
     Model.lineFilter.SetClipArea(area);
     Model.lineFilter.Reset();
-    Model.TrackReload([](TrackPointFilter* filter, const TrackPointFilter::Point_t* point)
+    Model.TrackReload([](TrackPointFilter * filter, const TrackPointFilter::Point_t* point)
     {
         LiveMap* instance = (LiveMap*)filter->userData;
         instance->Model.lineFilter.PushPoint((int32_t)point->x, (int32_t)point->y);
@@ -362,9 +362,11 @@ void LiveMap::onTrackLineEvent(TrackLineFilter* filter, TrackLineFilter::Event_t
 
 void LiveMap::onEvent(lv_event_t* event)
 {
+    LiveMap* instance = (LiveMap*)lv_event_get_user_data(event);
+    LV_ASSERT_NULL(instance);
+
     lv_obj_t* obj = lv_event_get_target(event);
     lv_event_code_t code = lv_event_get_code(event);
-    LiveMap* instance = (LiveMap*)lv_obj_get_user_data(obj);
 
     if (code == LV_EVENT_LEAVE)
     {

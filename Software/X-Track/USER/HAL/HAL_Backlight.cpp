@@ -48,7 +48,7 @@ void HAL::Backlight_SetGradual(uint16_t target, uint16_t time)
   */
 uint16_t HAL::Backlight_GetValue()
 {
-    return timer_get_compare(
+    return Timer_GetCompare(
                PIN_MAP[CONFIG_SCREEN_BLK_PIN].TIMx,
                PIN_MAP[CONFIG_SCREEN_BLK_PIN].TimerChannel
            );

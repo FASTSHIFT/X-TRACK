@@ -38,9 +38,8 @@ static void* first_alloc(size_t size)
         lv_init();
     }
 
-    void* ptr = lv_mem_alloc(size);
     alloc_func = lv_mem_alloc;
-    return ptr;
+    return lv_mem_alloc(size);;
 }
 
 void *operator new(size_t size)

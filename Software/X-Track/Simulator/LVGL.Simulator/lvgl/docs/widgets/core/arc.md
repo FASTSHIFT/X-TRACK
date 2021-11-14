@@ -20,7 +20,7 @@ Larger padding makes it larger, smaller padding makes it smaller.
 
 A new value can be set using `lv_arc_set_value(arc, new_value)`. 
 The value is interpreted in a range (minimum and maximum values) which can be modified with `lv_arc_set_range(arc, min, max)`.
-The default range is 1..100.
+The default range is 0..100.
 
 The indicator arc is drawn on the main part's arc. This if the value is set to maximum the indicator arc will cover the entire "background" arc.
 To set the start and end angle of the background arc use the `lv_arc_set_bg_angles(arc, start_angle, end_angle)` functions or `lv_arc_set_bg_start/end_angle(arc, angle)`. 
@@ -57,6 +57,13 @@ To make the arc non-adjustable, remove the style of the knob and make the object
 lv_obj_remove_style(arc, NULL, LV_PART_KNOB);
 lv_obj_clear_flag(arc, LV_OBJ_FLAG_CLICKABLE);
 ```
+
+### Advanced hit test
+
+If the `LV_OBJ_FLAG_ADV_HITTEST` flag is enabled the arc can be clicked through in the middle. Clicks are recognized only on the ring of the background arc. `lv_obj_set_ext_click_size()` makes the sensitive area larger inside and outside with the given number of pixels. 
+
+
+
 
 ## Events
 - `LV_EVENT_VALUE_CHANGED` sent when the arc is pressed/dragged to set a new value.

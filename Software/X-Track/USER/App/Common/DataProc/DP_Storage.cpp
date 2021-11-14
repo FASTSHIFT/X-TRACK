@@ -73,12 +73,23 @@ static bool MapConvGetRange(const char* dirName, int16_t* min, int16_t* max)
     return retval;
 }
 
-static void onLoad(Account* account)
+static bool onLoad(Account* account)
 {
-    storageService.LoadFile();
+    bool success = storageService.LoadFile();
+
+    if (!success)
+    {
+        LV_LOG_WARN("Load " CONFIG_SYSTEM_SAVE_FILE_PATH " error");
+    }
 
     SysConfig_Info_t sysConfig;
-    account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+    int ret = account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+
+    if (ret != Account::RES_OK)
+    {
+        LV_LOG_ERROR("Pull SysConfig failed!");
+        return false;
+    }
 
     MapConv::SetDirPath(sysConfig.mapDirPath);
     MapConv::SetExtName(sysConfig.mapExtName);
@@ -105,17 +116,26 @@ static void onLoad(Account* account)
 #if CONFIG_MAP_PNG_DECODE_ENABLE
     LV_LOG_USER("Map PNG decoder enable");
 #endif
+
+    return success;
 }
 
 static void onNotify(Account* account, Storage_Info_t* info)
 {
+    static bool isLoadSuccess = false;
+
     switch (info->cmd)
     {
     case STORAGE_CMD_LOAD:
-        onLoad(account);
+        isLoadSuccess = onLoad(account);
         break;
     case STORAGE_CMD_SAVE:
         storageService.SaveFile();
+        if (isLoadSuccess)
+        {
+            LV_LOG_USER("Saving backup file: " CONFIG_SYSTEM_SAVE_FILE_BACKUP_PATH);
+            storageService.SaveFile(CONFIG_SYSTEM_SAVE_FILE_BACKUP_PATH);
+        }
         break;
     case STORAGE_CMD_ADD:
         storageService.Add(
@@ -139,7 +159,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     {
         if (param->size != sizeof(Storage_Basic_Info_t))
         {
-            return Account::ERROR_SIZE_MISMATCH;
+            return Account::RES_SIZE_MISMATCH;
         }
 
         Storage_Basic_Info_t* info = (Storage_Basic_Info_t*)param->data_p;
@@ -152,12 +172,12 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (param->event != Account::EVENT_NOTIFY)
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     if (param->size != sizeof(Storage_Info_t))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     Storage_Info_t* info = (Storage_Info_t*)param->data_p;

@@ -69,7 +69,7 @@ class PrintFile : public FatFile, public Print {
     return n > INT_MAX ? INT_MAX : n;
   }
   /** Ensure that any bytes written to the file are saved to the SD card. */
-  void flush() {
+  virtual void flush() {
     FatFile::sync();
   }
   /** Return the next available byte without consuming it.
@@ -110,7 +110,7 @@ class PrintFile : public FatFile, public Print {
    * for a read-only file, device is full, a corrupt file system or an
    * I/O error.
    */
-  size_t write(const uint8_t *buf, size_t size) {
+  virtual size_t write(const uint8_t *buf, size_t size) {
     return FatFile::write(buf, size);
   }
 };
@@ -241,7 +241,7 @@ class File : public FatFile, public Stream {
    * for a read-only file, device is full, a corrupt file system or an
    * I/O error.
    */
-  size_t write(const uint8_t *buf, size_t size) {
+  virtual size_t write(const uint8_t *buf, size_t size) {
     return FatFile::write(buf, size);
   }
 };

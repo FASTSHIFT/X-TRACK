@@ -2,8 +2,8 @@
 #include "LSM6DSM/LSM6DSM.h"
 
 static LSM6DSM imu;
-static HAL::CommitFunc_t CommitFunc;
-static void* UserData;
+static HAL::CommitFunc_t CommitFunc = nullptr;
+static void* UserData = nullptr;
 
 void HAL::IMU_Init()
 {

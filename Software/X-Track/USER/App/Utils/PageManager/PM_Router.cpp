@@ -335,7 +335,7 @@ bool PageManager::SwitchReqCheck()
   */
 void PageManager::onSwitchAnimFinish(lv_anim_t* a)
 {
-    PageBase* base = (PageBase*)a->user_data;
+    PageBase* base = (PageBase*)lv_anim_get_user_data(a);
     PageManager* manager = base->Manager;
 
     PM_LOG_INFO("Page(%s) Anim finish", base->Name);
@@ -365,8 +365,7 @@ void PageManager::SwitchAnimCreate(PageBase* base)
 
     lv_anim_t a;
     AnimDefaultInit(&a);
-
-    a.user_data = base;
+    lv_anim_set_user_data(&a, base);
     lv_anim_set_var(&a, base->root);
     lv_anim_set_ready_cb(&a, onSwitchAnimFinish);
     lv_anim_set_exec_cb(&a, animAttr.setter);

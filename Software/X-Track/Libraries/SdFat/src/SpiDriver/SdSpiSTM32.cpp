@@ -102,7 +102,7 @@ void SdSpiAltDriver::send(const uint8_t* buf , size_t n) {
 #if USE_STM32_DMA
   m_spi->dmaTransfer(const_cast<uint8*>(buf), nullptr, n);
 #else  // USE_STM32_DMA
-  m_spi->write(const_cast<uint8*>(buf), n);
+  m_spi->write(const_cast<uint8_t*>(buf), n);
 #endif  // USE_STM32_DMA
 }
 #endif  // defined(__STM32F1__) || defined(__STM32F4__)

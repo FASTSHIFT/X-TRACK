@@ -1,12 +1,13 @@
 #include "HAL.h"
 #include "Wire.h"
 
-void HAL::I2C_Scan(bool startScan)
+int HAL::I2C_Scan()
 {
-    Wire.begin();
-
-    if(!startScan)
-        return;
+    if(!Wire.begin())
+    {
+        Serial.println("I2C: init failed");
+        return -1;
+    }
 
     uint8_t error, address;
     int nDevices;
@@ -42,4 +43,5 @@ void HAL::I2C_Scan(bool startScan)
     }
 
     Serial.printf("I2C: %d devices was found\r\n", nDevices);
+    return nDevices;
 }

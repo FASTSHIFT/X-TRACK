@@ -41,34 +41,32 @@
 #define _WIRE_H_
 
 #include "WireBase.h"
-//#include "wirish.h"
 
 /*
  * On the Maple, let the default pins be in the same location as the Arduino
  * pins
  */
-#ifndef SDA_Pin
-#define SDA_Pin PB7
-#endif
 
-#ifndef SCL_Pin
-#define SCL_Pin PB6
-#endif
+class TwoWire : public WireBase
+{
+public:
+    /*
+     * Accept pin numbers for SCL and SDA lines. Set the delay needed
+     * to create the timing for I2C's Standard Mode and Fast Mode.
+     */
+    TwoWire(uint8_t scl, uint8_t sda, uint8_t delay);
 
-#define SOFT_STANDARD 27
-#define SOFT_FAST 0
+    /*
+     * If object is destroyed, set pin numbers to 0.
+     */
+    ~TwoWire();
 
-//#define FULL_SPEED_I2C
-
-#ifdef FULL_SPEED_I2C
-#define I2C_DELAY(x) {}
-#else
-#define I2C_DELAY(x) {delayMicroseconds(x);}
-#endif
-
-#define BUFFER_LENGTH 32
-
-class TwoWire : public WireBase {
+    /*
+     * Sets pins SDA and SCL to OUPTUT_OPEN_DRAIN, joining I2C bus as
+     * master. This function overwrites the default behaviour of
+     * .begin(uint8_t) in WireBase
+     */
+    bool begin(uint8_t self_addr = 0x00);
 public:
     uint8_t       i2c_delay;
     uint8_t       scl_pin;
@@ -78,12 +76,13 @@ public:
      * Sets the SCL line to HIGH/LOW and allow for clock stretching by slave
      * devices
      */
-    void set_scl(bool);
+    void set_scl(bool state);
+    bool set_scl(bool state, uint32_t timeout);
 
     /*
      * Sets the SDA line to HIGH/LOW
      */
-    void set_sda(bool);
+    void set_sda(bool state);
 
     /*
      * Creates a Start condition on the bus
@@ -118,31 +117,13 @@ public:
     /*
      * Shifts out the data through SDA and clocks SCL for the slave device
      */
-    void i2c_shift_out(uint8_t);
+    void i2c_shift_out(uint8_t val);
 protected:
     /*
      * Processes the incoming I2C message defined by WireBase
      */
 
     virtual uint8_t process();
-public:
-    /*
-     * Accept pin numbers for SCL and SDA lines. Set the delay needed
-     * to create the timing for I2C's Standard Mode and Fast Mode.
-     */
-    TwoWire(uint8_t scl = SCL_Pin, uint8_t sda = SDA_Pin, uint8_t delay = SOFT_STANDARD);
-
-    /*
-     * Sets pins SDA and SCL to OUPTUT_OPEN_DRAIN, joining I2C bus as
-     * master. This function overwrites the default behaviour of
-     * .begin(uint8_t) in WireBase
-     */
-    //void begin(uint8_t self_addr);
-    virtual void begin(uint8_t = 0x00);
-    /*
-     * If object is destroyed, set pin numbers to 0.
-     */
-    ~TwoWire();
 };
 
 extern TwoWire Wire;

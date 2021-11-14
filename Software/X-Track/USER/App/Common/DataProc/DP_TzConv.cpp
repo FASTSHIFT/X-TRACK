@@ -9,24 +9,24 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 {
     if (param->event != Account::EVENT_SUB_PULL)
     {
-        return Account::ERROR_UNSUPPORTED_REQUEST;
+        return Account::RES_UNSUPPORTED_REQUEST;
     }
 
     if (param->size != sizeof(HAL::Clock_Info_t))
     {
-        return Account::ERROR_SIZE_MISMATCH;
+        return Account::RES_SIZE_MISMATCH;
     }
 
     HAL::GPS_Info_t gps;
-    if (account->Pull("GPS", &gps, sizeof(gps)) != Account::ERROR_NONE)
+    if (account->Pull("GPS", &gps, sizeof(gps)) != Account::RES_OK)
     {
-        return Account::ERROR_UNKNOW;
+        return Account::RES_UNKNOW;
     }
 
     DataProc::SysConfig_Info_t sysCfg;
-    if (account->Pull("SysConfig", &sysCfg, sizeof(sysCfg)) != Account::ERROR_NONE)
+    if (account->Pull("SysConfig", &sysCfg, sizeof(sysCfg)) != Account::RES_OK)
     {
-        return Account::ERROR_UNKNOW;
+        return Account::RES_UNKNOW;
     }
 
     setTime(

@@ -3,11 +3,19 @@
 
 #include "unity/unity.h"
 
-void test_func_1(void);
+void setUp(void)
+{
+    /* Function run before every test */
+}
+
+void tearDown(void)
+{
+    /* Function run after every test */
+}
 
 void test_func_1(void)
 {
-  TEST_ASSERT_EQUAL(actual, expected);
+    TEST_FAIL();
 }
 
 #endif

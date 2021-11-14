@@ -11,15 +11,12 @@ typedef struct
     uint32_t LastHandleTime;
     uint16_t AutoLowPowerTimeout;
     bool AutoLowPowerEnable;
-    bool IsShutdown;
-    volatile uint16_t ADCValue;
+    bool ShutdownReq;
+    uint16_t ADCValue;
     HAL::Power_CallbackFunction_t EventCallback;
 } Power_t;
 
-static Power_t Power =
-{
-    .AutoLowPowerTimeout = 60,
-};
+static Power_t Power;
 
 static void Power_ADC_Init()
 {
@@ -81,6 +78,9 @@ static void Power_ADC_Update()
 
 void HAL::Power_Init()
 {
+    memset(&Power, 0, sizeof(Power));
+    Power.AutoLowPowerTimeout = 60;
+
     Serial.printf("Power: Waiting[%dms]...\r\n", CONFIG_POWER_WAIT_TIME);
     pinMode(CONFIG_POWER_EN_PIN, OUTPUT);
     digitalWrite(CONFIG_POWER_EN_PIN, LOW);
@@ -90,7 +90,7 @@ void HAL::Power_Init()
 
     Power_ADC_Init();
     pinMode(CONFIG_BAT_DET_PIN, INPUT_ANALOG);
-    pinMode(CONFIG_BAT_CHG_DET_PIN, INPUT_PULLUP);
+    pinMode(CONFIG_BAT_CHG_DET_PIN, INPUT_PULLDOWN);
 
 //    Power_SetAutoLowPowerTimeout(5 * 60);
 //    Power_HandleTimeUpdate();
@@ -120,8 +120,7 @@ void HAL::Power_SetAutoLowPowerEnable(bool en)
 
 void HAL::Power_Shutdown()
 {
-    Backlight_SetGradual(0, 500);
-    Power.IsShutdown = true;
+    __ExecuteOnce(Power.ShutdownReq = true);
 }
 
 void HAL::Power_Update()
@@ -142,13 +141,16 @@ void HAL::Power_Update()
 
 void HAL::Power_EventMonitor()
 {
-    if(Power.IsShutdown)
+    if(Power.ShutdownReq)
     {
         if(Power.EventCallback)
         {
             Power.EventCallback();
         }
+        Backlight_SetGradual(0, 500);
         digitalWrite(CONFIG_POWER_EN_PIN, LOW);
+        Serial.println("Power: OFF");
+        Power.ShutdownReq = false;
     }
 }
 

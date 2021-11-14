@@ -80,10 +80,16 @@ typedef struct _lv_disp_drv_t {
     lv_coord_t hor_res;         /**< Horizontal resolution.*/
     lv_coord_t ver_res;         /**< Vertical resolution.*/
 
+    lv_coord_t physical_hor_res;     /**< Horizontal resolution of the full / physical display. Set to -1 for fullscreen mode.*/
+    lv_coord_t physical_ver_res;     /**< Vertical resolution of the full / physical display. Set to -1 for fullscreen mode.*/
+    lv_coord_t offset_x;             /**< Horizontal offset from the full / physical display. Set to 0 for fullscreen mode.*/
+    lv_coord_t offset_y;             /**< Vertical offset from the full / physical display. Set to 0 for fullscreen mode.*/
+
     /** Pointer to a buffer initialized with `lv_disp_draw_buf_init()`.
      * LVGL will use this buffer(s) to draw the screens contents*/
     lv_disp_draw_buf_t * draw_buf;
 
+    uint32_t direct_mode : 1;        /**< 1: Use screen-sized buffers and draw to absolute coordinates*/
     uint32_t full_refresh : 1;       /**< 1: Always make the whole screen redrawn*/
     uint32_t sw_rotate : 1;          /**< 1: use software rotation (slower)*/
     uint32_t antialiasing : 1;       /**< 1: anti-aliasing is enabled on this display.*/
@@ -253,6 +259,34 @@ lv_coord_t lv_disp_get_hor_res(lv_disp_t * disp);
  * @return the vertical resolution of the display
  */
 lv_coord_t lv_disp_get_ver_res(lv_disp_t * disp);
+
+/**
+ * Get the full / physical horizontal resolution of a display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the full / physical horizontal resolution of the display
+ */
+lv_coord_t lv_disp_get_physical_hor_res(lv_disp_t * disp);
+
+/**
+ * Get the full / physical vertical resolution of a display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the full / physical vertical resolution of the display
+ */
+lv_coord_t lv_disp_get_physical_ver_res(lv_disp_t * disp);
+
+/**
+ * Get the horizontal offset from the full / physical display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the horizontal offset from the full / physical display
+ */
+lv_coord_t lv_disp_get_offset_x(lv_disp_t * disp);
+
+/**
+ * Get the vertical offset from the full / physical display
+ * @param disp pointer to a display (NULL to use the default display)
+ * @return the horizontal offset from the full / physical display
+ */
+lv_coord_t lv_disp_get_offset_y(lv_disp_t * disp);
 
 /**
  * Get if anti-aliasing is enabled for a display or not
