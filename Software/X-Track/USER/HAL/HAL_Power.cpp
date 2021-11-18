@@ -90,7 +90,7 @@ void HAL::Power_Init()
 
     Power_ADC_Init();
     pinMode(CONFIG_BAT_DET_PIN, INPUT_ANALOG);
-    pinMode(CONFIG_BAT_CHG_DET_PIN, INPUT_PULLDOWN);
+    pinMode(CONFIG_BAT_CHG_DET_PIN, INPUT_PULLUP);
 
 //    Power_SetAutoLowPowerTimeout(5 * 60);
 //    Power_HandleTimeUpdate();
