@@ -379,9 +379,6 @@
     <Filter Include="App\Pages\Startup">
       <UniqueIdentifier>{a9f7a372-994a-40ce-ad80-ef374e6e28fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utils\lv_monkey">
-      <UniqueIdentifier>{1731e9bf-118c-4c4e-96d4-5eb37dac5e2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Utils\lv_lib_png">
       <UniqueIdentifier>{81e9e579-c620-49c7-a471-e94f6b488ec8}</UniqueIdentifier>
     </Filter>
@@ -396,6 +393,12 @@
     </Filter>
     <Filter Include="App\Utils\lv_poly_line">
       <UniqueIdentifier>{a01b3944-3a79-4911-a5b1-805a4b2a2977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\draw\sw">
+      <UniqueIdentifier>{88509982-5ca7-4641-af81-d83816ec9896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\others\monkey">
+      <UniqueIdentifier>{92cee91d-e480-462e-914b-c9180dd5aa6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -969,9 +972,6 @@
     <ClInclude Include="..\..\USER\App\Pages\Startup\StartupView.h">
       <Filter>App\Pages\Startup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.h">
-      <Filter>App\Utils\lv_monkey</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h">
       <Filter>App\Utils\lv_lib_png</Filter>
     </ClInclude>
@@ -986,6 +986,12 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.h">
       <Filter>App\Utils\lv_poly_line</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw.h">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\others\monkey\lv_monkey.h">
+      <Filter>lvgl\src\extra\others\monkey</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1350,9 +1356,6 @@
       <Filter>lvgl\src\draw</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c">
-      <Filter>lvgl\src\draw</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\src\draw\lv_draw_mask.c">
       <Filter>lvgl\src\draw</Filter>
     </ClCompile>
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c">
@@ -1943,9 +1946,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_default.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.c">
-      <Filter>App\Utils\lv_monkey</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c">
       <Filter>App\Utils\lv_lib_png</Filter>
     </ClCompile>
@@ -1990,6 +1990,39 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp">
       <Filter>App\Utils\lv_poly_line</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_arc.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_blend.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_img.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_letter.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_mask.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\lv_draw.c">
+      <Filter>lvgl\src\draw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\others\monkey\lv_monkey.c">
+      <Filter>lvgl\src\extra\others\monkey</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

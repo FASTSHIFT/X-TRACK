@@ -13,7 +13,10 @@ extern "C" {
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_draw_line.h"
+#include "../lv_conf_internal.h"
+#include "../misc/lv_color.h"
+#include "../misc/lv_area.h"
+#include "../misc/lv_style.h"
 
 /*********************
  *      DEFINES
@@ -35,7 +38,7 @@ typedef struct {
  * GLOBAL PROTOTYPES
  **********************/
 
-LV_ATTRIBUTE_FAST_MEM void lv_draw_arc_dsc_init(lv_draw_arc_dsc_t * dsc);
+void lv_draw_arc_dsc_init(lv_draw_arc_dsc_t * dsc);
 
 /**
  * Draw an arc. (Can draw pie too with great thickness.)
@@ -73,4 +76,4 @@ void lv_draw_arc_get_area(lv_coord_t x, lv_coord_t y, uint16_t radius,  uint16_t
 } /*extern "C"*/
 #endif
 
-#endif /*LV_DRAW_ARC*/
+#endif /*LV_DRAW_ARC_H*/

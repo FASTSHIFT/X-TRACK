@@ -188,7 +188,7 @@ void GPIOx_Init(
     GPIOMaxSpeed_Type GPIO_Speed_x
 )
 {
-    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitType GPIO_InitStructure;
     uint32_t RCC_APB2PERIPH_GPIOx;
     GPIOMode_Type GPIO_Mode_x;
 

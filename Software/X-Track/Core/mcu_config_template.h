@@ -112,7 +112,7 @@
 #define TONE_SUBPRIORITY_DEFAULT            1
 
 /* PWM */
-#define PWM_DUTYCYCLE_DEFAULT               1000
+#define PWM_RESOLUTION_DEFAULT              1000
 #define PWM_FREQUENCY_DEFAULT               10000
 
 #endif

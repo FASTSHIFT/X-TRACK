@@ -116,7 +116,11 @@ void tone(uint8_t pin, uint32_t freq, uint32_t duration)
   */
 void noTone(uint8_t pin)
 {
-    Timer_SetEnable(Tone_Timer, false);
+    if(Tone_Timer)
+    {
+        Timer_SetEnable(Tone_Timer, false);
+    }
+
     digitalWrite(pin, LOW);
     Tone_IsContinuousModeEnable = false;
     Tone_Pin = NOT_A_PIN;

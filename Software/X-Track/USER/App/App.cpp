@@ -27,14 +27,6 @@
 #include "Pages/StatusBar/StatusBar.h"
 #include "Utils/PageManager/PageManager.h"
 
-#if CONFIG_MAP_PNG_DECODE_ENABLE
-#  include "Utils/lv_lib_png/lv_png.h"
-#endif
-
-#if CONFIG_MONKEY_TEST_ENABLE
-#  include "Utils/lv_monkey/lv_monkey.h"
-#endif
-
 #define ACCOUNT_SEND_CMD(ACT, CMD)\
 do{\
     DataProc::ACT##_Info_t info;\
@@ -48,20 +40,22 @@ void App_Init()
     static AppFactory factory;
     static PageManager manager(&factory);
 
-#if CONFIG_MAP_PNG_DECODE_ENABLE
-    lv_png_init();
-#endif
-
 #if CONFIG_MONKEY_TEST_ENABLE
     lv_monkey_config_t config;
     lv_monkey_config_init(&config);
     config.type = CONFIG_MONKEY_INDEV_TYPE;
-    config.time.min = CONFIG_MONKEY_TIME_MIN;
-    config.time.max = CONFIG_MONKEY_TIME_MAX;
+    config.period_range.min = CONFIG_MONKEY_PERIOD_MIN;
+    config.period_range.max = CONFIG_MONKEY_PERIOD_MAX;
     config.input_range.min = CONFIG_MONKEY_INPUT_RANGE_MIN;
     config.input_range.max = CONFIG_MONKEY_INPUT_RANGE_MAX;
-    lv_monkey_create(&config);
-    LV_LOG_WARN("lv_monkey test started!");
+    lv_monkey_t* monkey = lv_monkey_create(&config);
+    lv_monkey_set_enable(monkey, true);
+
+    lv_group_t* group = lv_group_create();
+    lv_indev_set_group(lv_monkey_get_indev(monkey), group);
+    lv_group_set_default(group);
+
+    LV_LOG_USER("lv_monkey test started!");
 #endif
 
     DataProc_Init();
