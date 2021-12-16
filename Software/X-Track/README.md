@@ -338,6 +338,7 @@
 * 11.使用event携带user_data
 * 12.优化new重载
 * 13.修复HAL_Power错误的关机处理
+* 14.添加SystemSave.json自动备份功能
 
 ## [v2.1] - 2021-12-16
 * 1.ArduinoAPI更新

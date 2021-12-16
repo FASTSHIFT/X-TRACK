@@ -12,7 +12,7 @@
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%9C%B0%E5%9B%BE.jpg)
 
 ## GUI
-> [LVGL V8.0.0](https://github.com/lvgl/lvgl/releases/tag/v8.0.0)
+> [LVGL V8](https://github.com/lvgl/lvgl)
 
 ## 硬件配置
 * 1.主控: AT32F403ACGU7 (主频:240MHz RAM:224KB ROM:1MB)
