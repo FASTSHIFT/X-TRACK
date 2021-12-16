@@ -89,7 +89,6 @@ void LiveMap::onViewWillAppear()
     StatusBar::SetStyle(StatusBar::STYLE_BLACK);
     SportInfoUpdate();
     lv_obj_clear_flag(View.ui.labelInfo, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_fade_in(root, 250, 0);
 }
 
 void LiveMap::onViewDidAppear()

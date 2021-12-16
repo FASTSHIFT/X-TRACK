@@ -1,7 +1,6 @@
 #include "Adafruit_ST7789.h"
 #include "SPI.h"
 
-#define TFT_SPI    SPI
 #define TFT_WIDTH  240
 #define TFT_HEIGHT 240
 
@@ -16,80 +15,80 @@
 #define TFT_SCK_CLR     GPIO_LOW(sckport,sckpinmask)
 #define TFT_MOSI_CLR    GPIO_LOW(mosiport,mosipinmask)
 #else
-#define TFT_CS_SET      digitalWrite(CS,HIGH)
-#define TFT_DC_SET      digitalWrite(DC,HIGH)
-#define TFT_SCK_SET     digitalWrite(SCK,HIGH)
-#define TFT_MOSI_SET    digitalWrite(MOSI,HIGH)
+#define TFT_CS_SET      digitalWrite(cs_pin,HIGH)
+#define TFT_DC_SET      digitalWrite(dc_pin,HIGH)
+#define TFT_SCK_SET     digitalWrite(sck_pin,HIGH)
+#define TFT_MOSI_SET    digitalWrite(mosi_pin,HIGH)
 
-#define TFT_CS_CLR      digitalWrite(CS,LOW)
-#define TFT_DC_CLR      digitalWrite(DC,LOW)
-#define TFT_SCK_CLR     digitalWrite(SCK,LOW)
-#define TFT_MOSI_CLR    digitalWrite(MOSI,LOW)
+#define TFT_CS_CLR      digitalWrite(cs_pin,LOW)
+#define TFT_DC_CLR      digitalWrite(dc_pin,LOW)
+#define TFT_SCK_CLR     digitalWrite(sck_pin,LOW)
+#define TFT_MOSI_CLR    digitalWrite(mosi_pin,LOW)
 #endif
 
 
-Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst)
+Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* spix)
     : Adafruit_GFX(TFT_WIDTH, TFT_HEIGHT)
 {
-    CS = cs;
-    DC = dc;
-    RST = rst;
+    cs_pin = cs;
+    dc_pin = dc;
+    rst_pin = rst;
 
 #if defined(__STM32__)
-    csport = digitalPinToPort(CS);
-    cspinmask = digitalPinToBitMask(CS);
-    dcport = digitalPinToPort(DC);
-    dcpinmask = digitalPinToBitMask(DC);
+    csport = digitalPinToPort(cs);
+    cspinmask = digitalPinToBitMask(cs);
+    dcport = digitalPinToPort(dc);
+    dcpinmask = digitalPinToBitMask(dc);
 #endif
 
-    hwSPI = true;
+    spi = spix;
 }
 
 Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, uint8_t clk, uint8_t mosi)
     : Adafruit_GFX(TFT_WIDTH, TFT_HEIGHT)
 {
-    CS = cs;
-    DC = dc;
-    RST = rst;
-    SCK = clk;
-    MOSI = mosi;
+    cs_pin = cs;
+    dc_pin = dc;
+    rst_pin = rst;
+    sck_pin = clk;
+    mosi_pin = mosi;
 
 #if defined(__STM32__)
-    csport = digitalPinToPort(CS);
-    cspinmask = digitalPinToBitMask(CS);
-    dcport = digitalPinToPort(DC);
-    dcpinmask = digitalPinToBitMask(DC);
-    sckport = digitalPinToPort(SCK);
-    sckpinmask = digitalPinToBitMask(SCK);
-    mosiport = digitalPinToPort(MOSI);
-    mosipinmask = digitalPinToBitMask(MOSI);
+    csport = digitalPinToPort(cs);
+    cspinmask = digitalPinToBitMask(cs);
+    dcport = digitalPinToPort(dc);
+    dcpinmask = digitalPinToBitMask(dc);
+    sckport = digitalPinToPort(clk);
+    sckpinmask = digitalPinToBitMask(clk);
+    mosiport = digitalPinToPort(mosi);
+    mosipinmask = digitalPinToBitMask(mosi);
 #endif
 
-    hwSPI = false;
+    spi = NULL;
 }
 
 void Adafruit_ST7789::begin()
 {
-    if(hwSPI)
+    if(spi)
     {
-        TFT_SPI.begin();
-        TFT_SPI.setClock(200000000);
+        spi->begin();
+        spi->setClock(200 * 1000 * 1000);
     }
     else
     {
-        pinMode(SCK, OUTPUT);
-        pinMode(MOSI, OUTPUT);
+        pinMode(sck_pin, OUTPUT);
+        pinMode(mosi_pin, OUTPUT);
     }
 
-    pinMode(CS, OUTPUT);
-    pinMode(DC, OUTPUT);
-    pinMode(RST, OUTPUT);
+    pinMode(cs_pin, OUTPUT);
+    pinMode(dc_pin, OUTPUT);
+    pinMode(rst_pin, OUTPUT);
 
-    digitalWrite(CS, HIGH);
+    digitalWrite(cs_pin, HIGH);
 
-    digitalWrite(RST, LOW);
+    digitalWrite(rst_pin, LOW);
     delay(100);
-    digitalWrite(RST, HIGH);
+    digitalWrite(rst_pin, HIGH);
     delay(100);
 
     writeCommand(0x11); //Sleep out
@@ -180,8 +179,8 @@ void Adafruit_ST7789::writeCommand(uint8_t cmd)
 {
     TFT_CS_CLR;
     TFT_DC_CLR;
-    if(hwSPI)
-        TFT_SPI.transfer(cmd);
+    if(spi)
+        spi->transfer(cmd);
     else
         spiWrite(cmd);
     TFT_CS_SET;
@@ -191,10 +190,10 @@ void Adafruit_ST7789::writeData16(uint16_t data)
 {
     TFT_CS_CLR;
     TFT_DC_SET;
-    if(hwSPI)
+    if(spi)
     {
-        TFT_SPI.transfer(data >> 8);
-        TFT_SPI.transfer(data);
+        spi->transfer(data >> 8);
+        spi->transfer(data);
     }
     else
     {
@@ -208,9 +207,9 @@ void Adafruit_ST7789::writeData(uint8_t data)
 {
     TFT_CS_CLR;
     TFT_DC_SET;
-    if(hwSPI)
+    if(spi)
     {
-        TFT_SPI.transfer(data);
+        spi->transfer(data);
     }
     else
     {
@@ -406,29 +405,24 @@ void Adafruit_ST7789::drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int1
     }
 }
 
-#define SPIx SPI1
-#define SPI_I2S_GET_FLAG(SPI_I2S_FLAG) (SPIx->STS & SPI_I2S_FLAG)
-#define SPI_I2S_TXDATA(data)           (SPIx->DT = data)
-#define SPI_IS_TXE()                   (SPI_I2S_GET_FLAG(SPI_STS_TE))
-#define SPI_IS_BUSY()                  (SPI_I2S_GET_FLAG(SPI_STS_BSY))
-
 void Adafruit_ST7789::fillScreen(uint16_t color)
 {
     setAddrWindow(0, 0, _width - 1, _height - 1);
     uint32_t size = _width * _height;
-    if(hwSPI)
+    if(spi)
     {
+        SPI_TypeDef* SPIx = spi->getSPI();
         TFT_CS_CLR;
         TFT_DC_SET;
         while(size--)
         {
-            while (!SPI_IS_TXE());
-            SPI_I2S_TXDATA(color >> 8);
-            while (!SPI_IS_TXE());
-            SPI_I2S_TXDATA(color);
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, color >> 8);
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, color);
         }
-        while (!SPI_IS_TXE());
-        while (SPI_IS_BUSY());
+        SPI_I2S_WAIT_TX(SPIx);
+        SPI_I2S_WAIT_BUSY(SPIx);
         TFT_CS_SET;
     }
     else
@@ -442,25 +436,24 @@ void Adafruit_ST7789::fillScreen(uint16_t color)
 
 void Adafruit_ST7789::drawFastRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h)
 {
-    if(!hwSPI)
+    if(!spi)
         return;
+
+    SPI_TypeDef* SPIx = spi->getSPI();
 
     setAddrWindow(x, y, x + w - 1, y + h - 1);
     uint32_t size = w * h;
 
-    if(hwSPI)
+    TFT_CS_CLR;
+    TFT_DC_SET;
+    while(size--)
     {
-        TFT_CS_CLR;
-        TFT_DC_SET;
-        while(size--)
-        {
-            while (!SPI_IS_TXE());
-            SPI_I2S_TXDATA(*bitmap >> 8);
-            while (!SPI_IS_TXE());
-            SPI_I2S_TXDATA(*bitmap++);
-        }
-        while (!SPI_IS_TXE());
-        while (SPI_IS_BUSY());
-        TFT_CS_SET;
+        SPI_I2S_WAIT_TX(SPIx);
+        SPI_I2S_TXDATA(SPIx, *bitmap >> 8);
+        SPI_I2S_WAIT_TX(SPIx);
+        SPI_I2S_TXDATA(SPIx, *bitmap++);
     }
+    SPI_I2S_WAIT_TX(SPIx);
+    SPI_I2S_WAIT_BUSY(SPIx);
+    TFT_CS_SET;
 }

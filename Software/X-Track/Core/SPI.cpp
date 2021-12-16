@@ -26,18 +26,12 @@
 #define SPI2_CLOCK                     (F_CPU)
 #define SPI3_CLOCK                     (F_CPU)
 
-#define SPI_I2S_GET_FLAG(SPI_I2S_FLAG) (SPIx->STS & SPI_I2S_FLAG)
-#define SPI_I2S_RXDATA()               (SPIx->DT)
-#define SPI_I2S_RXDATA_VOLATILE()      volatile uint16_t vn = SPI_I2S_RXDATA()
-#define SPI_I2S_TXDATA(data)           (SPIx->DT = data)
-
-SPIClass::SPIClass(SPI_Type* _SPIx)
+SPIClass::SPIClass(SPI_Type* spix)
 {
-    SPIx = _SPIx;
+    SPIx = spix;
 }
 
 void SPIClass::SPI_Settings(
-    SPI_Type* SPIx,
     uint16_t SPI_Mode_x,
     uint16_t SPI_DataSize_x,
     uint16_t SPI_MODEx,
@@ -104,8 +98,6 @@ void SPIClass::begin(void)
         pinMode(PB13, OUTPUT_AF_PP);
         pinMode(PB14, OUTPUT_AF_PP);
         pinMode(PB15, OUTPUT_AF_PP);
-
-        SPI_I2S_Reset(SPIx);
     }
 #ifdef SPI3
     else if(SPIx == SPI3)
@@ -123,7 +115,6 @@ void SPIClass::begin(void)
     }
 
     SPI_Settings(
-        SPIx,
         SPI_MODE_MASTER,
         SPI_FRAMESIZE_8BIT,
         SPI_MODE0,
@@ -155,7 +146,6 @@ void SPIClass::beginSlave(void)
 {
     begin();
     SPI_Settings(
-        SPIx,
         SPI_MODE_SLAVE,
         SPI_FRAMESIZE_8BIT,
         SPI_MODE0,
@@ -173,17 +163,43 @@ void SPIClass::end(void)
 
 void SPIClass::setClock(uint32_t clock)
 {
-    uint16_t SPI_BaudRatePrescaler_x;
-    uint16_t clock_div = SPI_Clock / clock;
-    if(clock_div <= 2)SPI_BaudRatePrescaler_x = SPI_MCLKP_2;
-    else if(clock_div <= 4)SPI_BaudRatePrescaler_x = SPI_MCLKP_4;
-    else if(clock_div <= 8)SPI_BaudRatePrescaler_x = SPI_MCLKP_8;
-    else if(clock_div <= 16)SPI_BaudRatePrescaler_x = SPI_MCLKP_16;
-    else if(clock_div <= 32)SPI_BaudRatePrescaler_x = SPI_MCLKP_32;
-    else if(clock_div <= 64)SPI_BaudRatePrescaler_x = SPI_MCLKP_64;
-    else if(clock_div <= 128)SPI_BaudRatePrescaler_x = SPI_MCLKP_128;
-    else SPI_BaudRatePrescaler_x = SPI_MCLKP_256;
-    SPI_InitStructure.SPI_MCLKP = SPI_BaudRatePrescaler_x;
+    if(clock == 0)
+    {
+        return;
+    }
+
+    static const uint16_t mclkpMap[] =
+    {
+        SPI_MCLKP_2,
+        SPI_MCLKP_2,
+        SPI_MCLKP_4,
+        SPI_MCLKP_8,
+        SPI_MCLKP_16,
+        SPI_MCLKP_32,
+        SPI_MCLKP_64,
+        SPI_MCLKP_128,
+        SPI_MCLKP_256,
+        SPI_MCLKP_512,
+        SPI_MCLKP_1024,
+    };
+    const uint8_t mapSize = sizeof(mclkpMap) / sizeof(mclkpMap[0]);
+    uint32_t clockDiv = SPI_Clock / clock;
+    uint8_t mapIndex = 0;
+
+    while(clockDiv > 1)
+    {
+        clockDiv = clockDiv >> 1;
+        mapIndex++;
+    }
+
+    if(mapIndex >= mapSize)
+    {
+        mapIndex = mapSize - 1;
+    }
+
+    uint16_t mclkp = mclkpMap[mapIndex];
+
+    SPI_InitStructure.SPI_MCLKP = mclkp;
     SPI_Init(SPIx, &SPI_InitStructure);
     SPI_Enable(SPIx, ENABLE);
 }
@@ -302,87 +318,87 @@ void SPIClass::endTransaction(void)
 
 uint16_t SPIClass::read(void)
 {
-    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RNE));
-    return (uint16_t)(SPI_I2S_RXDATA());
+    SPI_I2S_WAIT_RX(SPIx);
+    return (uint16_t)(SPI_I2S_RXDATA(SPIx));
 }
 
-void SPIClass::read(uint8_t *buf, uint32_t len)
+void SPIClass::read(uint8_t* buf, uint32_t len)
 {
     if (len == 0)
         return;
 
-    SPI_I2S_RXDATA_VOLATILE();
-    SPI_I2S_TXDATA(0x00FF);
+    SPI_I2S_RXDATA_VOLATILE(SPIx);
+    SPI_I2S_TXDATA(SPIx, 0x00FF);
 
     while((--len))
     {
-        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TE));
+        SPI_I2S_WAIT_TX(SPIx);
         noInterrupts();
-        SPI_I2S_TXDATA(0x00FF);
-        while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RNE));
-        *buf++ = (uint8_t)SPI_I2S_RXDATA();
+        SPI_I2S_TXDATA(SPIx, 0x00FF);
+        SPI_I2S_WAIT_RX(SPIx);
+        *buf++ = (uint8_t)SPI_I2S_RXDATA(SPIx);
         interrupts();
     }
-    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_RNE));
-    *buf++ = (uint8_t)SPI_I2S_RXDATA();
+    SPI_I2S_WAIT_RX(SPIx);
+    *buf++ = (uint8_t)SPI_I2S_RXDATA(SPIx);
 }
 
 void SPIClass::write(uint16_t data)
 {
-    SPI_I2S_TXDATA(data);
-    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TE));
-    while (SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BUSY));
+    SPI_I2S_TXDATA(SPIx, data);
+    SPI_I2S_WAIT_TX(SPIx);
+    SPI_I2S_WAIT_BUSY(SPIx);
 }
 
 void SPIClass::write(uint16_t data, uint32_t n)
 {
     while ((n--) > 0)
     {
-        SPI_I2S_TXDATA(data); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
-        while (SPI_I2S_GET_FLAG(SPI_STS_TE) == 0); // wait till Tx empty
+        SPI_I2S_TXDATA(SPIx, data); // write the data to be transmitted into the SPI_DR register (this clears the TXE flag)
+        SPI_I2S_WAIT_TX(SPIx); // wait till Tx empty
     }
 
-    while (SPI_I2S_GET_FLAG(SPI_STS_BSY) != 0); // wait until BSY=0 before returning
+    SPI_I2S_WAIT_BUSY(SPIx); // wait until BSY=0 before returning
 }
 
-void SPIClass::write(const uint8_t *data, uint32_t length)
+void SPIClass::write(const uint8_t* data, uint32_t length)
 {
     while (length--)
     {
-        while (SPI_I2S_GET_FLAG(SPI_STS_TE) == 0);
-        SPI_I2S_TXDATA(*data++);
+        SPI_I2S_WAIT_TX(SPIx);
+        SPI_I2S_TXDATA(SPIx, *data++);
     }
-    while (!SPI_I2S_GET_FLAG(SPI_STS_TE));
-    while ((SPI_I2S_GET_FLAG(SPI_STS_BSY)));
+    SPI_I2S_WAIT_TX(SPIx);
+    SPI_I2S_WAIT_BUSY(SPIx);
 }
 
-void SPIClass::write(const uint16_t *data, uint32_t length)
+void SPIClass::write(const uint16_t* data, uint32_t length)
 {
     while (length--)
     {
-        while (SPI_I2S_GET_FLAG(SPI_STS_TE) == 0);
-        SPI_I2S_TXDATA(*data++);
+        SPI_I2S_WAIT_TX(SPIx);
+        SPI_I2S_TXDATA(SPIx, *data++);
     }
-    while (!SPI_I2S_GET_FLAG(SPI_STS_TE));
-    while ((SPI_I2S_GET_FLAG(SPI_STS_BSY)));
+    SPI_I2S_WAIT_TX(SPIx);
+    SPI_I2S_WAIT_BUSY(SPIx);
 }
 
 uint8_t SPIClass::transfer(uint8_t wr_data) const
 {
-    SPI_I2S_RXDATA_VOLATILE();
-    SPI_I2S_TXDATA(wr_data);
-    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TE));
-    while (SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BUSY));
-    return (uint8_t)SPI_I2S_RXDATA();
+    SPI_I2S_RXDATA_VOLATILE(SPIx);
+    SPI_I2S_TXDATA(SPIx, wr_data);
+    SPI_I2S_WAIT_TX(SPIx);
+    SPI_I2S_WAIT_BUSY(SPIx);
+    return (uint8_t)SPI_I2S_RXDATA(SPIx);
 }
 
 uint16_t SPIClass::transfer16(uint16_t wr_data) const
 {
-    SPI_I2S_RXDATA_VOLATILE();
-    SPI_I2S_TXDATA(wr_data);
-    while (!SPI_I2S_GET_FLAG(SPI_I2S_FLAG_TE));
-    while (SPI_I2S_GET_FLAG(SPI_I2S_FLAG_BUSY));
-    return (uint16_t)SPI_I2S_RXDATA();
+    SPI_I2S_RXDATA_VOLATILE(SPIx);
+    SPI_I2S_TXDATA(SPIx, wr_data);
+    SPI_I2S_WAIT_TX(SPIx);
+    SPI_I2S_WAIT_BUSY(SPIx);
+    return (uint16_t)SPI_I2S_RXDATA(SPIx);
 }
 
 uint8_t SPIClass::send(uint8_t data)
@@ -391,7 +407,7 @@ uint8_t SPIClass::send(uint8_t data)
     return 1;
 }
 
-uint8_t SPIClass::send(uint8_t *buf, uint32_t len)
+uint8_t SPIClass::send(uint8_t* buf, uint32_t len)
 {
     this->write(buf, len);
     return len;

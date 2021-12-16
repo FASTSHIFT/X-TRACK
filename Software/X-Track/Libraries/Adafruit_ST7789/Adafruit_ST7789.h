@@ -2,6 +2,7 @@
 #define __ADAFRUIT_ST7789_H
 
 #include "Adafruit_GFX_Library/Adafruit_GFX.h"
+#include "SPI.h"
 
 #if defined(__STM32__)
 typedef volatile uint32_t PortReg_t;
@@ -14,7 +15,7 @@ typedef volatile uint8_t PortReg_t;
 class Adafruit_ST7789 : public Adafruit_GFX
 {
 public:
-    Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst);
+    Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* spix = &SPI);
     Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, uint8_t clk, uint8_t mosi);
 
     typedef enum
@@ -53,8 +54,8 @@ public:
     void setOpacityX(uint8_t opacity);
 
 private:
-    uint8_t RST, CS, DC, SCK, MOSI;
-    bool hwSPI;
+    uint8_t rst_pin, cs_pin, dc_pin, sck_pin, mosi_pin;
+    SPIClass* spi;
 
 #if defined(USE_FAST_IO)
 #if defined(__STM32__)

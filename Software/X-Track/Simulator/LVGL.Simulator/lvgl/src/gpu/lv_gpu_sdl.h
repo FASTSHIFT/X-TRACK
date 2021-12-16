@@ -24,6 +24,8 @@ extern "C" {
 
 #include LV_GPU_SDL_INCLUDE_PATH
 
+#include "../draw/lv_draw.h"
+
 /*********************
  *      DEFINES
  *********************/
@@ -40,9 +42,11 @@ void lv_gpu_sdl_init();
 
 /**
  * @brief Free caches
- * 
+ *
  */
 void lv_gpu_sdl_deinit();
+
+void lv_gpu_sdl_backend_init(lv_draw_backend_t * backend, SDL_Renderer * renderer, SDL_Texture * texture);
 
 /*======================
  * Add/remove functions

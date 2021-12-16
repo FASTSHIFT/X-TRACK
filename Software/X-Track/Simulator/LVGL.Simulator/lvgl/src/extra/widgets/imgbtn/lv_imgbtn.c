@@ -49,8 +49,8 @@ const lv_obj_class_t lv_imgbtn_class = {
  **********************/
 
 /**
- * Create a image button object
- * @param par pointer to an object, it will be the parent of the new image button
+ * Create an image button object
+ * @param parent pointer to an object, it will be the parent of the new image button
  * @return pointer to the created image button
  */
 lv_obj_t * lv_imgbtn_create(lv_obj_t * parent)
@@ -67,7 +67,7 @@ lv_obj_t * lv_imgbtn_create(lv_obj_t * parent)
 
 /**
  * Set images for a state of the image button
- * @param imgbtn pointer to an image button object
+ * @param obj pointer to an image button object
  * @param state for which state set the new image
  * @param src_left pointer to an image source for the left side of the button (a C array or path to
  * a file)
@@ -92,19 +92,20 @@ void lv_imgbtn_set_src(lv_obj_t * obj, lv_imgbtn_state_t state, const void * src
 
 void lv_imgbtn_set_state(lv_obj_t * obj, lv_imgbtn_state_t state)
 {
-	LV_ASSERT_OBJ(obj, MY_CLASS);
+    LV_ASSERT_OBJ(obj, MY_CLASS);
 
-	lv_state_t obj_state = LV_STATE_DEFAULT;
-	if(state == LV_IMGBTN_STATE_PRESSED || state == LV_IMGBTN_STATE_CHECKED_PRESSED) obj_state |= LV_STATE_PRESSED;
-	if(state == LV_IMGBTN_STATE_DISABLED || state == LV_IMGBTN_STATE_CHECKED_DISABLED) obj_state |= LV_STATE_DISABLED;
-	if(state == LV_IMGBTN_STATE_CHECKED_DISABLED || state == LV_IMGBTN_STATE_CHECKED_PRESSED || state == LV_IMGBTN_STATE_CHECKED_RELEASED) {
-		obj_state |= LV_STATE_CHECKED;
-	}
+    lv_state_t obj_state = LV_STATE_DEFAULT;
+    if(state == LV_IMGBTN_STATE_PRESSED || state == LV_IMGBTN_STATE_CHECKED_PRESSED) obj_state |= LV_STATE_PRESSED;
+    if(state == LV_IMGBTN_STATE_DISABLED || state == LV_IMGBTN_STATE_CHECKED_DISABLED) obj_state |= LV_STATE_DISABLED;
+    if(state == LV_IMGBTN_STATE_CHECKED_DISABLED || state == LV_IMGBTN_STATE_CHECKED_PRESSED ||
+       state == LV_IMGBTN_STATE_CHECKED_RELEASED) {
+        obj_state |= LV_STATE_CHECKED;
+    }
 
-	lv_obj_clear_state(obj, LV_STATE_CHECKED | LV_STATE_PRESSED | LV_STATE_DISABLED);
-	lv_obj_add_state(obj, obj_state);
+    lv_obj_clear_state(obj, LV_STATE_CHECKED | LV_STATE_PRESSED | LV_STATE_DISABLED);
+    lv_obj_add_state(obj, obj_state);
 
-	refr_img(obj);
+    refr_img(obj);
 }
 
 /*=====================
@@ -114,7 +115,7 @@ void lv_imgbtn_set_state(lv_obj_t * obj, lv_imgbtn_state_t state)
 
 /**
  * Get the left image in a given state
- * @param imgbtn pointer to an image button object
+ * @param obj pointer to an image button object
  * @param state the state where to get the image (from `lv_btn_state_t`) `
  * @return pointer to the left image source (a C array or path to a file)
  */
@@ -129,7 +130,7 @@ const void * lv_imgbtn_get_src_left(lv_obj_t * obj, lv_imgbtn_state_t state)
 
 /**
  * Get the middle image in a given state
- * @param imgbtn pointer to an image button object
+ * @param obj pointer to an image button object
  * @param state the state where to get the image (from `lv_btn_state_t`) `
  * @return pointer to the middle image source (a C array or path to a file)
  */
@@ -143,7 +144,7 @@ const void * lv_imgbtn_get_src_middle(lv_obj_t * obj, lv_imgbtn_state_t state)
 
 /**
  * Get the right image in a given state
- * @param imgbtn pointer to an image button object
+ * @param obj pointer to an image button object
  * @param state the state where to get the image (from `lv_btn_state_t`) `
  * @return pointer to the left image source (a C array or path to a file)
  */

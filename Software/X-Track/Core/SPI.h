@@ -26,10 +26,10 @@
 #include "Arduino.h"
 
 #ifndef LSBFIRST
-#define LSBFIRST 0
+#  define LSBFIRST 0
 #endif
 #ifndef MSBFIRST
-#define MSBFIRST 1
+#  define MSBFIRST 1
 #endif
 
 #if SPI_CLASS_PIN_DEFINE_ENABLE
@@ -41,6 +41,14 @@
 
 #define DATA_SIZE_8BIT  SPI_FRAMESIZE_8BIT
 #define DATA_SIZE_16BIT SPI_FRAMESIZE_16BIT
+
+#define SPI_I2S_GET_FLAG(spix, SPI_I2S_FLAG) (spix->STS & SPI_I2S_FLAG)
+#define SPI_I2S_RXDATA(spix)                 (spix->DT)
+#define SPI_I2S_RXDATA_VOLATILE(spix)        volatile uint16_t vn = SPI_I2S_RXDATA(spix)
+#define SPI_I2S_TXDATA(spix, data)           (spix->DT = (data))
+#define SPI_I2S_WAIT_RX(spix)                do{ while (!SPI_I2S_GET_FLAG(spix, SPI_I2S_FLAG_RNE));  } while(0)
+#define SPI_I2S_WAIT_TX(spix)                do{ while (!SPI_I2S_GET_FLAG(spix, SPI_STS_TE));        } while(0)
+#define SPI_I2S_WAIT_BUSY(spix)              do{ while (SPI_I2S_GET_FLAG(spix,  SPI_I2S_FLAG_BUSY)); } while(0)
 
 typedef enum
 {
@@ -92,11 +100,8 @@ private:
     }
     uint32_t clock;
     uint32_t dataSize;
-    uint32_t clockDivider;
     uint16_t bitOrder;
     uint8_t dataMode;
-    uint8_t _SSPin;
-    volatile spi_mode_t state;
 
     friend class SPIClass;
 };
@@ -104,9 +109,14 @@ private:
 class SPIClass
 {
 public:
-    SPIClass(SPI_Type* _SPIx);
+    SPIClass(SPI_Type* spix);
+
+    SPI_Type* getSPI()
+    {
+        return SPIx;
+    }
+
     void SPI_Settings(
-        SPI_Type* SPIx,
         uint16_t SPI_Mode_x,
         uint16_t SPI_DataSize_x,
         uint16_t SPI_MODEx,
@@ -132,20 +142,20 @@ public:
     void setDataSize(uint16_t datasize);
 
     uint16_t read(void);
-    void read(uint8_t *buffer, uint32_t length);
+    void read(uint8_t* buffer, uint32_t length);
     void write(uint16_t data);
     void write(uint16_t data, uint32_t n);
-    void write(const uint8_t *data, uint32_t length);
-    void write(const uint16_t *data, uint32_t length);
+    void write(const uint8_t* data, uint32_t length);
+    void write(const uint16_t* data, uint32_t length);
     uint8_t transfer(uint8_t data) const;
     uint16_t transfer16(uint16_t data) const;
     uint8_t send(uint8_t data);
-    uint8_t send(uint8_t *data, uint32_t length);
+    uint8_t send(uint8_t* data, uint32_t length);
     uint8_t recv(void);
 
 private:
     SPI_Type* SPIx;
-    SPI_InitType  SPI_InitStructure;
+    SPI_InitType SPI_InitStructure;
     uint32_t SPI_Clock;
 };
 

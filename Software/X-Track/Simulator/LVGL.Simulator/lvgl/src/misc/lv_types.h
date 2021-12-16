@@ -80,7 +80,7 @@ typedef uint32_t lv_uintptr_t;
 #if defined(PYCPARSER)
 #define LV_FORMAT_ATTRIBUTE(fmtstr, vararg)
 #elif defined(__GNUC__) && ((__GNUC__ == 4 && __GNUC_MINOR__ >= 4) || __GNUC__ > 4)
-#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) //__attribute__((format(gnu_printf, fmtstr, vararg)))
+#define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(printf, fmtstr, vararg)))
 #elif (defined(__clang__) || defined(__GNUC__) || defined(__GNUG__))
 #define LV_FORMAT_ATTRIBUTE(fmtstr, vararg) __attribute__((format(printf, fmtstr, vararg)))
 #else
@@ -88,7 +88,7 @@ typedef uint32_t lv_uintptr_t;
 #endif
 
 #ifdef __cplusplus
-} /*extern "C"*/ 
+} /*extern "C"*/
 #endif
 
 #endif /*LV_TYPES_H*/

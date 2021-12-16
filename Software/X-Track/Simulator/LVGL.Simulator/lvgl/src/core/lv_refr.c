@@ -321,8 +321,17 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
 }
 
 #if LV_USE_PERF_MONITOR
+void lv_refr_reset_fps_counter(void)
+{
+    fps_sum_all = 0;
+    fps_sum_cnt = 0;
+}
+
 uint32_t lv_refr_get_fps_avg(void)
 {
+    if(fps_sum_cnt == 0)
+        return 0;
+
     return fps_sum_all / fps_sum_cnt;
 }
 #endif
@@ -536,7 +545,8 @@ static void lv_refr_area_part(const lv_area_t * area_p)
     if(top_act_scr == NULL && top_prev_scr == NULL) {
         if(disp_refr->bg_fn) {
             disp_refr->bg_fn(&start_mask);
-        } else if(disp_refr->bg_img) {
+        }
+        else if(disp_refr->bg_img) {
             lv_draw_img_dsc_t dsc;
             lv_draw_img_dsc_init(&dsc);
             dsc.opa = disp_refr->bg_opa;
@@ -969,7 +979,8 @@ static void draw_buf_flush(void)
             call_flush_cb(disp->driver, &draw_buf->area, color_p);
         }
     }
-    if(draw_buf->buf1 && draw_buf->buf2) {
+    /*If there are 2 buffers swap them. With direct mode swap only on the last area*/
+    if(draw_buf->buf1 && draw_buf->buf2 && (!disp->driver->direct_mode || draw_buf->flushing_last)) {
         if(draw_buf->buf_act == draw_buf->buf1)
             draw_buf->buf_act = draw_buf->buf2;
         else

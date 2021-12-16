@@ -47,7 +47,7 @@ void pinMode(uint8_t pin, PinMode_TypeDef mode)
     }
     else if(mode == PWM)
     {
-        PWM_Init(pin, PWM_DUTYCYCLE_DEFAULT, PWM_FREQUENCY_DEFAULT);
+        PWM_Init(pin, PWM_RESOLUTION_DEFAULT, PWM_FREQUENCY_DEFAULT);
     }
     else
     {

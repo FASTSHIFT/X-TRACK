@@ -9,27 +9,35 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <EnableASAN>true</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <EnableASAN>false</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <EnableASAN>true</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <EnableASAN>false</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <EnableASAN>true</EnableASAN>
+    <EnableASAN>false</EnableASAN>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <EnableASAN>false</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <EnableASAN>true</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <EnableASAN>false</EnableASAN>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="Mile.Project\Mile.Project.Cpp.props" />
   <Import Project="Mile.Project\Mile.Project.Cpp.VC-LTL.props" />
@@ -116,7 +124,6 @@
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv.h" />
@@ -181,10 +188,12 @@
     <ClInclude Include="lvgl\src\draw\lv_img_buf.h" />
     <ClInclude Include="lvgl\src\draw\lv_img_cache.h" />
     <ClInclude Include="lvgl\src\draw\lv_img_decoder.h" />
+    <ClInclude Include="lvgl\src\draw\sw\lv_draw_sw.h" />
     <ClInclude Include="lvgl\src\extra\layouts\flex\lv_flex.h" />
     <ClInclude Include="lvgl\src\extra\layouts\grid\lv_grid.h" />
     <ClInclude Include="lvgl\src\extra\layouts\lv_layouts.h" />
     <ClInclude Include="lvgl\src\extra\others\lv_others.h" />
+    <ClInclude Include="lvgl\src\extra\others\monkey\lv_monkey.h" />
     <ClInclude Include="lvgl\src\extra\others\snapshot\lv_snapshot.h" />
     <ClInclude Include="lvgl\src\extra\themes\basic\lv_theme_basic.h" />
     <ClInclude Include="lvgl\src\extra\themes\default\lv_theme_default.h" />
@@ -338,7 +347,6 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_monkey\lv_monkey.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
@@ -490,19 +498,29 @@
     <ClCompile Include="lvgl\src\core\lv_obj_tree.c" />
     <ClCompile Include="lvgl\src\core\lv_refr.c" />
     <ClCompile Include="lvgl\src\core\lv_theme.c" />
+    <ClCompile Include="lvgl\src\draw\lv_draw.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_arc.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_blend.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_img.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_label.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c" />
-    <ClCompile Include="lvgl\src\draw\lv_draw_mask.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_triangle.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_buf.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_cache.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_decoder.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_arc.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_blend.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_img.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_letter.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_mask.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c" />
     <ClCompile Include="lvgl\src\extra\layouts\flex\lv_flex.c" />
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
+    <ClCompile Include="lvgl\src\extra\others\monkey\lv_monkey.c" />
     <ClCompile Include="lvgl\src\extra\others\snapshot\lv_snapshot.c" />
     <ClCompile Include="lvgl\src\extra\themes\basic\lv_theme_basic.c" />
     <ClCompile Include="lvgl\src\extra\themes\default\lv_theme_default.c" />

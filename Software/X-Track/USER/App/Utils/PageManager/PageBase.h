@@ -109,7 +109,7 @@ public:
     /* Page will be displayed soon  */
     virtual void onViewWillAppear() {}
 
-    /* The page is displayed  */
+    /* Page is displayed  */
     virtual void onViewDidAppear() {}
 
     /* Page is about to disappear */

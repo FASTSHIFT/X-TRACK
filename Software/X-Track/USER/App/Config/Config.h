@@ -68,8 +68,8 @@
 #define CONFIG_MONKEY_TEST_ENABLE             0
 #if CONFIG_MONKEY_TEST_ENABLE
 #  define CONFIG_MONKEY_INDEV_TYPE            LV_INDEV_TYPE_ENCODER
-#  define CONFIG_MONKEY_TIME_MIN              10
-#  define CONFIG_MONKEY_TIME_MAX              100
+#  define CONFIG_MONKEY_PERIOD_MIN            10
+#  define CONFIG_MONKEY_PERIOD_MAX            100
 #  define CONFIG_MONKEY_INPUT_RANGE_MIN       -5
 #  define CONFIG_MONKEY_INPUT_RANGE_MAX       5
 #endif

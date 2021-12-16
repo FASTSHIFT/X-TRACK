@@ -218,7 +218,7 @@
 * 14.lvgl内存池 64K -> 72K
 * 15.WString使用lvgl的内存池
 * 16.修复GPX轨迹文件<\ele>丢失问题(可能是内存碎片和heap过小导致WString realloc失败)
-	
+
 ## [v1.6] - 2021-8-7
 * 1.更新ArtDesign，新的导航箭头设计
 * 2.更新lv_drivers，去除坐标超界警告
@@ -339,3 +339,13 @@
 * 12.优化new重载
 * 13.修复HAL_Power错误的关机处理
 * 14.添加SystemSave.json自动备份功能
+
+## [v2.1] - 2021-12-16
+* 1.ArduinoAPI更新
+* 2.将LVGL部分绘图函数放到RAM执行，提升运行效率，不删除.sct文件
+* 3.Adafruit_ST778驱动更新，适配新的SPI库
+* 4.更新lvgl v8.1.1 dev
+* 5.lv_conf.h更新，使用新的缩进
+* 6.lv_monkey合入LVGL主线
+* 7.去除LiveMap进入是的透明度渐变动画，提升流畅度
+* 8.更新HAL_Power，充电检测上下拉可选

@@ -45,6 +45,7 @@ void SystemInfos::onViewWillAppear()
     lv_timer_ready(timer);
 
     View.SetScrollToY(root, -LV_VER_RES, LV_ANIM_OFF);
+    lv_obj_set_style_opa(root, LV_OPA_TRANSP, 0);
     lv_obj_fade_in(root, 300, 0);
 }
 
