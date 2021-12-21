@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file lv_conf.h
  * Configuration file for v8.1.1-dev
  */
@@ -51,7 +51,7 @@
 #ifdef ARDUINO
 #  define LV_MEM_CUSTOM      0
 #else
-#  define LV_MEM_CUSTOM      0
+#  define LV_MEM_CUSTOM      1
 #endif
 #if LV_MEM_CUSTOM == 0
     /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/

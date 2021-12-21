@@ -25,7 +25,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <EnableASAN>false</EnableASAN>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <EnableASAN>false</EnableASAN>
@@ -133,6 +133,15 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PageManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\crc32.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\inffast.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\inffixed.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\inflate.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\inftrees.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\PNGdec.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\zconf.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\zlib.h" />
+    <ClInclude Include="..\..\USER\App\Utils\PNGdec\src\zutil.h" />
     <ClInclude Include="..\..\USER\App\Utils\PointContainer\PointContainer.h" />
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
     <ClInclude Include="..\..\USER\App\Utils\Stream\Print.h" />
@@ -358,6 +367,14 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_State.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\adler32.c" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\crc32.c" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\infback.c" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\inffast.c" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\inflate.c" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\inftrees.c" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\PNGdec.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\PNGdec\src\zutil.c" />
     <ClCompile Include="..\..\USER\App\Utils\PointContainer\PointContainer.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Stream\Print.cpp" />

@@ -5,10 +5,15 @@ static LSM6DSM imu;
 static HAL::CommitFunc_t CommitFunc = nullptr;
 static void* UserData = nullptr;
 
-void HAL::IMU_Init()
+bool HAL::IMU_Init()
 {
     Serial.print("IMU: init...");
-    Serial.println(imu.Init() ? "success" : "failed");
+
+    bool success = imu.Init();
+
+    Serial.println(success ? "success" : "failed");
+
+    return success;
 }
 
 void HAL::IMU_SetCommitCallback(CommitFunc_t func, void* userData)
@@ -30,7 +35,7 @@ void HAL::IMU_Update()
 //    );
 
     imuInfo.steps = imu.GetCurrentStep();
-    
+
     if(CommitFunc)
     {
         CommitFunc(&imuInfo, UserData);

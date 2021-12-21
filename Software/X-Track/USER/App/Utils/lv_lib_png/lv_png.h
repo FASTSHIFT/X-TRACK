@@ -3,8 +3,8 @@
  *
  */
 
-#ifndef LV_PNG_H
-#define LV_PNG_H
+#ifndef LV_LIB_PNG_H
+#define LV_LIB_PNG_H
 
 #ifdef __cplusplus
 extern "C" {

@@ -5,12 +5,20 @@ static LIS3MDL mag;
 static HAL::CommitFunc_t CommitFunc = nullptr;
 static void* UserData = nullptr;
 
-void HAL::MAG_Init()
+bool HAL::MAG_Init()
 {
     Serial.print("MAG: init...");
-    Serial.println(mag.init() ? "success" : "failed");
 
-    mag.enableDefault();
+    bool success = mag.init();
+
+    Serial.println(success ? "success" : "failed");
+
+    if(success)
+    {
+        mag.enableDefault();
+    }
+
+    return success;
 }
 
 void HAL::MAG_SetCommitCallback(CommitFunc_t func, void* userData)
@@ -29,7 +37,7 @@ void HAL::MAG_Update()
     magInfo.x = mag.m.x;
     magInfo.y = mag.m.y;
     magInfo.z = mag.m.z;
-    
+
     if(CommitFunc)
     {
         CommitFunc(&magInfo, UserData);

@@ -26,6 +26,7 @@
 #include "Pages/AppFactory.h"
 #include "Pages/StatusBar/StatusBar.h"
 #include "Utils/PageManager/PageManager.h"
+#include "Utils/lv_lib_png/lv_png.h"
 
 #define ACCOUNT_SEND_CMD(ACT, CMD)\
 do{\
@@ -56,6 +57,10 @@ void App_Init()
     lv_group_set_default(group);
 
     LV_LOG_USER("lv_monkey test started!");
+#endif
+
+#if CONFIG_MAP_PNG_DECODE_ENABLE
+    lv_png_init();
 #endif
 
     DataProc_Init();

@@ -56,12 +56,12 @@ void FaultHandle_Init();
 int I2C_Scan();
 
 /* IMU */
-void IMU_Init();
+bool IMU_Init();
 void IMU_SetCommitCallback(CommitFunc_t func, void* userData);
 void IMU_Update();
     
 /* MAG */
-void MAG_Init();
+bool MAG_Init();
 void MAG_SetCommitCallback(CommitFunc_t func, void* userData);
 void MAG_Update();
 

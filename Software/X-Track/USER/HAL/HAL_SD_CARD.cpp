@@ -50,7 +50,7 @@ bool HAL::SD_Init()
         retval = false;
     }
 
-    Serial.println("SD: init...");
+    Serial.print("SD: init...");
     retval = SD.begin(CONFIG_SD_CS_PIN, SD_SCK_MHZ(30));
 
     if(retval)
@@ -59,7 +59,7 @@ bool HAL::SD_Init()
         SdFile::dateTimeCallback(SD_GetDateTime);
         SD_CheckDir(CONFIG_TRACK_RECORD_FILE_DIR_NAME);
         Serial.printf(
-            "SD: init success, Type: %s, Size: %0.2f GB\r\n",
+            "success, Type: %s, Size: %0.2f GB\r\n",
             SD_GetTypeName(),
             SD_GetCardSizeMB() / 1024.0f
         );

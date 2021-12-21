@@ -5,42 +5,30 @@
 static MillisTaskManager taskManager;
 
 #if CONFIG_SENSOR_ENABLE
-static bool IsWireInitSuccess = false;
 
 static void HAL_Sensor_Init()
 {
-    IsWireInitSuccess = (HAL::I2C_Scan() > 0);
-
-    if(!IsWireInitSuccess)
+    if(HAL::I2C_Scan() < 0)
     {
         Serial.println("I2C: disable sensors");
         return;
     }
 
 #if CONFIG_SENSOR_IMU_ENABLE
-    HAL::IMU_Init();
-#endif
-
-#if CONFIG_SENSOR_MAG_ENABLE
-    HAL::MAG_Init();
-#endif
-}
-
-static void HAL_SensorUpdate()
-{
-    if(!IsWireInitSuccess)
+    if(HAL::IMU_Init())
     {
-        return;
+        taskManager.Register(HAL::IMU_Update, 1000);
     }
-
-#if CONFIG_SENSOR_IMU_ENABLE
-    HAL::IMU_Update();
 #endif
 
 #if CONFIG_SENSOR_MAG_ENABLE
-    HAL::MAG_Update();
+    if(HAL::MAG_Init())
+    {
+        taskManager.Register(HAL::MAG_Update, 1000);
+    }
 #endif
 }
+
 #endif
 
 static void HAL_TimerInterrputUpdate()
@@ -75,13 +63,10 @@ void HAL::HAL_Init()
     SD_Init();
 
     Display_Init();
-    
+
     taskManager.Register(Power_EventMonitor, 100);
     taskManager.Register(GPS_Update, 200);
     taskManager.Register(SD_Update, 500);
-#if CONFIG_SENSOR_ENABLE
-    taskManager.Register(HAL_SensorUpdate, 1000);
-#endif
     taskManager.Register(Memory_DumpInfo, 1000);
 
     Timer_SetInterrupt(CONFIG_HAL_UPDATE_TIM, 10 * 1000, HAL_TimerInterrputUpdate);
