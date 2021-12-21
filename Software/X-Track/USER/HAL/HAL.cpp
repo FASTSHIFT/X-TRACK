@@ -8,7 +8,7 @@ static MillisTaskManager taskManager;
 
 static void HAL_Sensor_Init()
 {
-    if(HAL::I2C_Scan() < 0)
+    if(HAL::I2C_Scan() <= 0)
     {
         Serial.println("I2C: disable sensors");
         return;
