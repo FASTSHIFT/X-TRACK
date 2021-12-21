@@ -94,8 +94,8 @@ public:
     void SetEventCallback(EventCallback_t callback);
     void SetTimerPeriod(uint32_t period);
     void SetTimerEnable(bool en);
-    uint32_t GetPublishersSize();
-    uint32_t GetSubscribersSize();
+    size_t GetPublishersSize();
+    size_t GetSubscribersSize();
 
 public:
     const char* ID;      /* Unique account ID */

@@ -43,7 +43,7 @@ void lv_label_set_text_add(lv_obj_t * label, const char * text)
     if(!label)
         return;
 
-    lv_label_ins_text(label, strlen(lv_label_get_text(label)), text);
+    lv_label_ins_text(label, (uint32_t)strlen(lv_label_get_text(label)), text);
 }
 
 /**

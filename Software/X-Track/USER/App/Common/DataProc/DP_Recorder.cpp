@@ -27,7 +27,7 @@ static lv_fs_res_t Recorder_FileWriteString(lv_fs_file_t* file_p, const char* st
     lv_fs_res_t res = lv_fs_write(
                           file_p,
                           str,
-                          strlen(str),
+                          (uint32_t)strlen(str),
                           nullptr
                       );
 

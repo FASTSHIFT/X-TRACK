@@ -150,7 +150,7 @@ bool DataCenter::Remove(Account::AccountVector_t* vec, Account* account)
   * @param  None
   * @retval Number of accounts
   */
-uint32_t DataCenter::GetAccountLen()
+size_t DataCenter::GetAccountLen()
 {
     return AccountPool.size();
 }

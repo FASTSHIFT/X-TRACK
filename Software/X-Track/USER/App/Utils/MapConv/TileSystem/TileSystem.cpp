@@ -109,7 +109,7 @@ void TileSystem::TileXYToQuadKey(int tileX, int tileY, int levelOfDetail, char* 
 void TileSystem::QuadKeyToTileXY(const char* quadKey, int* tileX, int* tileY, int* levelOfDetail)
 {
     *tileX = *tileY = 0;
-    int len = strlen(quadKey);
+    int len = (int)strlen(quadKey);
     *levelOfDetail = len;
     for (int i = len; i > 0; i--)
     {

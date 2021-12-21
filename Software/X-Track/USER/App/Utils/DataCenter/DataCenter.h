@@ -42,7 +42,7 @@ public:
     bool Remove(Account::AccountVector_t* vec, Account* account);
     Account* SearchAccount(const char* id);
     Account* Find(Account::AccountVector_t* vec, const char* id);
-    uint32_t GetAccountLen();
+    size_t GetAccountLen();
 
 private:
 

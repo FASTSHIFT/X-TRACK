@@ -349,3 +349,4 @@
 * 6.lv_monkey合入LVGL主线
 * 7.去除LiveMap进入时的透明度渐变动画，提升流畅度
 * 8.更新HAL_Power，充电检测上下拉可选
+* 9.优化IMU和MAG初始化

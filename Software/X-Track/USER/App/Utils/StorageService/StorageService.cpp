@@ -69,7 +69,7 @@ public:
     size_t readBytes(void* buffer, size_t length)
     {
         uint32_t br = 0;
-        lv_fs_read(&file, buffer, length, &br);
+        lv_fs_read(&file, buffer, (uint32_t)length, &br);
         return br;
     }
 
@@ -81,7 +81,7 @@ public:
     size_t write(const uint8_t* s, size_t n)
     {
         uint32_t bw = 0;
-        lv_fs_write(&file, s, n, &bw);
+        lv_fs_write(&file, s, (uint32_t)n, &bw);
         return bw;
     }
 

@@ -485,7 +485,7 @@ void Account::SetTimerEnable(bool en)
   * @brief  Get the number of publishers
   * @retval number of publishers
   */
-uint32_t Account::GetPublishersSize()
+size_t Account::GetPublishersSize()
 {
     return publishers.size();
 }
@@ -494,7 +494,7 @@ uint32_t Account::GetPublishersSize()
   * @brief  Get the number of subscribes
   * @retval number of subscribes
   */
-uint32_t Account::GetSubscribersSize()
+size_t Account::GetSubscribersSize()
 {
     return subscribers.size();
 }
