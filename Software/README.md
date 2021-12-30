@@ -61,7 +61,11 @@
         └─lv_port               -- lvgl接口
 ```
 ## 编译说明
-* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（因为旧编译器不能完全支持**C++ 11**的语法）,并安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK->[AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.7.zip)。
+* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（因为旧编译器不能完全支持**C++ 11**的语法
+* 安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK:
+> [AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.7.zip)
+> 
+> [AT32F43x标准外设库](https://www.arterytek.com/download/Keil5_AT32MCU_AddOn_CH_V2.0.6.zip)
   ### 注意
   **不要修改芯片选型**，因为修改芯片选型后启动文件会重新生成，堆栈大小会恢复默认值，而使用默认的栈大小会导致**栈溢出**。现象是启动后立即蓝屏，提示发生**HardFault**(如下图所示)，串口会输出详细的错误信息。如果确实需要修改芯片选型，请参考工程原始的启动文件进行修改。
 
