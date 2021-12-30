@@ -64,7 +64,7 @@ void RTC_Init(void)
         RTC_WaitForLastTask();
 
         /* Set the RTC time */
-        RTC_Set(2018, 8, 8, 8, 8, 0);
+        RTC_SetTime(2018, 8, 8, 8, 8, 0);
         /* Wait until last write operation on RTC registers has finished */
         RTC_WaitForLastTask();
 
@@ -120,7 +120,7 @@ static uint8_t Is_Leap_Year(uint16_t year)
   * @retval 0: Set time right.
   *         1: Set time failed.
   */
-uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
+uint8_t RTC_SetTime(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec)
 {
     uint32_t t;
     uint32_t seccount = 0;
@@ -242,11 +242,11 @@ void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar)
             else temp -= 365;
             temp1++;
         }
-        _calendar.w_year = temp1;
+        _calendar.year = temp1;
         temp1 = 0;
         while(temp >= 28)
         {
-            if(Is_Leap_Year(_calendar.w_year) && temp1 == 1)
+            if(Is_Leap_Year(_calendar.year) && temp1 == 1)
             {
                 if(temp >= 29)temp -= 29;
                 else break;
@@ -258,14 +258,14 @@ void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar)
             }
             temp1++;
         }
-        _calendar.w_month = temp1 + 1;
-        _calendar.w_date = temp + 1;
+        _calendar.month = temp1 + 1;
+        _calendar.day = temp + 1;
     }
     temp = timecount % 86400;
     _calendar.hour = temp / 3600;
     _calendar.min = (temp % 3600) / 60;
     _calendar.sec = (temp % 3600) % 60;
-    _calendar.week = RTC_GetWeek(_calendar.w_year, _calendar.w_month, _calendar.w_date);
+    _calendar.week = RTC_GetWeek(_calendar.year, _calendar.month, _calendar.day);
 
     *calendar = _calendar;
 }

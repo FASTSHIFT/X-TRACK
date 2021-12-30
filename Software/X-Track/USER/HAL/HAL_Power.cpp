@@ -14,7 +14,7 @@
 #  define BATT_CHG_DET_STATUS       ((usage == 100) ? false : digitalRead(CONFIG_BAT_CHG_DET_PIN))
 #endif
 
-typedef struct
+struct
 {
     uint32_t LastHandleTime;
     uint16_t AutoLowPowerTimeout;
@@ -22,9 +22,7 @@ typedef struct
     bool ShutdownReq;
     uint16_t ADCValue;
     HAL::Power_CallbackFunction_t EventCallback;
-} Power_t;
-
-static Power_t Power;
+} Power;
 
 static void Power_ADC_Init(ADC_Type* ADCx)
 {

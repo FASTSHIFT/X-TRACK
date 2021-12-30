@@ -183,7 +183,7 @@ void HAL::Display_SetAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
     screen.setAddrWindow(x0, y0, x1, y1);
 }
 
-void HAL::Display_SendPixels(uint16_t* pixels, uint32_t len)
+void HAL::Display_SendPixels(const uint16_t* pixels, uint32_t len)
 {
     digitalWrite_LOW(CONFIG_SCREEN_CS_PIN);
     digitalWrite_HIGH(CONFIG_SCREEN_DC_PIN);

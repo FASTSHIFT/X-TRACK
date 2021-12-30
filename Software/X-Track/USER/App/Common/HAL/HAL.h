@@ -44,7 +44,7 @@ void Backlight_ForceLit(bool en);
 void Display_Init();
 void Display_DumpCrashInfo(const char* info);
 void Display_SetAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
-void Display_SendPixels(uint16_t* pixels, uint32_t len);
+void Display_SendPixels(const uint16_t* pixels, uint32_t len);
     
 typedef void(*Display_CallbackFunc_t)(void);
 void Display_SetSendFinishCallback(Display_CallbackFunc_t func);

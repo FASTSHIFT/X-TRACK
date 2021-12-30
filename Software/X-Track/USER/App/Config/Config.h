@@ -50,7 +50,7 @@
 #define CONFIG_MAP_USE_WGS84_DEFAULT          false
 #define CONFIG_MAP_DIR_PATH_DEFAULT           "/MAP"
 #define CONFIG_MAP_EXT_NAME_DEFAULT           "bin"
-#define CONFIG_MAP_PNG_DECODE_ENABLE          0
+#define CONFIG_MAP_PNG_DECODE_ENABLE          1
 
 #define CONFIG_ARROW_THEME_DEFAULT            "default"
 

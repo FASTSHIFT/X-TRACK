@@ -51,8 +51,6 @@ public:
         writeData16(color);
     }
 
-    void setOpacityX(uint8_t opacity);
-
 private:
     uint8_t rst_pin, cs_pin, dc_pin, sck_pin, mosi_pin;
     SPIClass* spi;

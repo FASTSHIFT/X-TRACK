@@ -56,7 +56,11 @@ DATA_PROC_INIT_DEF(SysConfig)
 
     memset(&sysConfig, 0, sizeof(sysConfig));
 
-#   define SYSCGF_STRCPY(dest, src) strncpy(dest, src, sizeof(dest));
+#   define SYSCGF_STRCPY(dest, src) \
+do{ \
+    strncpy(dest, src, sizeof(dest)); \
+    dest[sizeof(dest) - 1] = '\0'; \
+}while(0)
 
     sysConfig.cmd         = SYSCONFIG_CMD_LOAD;
     sysConfig.longitude   = CONFIG_GPS_LONGITUDE_DEFAULT;

@@ -50,10 +50,13 @@ int DialplateModel::onEvent(Account* account, Account::EventParam_t* param)
 
 void DialplateModel::RecorderCommand(RecCmd_t cmd)
 {
-    DataProc::Recorder_Info_t recInfo;
-    recInfo.cmd = (DataProc::Recorder_Cmd_t)cmd;
-    recInfo.time = 1000;
-    account->Notify("Recorder", &recInfo, sizeof(recInfo));
+    if (cmd != REC_READY_STOP)
+    {
+        DataProc::Recorder_Info_t recInfo;
+        recInfo.cmd = (DataProc::Recorder_Cmd_t)cmd;
+        recInfo.time = 1000;
+        account->Notify("Recorder", &recInfo, sizeof(recInfo));
+    }
 
     DataProc::StatusBar_Info_t statInfo;
 
@@ -67,6 +70,10 @@ void DialplateModel::RecorderCommand(RecCmd_t cmd)
     case REC_PAUSE:
         statInfo.showLabelRec = true;
         statInfo.labelRecStr = "PAUSE";
+        break;
+    case REC_READY_STOP:
+        statInfo.showLabelRec = true;
+        statInfo.labelRecStr = "STOP";
         break;
     case REC_STOP:
         statInfo.showLabelRec = false;

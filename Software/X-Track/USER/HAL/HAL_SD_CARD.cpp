@@ -66,7 +66,7 @@ bool HAL::SD_Init()
     }
     else
     {
-        Serial.println("failed");
+        Serial.printf("failed: 0x%x\r\n", SD.cardErrorCode());
     }
 
     SD_IsReady = retval;

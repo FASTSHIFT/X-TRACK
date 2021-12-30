@@ -23,9 +23,9 @@ void HAL::Clock_GetInfo(Clock_Info_t* info)
 {
     RTC_Calendar_TypeDef calendar;
     RTC_GetCalendar(&calendar);
-    info->year = calendar.w_year;
-    info->month = calendar.w_month;
-    info->day = calendar.w_date;
+    info->year = calendar.year;
+    info->month = calendar.month;
+    info->day = calendar.day;
     info->week = calendar.week;
     info->hour = calendar.hour;
     info->minute = calendar.min;
@@ -35,7 +35,7 @@ void HAL::Clock_GetInfo(Clock_Info_t* info)
 
 void HAL::Clock_SetInfo(const Clock_Info_t* info)
 {
-    RTC_Set(
+    RTC_SetTime(
         info->year,
         info->month,
         info->day,

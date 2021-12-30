@@ -768,9 +768,6 @@
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\DataCenterLog.h">
       <Filter>App\Utils\DataCenter</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h">
-      <Filter>App\Utils\lv_ext</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h">
       <Filter>App\Utils\lv_ext</Filter>
     </ClInclude>
@@ -992,6 +989,9 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.h">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.h">
+      <Filter>App\Utils\lv_ext</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1670,9 +1670,6 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\DataCenter.cpp">
       <Filter>App\Utils\DataCenter</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp">
-      <Filter>App\Utils\lv_ext</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp">
       <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
@@ -2023,6 +2020,9 @@
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.c">
+      <Filter>App\Utils\lv_ext</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

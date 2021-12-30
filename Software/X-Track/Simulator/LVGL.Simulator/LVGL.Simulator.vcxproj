@@ -119,8 +119,8 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX\GPX.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h" />
@@ -342,8 +342,8 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c" />
     <ClCompile Include="..\..\USER\App\Utils\GPX\GPX.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_label_anim_effect.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c" />

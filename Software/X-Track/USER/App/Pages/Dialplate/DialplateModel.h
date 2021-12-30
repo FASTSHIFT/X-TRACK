@@ -15,6 +15,7 @@ public:
         REC_PAUSE    = DataProc::RECORDER_CMD_PAUSE,
         REC_CONTINUE = DataProc::RECORDER_CMD_CONTINUE,
         REC_STOP     = DataProc::RECORDER_CMD_STOP,
+        REC_READY_STOP
     } RecCmd_t;
 
 public:

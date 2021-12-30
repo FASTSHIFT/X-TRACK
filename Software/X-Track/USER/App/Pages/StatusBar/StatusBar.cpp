@@ -22,6 +22,7 @@
  */
 #include "StatusBar.h"
 #include "Common/DataProc/DataProc.h"
+#include "Utils/lv_ext/lv_anim_label.h"
 
 #define BATT_USAGE_HEIGHT (lv_obj_get_style_height(ui.battery.img, 0) - 6)
 #define BATT_USAGE_WIDTH  (lv_obj_get_style_width(ui.battery.img, 0) - 4)
@@ -46,7 +47,7 @@ struct
     
     lv_obj_t* labelClock;
     
-    lv_obj_t* labelRec;
+    lv_anim_label_t* labelRec;
 
     struct
     {
@@ -72,17 +73,11 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (info->showLabelRec)
     {
-        lv_obj_clear_flag(ui.labelRec, LV_OBJ_FLAG_HIDDEN);
-        const char* str = info->labelRecStr;
-
-        if (str)
-        {
-            lv_label_set_text(ui.labelRec, str);
-        }
+        lv_anim_label_push_text(ui.labelRec, info->labelRecStr);
     }
     else
     {
-        lv_obj_add_flag(ui.labelRec, LV_OBJ_FLAG_HIDDEN);
+        lv_anim_label_push_text(ui.labelRec, " ");
     }
 
     return 0;
@@ -126,6 +121,39 @@ static void StatusBar_AnimCreate(lv_obj_t* contBatt)
     lv_anim_set_time(&a, 1000);
     lv_anim_set_ready_cb(&a, StatusBar_onAnimHeightFinish);
     lv_anim_start(&a);
+}
+
+static void lv_obj_set_opa_scale(void* obj, int32_t opa)
+{
+    lv_obj_set_style_opa((lv_obj_t*)obj, opa, 0);
+}
+
+static lv_anim_label_t* StatusBar_RecAnimLabelCreate(lv_obj_t* par, lv_style_t* style)
+{
+    lv_anim_label_t* alabel = lv_anim_label_create(par);
+    lv_anim_label_set_size(alabel, 45, STATUS_BAR_HEIGHT - 4);
+    lv_anim_label_set_style(alabel, style);
+    lv_anim_label_set_dir(alabel, LV_DIR_BOTTOM);
+    lv_anim_label_set_path(alabel, lv_anim_path_ease_out);
+    lv_anim_label_set_time(alabel, 500);
+
+    lv_obj_align(alabel->obj, LV_ALIGN_RIGHT_MID, -40, 1);
+    //lv_obj_set_style_border_color(alabel->obj, lv_color_white(), 0);
+    //lv_obj_set_style_border_width(alabel->obj, 1, 0);
+
+    lv_anim_t a_enter;
+    lv_anim_init(&a_enter);
+    lv_anim_set_early_apply(&a_enter, true);
+    lv_anim_set_values(&a_enter, LV_OPA_TRANSP, LV_OPA_COVER);
+    lv_anim_set_exec_cb(&a_enter, lv_obj_set_opa_scale);
+    lv_anim_set_time(&a_enter, 300);
+
+    lv_anim_t a_exit = a_enter;
+    lv_anim_set_values(&a_exit, LV_OPA_COVER, LV_OPA_TRANSP);
+
+    lv_anim_label_set_custom_anin(alabel, &a_enter, &a_exit);
+
+    return alabel;
 }
 
 static void StatusBar_Update(lv_timer_t* timer)
@@ -242,12 +270,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     ui.labelClock = label;
 
     /* recorder */
-    label = lv_label_create(cont);
-    lv_obj_add_style(label, &style, 0);
-    lv_obj_align(label, LV_ALIGN_RIGHT_MID, -50, 0);
-    lv_label_set_text(label, "");
-    lv_obj_add_flag(label, LV_OBJ_FLAG_HIDDEN);
-    ui.labelRec = label;
+    ui.labelRec = StatusBar_RecAnimLabelCreate(cont, &style);
 
     /* battery */
     img = lv_img_create(cont);

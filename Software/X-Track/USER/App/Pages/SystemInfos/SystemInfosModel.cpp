@@ -135,6 +135,7 @@ void SystemInfosModel::GetBatteryInfo(
     *usage = power.usage;
     *voltage = power.voltage / 1000.0f;
     strncpy(state, power.isCharging ? "CHARGE" : "DISCHARGE", len);
+    state[len - 1] = '\0';
 }
 
 void SystemInfosModel::GetStorageInfo(

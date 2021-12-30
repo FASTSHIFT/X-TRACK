@@ -57,10 +57,12 @@ public:
     static void SetDirPath(const char* path)
     {
         strncpy(dirPath, path, sizeof(dirPath));
+        dirPath[sizeof(dirPath) - 1] = '\0';
     }
     static void SetExtName(const char* name)
     {
         strncpy(extName, name, sizeof(extName));
+        extName[sizeof(extName) - 1] = '\0';
     }
 
     static void SetCoordTransformEnable(bool en)
@@ -103,7 +105,7 @@ protected:
     struct
     {
         int16_t level;
-        uint16_t tileSize;  
+        uint16_t tileSize;
     } priv;
 
     static char dirPath[MAP_CONV_DIR_PATH_MAX];

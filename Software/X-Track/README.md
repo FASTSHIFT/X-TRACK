@@ -350,3 +350,15 @@
 * 7.去除LiveMap进入时的透明度渐变动画，提升流畅度
 * 8.更新HAL_Power，充电检测上下拉可选
 * 9.优化IMU和MAG初始化
+
+## [v2.2] - 2021-12-30
+* 1.添加系统软件架构说明
+* 2.去除弃用的_LIS3MDL
+* 3.修复使用strncpy()遗漏的'\0'结束符
+* 4.添加AT32F435移植
+* 5.LV_DISP_DEF_REFR_PERIOD 20ms -> 16ms
+* 6.LV_MEM_SIZE 78KB -> 70KB
+* 7.默认开启PNG解码器，受限于内存MCU无法使用
+* 8.添加轨迹记录状态指示渐变动画
+* 9.添加文本动画组件lv_anim_label，替换旧的lv_label_anim_effect
+* 10.去除lv_settings

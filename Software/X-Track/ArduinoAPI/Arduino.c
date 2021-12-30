@@ -55,7 +55,7 @@ void pinMode(uint8_t pin, PinMode_TypeDef mode)
             PIN_MAP[pin].GPIOx,
             PIN_MAP[pin].GPIO_Pin_x,
             mode,
-            GPIO_MAX_SPEED_DEFAULT
+            GPIO_DRIVE_DEFAULT
         );
     }
 }

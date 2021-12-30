@@ -163,6 +163,7 @@ void Dialplate::onRecord(bool longPress)
         {
             Model.PlayMusic("NoOperationWarning");
             SetBtnRecImgSrc("stop");
+            Model.RecorderCommand(Model.REC_READY_STOP);
             recState = RECORD_STATE_STOP;
         }
         else

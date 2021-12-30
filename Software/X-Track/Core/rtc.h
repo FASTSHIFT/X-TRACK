@@ -34,9 +34,9 @@ typedef struct
     uint8_t hour;
     uint8_t min;
     uint8_t sec;
-    uint16_t w_year;
-    uint8_t  w_month;
-    uint8_t  w_date;
+    uint16_t year;
+    uint8_t  month;
+    uint8_t  day;
     uint8_t  week;
 } RTC_Calendar_TypeDef;
 
@@ -44,7 +44,7 @@ void RTC_Init(void);
 void RTC_GetCalendar(RTC_Calendar_TypeDef* calendar);
 uint8_t RTC_SetAlarm(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
 uint8_t RTC_GetWeek(uint16_t year, uint8_t month, uint8_t day);
-uint8_t RTC_Set(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
+uint8_t RTC_SetTime(uint16_t syear, uint8_t smon, uint8_t sday, uint8_t hour, uint8_t min, uint8_t sec);
 
 #ifdef __cplusplus
 }

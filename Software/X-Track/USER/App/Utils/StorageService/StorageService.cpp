@@ -204,7 +204,9 @@ bool StorageService::LoadFile()
             const char* str = doc[iter->key];
             if (str)
             {
-                strncpy((char*)iter->value, str, iter->size);
+                char* value = (char*)iter->value;
+                strncpy(value, str, iter->size);
+                value[iter->size - 1] = '\0';
             }
             break;
         }
