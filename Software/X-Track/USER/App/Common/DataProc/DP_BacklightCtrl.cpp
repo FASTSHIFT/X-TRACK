@@ -3,6 +3,7 @@
 #include "Utils/SunRiseCalc/SunRiseCalc.h"
 #include "Arduino.h"
 #include "HAL/HAL_Config.h"
+#include "math.h"
 
 using namespace DataProc;
 
@@ -19,9 +20,12 @@ using namespace DataProc;
 #error invalid CONFIG_BACKLIGHT_MAX 
 #endif
 
-#define LIGHT_CTRL_MINUTE_RANGE  CONFIG_BACKLIGHT_CTRL_RANGE
+#define LIGHT_CTRL_SECOND_RANGE  CONFIG_BACKLIGHT_CTRL_RANGE * 60
 #define MIN_LIGHT_LEVEL          CONFIG_BACKLIGHT_MIN
 #define MAX_LIGHT_LEVEL          CONFIG_BACKLIGHT_MAX
+
+#define ARCTAN_T 1.32581f
+#define T 4
 
 static bool alreadyGetSysConfig = false;
 static HAL::Clock_Info_t clockInfo;
@@ -54,27 +58,21 @@ static bool calculatedSunriseTime = false;
  * E: (SunsetTime, (CONFIG_BACKLIGHT_MIN + CONFIG_BACKLIGHT_MAX) / 2)
  * F: (SunsetTime + CONFIG_BACKLIGHT_CTRL_RANGE, CONFIG_BACKLIGHT_MIN)
  */
-static int16_t calcBacklightLevel(uint8_t hour, uint8_t minute){
-    int16_t nowMinutes = MINUTE_OF_DAY(hour, minute);
-    int16_t sunriseMinutes = MINUTE_OF_DAY(sunriseHour, sunriseMinute);
-    int16_t sunsetMinutes = MINUTE_OF_DAY(sunsetHour, sunsetMinute);
-    uint16_t min = 0, max = 0;
-    // min 
-    if (nowMinutes <= sunriseMinutes - CONFIG_BACKLIGHT_CTRL_RANGE || sunsetMinutes + CONFIG_BACKLIGHT_CTRL_RANGE <= nowMinutes){
-        return MIN_LIGHT_LEVEL;
-    }
-    // max
-    if (sunriseMinutes + CONFIG_BACKLIGHT_CTRL_RANGE <= nowMinutes && nowMinutes <= sunsetMinutes - CONFIG_BACKLIGHT_CTRL_RANGE){
+static int16_t calcBacklightLevel(uint8_t hour, uint8_t minute, uint8_t second){
+    int16_t nowSeconds = MINUTE_OF_DAY(hour, minute) * 60 + second;
+    int16_t sunriseSeconds = MINUTE_OF_DAY(sunriseHour, sunriseMinute) * 60;
+    int16_t sunsetSeconds = MINUTE_OF_DAY(sunsetHour, sunsetMinute) * 60;
+    if (sunriseSeconds + LIGHT_CTRL_SECOND_RANGE <= nowSeconds && nowSeconds <= sunsetSeconds - LIGHT_CTRL_SECOND_RANGE)
+    {
         return MAX_LIGHT_LEVEL;
     }
-    if (sunriseMinutes - CONFIG_BACKLIGHT_CTRL_RANGE <= nowMinutes && nowMinutes <= sunriseMinutes + CONFIG_BACKLIGHT_CTRL_RANGE){
-        min = sunriseMinutes - CONFIG_BACKLIGHT_CTRL_RANGE;
-        max = sunriseMinutes + CONFIG_BACKLIGHT_CTRL_RANGE;
-    }else{
-        min = sunsetMinutes + CONFIG_BACKLIGHT_CTRL_RANGE;
-        max = sunsetMinutes - CONFIG_BACKLIGHT_CTRL_RANGE;
+    if ((sunriseSeconds - LIGHT_CTRL_SECOND_RANGE <= nowSeconds && nowSeconds <= sunriseSeconds + LIGHT_CTRL_SECOND_RANGE)){   
+        return MIN_LIGHT_LEVEL + (MAX_LIGHT_LEVEL - MIN_LIGHT_LEVEL) * (atanf(2.0f * T * (nowSeconds - sunriseSeconds + LIGHT_CTRL_SECOND_RANGE) / 2 / LIGHT_CTRL_SECOND_RANGE - T) + ARCTAN_T) / (2 * ARCTAN_T);
     }
-    return map(nowMinutes, min, max, MIN_LIGHT_LEVEL, MAX_LIGHT_LEVEL);
+    if ((sunsetSeconds - LIGHT_CTRL_SECOND_RANGE <= nowSeconds && nowSeconds <= sunsetSeconds + LIGHT_CTRL_SECOND_RANGE)){
+        return MIN_LIGHT_LEVEL + (MAX_LIGHT_LEVEL - MIN_LIGHT_LEVEL) * (-atanf(2.0f * T * (nowSeconds - sunsetSeconds + LIGHT_CTRL_SECOND_RANGE) / 2 / LIGHT_CTRL_SECOND_RANGE - T) + ARCTAN_T) / (2 * ARCTAN_T);
+    }
+    return MIN_LIGHT_LEVEL;
 }
 
 static int onEvent(Account* account, Account::EventParam_t* param)
@@ -122,7 +120,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         dateChecksum = tempChceksum;
         calculatedSunriseTime = true;
     }
-    HAL::Backlight_SetGradual(calcBacklightLevel(clockInfo.hour, clockInfo.minute), 500);
+    HAL::Backlight_SetGradual(calcBacklightLevel(clockInfo.hour, clockInfo.minute, clockInfo.second), 500);
     // Serial.printf(
     //     "[backlight ctrl] level: %d, sunrise: %d:%d, sunset: %d:%d\r\n",
     //     calcBacklightLevel(clockInfo.hour, clockInfo.minute),
