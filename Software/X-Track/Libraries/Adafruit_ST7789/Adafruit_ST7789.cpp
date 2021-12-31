@@ -2,7 +2,7 @@
 #include "SPI.h"
 
 #define TFT_WIDTH  240
-#define TFT_HEIGHT 240
+#define TFT_HEIGHT 320
 
 #if defined(__STM32__)
 #define TFT_CS_SET      GPIO_HIGH(csport,cspinmask)

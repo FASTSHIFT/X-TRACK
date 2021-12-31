@@ -29,6 +29,8 @@ typedef struct
     float speed;
     int16_t satellites;
     bool isVaild;
+    double temperature;
+    double pressure;
     Clock_Info_t clock;
 } GPS_Info_t;
 
@@ -88,6 +90,12 @@ typedef struct
     uint16_t voltage;
     uint8_t usage;
     bool isCharging;
+    uint16_t fullcharge_capacity;
+    uint16_t remaining_capacity;
+    uint16_t design_capacity;
+    int16_t current;
+    int16_t average_power;
+    uint16_t time_to;
 } Power_Info_t;
 
 }

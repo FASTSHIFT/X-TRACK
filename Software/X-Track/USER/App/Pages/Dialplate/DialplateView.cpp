@@ -51,9 +51,11 @@ void DialplateView::Delete()
 
 void DialplateView::TopInfo_Create(lv_obj_t* par)
 {
+    int shift = (LV_VER_RES - 240) / 3.5;
+    int height = 142 + shift;
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
-    lv_obj_set_size(cont, LV_HOR_RES, 142);
+    lv_obj_set_size(cont, LV_HOR_RES, height);
 
     lv_obj_set_style_bg_opa(cont, LV_OPA_COVER, 0);
     lv_obj_set_style_bg_color(cont, lv_color_hex(0x333333), 0);
@@ -66,7 +68,7 @@ void DialplateView::TopInfo_Create(lv_obj_t* par)
     lv_obj_set_style_text_font(label, ResourcePool::GetFont("bahnschrift_65"), 0);
     lv_obj_set_style_text_color(label, lv_color_white(), 0);
     lv_label_set_text(label, "00");
-    lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 63);
+    lv_obj_align(label, LV_ALIGN_TOP_MID, 0, height / 2 - 6);
     ui.topInfo.labelSpeed = label;
 
     label = lv_label_create(cont);
@@ -82,7 +84,7 @@ void DialplateView::BottomInfo_Create(lv_obj_t* par)
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
     lv_obj_set_style_bg_color(cont, lv_color_black(), 0);
-    lv_obj_set_size(cont, LV_HOR_RES, 90);
+    lv_obj_set_size(cont, LV_HOR_RES, 90 + LV_VER_RES - 240);
     lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, 106);
 
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW_WRAP);

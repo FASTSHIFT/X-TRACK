@@ -91,8 +91,10 @@ void SystemInfos::Update()
     float alt;
     float course;
     float speed;
-    Model.GetGPSInfo(&lat, &lng, &alt, buf, sizeof(buf), &course, &speed);
-    View.SetGPS(lat, lng, alt, buf, course, speed);
+    float temp;
+    float pressure;
+    Model.GetGPSInfo(&lat, &lng, &alt, buf, sizeof(buf), &course, &speed, &temp, &pressure);
+    View.SetGPS(lat, lng, alt, buf, course, speed, temp, pressure);
 
     /* MAG */
     float dir;
@@ -114,8 +116,10 @@ void SystemInfos::Update()
     /* Power */
     int usage;
     float voltage;
-    Model.GetBatteryInfo(&usage, &voltage, buf, sizeof(buf));
-    View.SetBattery(usage, voltage, buf);
+    uint16_t remain_cap, full_cap, design_cap, time_to; 
+    int16_t current, avg_power;
+    Model.GetBatteryInfo(&usage, &voltage, buf, sizeof(buf), &current, &remain_cap, &full_cap, &avg_power, &design_cap, &time_to);
+    View.SetBattery(usage, voltage, buf, current, remain_cap, full_cap, avg_power, design_cap, time_to);
 
     /* Storage */
     bool detect;

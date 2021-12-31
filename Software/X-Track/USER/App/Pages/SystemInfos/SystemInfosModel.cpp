@@ -44,7 +44,9 @@ void SystemInfosModel::GetGPSInfo(
     float* alt,
     char* utc, uint32_t len,
     float* course,
-    float* speed
+    float* speed,
+    float* temp,
+    float* pressure
 )
 {
     HAL::GPS_Info_t gps;
@@ -64,6 +66,8 @@ void SystemInfosModel::GetGPSInfo(
     );
     *course = gps.course;
     *speed = gps.speed;
+    *temp = gps.temperature;
+    *pressure = gps.pressure;
 }
 
 void SystemInfosModel::GetMAGInfo(
@@ -127,7 +131,13 @@ void SystemInfosModel::GetRTCInfo(
 void SystemInfosModel::GetBatteryInfo(
     int* usage,
     float* voltage,
-    char* state, uint32_t len
+    char* state, uint32_t len,
+    int16_t* current,
+    uint16_t* remaining_capacity,
+    uint16_t* fullcharge_capacity,
+    int16_t* average_power,
+    uint16_t* design_capacity,
+    uint16_t* time_to
 )
 {
     HAL::Power_Info_t power;
@@ -136,6 +146,12 @@ void SystemInfosModel::GetBatteryInfo(
     *voltage = power.voltage / 1000.0f;
     strncpy(state, power.isCharging ? "CHARGE" : "DISCHARGE", len);
     state[len - 1] = '\0';
+    *current = power.current;
+    *remaining_capacity = power.remaining_capacity;
+    *fullcharge_capacity = power.fullcharge_capacity;
+    *average_power = power.average_power;
+    *design_capacity = power.design_capacity;
+    *time_to = power.time_to;
 }
 
 void SystemInfosModel::GetStorageInfo(
