@@ -645,6 +645,11 @@
               <FileType>8</FileType>
               <FilePath>..\USER\App\Common\DataProc\DP_TrackFilter.cpp</FilePath>
             </File>
+            <File>
+              <FileName>DP_BacklightCtrl.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Common\DataProc\DP_BacklightCtrl.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2596,6 +2601,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Utils/SunriseCalc</GroupName>
+          <Files>
+            <File>
+              <FileName>SunRiseCalc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\SunRiseCalc\SunRiseCalc.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>HAL</GroupName>
           <GroupOption>
             <CommonProperty>
@@ -3555,6 +3570,31 @@
               <FileName>StackInfo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\StackInfo\StackInfo.c</FilePath>
+            </File>
+            <File>
+              <FileName>BMP280.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\BMP280\BMP280.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>BQ27220.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\BQ27220\BQ27220.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>I2Cdev.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\MPU6050\I2Cdev.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MPU6050.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\MPU6050\MPU6050.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>QMC6310.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\Libraries\QMC6310\QMC6310.cpp</FilePath>
             </File>
           </Files>
         </Group>

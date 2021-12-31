@@ -90,6 +90,8 @@
   "sysConfig.arrowTheme": "default",           //导航箭头主题(default:全黑，dark:橙底黑边，light:橙底白边)
   "sysConfig.mapDirPath": "/MAP",              //存放地图的文件夹路径
   "sysConfig.mapExtName": "bin",               //地图文件扩展名
-  "sysConfig.mapWGS84": 0                      //坐标系统配置(0:GCJ02, 1:WGS84)
+  "sysConfig.mapWGS84": 0,                     //坐标系统配置(0:GCJ02, 1:WGS84)
+  "sysConfig.designCap": 1000,                 //电池设计容量
+  "sysConfig.fullChgCap": 1000                 //电池充满容量(随电池损耗变化，用于持久化电量计数据，不建议修改，值需要小于等于电池设计容量)
 }
 ```

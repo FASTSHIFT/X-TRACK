@@ -82,6 +82,7 @@ uint16_t Power_GetAutoLowPowerTimeout();
 void Power_SetAutoLowPowerEnable(bool en);
 void Power_Shutdown();
 void Power_Update();
+void Power_RevertCapacity(uint16_t designCapacity, uint16_t fullChargeCapacity);
 void Power_EventMonitor();
 void Power_GetInfo(Power_Info_t* info);
 typedef void(*Power_CallbackFunction_t)(void);

@@ -32,7 +32,7 @@ const char* DataProc::MakeTimeString(uint64_t ms, char* buf, uint16_t len)
 static bool Clock_Calibrate(Account* account, HAL::GPS_Info_t* gpsInfo)
 {
     bool retval = false;
-    if(gpsInfo->isVaild)
+    if(gpsInfo->isVaild && gpsInfo->clock.year >= 2020)  // 避免在日期未取得数据且GPS数据可用时修改时间
     {
         HAL::Clock_Info_t clock;
         account->Pull("TzConv", &clock, sizeof(clock));

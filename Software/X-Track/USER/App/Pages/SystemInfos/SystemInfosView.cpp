@@ -47,7 +47,9 @@ void SystemInfosView::Create(lv_obj_t* root)
         "Altitude\n"
         "UTC Time\n\n"
         "Course\n"
-        "Speed"
+        "Speed\n"
+        "Tempera\n"
+        "Pressure"
     );
 
     /* Item MAG */
@@ -99,7 +101,13 @@ void SystemInfosView::Create(lv_obj_t* root)
 
         "Usage\n"
         "Voltage\n"
-        "Status"
+        "Current\n"
+        "Power\n"
+        "Status\n"
+        "Remain\n"
+        "FullCap\n"
+        "DsgnCap\n"
+        "TimeTo"
     );
 
     /* Item Storage */
@@ -309,7 +317,9 @@ void SystemInfosView::SetGPS(
     float alt,
     const char* utc,
     float course,
-    float speed
+    float speed,
+    float temp,
+    float pressure
 )
 {
     lv_label_set_text_fmt(
@@ -318,14 +328,18 @@ void SystemInfosView::SetGPS(
         "%0.6f\n"
         "%0.2fm\n"
         "%s\n"
-        "%0.1f deg\n"
-        "%0.1fkm/h",
+        "%0.1fdeg\n"
+        "%0.1fkm/h\n"
+        "%0.1fC\n"
+        "%0.1fhPA",
         lat,
         lng,
         alt,
         utc,
         course,
-        speed
+        speed,
+        temp,
+        pressure
     );
 }
 
@@ -376,17 +390,35 @@ void SystemInfosView::SetRTC(
 void SystemInfosView::SetBattery(
     int usage,
     float voltage,
-    const char* state
+    const char* state,
+    int16_t current,
+    uint16_t remaining_capacity,
+    uint16_t fullcharge_capacity,
+    int16_t average_power,
+    uint16_t design_capacity,
+    uint16_t time_to
 )
 {
     lv_label_set_text_fmt(
         ui.battery.labelData,
         "%d%%\n"
         "%0.2fV\n"
-        "%s",
+        "%0dmA\n"
+        "%0dmW\n"
+        "%s\n"
+        "%0dmAh\n"
+        "%0dmAh\n"
+        "%0dmAh\n"
+        "%0dmin",
         usage,
         voltage,
-        state
+        current,
+        average_power,
+        state,
+        remaining_capacity,
+        fullcharge_capacity,
+        design_capacity,
+        time_to
     );
 }
 

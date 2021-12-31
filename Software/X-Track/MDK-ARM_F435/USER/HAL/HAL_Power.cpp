@@ -1,5 +1,11 @@
 #include "HAL/HAL.h"
 
+#if CONFIG_LIPO_FUEL_GAUGE_ENABLE
+
+#include "BQ27220/BQ27220.h"
+static BQ27220 fuel_gauge;
+#endif
+
 #define BATT_ADC                    ADC1
 #define BATT_MIN_VOLTAGE            3300
 #define BATT_MAX_VOLTAGE            4200
@@ -14,7 +20,7 @@
 #  define BATT_CHG_DET_STATUS       ((usage == 100) ? false : digitalRead(CONFIG_BAT_CHG_DET_PIN))
 #endif
 
-typedef struct
+struct
 {
     uint32_t LastHandleTime;
     uint16_t AutoLowPowerTimeout;
@@ -22,12 +28,14 @@ typedef struct
     bool ShutdownReq;
     uint16_t ADCValue;
     HAL::Power_CallbackFunction_t EventCallback;
-} Power_t;
-
-static Power_t Power;
+} Power;
 
 static void Power_ADC_Init(adc_type* ADCx)
 {
+#if CONFIG_LIPO_FUEL_GAUGE_ENABLE
+    fuel_gauge.init();
+    fuel_gauge.refreshData();
+#else
     adc_common_config_type adc_common_struct;
     adc_base_config_type adc_base_struct;
 
@@ -65,6 +73,7 @@ static void Power_ADC_Init(adc_type* ADCx)
     while(adc_calibration_init_status_get(ADCx));
     adc_calibration_start(ADCx);
     while(adc_calibration_status_get(ADCx));
+#endif
 }
 
 static uint16_t Power_ADC_GetValue()
@@ -79,6 +88,10 @@ static uint16_t Power_ADC_GetValue()
 
 static void Power_ADC_Update()
 {
+
+#if CONFIG_LIPO_FUEL_GAUGE_ENABLE
+    fuel_gauge.refreshData();
+#else
     static bool isStartConv = false;
 
     if(!isStartConv)
@@ -98,6 +111,7 @@ static void Power_ADC_Update()
         Power.ADCValue = Power_ADC_GetValue();
         isStartConv = false;
     }
+#endif
 }
 
 void HAL::Power_Init()
@@ -114,11 +128,18 @@ void HAL::Power_Init()
 
     Power_ADC_Init(BATT_ADC);
     pinMode(CONFIG_BAT_DET_PIN, INPUT_ANALOG);
+
+#if !CONFIG_LIPO_FUEL_GAUGE_ENABLE
     pinMode(CONFIG_BAT_CHG_DET_PIN, BATT_CHG_DET_PIN_MODE);
 
 //    Power_SetAutoLowPowerTimeout(5 * 60);
 //    Power_HandleTimeUpdate();
     Power_SetAutoLowPowerEnable(false);
+#else
+    Power_SetAutoLowPowerTimeout(60);
+    Power_HandleTimeUpdate();
+    Power_SetAutoLowPowerEnable(true);
+#endif
 }
 
 void HAL::Power_HandleTimeUpdate()
@@ -180,6 +201,7 @@ void HAL::Power_EventMonitor()
 
 void HAL::Power_GetInfo(Power_Info_t* info)
 {
+#if !CONFIG_LIPO_FUEL_GAUGE_ENABLE
     int voltage = map(
                       Power.ADCValue,
                       0, 4095,
@@ -201,7 +223,33 @@ void HAL::Power_GetInfo(Power_Info_t* info)
     info->usage = usage;
     info->isCharging = BATT_CHG_DET_STATUS;
     info->voltage = voltage;
+#else
+    info->voltage = fuel_gauge.voltage;
+    info->usage = uint8_t(fuel_gauge.remaining_capacity * 100.0 / fuel_gauge.fullcharge_capacity);
+    info->isCharging = (!digitalRead(CONFIG_BAT_CHG_DET_PIN)) && (fuel_gauge.battery_status == BQ27220::CHARGING || fuel_gauge.battery_status == BQ27220::FULL);
+    if (info->isCharging)
+    {
+        info->time_to = fuel_gauge.time_to_full;
+    }
+    else
+    {
+        info->time_to = fuel_gauge.time_to_empty;
+    }
+    info->fullcharge_capacity = fuel_gauge.fullcharge_capacity;
+    info->design_capacity = fuel_gauge.design_capacity;
+    info->remaining_capacity = fuel_gauge.remaining_capacity;
+    info->current = fuel_gauge.current;
+    info->average_power = fuel_gauge.average_power;
+#endif
 }
+
+void HAL::Power_RevertCapacity(uint16_t designCapacity, uint16_t fullChargeCapacity)
+{
+#if CONFIG_LIPO_FUEL_GAUGE_ENABLE
+    fuel_gauge.setCapacity(designCapacity, fullChargeCapacity);
+#endif
+}
+
 
 void HAL::Power_SetEventCallback(Power_CallbackFunction_t callback)
 {

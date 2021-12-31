@@ -52,6 +52,9 @@
 #define CONFIG_MAP_EXT_NAME_DEFAULT           "bin"
 #define CONFIG_MAP_PNG_DECODE_ENABLE          1
 
+#define CONFIG_GAUGE_DESIGN_CAP_DEFAULT       1000
+#define CONFIG_GAUGE_FULL_CHG_CAP_DEFAULT     1000
+
 #define CONFIG_ARROW_THEME_DEFAULT            "default"
 
 #define CONFIG_LIVE_MAP_LEVEL_DEFAULT         16

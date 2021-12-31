@@ -99,6 +99,8 @@ typedef struct
     char mapDirPath[16];
     char mapExtName[8];
     bool mapWGS84;
+    uint16_t designCap;
+    uint16_t fullChgCap;
 } SysConfig_Info_t;
 
 /* TrackFilter */

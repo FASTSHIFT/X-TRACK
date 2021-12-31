@@ -145,7 +145,7 @@ void HAL::Display_Init()
     Display_GetFPS(&screen, 50);
     while(1);
 #endif
-    HAL::Backlight_SetGradual(1000, 1000);
+    HAL::Backlight_SetGradual((CONFIG_BACKLIGHT_MIN + CONFIG_BACKLIGHT_MAX) / 2, 1000);
     Serial.println("success");
 }
 

@@ -16,6 +16,10 @@ void HAL::Power_GetInfo(Power_Info_t* info)
     info->isCharging = sysPower.ACLineStatus;
     info->voltage = 3700;
     info->usage = usage;
+    info->current = 200;
+    info->average_power = 600;
+    info->remaining_capacity = 980;
+    info->fullcharge_capacity = 1000;
 }
 
 void HAL::Power_SetEventCallback(Power_CallbackFunction_t callback)
