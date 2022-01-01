@@ -50,7 +50,7 @@
         │      ├─new            -- new / delete 重载
         │      ├─PageManager    -- 页面调度器
         │      ├─PointContainer -- 坐标点压缩容器
-        │      ├─StorageService -- 储存服务管理
+        │      ├─StorageService -- KV储存服务
         │      ├─Stream         -- Arduino Stream 流式库
         │      ├─TileConv       -- 瓦片算法坐标转换器
         │      ├─Time           -- 时间转换算法库
