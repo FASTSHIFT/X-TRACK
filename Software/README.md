@@ -1,4 +1,4 @@
-## 系统架构
+## 目录结构
 ```
  X-Track
     ├─ArduinoAPI                -- 通用 Arduino 抽象层
