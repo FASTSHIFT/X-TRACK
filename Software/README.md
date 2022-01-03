@@ -1,9 +1,9 @@
-## 系统架构
+## 目录结构
 ```
  X-Track
-    ├─ArduinoAPI                -- 通用 Arduino 抽象层
+    ├─ArduinoAPI                -- 通用 Arduino API 抽象层
     ├─Core                      -- 基于标准库二次封装的抽象层
-    ├─Doc                       -- 芯片文档
+    ├─Doc                       -- 芯片相关文档
     ├─Libraries                 -- 硬件驱动程序
     │  ├─Adafruit_GFX_Library   -- Adafruit_GFX轻量级图形库
     │  ├─Adafruit_ST7789        -- ST7789屏幕驱动
@@ -22,8 +22,8 @@
     └─USER                      -- 用户程序
         ├─App                   -- 应用层
         │  ├─Common             -- 通用程序
-        │  │  ├─DataProc        -- 应用数据处理层
-        │  │  ├─HAL             -- 应用抽象层
+        │  │  ├─DataProc        -- 应用后台数据处理
+        │  │  ├─HAL             -- 硬件抽象层定义/Mock实现
         │  │  └─Music           -- 操作音管理
         │  ├─Config             -- 应用配置文件
         │  ├─Pages              -- 页面
@@ -46,23 +46,23 @@
         │      ├─lv_ext         -- lvgl功能扩展
         │      ├─lv_lib_png     -- PNG解码库
         │      ├─lv_poly_line   -- 多段线控件
-        │      ├─MapConv        -- WGS84 / GCJ02 地图坐标转换器
-        │      ├─new            -- new / delete 重载
+        │      ├─MapConv        -- WGS84/GCJ02 地图坐标转换器
+        │      ├─new            -- new/delete 重载
         │      ├─PageManager    -- 页面调度器
-        │      ├─PointContainer -- 坐标点压缩容器
-        │      ├─StorageService -- 储存服务管理
+        │      ├─PointContainer -- 坐标压缩容器
+        │      ├─StorageService -- KV储存服务
         │      ├─Stream         -- Arduino Stream 流式库
-        │      ├─TileConv       -- 瓦片算法坐标转换器
+        │      ├─TileConv       -- 瓦片坐标转换器
         │      ├─Time           -- 时间转换算法库
         │      ├─TonePlayer     -- 异步方波音乐播放器
-        │      ├─TrackFilter    -- 轨迹坐标点滤波器
+        │      ├─TrackFilter    -- 流式轨迹坐标拐点/线段提取器
         │      └─WString        -- Arduino WString 字符串库
-        ├─HAL                   -- 器件抽象层
-        └─lv_port               -- lvgl接口
+        ├─HAL                   -- 硬件抽象层
+        └─lv_port               -- lvgl与硬件的接口
 ```
 ## 编译说明
-* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（因为旧编译器不能完全支持**C++ 11**的语法
-* 安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方PACK:
+* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（旧版本编译器不能完全支持**C++ 11**的语法）。
+* 编译前需要安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方Pack:
 > [AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.7.zip)
 > 
 > [AT32F43x标准外设库](https://www.arterytek.com/download/Keil5_AT32MCU_AddOn_CH_V2.0.6.zip)
