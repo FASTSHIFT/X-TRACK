@@ -175,6 +175,13 @@ void HAL::Power_Update()
     if(!Power.AutoLowPowerEnable)
         return;
 
+#if CONFIG_LIPO_FUEL_GAUGE_ENABLE
+    if((!fuel_gauge.should_power_off) && fuel_gauge.voltage > BATT_MIN_VOLTAGE)
+    {
+        Power_HandleTimeUpdate();
+    }
+#endif
+
     if(Power.AutoLowPowerTimeout == 0)
         return;
 
