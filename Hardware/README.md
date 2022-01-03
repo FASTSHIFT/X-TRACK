@@ -24,3 +24,6 @@
 
 ## 焊接
 * [焊接教程](https://github.com/FASTSHIFT/X-TRACK/blob/main/Hardware/%E7%84%8A%E6%8E%A5%E8%B0%83%E8%AF%95%E6%8C%87%E5%8C%97.md)
+
+## 2.0寸屏版本
+https://github.com/FASTSHIFT/X-TRACK/tree/2.0-inch by[@HanfG](https://github.com/HanfG)
