@@ -17,9 +17,10 @@
 * 屏幕 (选择 裸屏) https://item.taobao.com/item.htm?id=600653923469
 * 调试口 (选择 4P弯针) https://item.taobao.com/item.htm?id=522574977704
 * 码表底座 (选择 竖向按装拓展片孔距M3*20~21mm[塑胶材料 3g]) https://item.taobao.com/item.htm?id=599529362799
-* GPS模块 (ATGM336H) https://item.taobao.com/item.htm?&id=603186739934
-* Pad (非实体元件，只是焊接电池线的焊盘)
-* AON3400 (AO3400 N沟道MOS管)
+* GPS模块 (ATGM336H) https://item.taobao.com/item.htm?id=603186739934
+* AON3400 (AO3400 N沟道MOS管) https://item.taobao.com/item.htm?id=522574089119
+* 侧盖螺丝 https://item.taobao.com/item.htm?id=522574685586
+* Pad (焊接电池线的焊盘，非实体元件)
 
 ## 焊接
 * [焊接教程](https://github.com/FASTSHIFT/X-TRACK/blob/main/Hardware/%E7%84%8A%E6%8E%A5%E8%B0%83%E8%AF%95%E6%8C%87%E5%8C%97.md)
