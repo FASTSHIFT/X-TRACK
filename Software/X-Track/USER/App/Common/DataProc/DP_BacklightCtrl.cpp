@@ -59,9 +59,9 @@ static bool calculatedSunriseTime = false;
  * F: (SunsetTime + CONFIG_BACKLIGHT_CTRL_RANGE, CONFIG_BACKLIGHT_MIN)
  */
 static int16_t calcBacklightLevel(uint8_t hour, uint8_t minute, uint8_t second){
-    int16_t nowSeconds = MINUTE_OF_DAY(hour, minute) * 60 + second;
-    int16_t sunriseSeconds = MINUTE_OF_DAY(sunriseHour, sunriseMinute) * 60;
-    int16_t sunsetSeconds = MINUTE_OF_DAY(sunsetHour, sunsetMinute) * 60;
+    int32_t nowSeconds = MINUTE_OF_DAY(hour, minute) * 60 + second;
+    int32_t sunriseSeconds = MINUTE_OF_DAY(sunriseHour, sunriseMinute) * 60;
+    int32_t sunsetSeconds = MINUTE_OF_DAY(sunsetHour, sunsetMinute) * 60;
     if (sunriseSeconds + LIGHT_CTRL_SECOND_RANGE <= nowSeconds && nowSeconds <= sunsetSeconds - LIGHT_CTRL_SECOND_RANGE)
     {
         return MAX_LIGHT_LEVEL;
