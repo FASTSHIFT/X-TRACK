@@ -27,7 +27,7 @@
 #define BATT_USAGE_HEIGHT (lv_obj_get_style_height(ui.battery.img, 0) - 6)
 #define BATT_USAGE_WIDTH  (lv_obj_get_style_width(ui.battery.img, 0) - 4)
 
-#define STATUS_BAR_HEIGHT 22
+#define STATUS_BAR_HEIGHT 24
 
 static Account* actStatusBar;
 
@@ -241,7 +241,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     static lv_style_t style;
     lv_style_init(&style);
     lv_style_set_text_color(&style, lv_color_white());
-    lv_style_set_text_font(&style, ResourcePool::GetFont("bahnschrift_13"));
+    lv_style_set_text_font(&style, ResourcePool::GetFont("bahnschrift_17"));
 
     /* satellite */
     lv_obj_t* img = lv_img_create(cont);

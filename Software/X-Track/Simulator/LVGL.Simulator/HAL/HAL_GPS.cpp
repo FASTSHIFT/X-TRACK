@@ -125,13 +125,15 @@ bool HAL::GPS_GetInfo(GPS_Info_t* info)
 
 void HAL::GPS_Init()
 {
+    gpsInfo.isVaild = true;
+    gpsInfo.satellites = 10;
     gpsInfo.longitude = CONFIG_GPS_LONGITUDE_DEFAULT;
     gpsInfo.latitude = CONFIG_GPS_LATITUDE_DEFAULT;
-    gpsInfo.isVaild = Parser_Init(&gpxParser, &fileInfo);
 
-    if (gpsInfo.isVaild)
+    bool success = Parser_Init(&gpxParser, &fileInfo);
+
+    if (success)
     {
-        gpsInfo.satellites = 10;
         lv_timer_create(
             [](lv_timer_t* timer) {
                 GPS_Update();

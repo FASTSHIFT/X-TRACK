@@ -1,6 +1,7 @@
 #include "DataProc.h"
 #include "Utils/Filters/Filters.h"
 #include "../HAL/HAL.h"
+#include "HAL/HAL_Config.h"
 
 static void onTimer(Account* account)
 {
@@ -20,8 +21,10 @@ static void onTimer(Account* account)
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
+#if !CONFIG_LIPO_FUEL_GAUGE_ENABLE
     static Filter::Hysteresis<int16_t>      battUsageHysFilter(2);
     static Filter::MedianQueue<int16_t, 10> battUsageMqFilter;
+#endif
 
     if (param->event == Account::EVENT_TIMER)
     {
@@ -42,10 +45,14 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     HAL::Power_Info_t powerInfo;
     HAL::Power_GetInfo(&powerInfo);
 
+#if !CONFIG_LIPO_FUEL_GAUGE_ENABLE
     int16_t usage = powerInfo.usage;
     usage = battUsageHysFilter.GetNext(usage);
     usage = battUsageMqFilter.GetNext(usage);
     powerInfo.usage = (uint8_t)usage;
+#else
+    powerInfo.usage = (uint8_t)powerInfo.usage;
+#endif
 
     memcpy(param->data_p, &powerInfo, param->size);
 

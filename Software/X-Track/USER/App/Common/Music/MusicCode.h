@@ -93,6 +93,16 @@ MUSIC_DEF(NoOperationWarning)
     {4000, 40},
 };
 
+/*设置电量计*/
+MUSIC_DEF(GaugeSetting) 
+{
+    {6500, 50},
+    {0, 50},
+    {6500, 50},
+    {0, 50},
+    {6500, 50},
+};
+
 /*列表数据类型定义*/
 typedef struct
 {
@@ -117,4 +127,5 @@ static const MusicList_t MusicList[] =
     ADD_MUSIC(DeviceInsert),
     ADD_MUSIC(DevicePullout),
     ADD_MUSIC(NoOperationWarning),
+    ADD_MUSIC(GaugeSetting),
 };
