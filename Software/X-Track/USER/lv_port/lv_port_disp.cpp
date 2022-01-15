@@ -31,7 +31,7 @@ void lv_port_disp_init()
 {
     HAL::Display_SetSendFinishCallback(disp_send_finish_callback);
 
-    static lv_color_t lv_disp_buf[CONFIG_SCREEN_BUFFER_SIZE];
+    static lv_color_t lv_disp_buf[CONFIG_SCREEN_BUFFER_SIZE - 7 * 1024];
 
     static lv_disp_draw_buf_t disp_buf;
     lv_disp_draw_buf_init(&disp_buf, lv_disp_buf, NULL, CONFIG_SCREEN_BUFFER_SIZE);
