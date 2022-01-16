@@ -2,6 +2,8 @@
 #include "lvgl/lvgl.h"
 #include "HAL/HAL.h"
 
+#define SCR_BUFF_SIZE (CONFIG_SCREEN_BUFFER_SIZE - CONFIG_SCREEN_HOR_RES * 29)
+
 static lv_disp_drv_t* disp_drv_p;
 
 static void disp_flush_cb(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
@@ -31,10 +33,10 @@ void lv_port_disp_init()
 {
     HAL::Display_SetSendFinishCallback(disp_send_finish_callback);
 
-    static lv_color_t lv_disp_buf[CONFIG_SCREEN_BUFFER_SIZE];
+    static lv_color_t lv_disp_buf[SCR_BUFF_SIZE];
 
     static lv_disp_draw_buf_t disp_buf;
-    lv_disp_draw_buf_init(&disp_buf, lv_disp_buf, NULL, CONFIG_SCREEN_BUFFER_SIZE);
+    lv_disp_draw_buf_init(&disp_buf, lv_disp_buf, NULL, SCR_BUFF_SIZE);
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;
