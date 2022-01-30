@@ -39,7 +39,7 @@
 #  define CONFIG_GPS_REFR_PERIOD              1000 // ms
 #else
 #  define CONFIG_GPS_REFR_PERIOD              10 // ms
-#endif 
+#endif
 
 #define CONFIG_GPS_LONGITUDE_DEFAULT          116.391332f
 #define CONFIG_GPS_LATITUDE_DEFAULT           39.907415f
@@ -49,8 +49,18 @@
 
 #define CONFIG_MAP_USE_WGS84_DEFAULT          false
 #define CONFIG_MAP_DIR_PATH_DEFAULT           "/MAP"
+
 #define CONFIG_MAP_EXT_NAME_DEFAULT           "bin"
-#define CONFIG_MAP_PNG_DECODE_ENABLE          1
+
+#ifdef ARDUINO
+#  define CONFIG_MAP_PNG_DECODE_ENABLE        0
+#else
+#  define CONFIG_MAP_PNG_DECODE_ENABLE        1
+#endif
+
+#ifndef CONFIG_MAP_IMG_PNG_ENABLE
+#  define CONFIG_MAP_IMG_PNG_ENABLE           0
+#endif
 
 #define CONFIG_ARROW_THEME_DEFAULT            "default"
 

@@ -47,7 +47,7 @@
 
 #define CONFIG_SCREEN_HOR_RES       240
 #define CONFIG_SCREEN_VER_RES       240
-#define CONFIG_SCREEN_BUFFER_SIZE   (CONFIG_SCREEN_HOR_RES * CONFIG_SCREEN_VER_RES)
+#define CONFIG_SCREEN_BUFFER_SIZE  (CONFIG_SCREEN_HOR_RES * CONFIG_SCREEN_VER_RES)
 
 /* Battery */
 #define CONFIG_BAT_DET_PIN          PA1
@@ -97,10 +97,14 @@
 /* HAL Interrupt Update Timer */
 #define CONFIG_HAL_UPDATE_TIM       TIM4
 
-/* Show stack Info */
+/* Show Stack & Heap Info */
 #define CONFIG_SHOW_STACK_INFO      0
-
-/* Show heap Info */
 #define CONFIG_SHOW_HEAP_INFO       0
+
+/* Use Watch Dog */
+#define CONFIG_WATCH_DOG_ENABLE     1
+#if CONFIG_WATCH_DOG_ENABLE
+#  define CONFIG_WATCH_DOG_TIMEOUT (10 * 1000) // [ms]
+#endif
 
 #endif

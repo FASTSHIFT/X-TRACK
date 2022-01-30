@@ -362,3 +362,14 @@
 * 8.添加轨迹记录状态指示渐变动画
 * 9.添加文本动画组件lv_anim_label，替换旧的lv_label_anim_effect
 * 10.去除lv_settings
+
+## [v2.3] - 2022-1-30
+* 1.Arduino API 更新
+* 2.添加wdg看门狗，系统卡死时自动重启
+* 3.lvgl主程序更新
+* 4.添加低内存开销(<50KB)的PNGdec解码器（暂不启用）
+* 5.更新LiveMap，适配新的PNGdec
+* 6.更新StatusBar，调整字体，新的轨迹记录状态指示渐变动画
+* 7.ResourceManager从PageManager分离
+* 8.lv_anim_label组件从lv_ext分离
+* 9.添加lv_img_png组件

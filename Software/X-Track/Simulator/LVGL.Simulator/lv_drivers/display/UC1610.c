@@ -52,7 +52,7 @@
 #define UC1610_SET_SCROLL_LINES_MSB         0x50      /* + 3 MSB bits */
 #define UC1610_SET_ALL_PIXEL_ON             0xA4      /* + 1 / 0 : set all pixel on, reverse */
 #define UC1610_SET_INVERSE_DISPLAY          0xA6      /* + 1 / 0 : inverse all data stored in ram, reverse */
-#define UC1610_SET_MAPPING_CONTROL          0xC0      /* control mirorring */
+#define UC1610_SET_MAPPING_CONTROL          0xC0      /* control mirroring */
 #define UC1610_SET_MAPPING_CONTROL_LC_FLAG  1
 #define UC1610_SET_MAPPING_CONTROL_MX_FLAG  (1 << 1)
 #define UC1610_SET_MAPPING_CONTROL_MY_FLAG  (1 << 2)

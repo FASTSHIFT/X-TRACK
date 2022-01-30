@@ -66,6 +66,7 @@ public:
         lv_img_set_angle(img, int16_t(angle * 10));
     }
     void SetMapTile(uint32_t tileSize, uint32_t widthCnt);
+    void SetMapTileSrc(uint32_t index, const char* src);
     void SetArrowTheme(const char* theme);
     void SetLineActivePoint(lv_coord_t x, lv_coord_t y);
 

@@ -24,7 +24,7 @@
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <EnableASAN>false</EnableASAN>
+    <EnableASAN>true</EnableASAN>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -32,7 +32,7 @@
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <EnableASAN>false</EnableASAN>
+    <EnableASAN>true</EnableASAN>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -76,6 +76,12 @@
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</MultiProcessorCompilation>
       <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -119,9 +125,19 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX\GPX.h" />
     <ClInclude Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_anim_label\lv_anim_label.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\lv_img_png.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\crc32.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inffast.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inffixed.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inflate.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zconf.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zlib.h" />
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.h" />
@@ -132,8 +148,8 @@
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PageFactory.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PageManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h" />
-    <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\PointContainer\PointContainer.h" />
+    <ClInclude Include="..\..\USER\App\Utils\ResourceManager\ResourceManager.h" />
     <ClInclude Include="..\..\USER\App\Utils\StorageService\StorageService.h" />
     <ClInclude Include="..\..\USER\App\Utils\Stream\Print.h" />
     <ClInclude Include="..\..\USER\App\Utils\Stream\Printable.h" />
@@ -178,7 +194,6 @@
     <ClInclude Include="lvgl\src\core\lv_theme.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_arc.h" />
-    <ClInclude Include="lvgl\src\draw\lv_draw_blend.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_img.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_label.h" />
     <ClInclude Include="lvgl\src\draw\lv_draw_line.h" />
@@ -208,6 +223,7 @@
     <ClInclude Include="lvgl\src\extra\widgets\keyboard\lv_keyboard.h" />
     <ClInclude Include="lvgl\src\extra\widgets\led\lv_led.h" />
     <ClInclude Include="lvgl\src\extra\widgets\list\lv_list.h" />
+    <ClInclude Include="lvgl\src\extra\widgets\menu\lv_menu.h" />
     <ClInclude Include="lvgl\src\extra\widgets\meter\lv_meter.h" />
     <ClInclude Include="lvgl\src\extra\widgets\msgbox\lv_msgbox.h" />
     <ClInclude Include="lvgl\src\extra\widgets\span\lv_span.h" />
@@ -222,10 +238,6 @@
     <ClInclude Include="lvgl\src\font\lv_font_fmt_txt.h" />
     <ClInclude Include="lvgl\src\font\lv_font_loader.h" />
     <ClInclude Include="lvgl\src\font\lv_symbol_def.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_pxp.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_pxp_osa.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_vglite.h" />
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_stm32_dma2d.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal_disp.h" />
     <ClInclude Include="lvgl\src\hal\lv_hal_indev.h" />
@@ -342,9 +354,18 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c" />
     <ClCompile Include="..\..\USER\App\Utils\GPX\GPX.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\GPX_Parser\GPX_Parser.cpp" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_anim_label\lv_anim_label.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\lv_img_png.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\adler32.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\crc32.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\infback.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inffast.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inflate.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.c" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp" />
@@ -357,8 +378,8 @@
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Router.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_State.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Anim.cpp" />
-    <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PointContainer\PointContainer.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\StorageService\StorageService.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Stream\Print.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\Stream\Stream.cpp" />
@@ -500,10 +521,10 @@
     <ClCompile Include="lvgl\src\core\lv_theme.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_arc.c" />
-    <ClCompile Include="lvgl\src\draw\lv_draw_blend.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_img.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_label.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c" />
+    <ClCompile Include="lvgl\src\draw\lv_draw_mask.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_triangle.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_buf.c" />
@@ -512,10 +533,10 @@
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_arc.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_blend.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_gradient.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_img.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_letter.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c" />
-    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_mask.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c" />
     <ClCompile Include="lvgl\src\extra\layouts\flex\lv_flex.c" />
@@ -534,6 +555,7 @@
     <ClCompile Include="lvgl\src\extra\widgets\keyboard\lv_keyboard.c" />
     <ClCompile Include="lvgl\src\extra\widgets\led\lv_led.c" />
     <ClCompile Include="lvgl\src\extra\widgets\list\lv_list.c" />
+    <ClCompile Include="lvgl\src\extra\widgets\menu\lv_menu.c" />
     <ClCompile Include="lvgl\src\extra\widgets\meter\lv_meter.c" />
     <ClCompile Include="lvgl\src\extra\widgets\msgbox\lv_msgbox.c" />
     <ClCompile Include="lvgl\src\extra\widgets\span\lv_span.c" />
@@ -573,10 +595,6 @@
     <ClCompile Include="lvgl\src\font\lv_font_simsun_16_cjk.c" />
     <ClCompile Include="lvgl\src\font\lv_font_unscii_16.c" />
     <ClCompile Include="lvgl\src\font\lv_font_unscii_8.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_pxp.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_pxp_osa.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_vglite.c" />
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_stm32_dma2d.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_disp.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_indev.c" />
     <ClCompile Include="lvgl\src\hal\lv_hal_tick.c" />
@@ -624,6 +642,7 @@
   <ItemGroup>
     <None Include="..\..\USER\App\Common\DataProc\DP_LIST.inc" />
     <None Include="..\..\USER\App\Common\Music\MusicCode.h" />
+    <None Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\png.inl" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\bug-report.md" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\config.yml" />
     <None Include="lvgl\.github\ISSUE_TEMPLATE\dev-discussion.md" />
@@ -831,7 +850,6 @@
     <None Include="lvgl\src\draw\lv_draw.mk" />
     <None Include="lvgl\src\extra\extra.mk" />
     <None Include="lvgl\src\font\lv_font.mk" />
-    <None Include="lvgl\src\gpu\lv_gpu.mk" />
     <None Include="lvgl\src\hal\lv_hal.mk" />
     <None Include="lvgl\src\misc\lv_misc.mk" />
     <None Include="lvgl\src\widgets\lv_widgets.mk" />
@@ -880,7 +898,6 @@
     <ClCompile Include="lv_drivers\display\fbdev.c" />
     <ClCompile Include="lv_drivers\display\GC9A01.c" />
     <ClCompile Include="lv_drivers\display\ILI9341.c" />
-    <ClCompile Include="lv_drivers\display\monitor.c" />
     <ClCompile Include="lv_drivers\display\R61581.c" />
     <ClCompile Include="lv_drivers\display\SHARP_MIP.c" />
     <ClCompile Include="lv_drivers\display\SSD1963.c" />
@@ -890,10 +907,7 @@
     <ClCompile Include="lv_drivers\indev\AD_touch.c" />
     <ClCompile Include="lv_drivers\indev\evdev.c" />
     <ClCompile Include="lv_drivers\indev\FT5406EE8.c" />
-    <ClCompile Include="lv_drivers\indev\keyboard.c" />
     <ClCompile Include="lv_drivers\indev\libinput.c" />
-    <ClCompile Include="lv_drivers\indev\mouse.c" />
-    <ClCompile Include="lv_drivers\indev\mousewheel.c" />
     <ClCompile Include="lv_drivers\indev\XPT2046.c" />
     <ClCompile Include="lv_drivers\wayland\wayland.c" />
     <ClCompile Include="lv_drivers\win32drv\win32drv.c" />

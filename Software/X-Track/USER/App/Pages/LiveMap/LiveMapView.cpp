@@ -5,6 +5,15 @@
 
 using namespace Page;
 
+#if CONFIG_MAP_IMG_PNG_ENABLE
+#include "Utils/lv_img_png/lv_img_png.h"
+#  define TILE_IMG_CREATE  lv_img_png_create
+#  define TILE_IMG_SET_SRC lv_img_png_set_src
+#else
+#  define TILE_IMG_CREATE  lv_img_create
+#  define TILE_IMG_SET_SRC lv_img_set_src
+#endif
+
 void LiveMapView::Create(lv_obj_t* root, uint32_t tileNum)
 {
     lv_obj_remove_style_all(root);
@@ -78,7 +87,7 @@ void LiveMapView::Map_Create(lv_obj_t* par, uint32_t tileNum)
 
     for (uint32_t i = 0; i < tileNum; i++)
     {
-        lv_obj_t* img = lv_img_create(cont);
+        lv_obj_t* img = TILE_IMG_CREATE(cont);
         lv_obj_remove_style_all(img);
         ui.map.imgTiles[i] = img;
     }
@@ -112,6 +121,16 @@ void LiveMapView::SetMapTile(uint32_t tileSize, uint32_t widthCnt)
         lv_coord_t y = (i / widthCnt) * tileSize;
         lv_obj_set_pos(img, x, y);
     }
+}
+
+void LiveMapView::SetMapTileSrc(uint32_t index, const char* src)
+{
+    if (index >= ui.map.tileNum)
+    {
+        return;
+    }
+
+    TILE_IMG_SET_SRC(ui.map.imgTiles[index], src);
 }
 
 void LiveMapView::SetArrowTheme(const char* theme)

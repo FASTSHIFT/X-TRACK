@@ -12,8 +12,6 @@
 #if USE_WIN32DRV
 
 #include <windowsx.h>
-#include <VersionHelpers.h>
-#include <ShellScalingApi.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -30,6 +28,10 @@
 
 #ifndef WIN32DRV_MONITOR_ZOOM
 #define WIN32DRV_MONITOR_ZOOM 1
+#endif
+
+#ifndef USER_DEFAULT_SCREEN_DPI
+#define USER_DEFAULT_SCREEN_DPI 96
 #endif
 
 /**********************
@@ -498,21 +500,27 @@ static HDC lv_win32_create_frame_buffer(
 
 static BOOL lv_win32_enable_child_window_dpi_message(
     HWND WindowHandle)
-{
-    // This hack is only for Windows 10 only.
-    if (!IsWindowsVersionOrGreater(10, 0, 0))
-    {
-        return FALSE;
-    }
-
+{ 
+    // This hack is only for Windows 10 TH1/TH2 only.
     // We don't need this hack if the Per Monitor Aware V2 is existed.
     OSVERSIONINFOEXW OSVersionInfoEx = { 0 };
     OSVersionInfoEx.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEXW);
+    OSVersionInfoEx.dwMajorVersion = 10;
+    OSVersionInfoEx.dwMinorVersion = 0;
     OSVersionInfoEx.dwBuildNumber = 14393;
-    if (VerifyVersionInfoW(
+    if (!VerifyVersionInfoW(
         &OSVersionInfoEx,
-        VER_BUILDNUMBER,
-        VerSetConditionMask(0, VER_BUILDNUMBER, VER_GREATER_EQUAL)))
+        VER_MAJORVERSION | VER_MINORVERSION | VER_BUILDNUMBER,
+        VerSetConditionMask(
+            VerSetConditionMask(
+                VerSetConditionMask(
+                    0,
+                    VER_MAJORVERSION,
+                    VER_GREATER_EQUAL),
+                VER_MINORVERSION,
+                VER_GREATER_EQUAL),
+            VER_BUILDNUMBER,
+            VER_LESS)))
     {
         return FALSE;
     }
@@ -610,8 +618,15 @@ static UINT lv_win32_get_dpi_for_window(
     HMODULE ModuleHandle = LoadLibraryW(L"SHCore.dll");
     if (ModuleHandle)
     {
+        typedef enum MONITOR_DPI_TYPE_PRIVATE {
+            MDT_EFFECTIVE_DPI = 0,
+            MDT_ANGULAR_DPI = 1,
+            MDT_RAW_DPI = 2,
+            MDT_DEFAULT = MDT_EFFECTIVE_DPI
+        } MONITOR_DPI_TYPE_PRIVATE;
+
         typedef HRESULT(WINAPI* FunctionType)(
-            HMONITOR, MONITOR_DPI_TYPE, UINT*, UINT*);
+            HMONITOR, MONITOR_DPI_TYPE_PRIVATE, UINT*, UINT*);
 
         FunctionType pFunction = (FunctionType)(
             GetProcAddress(ModuleHandle, "GetDpiForMonitor"));

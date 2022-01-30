@@ -238,9 +238,6 @@
     <Filter Include="lvgl\src\font">
       <UniqueIdentifier>{de920f99-14e4-4ab8-8426-91e0712e3c47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lvgl\src\gpu">
-      <UniqueIdentifier>{d86f8cec-4b9d-4887-a303-93e2dda96b47}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lvgl\src\hal">
       <UniqueIdentifier>{54d56121-ab82-4de1-86b2-ac80e09c14e9}</UniqueIdentifier>
     </Filter>
@@ -400,6 +397,21 @@
     <Filter Include="App\Utils\DataCenter\PingPongBuffer">
       <UniqueIdentifier>{8b0faae2-7768-4e8d-8481-b69068f9bd47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Utils\ResourceManager">
+      <UniqueIdentifier>{fdd64fbc-3fe3-4bb3-afb5-c49440104f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\widgets\menu">
+      <UniqueIdentifier>{b4a98cd0-65f8-449c-a4c3-513b3e89e47c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\lv_img_png">
+      <UniqueIdentifier>{9b8c5a23-b05a-4343-9f18-079416be5cf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\lv_img_png\PNGdec">
+      <UniqueIdentifier>{48d96f6d-e671-4bf4-9744-7aeebccb5411}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\Utils\lv_anim_label">
+      <UniqueIdentifier>{05f8a74d-5443-4751-a75b-95bdd619725b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -481,9 +493,6 @@
       <Filter>lvgl\src\draw</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\src\draw\lv_draw_arc.h">
-      <Filter>lvgl\src\draw</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\src\draw\lv_draw_blend.h">
       <Filter>lvgl\src\draw</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\src\draw\lv_draw_img.h">
@@ -590,18 +599,6 @@
     </ClInclude>
     <ClInclude Include="lvgl\src\font\lv_symbol_def.h">
       <Filter>lvgl\src\font</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_pxp.h">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_pxp_osa.h">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_nxp_vglite.h">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClInclude>
-    <ClInclude Include="lvgl\src\gpu\lv_gpu_stm32_dma2d.h">
-      <Filter>lvgl\src\gpu</Filter>
     </ClInclude>
     <ClInclude Include="lvgl\src\hal\lv_hal.h">
       <Filter>lvgl\src\hal</Filter>
@@ -784,9 +781,6 @@
       <Filter>App\Utils\PageManager</Filter>
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\PageManager\PM_Log.h">
-      <Filter>App\Utils\PageManager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\PageManager\ResourceManager.h">
       <Filter>App\Utils\PageManager</Filter>
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Resource\ResourcePool.h">
@@ -990,8 +984,44 @@
     <ClInclude Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.h">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.h">
-      <Filter>App\Utils\lv_ext</Filter>
+    <ClInclude Include="..\..\USER\App\Utils\ResourceManager\ResourceManager.h">
+      <Filter>App\Utils\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\widgets\menu\lv_menu.h">
+      <Filter>lvgl\src\extra\widgets\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\lv_img_png.h">
+      <Filter>App\Utils\lv_img_png</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\crc32.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inffast.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inffixed.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inflate.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zconf.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zlib.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.h">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\USER\App\Utils\lv_anim_label\lv_anim_label.h">
+      <Filter>App\Utils\lv_anim_label</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1346,9 +1376,6 @@
     <ClCompile Include="lvgl\src\draw\lv_draw_arc.c">
       <Filter>lvgl\src\draw</Filter>
     </ClCompile>
-    <ClCompile Include="lvgl\src\draw\lv_draw_blend.c">
-      <Filter>lvgl\src\draw</Filter>
-    </ClCompile>
     <ClCompile Include="lvgl\src\draw\lv_draw_img.c">
       <Filter>lvgl\src\draw</Filter>
     </ClCompile>
@@ -1520,18 +1547,6 @@
     <ClCompile Include="lvgl\src\font\lv_font_unscii_8.c">
       <Filter>lvgl\src\font</Filter>
     </ClCompile>
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_pxp.c">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_pxp_osa.c">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_nxp_vglite.c">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClCompile>
-    <ClCompile Include="lvgl\src\gpu\lv_gpu_stm32_dma2d.c">
-      <Filter>lvgl\src\gpu</Filter>
-    </ClCompile>
     <ClCompile Include="lvgl\src\hal\lv_hal_disp.c">
       <Filter>lvgl\src\hal</Filter>
     </ClCompile>
@@ -1683,9 +1698,6 @@
       <Filter>App\Utils\PageManager</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_State.cpp">
-      <Filter>App\Utils\PageManager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\PageManager\ResourceManager.cpp">
       <Filter>App\Utils\PageManager</Filter>
     </ClCompile>
     <ClCompile Include="..\..\USER\App\Resource\ResourcePool.cpp">
@@ -2003,9 +2015,6 @@
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c">
       <Filter>lvgl\src\draw\sw</Filter>
     </ClCompile>
-    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_mask.c">
-      <Filter>lvgl\src\draw\sw</Filter>
-    </ClCompile>
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c">
       <Filter>lvgl\src\draw\sw</Filter>
     </ClCompile>
@@ -2021,8 +2030,47 @@
     <ClCompile Include="..\..\USER\App\Utils\DataCenter\PingPongBuffer\PingPongBuffer.c">
       <Filter>App\Utils\DataCenter\PingPongBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_ext\lv_anim_label.c">
-      <Filter>App\Utils\lv_ext</Filter>
+    <ClCompile Include="..\..\USER\App\Utils\ResourceManager\ResourceManager.cpp">
+      <Filter>App\Utils\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\widgets\menu\lv_menu.c">
+      <Filter>lvgl\src\extra\widgets\menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\lv_img_png.cpp">
+      <Filter>App\Utils\lv_img_png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\adler32.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\crc32.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\infback.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inffast.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inflate.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.cpp">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.c">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\lv_anim_label\lv_anim_label.c">
+      <Filter>App\Utils\lv_anim_label</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\lv_draw_mask.c">
+      <Filter>lvgl\src\draw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_gradient.c">
+      <Filter>lvgl\src\draw\sw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2647,9 +2695,6 @@
     <None Include="lvgl\src\font\lv_font.mk">
       <Filter>lvgl\src\font</Filter>
     </None>
-    <None Include="lvgl\src\gpu\lv_gpu.mk">
-      <Filter>lvgl\src\gpu</Filter>
-    </None>
     <None Include="lvgl\src\hal\lv_hal.mk">
       <Filter>lvgl\src\hal</Filter>
     </None>
@@ -2706,6 +2751,9 @@
     </None>
     <None Include="..\..\USER\App\Common\Music\MusicCode.h">
       <Filter>App\Common\Music</Filter>
+    </None>
+    <None Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\png.inl">
+      <Filter>App\Utils\lv_img_png\PNGdec</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -2818,9 +2866,6 @@
     <ClCompile Include="lv_drivers\display\ILI9341.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\display\monitor.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
     <ClCompile Include="lv_drivers\display\R61581.c">
       <Filter>lv_drivers\display</Filter>
     </ClCompile>
@@ -2848,16 +2893,7 @@
     <ClCompile Include="lv_drivers\indev\FT5406EE8.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
-    <ClCompile Include="lv_drivers\indev\keyboard.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
     <ClCompile Include="lv_drivers\indev\libinput.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\mouse.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\mousewheel.c">
       <Filter>lv_drivers\indev</Filter>
     </ClCompile>
     <ClCompile Include="lv_drivers\indev\XPT2046.c">

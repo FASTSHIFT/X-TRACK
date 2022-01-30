@@ -65,7 +65,7 @@ In "Project properties > C/C++ Build > Settings" set the followings:
   lv_indev_drv_init(&indev_drv_mouse);
   indev_drv_mouse.type = LV_INDEV_TYPE_POINTER;
 ```
-6. Akk keyboard:
+6. Add keyboard:
 ```c
   lv_indev_drv_t indev_drv_kb;
   lv_indev_drv_init(&indev_drv_kb);

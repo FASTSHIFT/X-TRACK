@@ -27,7 +27,7 @@
 #include "at32f435_437_conf.h"
 #include "../mcu_config.h"
 
-#define __KEILDUINO__               110
+#define __KEILDUINO__               120
 
 #define __AT32__
 #define __AT32F4__

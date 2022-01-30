@@ -285,7 +285,7 @@ void LiveMap::MapTileContReload()
         char path[64];
         Model.mapConv.ConvertMapPath(pos.x, pos.y, path, sizeof(path));
 
-        lv_img_set_src(View.ui.map.imgTiles[i], path);
+        View.SetMapTileSrc(i, path);
     }
 }
 

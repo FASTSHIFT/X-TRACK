@@ -34,5 +34,6 @@
 #include "gpio.h"
 #include "pwm.h"
 #include "timer.h"
+#include "wdg.h"
 
 #endif
