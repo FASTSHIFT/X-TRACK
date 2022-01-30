@@ -40,6 +40,8 @@
 #define RTE_DEVICE_STDPERIPHERALS_TMR
 /* ArteryTek::Device:at32f435_437_firmware_library:usart:2.0.0 */
 #define RTE_DEVICE_STDPERIPHERALS_USART
+/* ArteryTek::Device:at32f435_437_firmware_library:wdt:2.0.0 */
+#define RTE_DEVICE_STDPERIPHERALS_WDT
 
 
 #endif /* RTE_COMPONENTS_H */

@@ -336,7 +336,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls>--gnu</MiscControls>
-              <Define>LIBRARY_VERSION,ARDUINO=111</Define>
+              <Define>LIBRARY_VERSION,ARDUINO=111,CONFIG_MAP_IMG_PNG_ENABLE=0</Define>
               <Undefine></Undefine>
               <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER;..\Libraries\SdFat\src;..\Simulator\LVGL.Simulator;..\USER\App</IncludePath>
             </VariousControls>
@@ -1764,6 +1764,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Utils/lv_anim_label</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_anim_label.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_anim_label\lv_anim_label.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_anim_label.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_anim_label\lv_anim_label.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Utils/lv_ext</GroupName>
           <Files>
             <File>
@@ -1775,11 +1790,6 @@
               <FileName>lv_anim_timeline_wrapper.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\App\Utils\lv_ext\lv_anim_timeline_wrapper.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_anim_label.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_ext\lv_anim_label.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1805,6 +1815,180 @@
               <FileName>lv_png.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\lv_lib_png\lv_png.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/lv_img_png</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>0</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>1</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>lv_img_png.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\lv_img_png.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lv_img_png.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\lv_img_png.h</FilePath>
+            </File>
+            <File>
+              <FileName>adler32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\adler32.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\crc32.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\crc32.h</FilePath>
+            </File>
+            <File>
+              <FileName>infback.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\infback.c</FilePath>
+            </File>
+            <File>
+              <FileName>inffast.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inffast.c</FilePath>
+            </File>
+            <File>
+              <FileName>inffast.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inffast.h</FilePath>
+            </File>
+            <File>
+              <FileName>inffixed.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inffixed.h</FilePath>
+            </File>
+            <File>
+              <FileName>inflate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inflate.c</FilePath>
+            </File>
+            <File>
+              <FileName>inflate.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inflate.h</FilePath>
+            </File>
+            <File>
+              <FileName>inftrees.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.c</FilePath>
+            </File>
+            <File>
+              <FileName>inftrees.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.h</FilePath>
+            </File>
+            <File>
+              <FileName>png.inl</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\png.inl</FilePath>
+            </File>
+            <File>
+              <FileName>PNGdec.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PNGdec.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.h</FilePath>
+            </File>
+            <File>
+              <FileName>zconf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\zconf.h</FilePath>
+            </File>
+            <File>
+              <FileName>zlib.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\zlib.h</FilePath>
+            </File>
+            <File>
+              <FileName>zutil.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.c</FilePath>
+            </File>
+            <File>
+              <FileName>zutil.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2123,16 +2307,6 @@
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\PageManager\PM_State.cpp</FilePath>
             </File>
-            <File>
-              <FileName>ResourceManager.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\ResourceManager.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>ResourceManager.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\ResourceManager.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -2216,6 +2390,90 @@
               <FileName>PointContainer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\App\Utils\PointContainer\PointContainer.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Utils/ResourceManager</GroupName>
+          <GroupOption>
+            <CommonProperty>
+              <UseCPPCompiler>0</UseCPPCompiler>
+              <RVCTCodeConst>0</RVCTCodeConst>
+              <RVCTZI>0</RVCTZI>
+              <RVCTOtherData>0</RVCTOtherData>
+              <ModuleSelection>0</ModuleSelection>
+              <IncludeInBuild>2</IncludeInBuild>
+              <AlwaysBuild>2</AlwaysBuild>
+              <GenerateAssemblyFile>2</GenerateAssemblyFile>
+              <AssembleAssemblyFile>2</AssembleAssemblyFile>
+              <PublicsOnly>2</PublicsOnly>
+              <StopOnExitCode>11</StopOnExitCode>
+              <CustomArgument></CustomArgument>
+              <IncludeLibraryModules></IncludeLibraryModules>
+              <ComprImg>1</ComprImg>
+            </CommonProperty>
+            <GroupArmAds>
+              <Cads>
+                <interw>2</interw>
+                <Optim>0</Optim>
+                <oTime>2</oTime>
+                <SplitLS>2</SplitLS>
+                <OneElfS>2</OneElfS>
+                <Strict>2</Strict>
+                <EnumInt>2</EnumInt>
+                <PlainCh>2</PlainCh>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <wLevel>0</wLevel>
+                <uThumb>2</uThumb>
+                <uSurpInc>2</uSurpInc>
+                <uC99>2</uC99>
+                <uGnu>2</uGnu>
+                <useXO>2</useXO>
+                <v6Lang>0</v6Lang>
+                <v6LangP>0</v6LangP>
+                <vShortEn>2</vShortEn>
+                <vShortWch>2</vShortWch>
+                <v6Lto>2</v6Lto>
+                <v6WtE>2</v6WtE>
+                <v6Rtti>2</v6Rtti>
+                <VariousControls>
+                  <MiscControls>--cpp11</MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Cads>
+              <Aads>
+                <interw>2</interw>
+                <Ropi>2</Ropi>
+                <Rwpi>2</Rwpi>
+                <thumb>2</thumb>
+                <SplitLS>2</SplitLS>
+                <SwStkChk>2</SwStkChk>
+                <NoWarn>2</NoWarn>
+                <uSurpInc>2</uSurpInc>
+                <useXO>2</useXO>
+                <ClangAsOpt>0</ClangAsOpt>
+                <VariousControls>
+                  <MiscControls></MiscControls>
+                  <Define></Define>
+                  <Undefine></Undefine>
+                  <IncludePath></IncludePath>
+                </VariousControls>
+              </Aads>
+            </GroupArmAds>
+          </GroupOption>
+          <Files>
+            <File>
+              <FileName>ResourceManager.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\ResourceManager\ResourceManager.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>ResourceManager.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\ResourceManager\ResourceManager.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -2917,11 +3175,6 @@
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_arc.c</FilePath>
             </File>
             <File>
-              <FileName>lv_draw_blend.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_blend.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_draw_img.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_img.c</FilePath>
@@ -2935,6 +3188,11 @@
               <FileName>lv_draw_line.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_line.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_mask.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_mask.c</FilePath>
             </File>
             <File>
               <FileName>lv_draw_rect.c</FileName>
@@ -3412,6 +3670,11 @@
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\chart\lv_chart.c</FilePath>
             </File>
             <File>
+              <FileName>lv_menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\menu\lv_menu.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_meter.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\extra\widgets\meter\lv_meter.c</FilePath>
@@ -3472,11 +3735,6 @@
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_line.c</FilePath>
             </File>
             <File>
-              <FileName>lv_draw_sw_mask.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_mask.c</FilePath>
-            </File>
-            <File>
               <FileName>lv_draw_sw_polygon.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_polygon.c</FilePath>
@@ -3485,6 +3743,11 @@
               <FileName>lv_draw_sw_rect.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_rect.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_sw_gradient.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_gradient.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3712,9 +3975,9 @@
               <FilePath>..\Core\mcu_type.h</FilePath>
             </File>
             <File>
-              <FileName>mcu_config_template.h</FileName>
+              <FileName>mcu_core.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Core\mcu_config_template.h</FilePath>
+              <FilePath>..\Core\mcu_core.h</FilePath>
             </File>
             <File>
               <FileName>adc.c</FileName>
@@ -3725,6 +3988,11 @@
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>extend_SRAM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\extend_SRAM.c</FilePath>
             </File>
             <File>
               <FileName>exti.c</FileName>
@@ -3752,9 +4020,9 @@
               <FilePath>..\Core\rtc.c</FilePath>
             </File>
             <File>
-              <FileName>extend_SRAM.c</FileName>
+              <FileName>wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\extend_SRAM.c</FilePath>
+              <FilePath>..\Core\wdg.c</FilePath>
             </File>
             <File>
               <FileName>HardwareSerial.cpp</FileName>
@@ -3796,98 +4064,104 @@
   <RTE>
     <apis/>
     <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.3.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.5.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.8.0"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="ADC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="BKPR" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH BKPR">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="DMA" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="EXTI" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="FMC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="GPIO" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH GPIO">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
+        <targetInfos>
+          <targetInfo name="X-Track"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="IWDG" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="PWR" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RCC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="RTC" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RTC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="SPI" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="TIMER" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="USART" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH RCC">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS">
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>

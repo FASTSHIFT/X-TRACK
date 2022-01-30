@@ -516,12 +516,10 @@ gpio_mux_sel_type Timer_GetGPIO_MUX(uint8_t Pin)
     uint8_t TimerChannel = PIN_MAP[Pin].TimerChannel;
 
 #define TIMER_GPIO_MUX_DEF(mux, timx, channel) \
-do { \
-    if(TIMx == timx && TimerChannel == channel) \
-    { \
-        GPIO_MUX_x = GPIO_MUX_##mux; \
-    } \
-}while(0)
+    else if(TIMx == timx && TimerChannel == channel) \
+        GPIO_MUX_x = GPIO_MUX_##mux
+
+    if(0) {}
 
     /* GPIO_MUX_1 */
     TIMER_GPIO_MUX_DEF(1, TIM2, 1);
@@ -546,12 +544,12 @@ do { \
     TIMER_GPIO_MUX_DEF(2, TIM5, 2);
     TIMER_GPIO_MUX_DEF(2, TIM5, 3);
     TIMER_GPIO_MUX_DEF(2, TIM5, 4);
-
-    /* GPIO_MUX_3 */
     TIMER_GPIO_MUX_DEF(2, TIM8, 1);
     TIMER_GPIO_MUX_DEF(2, TIM8, 2);
     TIMER_GPIO_MUX_DEF(2, TIM8, 3);
     TIMER_GPIO_MUX_DEF(2, TIM8, 4);
+
+    /* GPIO_MUX_3 */
     TIMER_GPIO_MUX_DEF(3, TIM9, 1);
     TIMER_GPIO_MUX_DEF(3, TIM9, 2);
     TIMER_GPIO_MUX_DEF(3, TIM10, 1);

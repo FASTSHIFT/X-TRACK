@@ -22,12 +22,12 @@
  */
 #include "StatusBar.h"
 #include "Common/DataProc/DataProc.h"
-#include "Utils/lv_ext/lv_anim_label.h"
+#include "Utils/lv_anim_label/lv_anim_label.h"
 
 #define BATT_USAGE_HEIGHT (lv_obj_get_style_height(ui.battery.img, 0) - 6)
 #define BATT_USAGE_WIDTH  (lv_obj_get_style_width(ui.battery.img, 0) - 4)
 
-#define STATUS_BAR_HEIGHT 22
+#define STATUS_BAR_HEIGHT 25
 
 static Account* actStatusBar;
 
@@ -44,10 +44,10 @@ struct
     } satellite;
 
     lv_obj_t* imgSD;
-    
+
     lv_obj_t* labelClock;
-    
-    lv_anim_label_t* labelRec;
+
+    lv_obj_t* labelRec;
 
     struct
     {
@@ -73,11 +73,11 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     if (info->showLabelRec)
     {
-        lv_anim_label_push_text(ui.labelRec, info->labelRecStr);
+        lv_anim_label_set_text(ui.labelRec, info->labelRecStr);
     }
     else
     {
-        lv_anim_label_push_text(ui.labelRec, " ");
+        lv_anim_label_set_text(ui.labelRec, " ");
     }
 
     return 0;
@@ -114,7 +114,8 @@ static void StatusBar_AnimCreate(lv_obj_t* contBatt)
     lv_anim_t a;
     lv_anim_init(&a);
     lv_anim_set_var(&a, contBatt);
-    lv_anim_set_exec_cb(&a, [](void* var, int32_t v) {
+    lv_anim_set_exec_cb(&a, [](void* var, int32_t v)
+    {
         lv_obj_set_height((lv_obj_t*)var, v);
     });
     lv_anim_set_values(&a, 0, BATT_USAGE_HEIGHT);
@@ -123,35 +124,40 @@ static void StatusBar_AnimCreate(lv_obj_t* contBatt)
     lv_anim_start(&a);
 }
 
-static void lv_obj_set_opa_scale(void* obj, int32_t opa)
+static lv_obj_t* StatusBar_RecAnimLabelCreate(lv_obj_t* par)
 {
-    lv_obj_set_style_opa((lv_obj_t*)obj, opa, 0);
-}
+    static lv_style_t style_label;
+    lv_style_init(&style_label);
+    lv_style_set_text_color(&style_label, lv_color_white());
+    lv_style_set_text_font(&style_label, ResourcePool::GetFont("bahnschrift_13"));
 
-static lv_anim_label_t* StatusBar_RecAnimLabelCreate(lv_obj_t* par, lv_style_t* style)
-{
-    lv_anim_label_t* alabel = lv_anim_label_create(par);
-    lv_anim_label_set_size(alabel, 45, STATUS_BAR_HEIGHT - 4);
-    lv_anim_label_set_style(alabel, style);
-    lv_anim_label_set_dir(alabel, LV_DIR_BOTTOM);
+    lv_obj_t* alabel = lv_anim_label_create(par);
+    lv_obj_set_size(alabel, 50, STATUS_BAR_HEIGHT - 4);
+    lv_anim_label_set_enter_dir(alabel, LV_DIR_TOP);
+    lv_anim_label_set_exit_dir(alabel, LV_DIR_BOTTOM);
     lv_anim_label_set_path(alabel, lv_anim_path_ease_out);
     lv_anim_label_set_time(alabel, 500);
+    lv_anim_label_add_style(alabel, &style_label);
 
-    lv_obj_align(alabel->obj, LV_ALIGN_RIGHT_MID, -40, 1);
-    //lv_obj_set_style_border_color(alabel->obj, lv_color_white(), 0);
-    //lv_obj_set_style_border_width(alabel->obj, 1, 0);
+    lv_obj_align(alabel, LV_ALIGN_RIGHT_MID, -45, 0);
+    //lv_obj_set_style_border_color(alabel, lv_color_white(), 0);
+    //lv_obj_set_style_border_width(alabel, 1, 0);
 
     lv_anim_t a_enter;
     lv_anim_init(&a_enter);
     lv_anim_set_early_apply(&a_enter, true);
     lv_anim_set_values(&a_enter, LV_OPA_TRANSP, LV_OPA_COVER);
-    lv_anim_set_exec_cb(&a_enter, lv_obj_set_opa_scale);
+    lv_anim_set_exec_cb(&a_enter, [](void* var, int32_t v)
+    {
+        lv_obj_set_style_opa((lv_obj_t*)var, v, 0);
+    });
     lv_anim_set_time(&a_enter, 300);
 
     lv_anim_t a_exit = a_enter;
     lv_anim_set_values(&a_exit, LV_OPA_COVER, LV_OPA_TRANSP);
 
-    lv_anim_label_set_custom_anin(alabel, &a_enter, &a_exit);
+    lv_anim_label_set_custom_enter_anim(alabel, &a_enter);
+    lv_anim_label_set_custom_exit_anim(alabel, &a_exit);
 
     return alabel;
 }
@@ -165,7 +171,7 @@ static void StatusBar_Update(lv_timer_t* timer)
 
     DataProc::Storage_Basic_Info_t sdInfo;
     actStatusBar->Pull("Storage", &sdInfo, sizeof(sdInfo));
-    sdInfo.isDetect ? lv_obj_clear_flag(ui.imgSD, LV_OBJ_FLAG_HIDDEN) : lv_obj_add_flag(ui.imgSD, LV_OBJ_FLAG_HIDDEN);
+    sdInfo.isDetect ? lv_obj_clear_state(ui.imgSD, LV_STATE_DISABLED) : lv_obj_add_state(ui.imgSD, LV_STATE_DISABLED);
 
     /* clock */
     HAL::Clock_Info_t clock;
@@ -201,14 +207,8 @@ static void StatusBar_Update(lv_timer_t* timer)
     }
 }
 
-static lv_obj_t* StatusBar_Create(lv_obj_t* par)
+static void StatusBar_StyleInit(lv_obj_t* cont)
 {
-    lv_obj_t* cont = lv_obj_create(par);
-    lv_obj_remove_style_all(cont);
-
-    lv_obj_set_size(cont, LV_HOR_RES, STATUS_BAR_HEIGHT);
-    lv_obj_set_y(cont, -STATUS_BAR_HEIGHT);
-
     /* style1 */
     lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cont, lv_color_hex(0x333333), LV_STATE_DEFAULT);
@@ -235,13 +235,50 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
         nullptr
     );
     lv_obj_set_style_transition(cont, &tran, LV_STATE_USER_1);
+}
 
+static lv_obj_t* StatusBar_SdCardImage_Create(lv_obj_t* par)
+{
+    lv_obj_t* img = lv_img_create(par);
+    lv_img_set_src(img, ResourcePool::GetImage("sd_card"));
+    lv_obj_align(img, LV_ALIGN_LEFT_MID, 55, -1);
+
+    lv_obj_set_style_translate_y(img, -STATUS_BAR_HEIGHT, LV_STATE_DISABLED);
+
+    static lv_style_transition_dsc_t tran;
+    static const lv_style_prop_t prop[] =
+    {
+        LV_STYLE_TRANSLATE_Y,
+        LV_STYLE_PROP_INV
+    };
+    lv_style_transition_dsc_init(
+        &tran,
+        prop,
+        lv_anim_path_overshoot,
+        100,
+        0,
+        nullptr
+    );
+    lv_obj_set_style_transition(img, &tran, LV_STATE_DISABLED);
+    lv_obj_set_style_transition(img, &tran, LV_STATE_DEFAULT);
+
+    return img;
+}
+
+static lv_obj_t* StatusBar_Create(lv_obj_t* par)
+{
+    lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_remove_style_all(cont);
+
+    lv_obj_set_size(cont, LV_HOR_RES, STATUS_BAR_HEIGHT);
+    lv_obj_set_y(cont, -STATUS_BAR_HEIGHT);
+    StatusBar_StyleInit(cont);
     ui.cont = cont;
 
-    static lv_style_t style;
-    lv_style_init(&style);
-    lv_style_set_text_color(&style, lv_color_white());
-    lv_style_set_text_font(&style, ResourcePool::GetFont("bahnschrift_13"));
+    static lv_style_t style_label;
+    lv_style_init(&style_label);
+    lv_style_set_text_color(&style_label, lv_color_white());
+    lv_style_set_text_font(&style_label, ResourcePool::GetFont("bahnschrift_17"));
 
     /* satellite */
     lv_obj_t* img = lv_img_create(cont);
@@ -250,32 +287,28 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     ui.satellite.img = img;
 
     lv_obj_t* label = lv_label_create(cont);
-    lv_obj_add_style(label, &style, 0);
+    lv_obj_add_style(label, &style_label, 0);
     lv_obj_align_to(label, ui.satellite.img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
     lv_label_set_text(label, "0");
     ui.satellite.label = label;
 
     /* sd card */
-    img = lv_img_create(cont);
-    lv_img_set_src(img, ResourcePool::GetImage("sd_card"));
-    lv_obj_align(img, LV_ALIGN_LEFT_MID, 50, -1);
-    lv_obj_add_flag(img, LV_OBJ_FLAG_HIDDEN);
-    ui.imgSD = img;
+    ui.imgSD = StatusBar_SdCardImage_Create(cont);
 
     /* clock */
     label = lv_label_create(cont);
-    lv_obj_add_style(label, &style, 0);
+    lv_obj_add_style(label, &style_label, 0);
     lv_label_set_text(label, "00:00");
     lv_obj_center(label);
     ui.labelClock = label;
 
     /* recorder */
-    ui.labelRec = StatusBar_RecAnimLabelCreate(cont, &style);
+    ui.labelRec = StatusBar_RecAnimLabelCreate(cont);
 
     /* battery */
     img = lv_img_create(cont);
     lv_img_set_src(img, ResourcePool::GetImage("battery"));
-    lv_obj_align(img, LV_ALIGN_RIGHT_MID, -30, 0);
+    lv_obj_align(img, LV_ALIGN_RIGHT_MID, -35, 0);
     lv_img_t* img_ext = (lv_img_t*)img;
     lv_obj_set_size(img, img_ext->w, img_ext->h);
     ui.battery.img = img;
@@ -290,7 +323,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     ui.battery.objUsage = obj;
 
     label = lv_label_create(cont);
-    lv_obj_add_style(label, &style, 0);
+    lv_obj_add_style(label, &style_label, 0);
     lv_obj_align_to(label, ui.battery.img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
     lv_label_set_text(label, "100%");
     ui.battery.label = label;

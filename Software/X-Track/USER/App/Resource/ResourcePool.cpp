@@ -1,5 +1,5 @@
 #include "ResourcePool.h"
-#include "Utils/PageManager/ResourceManager.h"
+#include "Utils/ResourceManager/ResourceManager.h"
 
 static ResourceManager Font_;
 static ResourceManager Image_;

@@ -96,7 +96,7 @@
 #define PRINT_PRINTF_BUFFER_LENGTH          128
 
 /* GPIO */
-#define GPIO_MAX_SPEED_DEFAULT              GPIO_MaxSpeed_50MHz
+#define GPIO_DRIVE_DEFAULT                  GPIO_MaxSpeed_50MHz
 
 /* External Interrupt  */
 #define EXTI_PREEMPTIONPRIORITY_DEFAULT     2
