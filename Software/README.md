@@ -81,13 +81,16 @@
         │      ├─GPX            -- GPX生成器
         │      ├─GPX_Parser     -- GPX解析器
         │      ├─lv_allocator   -- 自定义allocator
+        │      ├─lv_anim_label  -- 文本动画组件
         │      ├─lv_ext         -- lvgl功能扩展
+        │      ├─lv_img_png     -- PNG显示组件
         │      ├─lv_lib_png     -- PNG解码库
         │      ├─lv_poly_line   -- 多段线控件
         │      ├─MapConv        -- WGS84/GCJ02 地图坐标转换器
         │      ├─new            -- new/delete 重载
         │      ├─PageManager    -- 页面调度器
         │      ├─PointContainer -- 坐标压缩容器
+        │      ├─ResourceManager-- 资源管理器
         │      ├─StorageService -- KV储存服务
         │      ├─Stream         -- Arduino Stream 流式库
         │      ├─TileConv       -- 瓦片坐标转换器
