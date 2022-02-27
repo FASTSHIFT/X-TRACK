@@ -1,9 +1,7 @@
 ## 编译说明
 * MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（旧版本编译器不能完全支持**C++ 11**的语法）。
-* 编译前需要安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方Pack，**请安装下方链接的指定版本**:
-> [AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.7.zip)
-> 
-> [AT32F43x标准外设库](https://www.arterytek.com/download/Keil5_AT32MCU_AddOn_CH_V2.0.6.zip)
+* 编译前需要安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方Pack，**为了确保顺利编译请安装[Software/Pack](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/Pack)目录下的指定版本**。
+
 * 如果安装Pack后，Keil依然报以下这类错误，可能是之前安装了 Keil v4 兼容包 (MDK v4 Legacy Support) 导致的，请尝试**卸载此包或重新安装 Keil v5**。
 
 `Error #540: 'Keil::Device:StdPeriph Drivers:ADC:1.0.1' component is not available for target 'X-Track'`
