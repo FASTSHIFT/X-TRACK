@@ -81,7 +81,7 @@ The following values are possible for the direction:
 - `LV_DIR_BOTTOM` only scroll down
 - `LV_DIR_RIGHT` only scroll right
 - `LV_DIR_HOR` only scroll horizontally
-- `LV_DIR_TOP` only scroll vertically
+- `LV_DIR_VER` only scroll vertically
 - `LV_DIR_ALL` scroll any directions
 
 OR-ed values are also possible. E.g. `LV_DIR_TOP | LV_DIR_LEFT`.
@@ -140,6 +140,29 @@ The following API functions allow manual scrolling of objects:
 - `lv_obj_scroll_to(obj, x, y, LV_ANIM_ON/OFF)` scroll to bring the given coordinate to the top left corner
 - `lv_obj_scroll_to_x(obj, x, LV_ANIM_ON/OFF)` scroll to bring the given coordinate to the left side
 - `lv_obj_scroll_to_y(obj, y, LV_ANIM_ON/OFF)` scroll to bring the given coordinate to the top side
+
+From time to time you may need to retrieve the scroll position of an element, either to restore it later, or to display dynamically some elements according to the current scroll.
+Here is an example to see how to combine scroll event and store the scroll top position.
+```c
+static int scroll_value = 0;
+
+static void store_scroll_value_event_cb(lv_event_t* e) {
+  lv_obj_t* screen = lv_event_get_target(e);
+  scroll_value = lv_obj_get_scroll_top(screen);
+  printf("%d pixels are scrolled out on the top\n", scroll_value);
+}
+
+lv_obj_t* container = lv_obj_create(NULL);
+lv_obj_add_event_cb(container, store_scroll_value_event_cb, LV_EVENT_SCROLL, NULL);
+```
+
+Scrool coordinates can be retrieve from differents axes with these functions:
+- `lv_obj_get_scroll_x(obj)` Get the `x` coordinate of object
+- `lv_obj_get_scroll_y(obj)` Get the `y` coordinate of object
+- `lv_obj_get_scroll_top(obj)` Get the scroll coordinate from the top
+- `lv_obj_get_scroll_bottom(obj)` Get the scroll coordinate from the bottom
+- `lv_obj_get_scroll_left(obj)` Get the scroll coordinate from the left
+- `lv_obj_get_scroll_right(obj)` Get the scroll coordinate from the right
 
 ## Self size
 

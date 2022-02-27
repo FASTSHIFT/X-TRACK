@@ -353,7 +353,7 @@ void Timer_SetInterruptBase(
     uint8_t SubPriority
 )
 {
-    uint8_t TMRx_IRQn = 0;
+    IRQn_Type TMRx_IRQn = (IRQn_Type)0;
     TIMER_Type TIMERx = TIMER1;
 
 #define TMRx_IRQ_DEF(n,x_IRQn)\

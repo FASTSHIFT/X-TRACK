@@ -137,26 +137,34 @@ void lv_refr_obj(lv_draw_ctx_t * draw_ctx, lv_obj_t * obj)
     lv_obj_get_coords(obj, &obj_coords_ext);
     lv_coord_t ext_draw_size = _lv_obj_get_ext_draw_size(obj);
     lv_area_increase(&obj_coords_ext, ext_draw_size, ext_draw_size);
-    if(!_lv_area_intersect(&clip_coords_for_obj, clip_area_ori, &obj_coords_ext)) return;
+    bool com_clip_res = _lv_area_intersect(&clip_coords_for_obj, clip_area_ori, &obj_coords_ext);
 
-    draw_ctx->clip_area = &clip_coords_for_obj;
+    /*If the object is visible on the current clip area draw it.*/
+    if(com_clip_res) {
+        draw_ctx->clip_area = &clip_coords_for_obj;
 
-    /*Draw the object*/
-    lv_event_send(obj, LV_EVENT_DRAW_MAIN_BEGIN, draw_ctx);
-    lv_event_send(obj, LV_EVENT_DRAW_MAIN, draw_ctx);
-    lv_event_send(obj, LV_EVENT_DRAW_MAIN_END, draw_ctx);
+        /*Draw the object*/
+        lv_event_send(obj, LV_EVENT_DRAW_MAIN_BEGIN, draw_ctx);
+        lv_event_send(obj, LV_EVENT_DRAW_MAIN, draw_ctx);
+        lv_event_send(obj, LV_EVENT_DRAW_MAIN_END, draw_ctx);
 
 #if LV_USE_REFR_DEBUG
-    lv_color_t debug_color = lv_color_make(lv_rand(0, 0xFF), lv_rand(0, 0xFF), lv_rand(0, 0xFF));
-    lv_draw_rect_dsc_t draw_dsc;
-    lv_draw_rect_dsc_init(&draw_dsc);
-    draw_dsc.bg_color.full = debug_color.full;
-    draw_dsc.bg_opa = LV_OPA_20;
-    draw_dsc.border_width = 1;
-    draw_dsc.border_opa = LV_OPA_30;
-    draw_dsc.border_color = debug_color;
-    lv_draw_rect(draw_ctx, &draw_dsc, &obj_coords_ext);
+        lv_color_t debug_color = lv_color_make(lv_rand(0, 0xFF), lv_rand(0, 0xFF), lv_rand(0, 0xFF));
+        lv_draw_rect_dsc_t draw_dsc;
+        lv_draw_rect_dsc_init(&draw_dsc);
+        draw_dsc.bg_color.full = debug_color.full;
+        draw_dsc.bg_opa = LV_OPA_20;
+        draw_dsc.border_width = 1;
+        draw_dsc.border_opa = LV_OPA_30;
+        draw_dsc.border_color = debug_color;
+        lv_draw_rect(draw_ctx, &draw_dsc, &obj_coords_ext);
 #endif
+    }
+    /*If not visible on the current clip area and children are clipped to the parent's size
+     *the object has nothing to do with this area so stop drawing.*/
+    else if(!lv_obj_has_flag(obj, LV_OBJ_FLAG_OVERFLOW_VISIBLE)) {
+        return;
+    }
 
     /*With overflow visible keep the previous clip area to let the children visible out of this object too
      *With not overflow visible limit the clip are to the object's coordinates to clip the children*/
@@ -181,12 +189,15 @@ void lv_refr_obj(lv_draw_ctx_t * draw_ctx, lv_obj_t * obj)
         }
     }
 
-    draw_ctx->clip_area = &clip_coords_for_obj;
+    /*If the object was visible on the clip area call the post draw events too*/
+    if(com_clip_res) {
+        draw_ctx->clip_area = &clip_coords_for_obj;
 
-    /*If all the children are redrawn make 'post draw' draw*/
-    lv_event_send(obj, LV_EVENT_DRAW_POST_BEGIN, draw_ctx);
-    lv_event_send(obj, LV_EVENT_DRAW_POST, draw_ctx);
-    lv_event_send(obj, LV_EVENT_DRAW_POST_END, draw_ctx);
+        /*If all the children are redrawn make 'post draw' draw*/
+        lv_event_send(obj, LV_EVENT_DRAW_POST_BEGIN, draw_ctx);
+        lv_event_send(obj, LV_EVENT_DRAW_POST, draw_ctx);
+        lv_event_send(obj, LV_EVENT_DRAW_POST_END, draw_ctx);
+    }
 
     draw_ctx->clip_area = clip_area_ori;
 }
@@ -201,6 +212,11 @@ void _lv_inv_area(lv_disp_t * disp, const lv_area_t * area_p)
 {
     if(!disp) disp = lv_disp_get_default();
     if(!disp) return;
+
+    if(disp->rendering_in_progress) {
+        LV_LOG_ERROR("detected modifying dirty areas in render");
+        return;
+    }
 
     /*Clear the invalidate buffer if the parameter is NULL*/
     if(area_p == NULL) {
@@ -365,8 +381,15 @@ void _lv_disp_refr_timer(lv_timer_t * tmr)
     }
     else {
         perf_monitor.perf_last_time = lv_tick_get();
-        uint32_t fps_limit = 1000 / disp_refr->refr_timer->period;
+        uint32_t fps_limit;
         uint32_t fps;
+
+        if(disp_refr->refr_timer) {
+            fps_limit = 1000 / disp_refr->refr_timer->period;
+        }
+        else {
+            fps_limit = 1000 / LV_DISP_DEF_REFR_PERIOD;
+        }
 
         if(perf_monitor.elaps_sum == 0) {
             perf_monitor.elaps_sum = 1;
@@ -501,6 +524,7 @@ static void lv_refr_areas(void)
 
     disp_refr->driver->draw_buf->last_area = 0;
     disp_refr->driver->draw_buf->last_part = 0;
+    disp_refr->rendering_in_progress = true;
 
     for(i = 0; i < disp_refr->inv_p; i++) {
         /*Refresh the unjoined areas*/
@@ -513,6 +537,8 @@ static void lv_refr_areas(void)
             px_num += lv_area_get_size(&disp_refr->inv_areas[i]);
         }
     }
+
+    disp_refr->rendering_in_progress = false;
 }
 
 /**

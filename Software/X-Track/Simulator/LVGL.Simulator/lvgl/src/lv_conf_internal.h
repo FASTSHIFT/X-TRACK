@@ -40,6 +40,11 @@
     #else
         #include "../../lv_conf.h"                /*Else assume lv_conf.h is next to the lvgl folder*/
     #endif
+    #if !defined(LV_CONF_H) && !defined(LV_CONF_SUPPRESS_DEFINE_CHECK)
+        /* #include will sometimes silently fail when __has_include is used */
+        /* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80753 */
+        #pragma message("Possible failure to include lv_conf.h, please read the comment in this file if you get errors")
+    #endif
 #endif
 
 #ifdef CONFIG_LV_COLOR_DEPTH
@@ -592,15 +597,23 @@
 /*Enable asserts if an operation is failed or an invalid data is found.
  *If LV_USE_LOG is enabled an error message will be printed on failure*/
 #ifndef LV_USE_ASSERT_NULL
-    #ifdef CONFIG_LV_USE_ASSERT_NULL
-        #define LV_USE_ASSERT_NULL CONFIG_LV_USE_ASSERT_NULL
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_ASSERT_NULL
+            #define LV_USE_ASSERT_NULL CONFIG_LV_USE_ASSERT_NULL
+        #else
+            #define LV_USE_ASSERT_NULL 0
+        #endif
     #else
         #define LV_USE_ASSERT_NULL          1   /*Check if the parameter is NULL. (Very fast, recommended)*/
     #endif
 #endif
 #ifndef LV_USE_ASSERT_MALLOC
-    #ifdef CONFIG_LV_USE_ASSERT_MALLOC
-        #define LV_USE_ASSERT_MALLOC CONFIG_LV_USE_ASSERT_MALLOC
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_ASSERT_MALLOC
+            #define LV_USE_ASSERT_MALLOC CONFIG_LV_USE_ASSERT_MALLOC
+        #else
+            #define LV_USE_ASSERT_MALLOC 0
+        #endif
     #else
         #define LV_USE_ASSERT_MALLOC        1   /*Checks is the memory is successfully allocated or no. (Very fast, recommended)*/
     #endif
@@ -1336,16 +1349,24 @@
 #endif
 
 #ifndef LV_USE_DROPDOWN
-    #ifdef CONFIG_LV_USE_DROPDOWN
-        #define LV_USE_DROPDOWN CONFIG_LV_USE_DROPDOWN
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_DROPDOWN
+            #define LV_USE_DROPDOWN CONFIG_LV_USE_DROPDOWN
+        #else
+            #define LV_USE_DROPDOWN 0
+        #endif
     #else
         #define LV_USE_DROPDOWN   1   /*Requires: lv_label*/
     #endif
 #endif
 
 #ifndef LV_USE_IMG
-    #ifdef CONFIG_LV_USE_IMG
-        #define LV_USE_IMG CONFIG_LV_USE_IMG
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_IMG
+            #define LV_USE_IMG CONFIG_LV_USE_IMG
+        #else
+            #define LV_USE_IMG 0
+        #endif
     #else
         #define LV_USE_IMG        1   /*Requires: lv_label*/
     #endif
@@ -1364,15 +1385,23 @@
 #endif
 #if LV_USE_LABEL
     #ifndef LV_LABEL_TEXT_SELECTION
-        #ifdef CONFIG_LV_LABEL_TEXT_SELECTION
-            #define LV_LABEL_TEXT_SELECTION CONFIG_LV_LABEL_TEXT_SELECTION
+        #ifdef _LV_KCONFIG_PRESENT
+            #ifdef CONFIG_LV_LABEL_TEXT_SELECTION
+                #define LV_LABEL_TEXT_SELECTION CONFIG_LV_LABEL_TEXT_SELECTION
+            #else
+                #define LV_LABEL_TEXT_SELECTION 0
+            #endif
         #else
             #define LV_LABEL_TEXT_SELECTION 1 /*Enable selecting text of the label*/
         #endif
     #endif
     #ifndef LV_LABEL_LONG_TXT_HINT
-        #ifdef CONFIG_LV_LABEL_LONG_TXT_HINT
-            #define LV_LABEL_LONG_TXT_HINT CONFIG_LV_LABEL_LONG_TXT_HINT
+        #ifdef _LV_KCONFIG_PRESENT
+            #ifdef CONFIG_LV_LABEL_LONG_TXT_HINT
+                #define LV_LABEL_LONG_TXT_HINT CONFIG_LV_LABEL_LONG_TXT_HINT
+            #else
+                #define LV_LABEL_LONG_TXT_HINT 0
+            #endif
         #else
             #define LV_LABEL_LONG_TXT_HINT 1  /*Store some extra info in labels to speed up drawing of very long texts*/
         #endif
@@ -1392,8 +1421,12 @@
 #endif
 
 #ifndef LV_USE_ROLLER
-    #ifdef CONFIG_LV_USE_ROLLER
-        #define LV_USE_ROLLER CONFIG_LV_USE_ROLLER
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_ROLLER
+            #define LV_USE_ROLLER CONFIG_LV_USE_ROLLER
+        #else
+            #define LV_USE_ROLLER 0
+        #endif
     #else
         #define LV_USE_ROLLER     1   /*Requires: lv_label*/
     #endif
@@ -1409,8 +1442,12 @@
 #endif
 
 #ifndef LV_USE_SLIDER
-    #ifdef CONFIG_LV_USE_SLIDER
-        #define LV_USE_SLIDER CONFIG_LV_USE_SLIDER
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_SLIDER
+            #define LV_USE_SLIDER CONFIG_LV_USE_SLIDER
+        #else
+            #define LV_USE_SLIDER 0
+        #endif
     #else
         #define LV_USE_SLIDER     1   /*Requires: lv_bar*/
     #endif
@@ -1429,8 +1466,12 @@
 #endif
 
 #ifndef LV_USE_TEXTAREA
-    #ifdef CONFIG_LV_USE_TEXTAREA
-        #define LV_USE_TEXTAREA CONFIG_LV_USE_TEXTAREA
+    #ifdef _LV_KCONFIG_PRESENT
+        #ifdef CONFIG_LV_USE_TEXTAREA
+            #define LV_USE_TEXTAREA CONFIG_LV_USE_TEXTAREA
+        #else
+            #define LV_USE_TEXTAREA 0
+        #endif
     #else
         #define LV_USE_TEXTAREA   1   /*Requires: lv_label*/
     #endif
@@ -2105,6 +2146,15 @@
         #define LV_USE_GRIDNAV CONFIG_LV_USE_GRIDNAV
     #else
         #define LV_USE_GRIDNAV  0
+    #endif
+#endif
+
+/*1: Enable lv_obj fragment*/
+#ifndef LV_USE_FRAGMENT
+    #ifdef CONFIG_LV_USE_FRAGMENT
+        #define LV_USE_FRAGMENT CONFIG_LV_USE_FRAGMENT
+    #else
+        #define LV_USE_FRAGMENT 0
     #endif
 #endif
 

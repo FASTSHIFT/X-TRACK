@@ -373,3 +373,11 @@
 * 7.ResourceManager从PageManager分离
 * 8.lv_anim_label组件从lv_ext分离
 * 9.添加lv_img_png组件
+
+## [v2.4] - 2022-2-27
+* 1.添加指定的Pack
+* 2.AT32F435 Pack更新 2.0.0 -> 2.0.6
+* 3.__wfi() -> __WFI()
+* 4.移除lv_demo_conf.h
+* 5.更新lvgl v8.3.0 dev
+* 6.AT32F403A Stack size 0x2000 -> 0x1000

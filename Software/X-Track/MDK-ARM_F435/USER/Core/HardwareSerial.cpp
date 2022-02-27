@@ -127,7 +127,7 @@ void HardwareSerial::begin(
     gpio_type *GPIOx;
     gpio_init_type gpio_init_struct;
     uint16_t Tx_Pin, Rx_Pin;
-    uint16_t USARTx_IRQn;
+    IRQn_Type USARTx_IRQn;
 
     if(_USARTx == USART1)
     {

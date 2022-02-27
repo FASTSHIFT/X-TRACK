@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_usart.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the usart firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -580,7 +580,7 @@ void usart_hardware_flow_control_set(usart_type* usart_x,usart_hardware_flow_con
   * @brief  check whether the specified usart flag is set or not.
   * @param  usart_x: select the usart or the uart peripheral.
   *         this parameter can be one of the following values:
-  *         usart1, usart2, usart3, uart4, uart5, usart6, uart7 or uart8.
+  *         USART1, USART2, USART3, UART4, UART5, USART6, UART7 or UART8.
   * @param  flag: specifies the flag to check.
   *         this parameter can be one of the following values:
   *         - USART_CTSCF_FLAG: cts change flag (not available for UART4,UART5,USART6,UART7 and UART8)

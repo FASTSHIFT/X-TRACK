@@ -24,7 +24,7 @@ static void disp_send_finish_callback()
 
 static void disp_wait_cb(lv_disp_drv_t* disp_drv)
 {
-    __wfi();
+    __WFI();
 }
 
 void lv_port_disp_init()

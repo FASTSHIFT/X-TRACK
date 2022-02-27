@@ -137,7 +137,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -4189,19 +4189,19 @@
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\at32f4xx_conf.h</instance>
         <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="Framework" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx STDPERIPH"/>
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos/>
       </file>
       <file attr="config" category="source" condition="AT32F403ACGT7" name="Device\Source\ARM\startup_at32f403acgt7.s" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\startup_at32f403acgt7.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\Source\system_at32f4xx.c" version="1.0.1">
         <instance index="0" removed="1">RTE\Device\AT32F403ACGT7\system_at32f4xx.c</instance>
         <component Cclass="Device" Cgroup="System_AT32Fxx" Cvendor="Keil" Cversion="1.0.1" condition="AT32F4xx CMSIS"/>
-        <package name="AT32F4xx_DFP" schemaVersion="1.2" supportContact="support@keil.com" vendor="Keil" version="1.3.7"/>
+        <package name="AT32F4xx_DFP" schemaVersion="1.2" url="" vendor="Keil" version="1.3.7"/>
         <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\StdPeriph_Driver\templates\at32f4xx_conf.h" version="1.0.1">

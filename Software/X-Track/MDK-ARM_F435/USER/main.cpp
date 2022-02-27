@@ -42,7 +42,7 @@ static void loop()
 {
     HAL::HAL_Update();
     lv_task_handler();
-    __wfi();
+    __WFI();
 }
 
 /**

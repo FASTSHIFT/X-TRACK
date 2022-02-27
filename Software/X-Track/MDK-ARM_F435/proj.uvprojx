@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>-AT32F435CGU7</Device>
           <Vendor>ArteryTek</Vendor>
-          <PackID>ArteryTek.AT32F435_437_DFP.2.0.5</PackID>
+          <PackID>ArteryTek.AT32F435_437_DFP.2.0.6</PackID>
           <Cpu>IRAM(0x20000000,0x60000) IROM(0x08000000,0x100000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -4160,7 +4160,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_adc.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_adc.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="adc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4168,7 +4168,7 @@
       <file attr="config" category="header" name="Device\Include\at32f435_437_conf.h" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_conf.h</instance>
         <component Cclass="Device" Cgroup="at32f435_437_conf" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 CMSIS"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4176,7 +4176,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_crm.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_crm.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="crm" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS MISC"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4184,7 +4184,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_dma.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_dma.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="dma" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4192,7 +4192,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_ertc.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_ertc.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="ertc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4200,7 +4200,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_exint.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_exint.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="exint" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4208,7 +4208,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_gpio.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_gpio.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="gpio" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4216,7 +4216,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_misc.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_misc.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="misc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 CMSIS"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4224,7 +4224,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_pwc.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_pwc.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="pwc" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4232,7 +4232,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_scfg.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_scfg.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="scfg" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4240,7 +4240,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_spi.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_spi.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="spi" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4248,7 +4248,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_tmr.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_tmr.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="tmr" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4256,7 +4256,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_usart.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_usart.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="usart" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4264,7 +4264,7 @@
       <file attr="config" category="source" name="Device\Firmware\Peripherals\src\at32f435_437_wdt.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\at32f435_437_wdt.c</instance>
         <component Cclass="Device" Cgroup="at32f435_437_firmware_library" Csub="wdt" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437 STDPERIPHERALS CRM"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4272,7 +4272,7 @@
       <file attr="config" category="source" condition="AT32F435xx ARMCC" name="Device\Source\ARM\startup_at32f435_437.s" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\startup_at32f435_437.s</instance>
         <component Cclass="Device" Cgroup="startup" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>
@@ -4280,7 +4280,7 @@
       <file attr="config" category="source" name="Device\Source\system_at32f435_437.c" version="2.0.0">
         <instance index="0">RTE\Device\-AT32F435CGU7\system_at32f435_437.c</instance>
         <component Cclass="Device" Cgroup="startup" Cvendor="ArteryTek" Cversion="2.0.0" condition="AT32F435_437"/>
-        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.5"/>
+        <package name="AT32F435_437_DFP" schemaVersion="1.2" url="" vendor="ArteryTek" version="2.0.6"/>
         <targetInfos>
           <targetInfo name="X-Track"/>
         </targetInfos>

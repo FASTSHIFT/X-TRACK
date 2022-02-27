@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_tmr.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the tmr firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -1460,7 +1460,7 @@ flag_status tmr_flag_get(tmr_type *tmr_x, uint32_t tmr_flag)
   */
 void tmr_flag_clear(tmr_type *tmr_x, uint32_t tmr_flag)
 {
-  tmr_x->ists &= ~tmr_flag;
+  tmr_x->ists = ~tmr_flag;
 }
 
 /**
