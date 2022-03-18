@@ -136,8 +136,6 @@ static void Recorder_RecStop(Recorder_t* recorder)
 
 static int onNotify(Recorder_t* recorder, Recorder_Info_t* info)
 {
-    int retval = 0;
-
     switch (info->cmd)
     {
     case RECORDER_CMD_START:
@@ -156,18 +154,16 @@ static int onNotify(Recorder_t* recorder, Recorder_Info_t* info)
         break;
     }
 
-    TrackFilter_Info_t tfInfo =
-    {
-        .cmd = (TrackFilter_Cmd_t)info->cmd
-    };
-    recorder->account->Notify("TrackFilter", &tfInfo, sizeof(tfInfo));
+    TrackFilter_Info_t tfInfo;
+    DATA_PROC_INIT_STRUCT(tfInfo);
+    tfInfo.cmd = (TrackFilter_Cmd_t)info->cmd;
 
-    return retval;
+    return recorder->account->Notify("TrackFilter", &tfInfo, sizeof(tfInfo));
 }
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    int retval = Account::RES_UNKNOW;
+    Account::ResCode_t res = Account::RES_UNKNOW;
     Recorder_t* recorder = (Recorder_t*)account->UserData;;
 
     switch (param->event)
@@ -179,11 +175,11 @@ static int onEvent(Account* account, Account::EventParam_t* param)
             {
                 Recorder_RecPoint(recorder, (HAL::GPS_Info_t*)param->data_p);
             }
-            retval = Account::RES_OK;
+            res = Account::RES_OK;
         }
         else
         {
-            retval = Account::RES_SIZE_MISMATCH;
+            res = Account::RES_SIZE_MISMATCH;
         }
         break;
 
@@ -194,18 +190,19 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         }
         else
         {
-            retval = Account::RES_SIZE_MISMATCH;
+            res = Account::RES_SIZE_MISMATCH;
         }
         break;
 
     case Account::EVENT_NOTIFY:
         if (param->size == sizeof(Recorder_Info_t))
         {
-            retval = onNotify(recorder, (Recorder_Info_t*)param->data_p);
+            onNotify(recorder, (Recorder_Info_t*)param->data_p);
+            res = Account::RES_OK;
         }
         else
         {
-            retval = Account::RES_SIZE_MISMATCH;
+            res = Account::RES_SIZE_MISMATCH;
         }
         break;
 
@@ -213,7 +210,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         break;
     }
 
-    return retval;
+    return res;
 }
 
 DATA_PROC_INIT_DEF(Recorder)

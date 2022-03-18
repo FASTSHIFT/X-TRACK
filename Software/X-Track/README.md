@@ -381,3 +381,15 @@
 * 4.移除lv_demo_conf.h
 * 5.更新lvgl v8.3.0 dev
 * 6.AT32F403A Stack size 0x2000 -> 0x1000
+
+## [v2.5] - 2022-3-18
+* 1.更新Adafruit_ST7789，支持颜色大小端切换
+* 2.更新CommonMacro库
+* 3.更新lv_conf.h
+* 4.去除lv_lib_png，使用lvgl内置PNG库
+* 5.DataProc 添加 DATA_PROC_INIT_STRUCT() 结构体初始化
+* 6.StatusBar 统一走 DataCenter 通信，只保留初始化API
+* 7.规范 DataProc 的 onEvent 回调函数的返回值
+* 8.去除 Page.h 公共空间的 ARRAY_SIZE() 宏定义
+* 9.ResourcePool::Font 默认返回 LV_FONT_DEFAULT，关闭不必要的内置字体
+* 10.更新PageManager，lv_event_get_target() -> lv_event_get_current_target()

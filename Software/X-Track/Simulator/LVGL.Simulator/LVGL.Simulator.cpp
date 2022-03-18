@@ -13,8 +13,6 @@
 #include "resource.h"
 #include "App.h"
 #include "Common/HAL/HAL.h"
-#include "Utils/lv_lib_png/lv_png.h"
-#include "Utils/lv_img_png/lv_img_png.h"
 
 #if _MSC_VER >= 1200
  // Disable compilation warnings.
@@ -35,6 +33,9 @@
 #pragma warning(pop)
 #endif
 
+#define SCREEN_HOR_RES  240
+#define SCREEN_VER_RES  240
+
 int main()
 {
     lv_init();
@@ -44,8 +45,8 @@ int main()
     if (!lv_win32_init(
         GetModuleHandleW(NULL),
         SW_SHOW,
-        240,
-        240,
+        SCREEN_HOR_RES,
+        SCREEN_VER_RES,
         LoadIconW(GetModuleHandleW(NULL), MAKEINTRESOURCE(IDI_LVGL))))
     {
         return -1;

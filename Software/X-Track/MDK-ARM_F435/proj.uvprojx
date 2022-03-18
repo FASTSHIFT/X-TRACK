@@ -360,7 +360,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>0</umfTarg>
+            <umfTarg>1</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -1790,31 +1790,6 @@
               <FileName>lv_obj_ext_func.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\lv_ext\lv_obj_ext_func.cpp</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Utils/lv_lib_png</GroupName>
-          <Files>
-            <File>
-              <FileName>lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lodepng.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lodepng.h</FilePath>
-            </File>
-            <File>
-              <FileName>lv_png.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lv_png.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_png.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lv_png.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -3743,6 +3718,56 @@
               <FileName>lv_draw_sw_gradient.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_gradient.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lvgl/demos/benchmark</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_demo_benchmark.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\lv_demo_benchmark.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_alpha16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_argb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_argb.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_chroma_keyed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_chroma_keyed.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_indexed16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_indexed16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_rgb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_rgb.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_bechmark_montserrat_12_compr_az.c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_12_compr_az.c.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_bechmark_montserrat_16_compr_az.c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_16_compr_az.c.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_bechmark_montserrat_28_compr_az.c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_28_compr_az.c.c</FilePath>
             </File>
           </Files>
         </Group>

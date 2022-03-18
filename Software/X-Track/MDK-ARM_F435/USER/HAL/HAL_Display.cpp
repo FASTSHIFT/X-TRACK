@@ -27,16 +27,16 @@ static float Display_GetFPS(SCREEN_CLASS* scr, uint32_t loopNum)
     uint32_t startTime = millis();
     for(uint32_t f = 0; f < loopNum; f++)
     {
-        scr->fillScreen(SCREEN_CLASS::Red);
-        scr->fillScreen(SCREEN_CLASS::Green);
-        scr->fillScreen(SCREEN_CLASS::Blue);
+        scr->fillScreen(SCREEN_CLASS::COLOR_RED);
+        scr->fillScreen(SCREEN_CLASS::COLOR_GREEN);
+        scr->fillScreen(SCREEN_CLASS::COLOR_BLUE);
     }
     uint32_t costTime = millis() - startTime;
     float fps = loopNum * 3 / (costTime / 1000.0f);
 
-    scr->fillScreen(SCREEN_CLASS::Blue);
+    scr->fillScreen(SCREEN_CLASS::COLOR_BLUE);
     scr->setTextSize(1);
-    scr->setTextColor(SCREEN_CLASS::White);
+    scr->setTextColor(SCREEN_CLASS::COLOR_WHITE);
     scr->setCursor(0, scr->height() / 2);
 
     scr->print("Frame:");
@@ -134,17 +134,18 @@ void HAL::Display_Init()
     Serial.print("Display: init...");
     screen.begin();
     screen.setRotation(0);
-    screen.fillScreen(screen.Black);
+    screen.fillScreen(SCREEN_CLASS::COLOR_BLACK);
 
     screen.setTextWrap(true);
     screen.setTextSize(1);
     screen.setCursor(0, 0);
     screen.setFont();
-    screen.setTextColor(SCREEN_CLASS::White, SCREEN_CLASS::Blue);
+    screen.setTextColor(SCREEN_CLASS::COLOR_WHITE, SCREEN_CLASS::COLOR_BLUE);
 
     Display_SPI_DMA_Init();
 
 #if (DISP_USE_FPS_TEST == 1)
+    HAL::Backlight_ForceLit(true);
     Display_GetFPS(&screen, 100);
     while(1);
 #endif
@@ -158,8 +159,8 @@ void HAL::Display_DumpCrashInfo(const char* info)
 #   define TEXT_HEIGHT_1   8
 #   define TEXT_WIDTH_1    6
 
-    screen.fillScreen(SCREEN_CLASS::Blue);
-    screen.setTextColor(SCREEN_CLASS::White);
+    screen.fillScreen(SCREEN_CLASS::COLOR_BLUE);
+    screen.setTextColor(SCREEN_CLASS::COLOR_WHITE);
     screen.setFont(&FreeMono12pt7b);
     screen.setTextSize(2);
     screen.setCursor(0, 34);

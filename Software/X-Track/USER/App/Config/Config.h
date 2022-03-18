@@ -52,12 +52,6 @@
 
 #define CONFIG_MAP_EXT_NAME_DEFAULT           "bin"
 
-#ifdef ARDUINO
-#  define CONFIG_MAP_PNG_DECODE_ENABLE        0
-#else
-#  define CONFIG_MAP_PNG_DECODE_ENABLE        1
-#endif
-
 #ifndef CONFIG_MAP_IMG_PNG_ENABLE
 #  define CONFIG_MAP_IMG_PNG_ENABLE           0
 #endif

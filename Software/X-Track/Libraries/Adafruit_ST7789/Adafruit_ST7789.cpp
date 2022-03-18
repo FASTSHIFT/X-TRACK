@@ -1,34 +1,35 @@
 #include "Adafruit_ST7789.h"
 #include "SPI.h"
 
-#define TFT_WIDTH  240
-#define TFT_HEIGHT 240
+#define SCREEN_WIDTH                240
+#define SCREEN_HEIGHT               240
+#define SCREEN_USE_LITTLE_ENDIAN    0
 
 #if defined(__STM32__)
-#define TFT_CS_SET      GPIO_HIGH(csport,cspinmask)
-#define TFT_DC_SET      GPIO_HIGH(dcport,dcpinmask)
-#define TFT_SCK_SET     GPIO_HIGH(sckport,sckpinmask)
-#define TFT_MOSI_SET    GPIO_HIGH(mosiport,mosipinmask)
+#define SCREEN_CS_SET      GPIO_HIGH(csport,cspinmask)
+#define SCREEN_DC_SET      GPIO_HIGH(dcport,dcpinmask)
+#define SCREEN_SCK_SET     GPIO_HIGH(sckport,sckpinmask)
+#define SCREEN_MOSI_SET    GPIO_HIGH(mosiport,mosipinmask)
 
-#define TFT_CS_CLR      GPIO_LOW(csport,cspinmask)
-#define TFT_DC_CLR      GPIO_LOW(dcport,dcpinmask)
-#define TFT_SCK_CLR     GPIO_LOW(sckport,sckpinmask)
-#define TFT_MOSI_CLR    GPIO_LOW(mosiport,mosipinmask)
+#define SCREEN_CS_CLR      GPIO_LOW(csport,cspinmask)
+#define SCREEN_DC_CLR      GPIO_LOW(dcport,dcpinmask)
+#define SCREEN_SCK_CLR     GPIO_LOW(sckport,sckpinmask)
+#define SCREEN_MOSI_CLR    GPIO_LOW(mosiport,mosipinmask)
 #else
-#define TFT_CS_SET      digitalWrite(cs_pin,HIGH)
-#define TFT_DC_SET      digitalWrite(dc_pin,HIGH)
-#define TFT_SCK_SET     digitalWrite(sck_pin,HIGH)
-#define TFT_MOSI_SET    digitalWrite(mosi_pin,HIGH)
+#define SCREEN_CS_SET      digitalWrite(cs_pin,HIGH)
+#define SCREEN_DC_SET      digitalWrite(dc_pin,HIGH)
+#define SCREEN_SCK_SET     digitalWrite(sck_pin,HIGH)
+#define SCREEN_MOSI_SET    digitalWrite(mosi_pin,HIGH)
 
-#define TFT_CS_CLR      digitalWrite(cs_pin,LOW)
-#define TFT_DC_CLR      digitalWrite(dc_pin,LOW)
-#define TFT_SCK_CLR     digitalWrite(sck_pin,LOW)
-#define TFT_MOSI_CLR    digitalWrite(mosi_pin,LOW)
+#define SCREEN_CS_CLR      digitalWrite(cs_pin,LOW)
+#define SCREEN_DC_CLR      digitalWrite(dc_pin,LOW)
+#define SCREEN_SCK_CLR     digitalWrite(sck_pin,LOW)
+#define SCREEN_MOSI_CLR    digitalWrite(mosi_pin,LOW)
 #endif
 
 
 Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* spix)
-    : Adafruit_GFX(TFT_WIDTH, TFT_HEIGHT)
+    : Adafruit_GFX(SCREEN_WIDTH, SCREEN_HEIGHT)
 {
     cs_pin = cs;
     dc_pin = dc;
@@ -45,7 +46,7 @@ Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* 
 }
 
 Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, uint8_t clk, uint8_t mosi)
-    : Adafruit_GFX(TFT_WIDTH, TFT_HEIGHT)
+    : Adafruit_GFX(SCREEN_WIDTH, SCREEN_HEIGHT)
 {
     cs_pin = cs;
     dc_pin = dc;
@@ -72,7 +73,7 @@ void Adafruit_ST7789::begin()
     if(spi)
     {
         spi->begin();
-        spi->setClock(200 * 1000 * 1000);
+        spi->setClock(F_CPU);
     }
     else
     {
@@ -98,6 +99,13 @@ void Adafruit_ST7789::begin()
 
     writeCommand(0x3A);
     writeData(0x05);
+
+#if SCREEN_USE_LITTLE_ENDIAN
+    // Change to Little Endian
+    writeCommand(0xB0);
+    writeData(0x00);  // RM = 0; DM = 00
+    writeData(0xF8);  // EPF = 11; ENDIAN = 1; RIM = 0; MDT = 00 (ENDIAN -> 0 MSBFirst; 1 LSB First)
+#endif
 
     writeCommand(0xB2);
     writeData(0x0C);
@@ -168,28 +176,28 @@ void Adafruit_ST7789::spiWrite(uint8_t data)
 {
     for(uint8_t i = 0; i < 8; i++)
     {
-        TFT_SCK_CLR;
-        (data & 0x80) ? TFT_MOSI_SET : TFT_MOSI_CLR;
-        TFT_SCK_SET;
+        SCREEN_SCK_CLR;
+        (data & 0x80) ? SCREEN_MOSI_SET : SCREEN_MOSI_CLR;
+        SCREEN_SCK_SET;
         data <<= 1;
     }
 }
 
 void Adafruit_ST7789::writeCommand(uint8_t cmd)
 {
-    TFT_CS_CLR;
-    TFT_DC_CLR;
+    SCREEN_CS_CLR;
+    SCREEN_DC_CLR;
     if(spi)
         spi->transfer(cmd);
     else
         spiWrite(cmd);
-    TFT_CS_SET;
+    SCREEN_CS_SET;
 }
 
 void Adafruit_ST7789::writeData16(uint16_t data)
 {
-    TFT_CS_CLR;
-    TFT_DC_SET;
+    SCREEN_CS_CLR;
+    SCREEN_DC_SET;
     if(spi)
     {
         spi->transfer(data >> 8);
@@ -200,13 +208,13 @@ void Adafruit_ST7789::writeData16(uint16_t data)
         spiWrite(data >> 8);
         spiWrite(data);
     }
-    TFT_CS_SET;
+    SCREEN_CS_SET;
 }
 
 void Adafruit_ST7789::writeData(uint8_t data)
 {
-    TFT_CS_CLR;
-    TFT_DC_SET;
+    SCREEN_CS_CLR;
+    SCREEN_DC_SET;
     if(spi)
     {
         spi->transfer(data);
@@ -215,7 +223,7 @@ void Adafruit_ST7789::writeData(uint8_t data)
     {
         spiWrite(data);
     }
-    TFT_CS_SET;
+    SCREEN_CS_SET;
 }
 
 void Adafruit_ST7789::setRotation(uint8_t r)
@@ -225,29 +233,29 @@ void Adafruit_ST7789::setRotation(uint8_t r)
     switch(rotation)
     {
     case 0:
-        _width = TFT_WIDTH;
-        _height = TFT_HEIGHT;
+        _width = SCREEN_WIDTH;
+        _height = SCREEN_HEIGHT;
 
         writeData(0x00);
         break;
 
     case 1:
-        _width = TFT_HEIGHT;
-        _height = TFT_WIDTH;
+        _width = SCREEN_HEIGHT;
+        _height = SCREEN_WIDTH;
 
         writeData(0xC0);
         break;
 
     case 2:
-        _width = TFT_WIDTH;
-        _height = TFT_HEIGHT;
+        _width = SCREEN_WIDTH;
+        _height = SCREEN_HEIGHT;
 
         writeData(0x70);
         break;
 
     case 3:
-        _width = TFT_HEIGHT;
-        _height = TFT_WIDTH;
+        _width = SCREEN_HEIGHT;
+        _height = SCREEN_WIDTH;
 
         writeData(0xA0);
         break;
@@ -312,7 +320,7 @@ void Adafruit_ST7789::drawPixel(int16_t x, int16_t y, uint16_t color)
 {
     if((x < 0) || (x >= _width) || (y < 0) || (y >= _height)) return;
     setAddrWindow(x, y, x, y);
-    writeData16(color);
+    pushColor(color);
 }
 
 void Adafruit_ST7789::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
@@ -326,7 +334,7 @@ void Adafruit_ST7789::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t co
     setAddrWindow(x, y, x, y + h - 1);
 
     while (h--)
-        writeData16(color);
+        pushColor(color);
 }
 
 void Adafruit_ST7789::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
@@ -340,7 +348,7 @@ void Adafruit_ST7789::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t co
     setAddrWindow(x, y, x + w - 1, y);
 
     while (w--)
-        writeData16(color);
+        pushColor(color);
 }
 
 void Adafruit_ST7789::drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h)
@@ -399,7 +407,7 @@ void Adafruit_ST7789::drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int1
             int16_t actualY = y + Y;
             if(actualX >= 0 && actualX < _width && actualY >= 0 && actualY < _height)
             {
-                writeData16(bitmap[index]);
+                pushColor(bitmap[index]);
             }
         }
     }
@@ -409,51 +417,82 @@ void Adafruit_ST7789::fillScreen(uint16_t color)
 {
     setAddrWindow(0, 0, _width - 1, _height - 1);
     uint32_t size = _width * _height;
+
+#ifdef __STM32__
     if(spi)
     {
         SPI_TypeDef* SPIx = spi->getSPI();
-        TFT_CS_CLR;
-        TFT_DC_SET;
+        SCREEN_CS_CLR;
+        SCREEN_DC_SET;
         while(size--)
         {
+#if SCREEN_USE_LITTLE_ENDIAN
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, color);
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, color >> 8);
+#else
             SPI_I2S_WAIT_TX(SPIx);
             SPI_I2S_TXDATA(SPIx, color >> 8);
             SPI_I2S_WAIT_TX(SPIx);
             SPI_I2S_TXDATA(SPIx, color);
+#endif
         }
         SPI_I2S_WAIT_TX(SPIx);
         SPI_I2S_WAIT_BUSY(SPIx);
-        TFT_CS_SET;
+        SCREEN_CS_SET;
+        return;
     }
-    else
+#endif
+
+    for(uint32_t i = 0; i < size; i++)
     {
-        for(uint32_t i = 0; i < size; i++)
-        {
-            writeData16(color);
-        }
+        pushColor(color);
     }
 }
 
 void Adafruit_ST7789::drawFastRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h)
 {
-    if(!spi)
-        return;
-
-    SPI_TypeDef* SPIx = spi->getSPI();
-
-    setAddrWindow(x, y, x + w - 1, y + h - 1);
-    uint32_t size = w * h;
-
-    TFT_CS_CLR;
-    TFT_DC_SET;
-    while(size--)
+#if defined(__STM32__)
+    if(spi)
     {
+        SPI_TypeDef* SPIx = spi->getSPI();
+
+        setAddrWindow(x, y, x + w - 1, y + h - 1);
+        uint32_t size = w * h;
+
+        SCREEN_CS_CLR;
+        SCREEN_DC_SET;
+        while(size--)
+        {
+#if SCREEN_USE_LITTLE_ENDIAN
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, *bitmap);
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, *bitmap >> 8);
+            bitmap++;
+#else
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, *bitmap >> 8);
+            SPI_I2S_WAIT_TX(SPIx);
+            SPI_I2S_TXDATA(SPIx, *bitmap++);
+#endif
+        }
         SPI_I2S_WAIT_TX(SPIx);
-        SPI_I2S_TXDATA(SPIx, *bitmap >> 8);
-        SPI_I2S_WAIT_TX(SPIx);
-        SPI_I2S_TXDATA(SPIx, *bitmap++);
+        SPI_I2S_WAIT_BUSY(SPIx);
+        SCREEN_CS_SET;
     }
-    SPI_I2S_WAIT_TX(SPIx);
-    SPI_I2S_WAIT_BUSY(SPIx);
-    TFT_CS_SET;
+#else
+    drawRGBBitmap(x, y, bitmap, w, h);
+#endif
+}
+
+void Adafruit_ST7789::pushColor(uint16_t color)
+{
+#if SCREEN_USE_LITTLE_ENDIAN
+    writeData(color);
+    writeData(color >> 8);
+#else
+    writeData16(color);
+#endif
 }

@@ -138,8 +138,6 @@
     <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zconf.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zlib.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h" />
-    <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h" />
     <ClInclude Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.h" />
     <ClInclude Include="..\..\USER\App\Utils\MapConv\MapConv.h" />
@@ -207,6 +205,9 @@
     <ClInclude Include="lvgl\src\extra\layouts\flex\lv_flex.h" />
     <ClInclude Include="lvgl\src\extra\layouts\grid\lv_grid.h" />
     <ClInclude Include="lvgl\src\extra\layouts\lv_layouts.h" />
+    <ClInclude Include="lvgl\src\extra\libs\lv_libs.h" />
+    <ClInclude Include="lvgl\src\extra\libs\png\lodepng.h" />
+    <ClInclude Include="lvgl\src\extra\libs\png\lv_png.h" />
     <ClInclude Include="lvgl\src\extra\others\lv_others.h" />
     <ClInclude Include="lvgl\src\extra\others\monkey\lv_monkey.h" />
     <ClInclude Include="lvgl\src\extra\others\snapshot\lv_snapshot.h" />
@@ -366,8 +367,6 @@
     <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\inftrees.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\PNGdec.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\zutil.c" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c" />
-    <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c" />
     <ClCompile Include="..\..\USER\App\Utils\lv_poly_line\lv_poly_line.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\GPS_Transform\GPS_Transform.c" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
@@ -541,6 +540,8 @@
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c" />
     <ClCompile Include="lvgl\src\extra\layouts\flex\lv_flex.c" />
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
+    <ClCompile Include="lvgl\src\extra\libs\png\lodepng.c" />
+    <ClCompile Include="lvgl\src\extra\libs\png\lv_png.c" />
     <ClCompile Include="lvgl\src\extra\others\monkey\lv_monkey.c" />
     <ClCompile Include="lvgl\src\extra\others\snapshot\lv_snapshot.c" />
     <ClCompile Include="lvgl\src\extra\themes\basic\lv_theme_basic.c" />
@@ -635,6 +636,7 @@
     <ClCompile Include="lvgl\src\widgets\lv_switch.c" />
     <ClCompile Include="lvgl\src\widgets\lv_table.c" />
     <ClCompile Include="lvgl\src\widgets\lv_textarea.c" />
+    <ClCompile Include="lv_fs_if\lv_fs_fatfs.c" />
     <ClCompile Include="lv_fs_if\lv_fs_if.c" />
     <ClCompile Include="lv_fs_if\lv_fs_pc.c" />
     <ClCompile Include="lv_fs_if\lv_fs_posix.c" />
@@ -867,6 +869,9 @@
     <None Include="lvgl\LICENCE.txt" />
     <None Include="lvgl\lvgl.mk" />
     <None Include="lvgl\README.md" />
+    <None Include="lv_fs_if\.gitignore" />
+    <None Include="lv_fs_if\LICENSE" />
+    <None Include="lv_fs_if\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lv_drivers\display\drm.h" />
@@ -940,6 +945,7 @@
     <Manifest Include="LVGL.Simulator.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lv_fs_if\dirent.h" />
     <ClInclude Include="lv_fs_if\lv_fs_if.h" />
     <ClInclude Include="Mile.Project.Properties.h" />
     <ClInclude Include="resource.h" />

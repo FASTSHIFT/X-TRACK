@@ -54,7 +54,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
             }
         }
         
-        return 0;
+        return Account::RES_OK;
     }
 
     if (param->event != Account::EVENT_SUB_PULL)
@@ -70,7 +70,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     HAL::Clock_Info_t* info = (HAL::Clock_Info_t*)param->data_p;
     HAL::Clock_GetInfo(info);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(Clock)

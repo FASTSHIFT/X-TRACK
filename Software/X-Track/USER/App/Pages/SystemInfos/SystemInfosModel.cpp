@@ -14,6 +14,7 @@ void SystemInfosModel::Init()
     account->Subscribe("Clock");
     account->Subscribe("Power");
     account->Subscribe("Storage");
+    account->Subscribe("StatusBar");
 }
 
 void SystemInfosModel::Deinit()
@@ -153,4 +154,15 @@ void SystemInfosModel::GetStorageInfo(
         "%0.1f GB",
         info.totalSizeMB / 1024.0f
     );
+}
+
+void SystemInfosModel::SetStatusBarStyle(DataProc::StatusBar_Style_t style)
+{
+    DataProc::StatusBar_Info_t info;
+    DATA_PROC_INIT_STRUCT(info);
+
+    info.cmd = DataProc::STATUS_BAR_CMD_SET_STYLE;
+    info.param.style = style;
+
+    account->Notify("StatusBar", &info, sizeof(info));
 }

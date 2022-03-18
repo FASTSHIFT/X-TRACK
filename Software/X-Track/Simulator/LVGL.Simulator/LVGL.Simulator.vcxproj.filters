@@ -304,9 +304,6 @@
     <Filter Include="App\Pages\_Template">
       <UniqueIdentifier>{c6736262-fd09-4c8a-9500-07d8c51bf0fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lv_fs_if">
-      <UniqueIdentifier>{4fd35d9b-6021-4e7a-8d55-c6a6640115cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="App\Utils\GPX">
       <UniqueIdentifier>{eb7d2e9f-81c2-42e5-8aeb-1a389e32517b}</UniqueIdentifier>
     </Filter>
@@ -373,9 +370,6 @@
     <Filter Include="App\Pages\Startup">
       <UniqueIdentifier>{a9f7a372-994a-40ce-ad80-ef374e6e28fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App\Utils\lv_lib_png">
-      <UniqueIdentifier>{81e9e579-c620-49c7-a471-e94f6b488ec8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HAL">
       <UniqueIdentifier>{83526f90-0302-468a-b87c-d5988d8c85c0}</UniqueIdentifier>
     </Filter>
@@ -411,6 +405,15 @@
     </Filter>
     <Filter Include="App\Utils\lv_anim_label">
       <UniqueIdentifier>{05f8a74d-5443-4751-a75b-95bdd619725b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lv_fs_if">
+      <UniqueIdentifier>{175da70f-1543-4931-8711-4d8b18e3cb10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\libs">
+      <UniqueIdentifier>{36056689-c0c7-4c70-ae5c-4136068882f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lvgl\src\extra\libs\png">
+      <UniqueIdentifier>{59c3430e-c531-44b5-bb50-2116dbb18ecd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -846,9 +849,6 @@
     <ClInclude Include="..\..\USER\App\Utils\Filters\SlidingFilter.h">
       <Filter>App\Utils\Filters</Filter>
     </ClInclude>
-    <ClInclude Include="lv_fs_if\lv_fs_if.h">
-      <Filter>lv_fs_if</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\Filters\Filters.h">
       <Filter>App\Utils\Filters</Filter>
     </ClInclude>
@@ -960,12 +960,6 @@
     <ClInclude Include="..\..\USER\App\Pages\Startup\StartupView.h">
       <Filter>App\Pages\Startup</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lodepng.h">
-      <Filter>App\Utils\lv_lib_png</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\USER\App\Utils\lv_lib_png\lv_png.h">
-      <Filter>App\Utils\lv_lib_png</Filter>
-    </ClInclude>
     <ClInclude Include="HAL\HAL.h">
       <Filter>HAL</Filter>
     </ClInclude>
@@ -1022,6 +1016,21 @@
     </ClInclude>
     <ClInclude Include="..\..\USER\App\Utils\lv_anim_label\lv_anim_label.h">
       <Filter>App\Utils\lv_anim_label</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_fs_if\dirent.h">
+      <Filter>lv_fs_if</Filter>
+    </ClInclude>
+    <ClInclude Include="lv_fs_if\lv_fs_if.h">
+      <Filter>lv_fs_if</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\libs\png\lodepng.h">
+      <Filter>lvgl\src\extra\libs\png</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\libs\png\lv_png.h">
+      <Filter>lvgl\src\extra\libs\png</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\src\extra\libs\lv_libs.h">
+      <Filter>lvgl\src\extra\libs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1790,15 +1799,6 @@
     <ClCompile Include="lvgl\src\core\lv_event.c">
       <Filter>lvgl\src\core</Filter>
     </ClCompile>
-    <ClCompile Include="lv_fs_if\lv_fs_if.c">
-      <Filter>lv_fs_if</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_fs_if\lv_fs_pc.c">
-      <Filter>lv_fs_if</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_fs_if\lv_fs_posix.c">
-      <Filter>lv_fs_if</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Utils\GPX\GPX.cpp">
       <Filter>App\Utils\GPX</Filter>
     </ClCompile>
@@ -1952,12 +1952,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_default.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lodepng.c">
-      <Filter>App\Utils\lv_lib_png</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\USER\App\Utils\lv_lib_png\lv_png.c">
-      <Filter>App\Utils\lv_lib_png</Filter>
-    </ClCompile>
     <ClCompile Include="HAL\HAL.cpp">
       <Filter>HAL</Filter>
     </ClCompile>
@@ -2071,6 +2065,24 @@
     </ClCompile>
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_gradient.c">
       <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_fs_if\lv_fs_fatfs.c">
+      <Filter>lv_fs_if</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_fs_if\lv_fs_if.c">
+      <Filter>lv_fs_if</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_fs_if\lv_fs_pc.c">
+      <Filter>lv_fs_if</Filter>
+    </ClCompile>
+    <ClCompile Include="lv_fs_if\lv_fs_posix.c">
+      <Filter>lv_fs_if</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\libs\png\lodepng.c">
+      <Filter>lvgl\src\extra\libs\png</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\extra\libs\png\lv_png.c">
+      <Filter>lvgl\src\extra\libs\png</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2754,6 +2766,15 @@
     </None>
     <None Include="..\..\USER\App\Utils\lv_img_png\PNGdec\src\png.inl">
       <Filter>App\Utils\lv_img_png\PNGdec</Filter>
+    </None>
+    <None Include="lv_fs_if\.gitignore">
+      <Filter>lv_fs_if</Filter>
+    </None>
+    <None Include="lv_fs_if\LICENSE">
+      <Filter>lv_fs_if</Filter>
+    </None>
+    <None Include="lv_fs_if\README.md">
+      <Filter>lv_fs_if</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

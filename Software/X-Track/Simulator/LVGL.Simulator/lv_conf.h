@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file lv_conf.h
  * Configuration file for v8.1.1-dev
  */
@@ -137,9 +137,32 @@
  *With complex image decoders (e.g. PNG or JPG) caching can save the continuous open/decode of images.
  *However the opened images might consume additional RAM.
  *0: to disable caching*/
-#define LV_IMG_CACHE_DEF_SIZE 0
+#define LV_IMG_CACHE_DEF_SIZE   0
 
-/*Maximum buffer size to allocate for rotation. Only used if software rotation is enabled in the display driver.*/
+/*Number of stops allowed per gradient. Increase this to allow more stops.
+ *This adds (sizeof(lv_color_t) + 1) bytes per additional stop*/
+#define LV_GRADIENT_MAX_STOPS       2
+
+/*Default gradient buffer size.
+ *When LVGL calculates the gradient "maps" it can save them into a cache to avoid calculating them again.
+ *LV_GRAD_CACHE_DEF_SIZE sets the size of this cache in bytes.
+ *If the cache is too small the map will be allocated only while it's required for the drawing.
+ *0 mean no caching.*/
+#define LV_GRAD_CACHE_DEF_SIZE      0
+
+/*Allow dithering the gradients (to achieve visual smooth color gradients on limited color depth display)
+ *LV_DITHER_GRADIENT implies allocating one or two more lines of the object's rendering surface
+ *The increase in memory consumption is (32 bits * object width) plus 24 bits * object width if using error diffusion */
+#define LV_DITHER_GRADIENT      0
+#if LV_DITHER_GRADIENT
+    /*Add support for error diffusion dithering.
+     *Error diffusion dithering gets a much better visual result, but implies more CPU consumption and memory when drawing.
+     *The increase in memory consumption is (24 bits * object's width)*/
+    #define LV_DITHER_ERROR_DIFFUSION   0
+#endif
+
+/*Maximum buffer size to allocate for rotation.
+ *Only used if software rotation is enabled in the display driver.*/
 #define LV_DISP_ROT_MAX_BUF (10*1024)
 
 /*-------------
@@ -168,13 +191,14 @@
 /*Use NXP's VG-Lite GPU iMX RTxxx platforms*/
 #define LV_USE_GPU_NXP_VG_LITE 0
 
-/*Use exnternal renderer*/
-#define LV_USE_EXTERNAL_RENDERER 0
-
-/*Use SDL renderer API. Requires LV_USE_EXTERNAL_RENDERER*/
+/*Use SDL renderer API*/
 #define LV_USE_GPU_SDL 0
 #if LV_USE_GPU_SDL
     #define LV_GPU_SDL_INCLUDE_PATH <SDL2/SDL.h>
+    /*Texture cache size, 8MB by default*/
+    #define LV_GPU_SDL_LRU_SIZE (1024 * 1024 * 8)
+    /*Custom blend mode for mask drawing, disable if you need to link with older SDL2 lib*/
+    #define LV_GPU_SDL_CUSTOM_BLEND_MODE (SDL_VERSION_ATLEAST(2, 0, 6))
 #endif
 
 /*-------------
@@ -335,7 +359,7 @@
 #define LV_FONT_MONTSERRAT_8  0
 #define LV_FONT_MONTSERRAT_10 1
 #define LV_FONT_MONTSERRAT_12 0
-#define LV_FONT_MONTSERRAT_14 1
+#define LV_FONT_MONTSERRAT_14 0
 #define LV_FONT_MONTSERRAT_16 0
 #define LV_FONT_MONTSERRAT_18 0
 #define LV_FONT_MONTSERRAT_20 0
@@ -357,7 +381,7 @@
 /*Demonstrate special features*/
 #define LV_FONT_MONTSERRAT_12_SUBPX      0
 #define LV_FONT_MONTSERRAT_28_COMPRESSED 0  /*bpp = 3*/
-#define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0  /*Hebrew, Arabic, Perisan letters and all their forms*/
+#define LV_FONT_DEJAVU_16_PERSIAN_HEBREW 0  /*Hebrew, Arabic, Persian letters and all their forms*/
 #define LV_FONT_SIMSUN_16_CJK            0  /*1000 most common CJK radicals*/
 
 /*Pixel perfect monospace fonts*/
@@ -574,21 +598,45 @@
  * 3rd party libraries
  *--------------------*/
 
-/*File system interfaces for common APIs
- *To enable set a driver letter for that API*/
-#define LV_USE_FS_STDIO '\0'        /*Uses fopen, fread, etc*/
-//#define LV_FS_STDIO_PATH "/home/john/"    /*Set the working directory. If commented it will be "./" */
+/*File system interfaces for common APIs */
 
-#define LV_USE_FS_POSIX '\0'        /*Uses open, read, etc*/
-//#define LV_FS_POSIX_PATH "/home/john/"    /*Set the working directory. If commented it will be "./" */
+/*API for fopen, fread, etc*/
+#define LV_USE_FS_STDIO 0
+#if LV_USE_FS_STDIO
+    #define LV_FS_STDIO_LETTER '\0'     /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
+    #define LV_FS_STDIO_PATH ""         /*Set the working directory. File/directory paths will be appended to it.*/
+    #define LV_FS_STDIO_CACHE_SIZE  0   /*>0 to cache this number of bytes in lv_fs_read()*/
+#endif
 
-#define LV_USE_FS_WIN32 '\0'        /*Uses CreateFile, ReadFile, etc*/
-//#define LV_FS_WIN32_PATH "C:\\Users\\john\\"    /*Set the working directory. If commented it will be ".\\" */
+/*API for open, read, etc*/
+#define LV_USE_FS_POSIX 0
+#if LV_USE_FS_POSIX
+    #define LV_FS_POSIX_LETTER '\0'     /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
+    #define LV_FS_POSIX_PATH ""         /*Set the working directory. File/directory paths will be appended to it.*/
+    #define LV_FS_POSIX_CACHE_SIZE  0   /*>0 to cache this number of bytes in lv_fs_read()*/
+#endif
 
-#define LV_USE_FS_FATFS '\0'        /*Uses f_open, f_read, etc*/
+/*API for CreateFile, ReadFile, etc*/
+#define LV_USE_FS_WIN32 0
+#if LV_USE_FS_WIN32
+    #define LV_FS_WIN32_LETTER  '\0'    /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
+    #define LV_FS_WIN32_PATH ""         /*Set the working directory. File/directory paths will be appended to it.*/
+    #define LV_FS_WIN32_CACHE_SIZE 0    /*>0 to cache this number of bytes in lv_fs_read()*/
+#endif
+
+/*API for FATFS (needs to be added separately). Uses f_open, f_read, etc*/
+#define LV_USE_FS_FATFS  0
+#if LV_USE_FS_FATFS
+    #define LV_FS_FATFS_LETTER '\0'     /*Set an upper cased letter on which the drive will accessible (e.g. 'A')*/
+    #define LV_FS_FATFS_CACHE_SIZE 0    /*>0 to cache this number of bytes in lv_fs_read()*/
+#endif
 
 /*PNG decoder library*/
-#define LV_USE_PNG 0
+#ifdef ARDUINO
+    #define LV_USE_PNG 0
+#else
+    #define LV_USE_PNG 1
+#endif
 
 /*BMP decoder library*/
 #define LV_USE_BMP 0
@@ -641,12 +689,47 @@
 /*1: Enable Monkey test*/
 #define LV_USE_MONKEY 1
 
+/*1: Enable grid navigation*/
+#define LV_USE_GRIDNAV  0
+
+/*1: Enable lv_obj fragment*/
+#define LV_USE_FRAGMENT 0
+
 /*==================
 * EXAMPLES
 *==================*/
 
 /*Enable the examples to be built with the library*/
 #define LV_BUILD_EXAMPLES 0
+
+/*===================
+ * DEMO USAGE
+ ====================*/
+
+/*Show some widget. It might be required to increase `LV_MEM_SIZE` */
+#define LV_USE_DEMO_WIDGETS        0
+#if LV_USE_DEMO_WIDGETS
+#define LV_DEMO_WIDGETS_SLIDESHOW  0
+#endif
+
+/*Demonstrate the usage of encoder and keyboard*/
+#define LV_USE_DEMO_KEYPAD_AND_ENCODER     0
+
+/*Benchmark your system*/
+#define LV_USE_DEMO_BENCHMARK   1
+
+/*Stress test for LVGL*/
+#define LV_USE_DEMO_STRESS      0
+
+/*Music player demo*/
+#define LV_USE_DEMO_MUSIC       0
+#if LV_USE_DEMO_MUSIC
+# define LV_DEMO_MUSIC_SQUARE       0
+# define LV_DEMO_MUSIC_LANDSCAPE    0
+# define LV_DEMO_MUSIC_ROUND        0
+# define LV_DEMO_MUSIC_LARGE        0
+# define LV_DEMO_MUSIC_AUTO_PLAY    0
+#endif
 
 /*--END OF LV_CONF_H--*/
 

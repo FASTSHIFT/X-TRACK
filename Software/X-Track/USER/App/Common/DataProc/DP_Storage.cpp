@@ -167,7 +167,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         info->totalSizeMB = HAL::SD_GetCardSizeMB();
         info->freeSizeMB = 0.0f;
         info->type = HAL::SD_GetTypeName();
-        return 0;
+        return Account::RES_OK;
     }
 
     if (param->event != Account::EVENT_NOTIFY)
@@ -183,7 +183,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     Storage_Info_t* info = (Storage_Info_t*)param->data_p;
     onNotify(account, info);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 
@@ -192,6 +192,7 @@ static void onSDEvent(bool insert)
     if(insert)
     {
         DataProc::Storage_Info_t info;
+        DATA_PROC_INIT_STRUCT(info);
         info.cmd = DataProc::STORAGE_CMD_LOAD;
         DataProc::Center()->AccountMain.Notify("Storage", &info, sizeof(info));
     }

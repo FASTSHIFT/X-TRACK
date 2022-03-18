@@ -86,7 +86,7 @@ void LiveMap::onViewWillAppear()
 
     priv.isTrackAvtive = Model.GetTrackFilterActive();
 
-    StatusBar::SetStyle(StatusBar::STYLE_BLACK);
+    Model.SetStatusBarStyle(DataProc::STATUS_BAR_STYLE_BLACK);
     SportInfoUpdate();
     lv_obj_clear_flag(View.ui.labelInfo, LV_OBJ_FLAG_HIDDEN);
 }
@@ -364,7 +364,7 @@ void LiveMap::onEvent(lv_event_t* event)
     LiveMap* instance = (LiveMap*)lv_event_get_user_data(event);
     LV_ASSERT_NULL(instance);
 
-    lv_obj_t* obj = lv_event_get_target(event);
+    lv_obj_t* obj = lv_event_get_current_target(event);
     lv_event_code_t code = lv_event_get_code(event);
 
     if (code == LV_EVENT_LEAVE)

@@ -11,6 +11,7 @@ static void onTimer(Account* account)
     if (power.isCharging != lastStatus)
     {
         DataProc::MusicPlayer_Info_t info;
+        DATA_PROC_INIT_STRUCT(info);
         info.music = power.isCharging ? "BattChargeStart" : "BattChargeEnd";
         account->Notify("MusicPlayer", &info, sizeof(info));
 
@@ -26,7 +27,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     if (param->event == Account::EVENT_TIMER)
     {
         onTimer(account);
-        return 0;
+        return Account::RES_OK;
     }
 
     if (param->event != Account::EVENT_SUB_PULL)
@@ -49,7 +50,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     memcpy(param->data_p, &powerInfo, param->size);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(Power)

@@ -39,7 +39,7 @@ void SystemInfos::onViewDidLoad()
 
 void SystemInfos::onViewWillAppear()
 {
-    StatusBar::SetStyle(StatusBar::STYLE_BLACK);
+    Model.SetStatusBarStyle(DataProc::STATUS_BAR_STYLE_BLACK);
 
     timer = lv_timer_create(onTimerUpdate, 1000, this);
     lv_timer_ready(timer);
@@ -152,7 +152,7 @@ void SystemInfos::onEvent(lv_event_t* event)
     SystemInfos* instance = (SystemInfos*)lv_event_get_user_data(event);
     LV_ASSERT_NULL(instance);
 
-    lv_obj_t* obj = lv_event_get_target(event);
+    lv_obj_t* obj = lv_event_get_current_target(event);
     lv_event_code_t code = lv_event_get_code(event);
 
     if (code == LV_EVENT_PRESSED)

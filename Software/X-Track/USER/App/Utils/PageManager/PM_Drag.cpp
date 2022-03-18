@@ -36,7 +36,7 @@
   */
 void PageManager::onRootDragEvent(lv_event_t* event)
 {
-    lv_obj_t* root = lv_event_get_target(event);
+    lv_obj_t* root = lv_event_get_current_target(event);
     PageBase* base = (PageBase*)lv_event_get_user_data(event);
 
     if (base == nullptr)

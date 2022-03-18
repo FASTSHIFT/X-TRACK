@@ -131,17 +131,18 @@ void HAL::Display_Init()
     Serial.print("Display: init...");
     screen.begin();
     screen.setRotation(0);
-    screen.fillScreen(screen.Black);
+    screen.fillScreen(SCREEN_CLASS::COLOR_BLACK);
 
     screen.setTextWrap(true);
     screen.setTextSize(1);
     screen.setCursor(0, 0);
     screen.setFont();
-    screen.setTextColor(SCREEN_CLASS::White, SCREEN_CLASS::Blue);
+    screen.setTextColor(SCREEN_CLASS::COLOR_WHITE, SCREEN_CLASS::COLOR_BLUE);
     
     Display_SPI_DMA_Init();
 
 #if (DISP_USE_FPS_TEST == 1)
+    HAL::Backlight_ForceLit(true);
     Display_GetFPS(&screen, 50);
     while(1);
 #endif
@@ -155,8 +156,8 @@ void HAL::Display_DumpCrashInfo(const char* info)
 #   define TEXT_WIDTH_1    6
     HAL::Backlight_ForceLit(true);
 
-    screen.fillScreen(SCREEN_CLASS::Blue);
-    screen.setTextColor(SCREEN_CLASS::White);
+    screen.fillScreen(SCREEN_CLASS::COLOR_BLUE);
+    screen.setTextColor(SCREEN_CLASS::COLOR_WHITE);
     screen.setFont(&FreeMono12pt7b);
     screen.setTextSize(2);
     screen.setCursor(0, 34);

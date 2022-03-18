@@ -126,12 +126,12 @@ void HAL::Power_SetAutoLowPowerEnable(bool en)
 
 void HAL::Power_Shutdown()
 {
-    __ExecuteOnce(Power.ShutdownReq = true);
+    CM_EXECUTE_ONCE(Power.ShutdownReq = true);
 }
 
 void HAL::Power_Update()
 {
-    __IntervalExecute(Power_ADC_Update(), 1000);
+    CM_EXECUTE_INTERVAL(Power_ADC_Update(), 1000);
 
     if(!Power.AutoLowPowerEnable)
         return;
@@ -170,7 +170,7 @@ void HAL::Power_GetInfo(Power_Info_t* info)
 
     voltage *= 2;
 
-    __LimitValue(voltage, BATT_MIN_VOLTAGE, BATT_MAX_VOLTAGE);
+    CM_VALUE_LIMIT(voltage, BATT_MIN_VOLTAGE, BATT_MAX_VOLTAGE);
 
     int usage = map(
                     voltage,
@@ -178,7 +178,7 @@ void HAL::Power_GetInfo(Power_Info_t* info)
                     0, 100
                 );
 
-    __LimitValue(usage, 0, 100);
+    CM_VALUE_LIMIT(usage, 0, 100);
 
     info->usage = usage;
     info->isCharging = BATT_CHG_DET_STATUS;

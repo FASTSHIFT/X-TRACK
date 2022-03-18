@@ -21,6 +21,7 @@
  * SOFTWARE.
  */
 #include "StatusBar.h"
+#include "../Page.h"
 #include "Common/DataProc/DataProc.h"
 #include "Utils/lv_anim_label/lv_anim_label.h"
 
@@ -56,32 +57,6 @@ struct
         lv_obj_t* label;
     } battery;
 } ui;
-
-static int onEvent(Account* account, Account::EventParam_t* param)
-{
-    if (param->event != Account::EVENT_NOTIFY)
-    {
-        return Account::RES_UNSUPPORTED_REQUEST;
-    }
-
-    if (param->size != sizeof(DataProc::StatusBar_Info_t))
-    {
-        return Account::RES_SIZE_MISMATCH;
-    }
-
-    DataProc::StatusBar_Info_t* info = (DataProc::StatusBar_Info_t*)param->data_p;
-
-    if (info->showLabelRec)
-    {
-        lv_anim_label_set_text(ui.labelRec, info->labelRecStr);
-    }
-    else
-    {
-        lv_anim_label_set_text(ui.labelRec, " ");
-    }
-
-    return 0;
-}
 
 static void StatusBar_ConBattSetOpa(lv_obj_t* obj, int32_t opa)
 {
@@ -265,7 +240,25 @@ static lv_obj_t* StatusBar_SdCardImage_Create(lv_obj_t* par)
     return img;
 }
 
-static lv_obj_t* StatusBar_Create(lv_obj_t* par)
+static void StatusBar_SetStyle(DataProc::StatusBar_Style_t style)
+{
+    lv_obj_t* cont = ui.cont;
+    if (style == DataProc::STATUS_BAR_STYLE_TRANSP)
+    {
+        lv_obj_add_state(cont, LV_STATE_DEFAULT);
+        lv_obj_clear_state(cont, LV_STATE_USER_1);
+    }
+    else if (style == DataProc::STATUS_BAR_STYLE_BLACK)
+    {
+        lv_obj_add_state(cont, LV_STATE_USER_1);
+    }
+    else
+    {
+        return;
+    }
+}
+
+lv_obj_t* Page::StatusBar_Create(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
@@ -328,7 +321,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     lv_label_set_text(label, "100%");
     ui.battery.label = label;
 
-    StatusBar::SetStyle(StatusBar::STYLE_TRANSP);
+    StatusBar_SetStyle(DataProc::STATUS_BAR_STYLE_TRANSP);
 
     lv_timer_t* timer = lv_timer_create(StatusBar_Update, 1000, nullptr);
     lv_timer_ready(timer);
@@ -336,41 +329,7 @@ static lv_obj_t* StatusBar_Create(lv_obj_t* par)
     return ui.cont;
 }
 
-void StatusBar::SetStyle(Style_t style)
-{
-    lv_obj_t* cont = ui.cont;
-    if (style == STYLE_TRANSP)
-    {
-        lv_obj_add_state(cont, LV_STATE_DEFAULT);
-        lv_obj_clear_state(cont, LV_STATE_USER_1);
-    }
-    else if (style == STYLE_BLACK)
-    {
-        lv_obj_add_state(cont, LV_STATE_USER_1);
-    }
-    else
-    {
-        return;
-    }
-}
-
-void StatusBar::Init(lv_obj_t* par)
-{
-    StatusBar_Create(par);
-}
-
-DATA_PROC_INIT_DEF(StatusBar)
-{
-    account->Subscribe("GPS");
-    account->Subscribe("Power");
-    account->Subscribe("Clock");
-    account->Subscribe("Storage");
-    account->SetEventCallback(onEvent);
-
-    actStatusBar = account;
-}
-
-void StatusBar::Appear(bool en)
+static void StatusBar_Appear(bool en)
 {
     int32_t start = -STATUS_BAR_HEIGHT;
     int32_t end = 0;
@@ -392,4 +351,47 @@ void StatusBar::Appear(bool en)
     lv_anim_set_path_cb(&a, lv_anim_path_ease_out);
     lv_anim_set_early_apply(&a, true);
     lv_anim_start(&a);
+}
+
+static int onEvent(Account* account, Account::EventParam_t* param)
+{
+    if (param->event != Account::EVENT_NOTIFY)
+    {
+        return Account::RES_UNSUPPORTED_REQUEST;
+    }
+
+    if (param->size != sizeof(DataProc::StatusBar_Info_t))
+    {
+        return Account::RES_SIZE_MISMATCH;
+    }
+
+    DataProc::StatusBar_Info_t* info = (DataProc::StatusBar_Info_t*)param->data_p;
+
+    switch(info->cmd)
+    {
+    case DataProc::STATUS_BAR_CMD_APPEAR:
+        StatusBar_Appear(info->param.appear);
+        break;
+    case DataProc::STATUS_BAR_CMD_SET_STYLE:
+        StatusBar_SetStyle(info->param.style);
+        break;
+    case DataProc::STATUS_BAR_CMD_SET_LABEL_REC:
+        lv_anim_label_set_text(ui.labelRec, info->param.labelRec.show ? info->param.labelRec.str : " ");
+        break;
+    default:
+        return Account::RES_PARAM_ERROR;
+    }
+
+    return Account::RES_OK;
+}
+
+DATA_PROC_INIT_DEF(StatusBar)
+{
+    account->Subscribe("GPS");
+    account->Subscribe("Power");
+    account->Subscribe("Clock");
+    account->Subscribe("Storage");
+    account->SetEventCallback(onEvent);
+
+    actStatusBar = account;
 }

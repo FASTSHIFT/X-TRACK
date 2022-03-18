@@ -1794,31 +1794,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Utils/lv_lib_png</GroupName>
-          <Files>
-            <File>
-              <FileName>lodepng.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lodepng.c</FilePath>
-            </File>
-            <File>
-              <FileName>lodepng.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lodepng.h</FilePath>
-            </File>
-            <File>
-              <FileName>lv_png.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lv_png.c</FilePath>
-            </File>
-            <File>
-              <FileName>lv_png.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\lv_lib_png\lv_png.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Utils/lv_img_png</GroupName>
           <GroupOption>
             <CommonProperty>

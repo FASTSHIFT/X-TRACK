@@ -157,7 +157,7 @@ static void lv_img_png_event(const lv_obj_class_t* class_p, lv_event_t* e)
 
     if (code == LV_EVENT_DRAW_MAIN_BEGIN)
     {
-        lv_obj_t* obj = lv_event_get_target(e);
+        lv_obj_t* obj = lv_event_get_current_target(e);
         lv_img_png_t* img = (lv_img_png_t*)obj;
 
         if (img->src == NULL)
