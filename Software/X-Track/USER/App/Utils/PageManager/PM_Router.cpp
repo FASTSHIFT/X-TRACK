@@ -217,7 +217,7 @@ void PageManager::SwitchTo(PageBase* newNode, bool isPushAct, const PageBase::St
     }
     else
     {
-        PM_LOG_INFO("Page POP is detect, move Page(%s) to foreground", GetPagePrevName());
+        PM_LOG_INFO("Page POP is detect, move Page(%s) to foreground", PageCurrent->Name);
         lv_obj_move_foreground(PageCurrent->root);
         if (PagePrev)lv_obj_move_foreground(PagePrev->root);
     }
