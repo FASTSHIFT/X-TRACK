@@ -35,7 +35,10 @@ static double SportStatus_GetDistanceOffset(HAL::GPS_Info_t* gpsInfo)
 static void onTimer(Account* account)
 {
     HAL::GPS_Info_t gpsInfo;
-    account->Pull("GPS", &gpsInfo, sizeof(gpsInfo));
+    if(account->Pull("GPS", &gpsInfo, sizeof(gpsInfo)) != Account::RES_OK)
+    {
+        return;
+    }
 
     uint32_t timeElaps = DataProc::GetTickElaps(sportStatus.lastTick);
 

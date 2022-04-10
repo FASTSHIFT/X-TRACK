@@ -14,12 +14,14 @@ Template::~Template()
 
 void Template::onCustomAttrConfig()
 {
+    LV_LOG_USER("enable custom cache");
     SetCustomCacheEnable(true);
     SetCustomLoadAnimType(PageManager::LOAD_ANIM_OVER_BOTTOM, 1000, lv_anim_path_bounce);
 }
 
 void Template::onViewLoad()
 {
+    LV_LOG_USER("View load begin");
     View.Create(root);
     lv_label_set_text(View.ui.labelTitle, Name);
 
@@ -30,11 +32,12 @@ void Template::onViewLoad()
 
 void Template::onViewDidLoad()
 {
-
+    LV_LOG_USER("View load end");
 }
 
 void Template::onViewWillAppear()
 {
+    LV_LOG_USER("View appear begin");
     Param_t param;
     param.color = lv_color_white();
     param.time = 1000;
@@ -47,22 +50,28 @@ void Template::onViewWillAppear()
 
 void Template::onViewDidAppear()
 {
-
+    LV_LOG_USER("View appear end");
 }
 
 void Template::onViewWillDisappear()
 {
-
+    LV_LOG_USER("View disappear begin");
 }
 
 void Template::onViewDidDisappear()
 {
+    LV_LOG_USER("View disappear end");
     lv_timer_del(timer);
+}
+
+void Template::onViewUnload()
+{
+    LV_LOG_USER("View unload begin");
 }
 
 void Template::onViewDidUnload()
 {
-
+    LV_LOG_USER("View unload end");
 }
 
 void Template::AttachEvent(lv_obj_t* obj)

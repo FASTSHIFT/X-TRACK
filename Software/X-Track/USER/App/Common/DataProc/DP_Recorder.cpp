@@ -41,20 +41,23 @@ static int Recorder_GetTimeConv(
     uint32_t size)
 {
     HAL::Clock_Info_t clock;
-    recorder->account->Pull("Clock", &clock, sizeof(clock));
+    int retval = -1;
+    if (recorder->account->Pull("Clock", &clock, sizeof(clock)) == Account::RES_OK)
+    {
+        retval = snprintf(
+            buf,
+            size,
+            format,
+            clock.year,
+            clock.month,
+            clock.day,
+            clock.hour,
+            clock.minute,
+            clock.second
+        );
+    }
 
-    int ret = snprintf(
-                  buf,
-                  size,
-                  format,
-                  clock.year,
-                  clock.month,
-                  clock.day,
-                  clock.hour,
-                  clock.minute,
-                  clock.second
-              );
-    return ret;
+    return retval;
 }
 
 static void Recorder_RecPoint(Recorder_t* recorder, HAL::GPS_Info_t* gpsInfo)
@@ -62,12 +65,18 @@ static void Recorder_RecPoint(Recorder_t* recorder, HAL::GPS_Info_t* gpsInfo)
     //LV_LOG_USER("Track recording...");
 
     char timeBuf[64];
-    Recorder_GetTimeConv(
+    int ret = Recorder_GetTimeConv(
         recorder,
         RECORDER_GPX_TIME_FMT,
         timeBuf,
         sizeof(timeBuf)
     );
+
+    if (ret < 0)
+    {
+        LV_LOG_WARN("cant't get time");
+        return;
+    }
 
     recorder->gpx.setEle(String(gpsInfo->altitude, 2));
     recorder->gpx.setTime(timeBuf);
@@ -86,11 +95,17 @@ static void Recorder_RecStart(Recorder_t* recorder, uint16_t time)
     LV_LOG_USER("Track record start");
 
     char filepath[128];
-    Recorder_GetTimeConv(
+    int ret = Recorder_GetTimeConv(
         recorder,
         RECORDER_GPX_FILE_NAME,
         filepath, sizeof(filepath)
     );
+
+    if (ret < 0)
+    {
+        LV_LOG_WARN("cant't get time");
+        return;
+    }
 
     lv_fs_res_t res = lv_fs_open(&(recorder->file), filepath, LV_FS_MODE_WR | LV_FS_MODE_RD);
 

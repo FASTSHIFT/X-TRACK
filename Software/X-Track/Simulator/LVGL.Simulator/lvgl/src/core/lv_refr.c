@@ -139,8 +139,10 @@ void lv_refr_obj(lv_draw_ctx_t * draw_ctx, lv_obj_t * obj)
     lv_area_increase(&obj_coords_ext, ext_draw_size, ext_draw_size);
     bool com_clip_res = _lv_area_intersect(&clip_coords_for_obj, clip_area_ori, &obj_coords_ext);
 
-    /*If the object is visible on the current clip area draw it.*/
-    if(com_clip_res) {
+    /*If the object is visible on the current clip area OR has overflow visible draw it.
+     *With overflow visible drawing should happen to apply the masks which might affect children */
+    bool should_draw = com_clip_res || lv_obj_has_flag(obj, LV_OBJ_FLAG_OVERFLOW_VISIBLE);
+    if(should_draw) {
         draw_ctx->clip_area = &clip_coords_for_obj;
 
         /*Draw the object*/
@@ -159,11 +161,6 @@ void lv_refr_obj(lv_draw_ctx_t * draw_ctx, lv_obj_t * obj)
         draw_dsc.border_color = debug_color;
         lv_draw_rect(draw_ctx, &draw_dsc, &obj_coords_ext);
 #endif
-    }
-    /*If not visible on the current clip area and children are clipped to the parent's size
-     *the object has nothing to do with this area so stop drawing.*/
-    else if(!lv_obj_has_flag(obj, LV_OBJ_FLAG_OVERFLOW_VISIBLE)) {
-        return;
     }
 
     /*With overflow visible keep the previous clip area to let the children visible out of this object too
@@ -190,7 +187,7 @@ void lv_refr_obj(lv_draw_ctx_t * draw_ctx, lv_obj_t * obj)
     }
 
     /*If the object was visible on the clip area call the post draw events too*/
-    if(com_clip_res) {
+    if(should_draw) {
         draw_ctx->clip_area = &clip_coords_for_obj;
 
         /*If all the children are redrawn make 'post draw' draw*/
@@ -668,14 +665,27 @@ static void lv_refr_area_part(lv_draw_ctx_t * draw_ctx)
             lv_draw_rect(draw_ctx, &dsc, draw_ctx->buf_area);
         }
     }
-    /*Refresh the previous screen if any*/
-    if(disp_refr->prev_scr) {
-        if(top_prev_scr == NULL) top_prev_scr = disp_refr->prev_scr;
-        lv_refr_obj_and_children(draw_ctx, top_prev_scr);
-    }
 
-    if(top_act_scr == NULL) top_act_scr = disp_refr->act_scr;
-    lv_refr_obj_and_children(draw_ctx, top_act_scr);
+    if(disp_refr->draw_prev_over_act) {
+        if(top_act_scr == NULL) top_act_scr = disp_refr->act_scr;
+        lv_refr_obj_and_children(draw_ctx, top_act_scr);
+
+        /*Refresh the previous screen if any*/
+        if(disp_refr->prev_scr) {
+            if(top_prev_scr == NULL) top_prev_scr = disp_refr->prev_scr;
+            lv_refr_obj_and_children(draw_ctx, top_prev_scr);
+        }
+    }
+    else {
+        /*Refresh the previous screen if any*/
+        if(disp_refr->prev_scr) {
+            if(top_prev_scr == NULL) top_prev_scr = disp_refr->prev_scr;
+            lv_refr_obj_and_children(draw_ctx, top_prev_scr);
+        }
+
+        if(top_act_scr == NULL) top_act_scr = disp_refr->act_scr;
+        lv_refr_obj_and_children(draw_ctx, top_act_scr);
+    }
 
     /*Also refresh top and sys layer unconditionally*/
     lv_refr_obj_and_children(draw_ctx, lv_disp_get_layer_top(disp_refr));

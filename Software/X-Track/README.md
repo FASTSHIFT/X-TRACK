@@ -393,3 +393,16 @@
 * 8.去除 Page.h 公共空间的 ARRAY_SIZE() 宏定义
 * 9.ResourcePool::Font 默认返回 LV_FONT_DEFAULT，关闭不必要的内置字体
 * 10.更新PageManager，lv_event_get_target() -> lv_event_get_current_target()
+
+## [v2.6] - 2022-4-10
+* 1.ArduinoAPI更新
+* 2.整理 Core，统一移动到 MDK-ARM_F4XX/Platform 中
+* 3.更新lvgl主程序
+* 4.LV_SPRINTF_CUSTOM使能，减少FLASH占用
+* 5.account->Pull()操作全部添加返回值检查
+* 6.PageManager更新
+* 7.页面Template添加生命周期LOG
+* 8.DataCenter添加ACCOUNT_DISCARD_READ_DATA
+* 9.__WFI() -> __wfi()
+* 10.main.cpp复用
+* 11.修复[TscanCode](https://github.com/Tencent/TscanCode)静态扫描出来的漏洞

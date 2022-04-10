@@ -338,7 +338,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>LIBRARY_VERSION,ARDUINO=111,CONFIG_MAP_IMG_PNG_ENABLE=0</Define>
               <Undefine></Undefine>
-              <IncludePath>..\ArduinoAPI;..\Core;..\Libraries;..\USER;..\Libraries\SdFat\src;..\Simulator\LVGL.Simulator;..\USER\App</IncludePath>
+              <IncludePath>..\ArduinoAPI;.\Platform\Core;.\Platform;..\Libraries;..\Libraries\SdFat\src;..\USER;..\USER\App;..\Simulator\LVGL.Simulator</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -386,11 +386,6 @@
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\main.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>mcu_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\mcu_config.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -3745,14 +3740,14 @@
               <FilePath>..\USER\lv_port\lv_port_fs_sdfat.cpp</FilePath>
             </File>
             <File>
-              <FileName>lv_port_disp.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\lv_port\lv_port_disp.cpp</FilePath>
-            </File>
-            <File>
               <FileName>lv_port_indev.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\lv_port\lv_port_indev.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>lv_port_disp.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Platform\lv_port\lv_port_disp.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -3942,77 +3937,148 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Core</GroupName>
+          <GroupName>Platform/Core</GroupName>
           <Files>
-            <File>
-              <FileName>mcu_type.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Core\mcu_type.h</FilePath>
-            </File>
             <File>
               <FileName>mcu_core.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Core\mcu_core.h</FilePath>
+              <FilePath>.\Platform\Core\mcu_core.h</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Platform\Core\mcu_type.h</FilePath>
             </File>
             <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\adc.c</FilePath>
+              <FilePath>.\Platform\Core\adc.c</FilePath>
             </File>
             <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\delay.c</FilePath>
+              <FilePath>.\Platform\Core\delay.c</FilePath>
             </File>
             <File>
               <FileName>extend_SRAM.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\extend_SRAM.c</FilePath>
+              <FilePath>.\Platform\Core\extend_SRAM.c</FilePath>
             </File>
             <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\exti.c</FilePath>
+              <FilePath>.\Platform\Core\exti.c</FilePath>
             </File>
             <File>
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\gpio.c</FilePath>
+              <FilePath>.\Platform\Core\gpio.c</FilePath>
             </File>
             <File>
-              <FileName>timer.c</FileName>
+              <FileName>i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\timer.c</FilePath>
+              <FilePath>.\Platform\Core\i2c.c</FilePath>
+              <FileOption>
+                <CommonProperty>
+                  <UseCPPCompiler>2</UseCPPCompiler>
+                  <RVCTCodeConst>0</RVCTCodeConst>
+                  <RVCTZI>0</RVCTZI>
+                  <RVCTOtherData>0</RVCTOtherData>
+                  <ModuleSelection>0</ModuleSelection>
+                  <IncludeInBuild>0</IncludeInBuild>
+                  <AlwaysBuild>2</AlwaysBuild>
+                  <GenerateAssemblyFile>2</GenerateAssemblyFile>
+                  <AssembleAssemblyFile>2</AssembleAssemblyFile>
+                  <PublicsOnly>2</PublicsOnly>
+                  <StopOnExitCode>11</StopOnExitCode>
+                  <CustomArgument></CustomArgument>
+                  <IncludeLibraryModules></IncludeLibraryModules>
+                  <ComprImg>1</ComprImg>
+                </CommonProperty>
+                <FileArmAds>
+                  <Cads>
+                    <interw>2</interw>
+                    <Optim>0</Optim>
+                    <oTime>2</oTime>
+                    <SplitLS>2</SplitLS>
+                    <OneElfS>2</OneElfS>
+                    <Strict>2</Strict>
+                    <EnumInt>2</EnumInt>
+                    <PlainCh>2</PlainCh>
+                    <Ropi>2</Ropi>
+                    <Rwpi>2</Rwpi>
+                    <wLevel>0</wLevel>
+                    <uThumb>2</uThumb>
+                    <uSurpInc>2</uSurpInc>
+                    <uC99>2</uC99>
+                    <uGnu>2</uGnu>
+                    <useXO>2</useXO>
+                    <v6Lang>0</v6Lang>
+                    <v6LangP>0</v6LangP>
+                    <vShortEn>2</vShortEn>
+                    <vShortWch>2</vShortWch>
+                    <v6Lto>2</v6Lto>
+                    <v6WtE>2</v6WtE>
+                    <v6Rtti>2</v6Rtti>
+                    <VariousControls>
+                      <MiscControls></MiscControls>
+                      <Define></Define>
+                      <Undefine></Undefine>
+                      <IncludePath></IncludePath>
+                    </VariousControls>
+                  </Cads>
+                </FileArmAds>
+              </FileOption>
+            </File>
+            <File>
+              <FileName>mcu_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Platform\Core\mcu_core.c</FilePath>
             </File>
             <File>
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\pwm.c</FilePath>
+              <FilePath>.\Platform\Core\pwm.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\rtc.c</FilePath>
+              <FilePath>.\Platform\Core\rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Platform\Core\timer.c</FilePath>
             </File>
             <File>
               <FileName>wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\wdg.c</FilePath>
+              <FilePath>.\Platform\Core\wdg.c</FilePath>
             </File>
             <File>
               <FileName>HardwareSerial.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Core\HardwareSerial.cpp</FilePath>
+              <FilePath>.\Platform\Core\HardwareSerial.cpp</FilePath>
             </File>
             <File>
               <FileName>SPI.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Core\SPI.cpp</FilePath>
+              <FilePath>.\Platform\Core\SPI.cpp</FilePath>
             </File>
             <File>
               <FileName>Tone.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\Core\Tone.cpp</FilePath>
+              <FilePath>.\Platform\Core\Tone.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Platform</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Platform\mcu_config.h</FilePath>
             </File>
           </Files>
         </Group>

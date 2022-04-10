@@ -141,22 +141,30 @@ static void StatusBar_Update(lv_timer_t* timer)
 {
     /* satellite */
     HAL::GPS_Info_t gps;
-    actStatusBar->Pull("GPS", &gps, sizeof(gps));
-    lv_label_set_text_fmt(ui.satellite.label, "%d", gps.satellites);
+    if(actStatusBar->Pull("GPS", &gps, sizeof(gps)) == Account::RES_OK)
+    {
+        lv_label_set_text_fmt(ui.satellite.label, "%d", gps.satellites);
+    }
 
     DataProc::Storage_Basic_Info_t sdInfo;
-    actStatusBar->Pull("Storage", &sdInfo, sizeof(sdInfo));
-    sdInfo.isDetect ? lv_obj_clear_state(ui.imgSD, LV_STATE_DISABLED) : lv_obj_add_state(ui.imgSD, LV_STATE_DISABLED);
+    if(actStatusBar->Pull("Storage", &sdInfo, sizeof(sdInfo)) == Account::RES_OK)
+    {
+        sdInfo.isDetect ? lv_obj_clear_state(ui.imgSD, LV_STATE_DISABLED) : lv_obj_add_state(ui.imgSD, LV_STATE_DISABLED);
+    }
 
     /* clock */
     HAL::Clock_Info_t clock;
-    actStatusBar->Pull("Clock", &clock, sizeof(clock));
-    lv_label_set_text_fmt(ui.labelClock, "%02d:%02d", clock.hour, clock.minute);
+    if(actStatusBar->Pull("Clock", &clock, sizeof(clock)) == Account::RES_OK)
+    {
+        lv_label_set_text_fmt(ui.labelClock, "%02d:%02d", clock.hour, clock.minute);
+    }
 
     /* battery */
     HAL::Power_Info_t power;
-    actStatusBar->Pull("Power", &power, sizeof(power));
-    lv_label_set_text_fmt(ui.battery.label, "%d", power.usage);
+    if(actStatusBar->Pull("Power", &power, sizeof(power)) == Account::RES_OK)
+    {
+        lv_label_set_text_fmt(ui.battery.label, "%d", power.usage);
+    }
 
     bool Is_BattCharging = power.isCharging;
     lv_obj_t* contBatt = ui.battery.objUsage;
@@ -243,18 +251,17 @@ static lv_obj_t* StatusBar_SdCardImage_Create(lv_obj_t* par)
 static void StatusBar_SetStyle(DataProc::StatusBar_Style_t style)
 {
     lv_obj_t* cont = ui.cont;
-    if (style == DataProc::STATUS_BAR_STYLE_TRANSP)
+    switch(style)
     {
+    case DataProc::STATUS_BAR_STYLE_TRANSP:
         lv_obj_add_state(cont, LV_STATE_DEFAULT);
         lv_obj_clear_state(cont, LV_STATE_USER_1);
-    }
-    else if (style == DataProc::STATUS_BAR_STYLE_BLACK)
-    {
+        break;
+    case DataProc::STATUS_BAR_STYLE_BLACK:
         lv_obj_add_state(cont, LV_STATE_USER_1);
-    }
-    else
-    {
-        return;
+        break;
+    default:
+        break;
     }
 }
 

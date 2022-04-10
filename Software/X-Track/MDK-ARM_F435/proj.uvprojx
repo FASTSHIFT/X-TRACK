@@ -338,7 +338,7 @@
               <MiscControls>--gnu  --diag_warning=4017</MiscControls>
               <Define>LIBRARY_VERSION,ARDUINO=111</Define>
               <Undefine></Undefine>
-              <IncludePath>..\ArduinoAPI;.\USER\Core;..\Libraries;..\USER;..\Libraries\SdFat\src;..\Simulator\LVGL.Simulator;..\USER\App</IncludePath>
+              <IncludePath>..\ArduinoAPI;.\Platform\Core;.\Platform;..\Libraries;..\Libraries\SdFat\src;..\USER\App;..\USER;..\Simulator\LVGL.Simulator</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -385,12 +385,7 @@
             <File>
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\USER\main.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>mcu_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\USER\mcu_config.h</FilePath>
+              <FilePath>..\USER\main.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -2921,16 +2916,6 @@
               <FilePath>..\USER\HAL\HAL_Audio.cpp</FilePath>
             </File>
             <File>
-              <FileName>HAL_Clock.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Clock.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>HAL_Display.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\USER\HAL\HAL_Display.cpp</FilePath>
-            </File>
-            <File>
               <FileName>HAL_Backlight.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_Backlight.cpp</FilePath>
@@ -2939,6 +2924,16 @@
               <FileName>HAL_Buzz.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\HAL\HAL_Buzz.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Clock.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\HAL\HAL_Clock.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>HAL_Display.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Platform\HAL\HAL_Display.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_Encoder.cpp</FileName>
@@ -2978,7 +2973,7 @@
             <File>
               <FileName>HAL_Power.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\USER\HAL\HAL_Power.cpp</FilePath>
+              <FilePath>.\Platform\HAL\HAL_Power.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_SD_CARD.cpp</FileName>
@@ -3797,7 +3792,7 @@
             <File>
               <FileName>lv_port_disp.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\USER\lv_port\lv_port_disp.cpp</FilePath>
+              <FilePath>.\Platform\lv_port\lv_port_disp.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -3987,77 +3982,92 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Core</GroupName>
+          <GroupName>Platform/Core</GroupName>
           <Files>
-            <File>
-              <FileName>mcu_type.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\USER\Core\mcu_type.h</FilePath>
-            </File>
             <File>
               <FileName>mcu_core.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\USER\Core\mcu_core.h</FilePath>
+              <FilePath>.\Platform\Core\mcu_core.h</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Platform\Core\mcu_type.h</FilePath>
             </File>
             <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\adc.c</FilePath>
+              <FilePath>.\Platform\Core\adc.c</FilePath>
             </File>
             <File>
               <FileName>at32f435_437_clock.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\at32f435_437_clock.c</FilePath>
+              <FilePath>.\Platform\Core\at32f435_437_clock.c</FilePath>
             </File>
             <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\delay.c</FilePath>
+              <FilePath>.\Platform\Core\delay.c</FilePath>
             </File>
             <File>
               <FileName>exti.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\exti.c</FilePath>
+              <FilePath>.\Platform\Core\exti.c</FilePath>
             </File>
             <File>
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\gpio.c</FilePath>
+              <FilePath>.\Platform\Core\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>mcu_core.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Platform\Core\mcu_core.c</FilePath>
             </File>
             <File>
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\pwm.c</FilePath>
+              <FilePath>.\Platform\Core\pwm.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\rtc.c</FilePath>
+              <FilePath>.\Platform\Core\rtc.c</FilePath>
             </File>
             <File>
               <FileName>timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\timer.c</FilePath>
+              <FilePath>.\Platform\Core\timer.c</FilePath>
             </File>
             <File>
               <FileName>wdg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\USER\Core\wdg.c</FilePath>
+              <FilePath>.\Platform\Core\wdg.c</FilePath>
             </File>
             <File>
               <FileName>HardwareSerial.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\USER\Core\HardwareSerial.cpp</FilePath>
+              <FilePath>.\Platform\Core\HardwareSerial.cpp</FilePath>
             </File>
             <File>
               <FileName>SPI.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\USER\Core\SPI.cpp</FilePath>
+              <FilePath>.\Platform\Core\SPI.cpp</FilePath>
             </File>
             <File>
               <FileName>Tone.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\USER\Core\Tone.cpp</FilePath>
+              <FilePath>.\Platform\Core\Tone.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Platform</GroupName>
+          <Files>
+            <File>
+              <FileName>mcu_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Platform\mcu_config.h</FilePath>
             </File>
           </Files>
         </Group>

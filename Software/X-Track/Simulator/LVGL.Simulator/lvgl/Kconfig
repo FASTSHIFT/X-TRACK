@@ -207,9 +207,15 @@ menu "LVGL configuration"
         menu "GPU"
             config LV_USE_EXTERNAL_RENDERER
                 bool
-
+                
+            config LV_USE_GPU_ARM2D
+                bool "Enable Arm's 2D image processing library (Arm-2D) for all Cortex-M processors."
             config LV_USE_GPU_STM32_DMA2D
                 bool "Enable STM32 DMA2D (aka Chrom Art) GPU."
+                default n
+                help
+                    Must deploy arm-2d library to your project and add include PATH for "arm_2d.h".
+                
             config LV_GPU_DMA2D_CMSIS_INCLUDE
                 string "include path of CMSIS header of target processor"
                 depends on LV_USE_GPU_STM32_DMA2D
@@ -715,6 +721,7 @@ menu "LVGL configuration"
             default y if !LV_CONF_MINIMAL
         config LV_USE_CANVAS
             bool "Canvas. Dependencies: lv_img."
+            select LV_USE_IMG
             default y if !LV_CONF_MINIMAL
         config LV_USE_CHECKBOX
             bool "Check Box"
@@ -841,7 +848,7 @@ menu "LVGL configuration"
     menu "Themes"
         config LV_USE_THEME_DEFAULT
             bool "A simple, impressive and very complete theme"
-            default y if !LV_CONF_MINIMAL
+            default y if !LV_COLOR_DEPTH_1 && !LV_CONF_MINIMAL
         config LV_THEME_DEFAULT_DARK
             bool "Yes to set dark mode, No to set light mode"
             depends on LV_USE_THEME_DEFAULT
@@ -855,7 +862,10 @@ menu "LVGL configuration"
             depends on LV_USE_THEME_DEFAULT
         config LV_USE_THEME_BASIC
             bool "A very simple theme that is a good starting point for a custom theme"
-            default y if !LV_CONF_MINIMAL
+            default y if !LV_COLOR_DEPTH_1 && !LV_CONF_MINIMAL
+        config LV_USE_THEME_MONO
+            bool "Monochrome theme, suitable for some E-paper & dot matrix displays"
+            default y if LV_COLOR_DEPTH_1 && !LV_CONF_MINIMAL
     endmenu
 
     menu "Layouts"
@@ -872,52 +882,52 @@ menu "LVGL configuration"
             bool "File system on top of stdio API"
         config LV_FS_STDIO_LETTER
             string "Set an upper cased letter on which the drive will accessible (e.g. 'A' i.e. 65 )"
-            depends on LV_USE_FS_STDIO != 0
+            depends on LV_USE_FS_STDIO
         config LV_FS_STDIO_PATH
             string "Set the working directory"
-            depends on LV_USE_FS_STDIO != 0
+            depends on LV_USE_FS_STDIO
         config LV_FS_STDIO_CACHE_SIZE
             string ">0 to cache this number of bytes in lv_fs_read()"
-            depends on LV_USE_FS_STDIO != 0
+            depends on LV_USE_FS_STDIO
 
         config LV_USE_FS_POSIX
             bool "File system on top of posix API"
         config LV_FS_POSIX_LETTER
             int "Set an upper cased letter on which the drive will accessible (e.g. 'A' i.e. 65)"
             default 0
-            depends on LV_USE_FS_POSIX != 0
+            depends on LV_USE_FS_POSIX
         config LV_FS_POSIX_PATH
             string "Set the working directory"
-            depends on LV_USE_FS_POSIX != 0
+            depends on LV_USE_FS_POSIX
         config LV_FS_POSIX_CACHE_SIZE
             int ">0 to cache this number of bytes in lv_fs_read()"
             default 0
-            depends on LV_USE_FS_POSIX != 0
+            depends on LV_USE_FS_POSIX
 
         config LV_USE_FS_WIN32
             bool "File system on top of Win32 API"
         config LV_FS_WIN32_LETTER
             int "Set an upper cased letter on which the drive will accessible (e.g. 'A' i.e. 65)"
             default 0
-            depends on LV_USE_FS_WIN32 != 0
+            depends on LV_USE_FS_WIN32
         config LV_FS_WIN32_PATH
             string "Set the working directory"
-            depends on LV_USE_FS_WIN32 != 0
+            depends on LV_USE_FS_WIN32
         config LV_FS_WIN32_CACHE_SIZE
             int ">0 to cache this number of bytes in lv_fs_read()"
             default 0
-            depends on LV_USE_FS_WIN32 != 0
+            depends on LV_USE_FS_WIN32
 
         config LV_USE_FS_FATFS
             bool "File system on top of FatFS"
         config LV_FS_FATFS_LETTER
             int "Set an upper cased letter on which the drive will accessible (e.g. 'A' i.e. 65)"
             default 0
-            depends on LV_USE_FS_FATFS != 0
+            depends on LV_USE_FS_FATFS
         config LV_FS_FATFS_CACHE_SIZE
             int ">0 to cache this number of bytes in lv_fs_read()"
             default 0
-            depends on LV_USE_FS_FATFS != 0
+            depends on LV_USE_FS_FATFS
 
         config LV_USE_PNG
             bool "PNG decoder library"
@@ -960,8 +970,8 @@ menu "LVGL configuration"
 
         config LV_USE_FFMPEG
             bool "FFmpeg library"
-        config LV_FFMPEG_AV_DUMP_FORMAT
-            bool "Dump av format"
+        config LV_FFMPEG_DUMP_FORMAT
+            bool "Dump format"
             depends on LV_USE_FFMPEG
             default n
     endmenu
@@ -973,6 +983,10 @@ menu "LVGL configuration"
 
         config LV_USE_MONKEY
             bool "Enable Monkey test"
+            default n
+
+        config LV_USE_IMGFONT
+            bool "draw img in label or span obj"
             default n
     endmenu
 

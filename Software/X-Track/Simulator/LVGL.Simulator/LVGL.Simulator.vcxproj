@@ -939,7 +939,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lv_drv_conf.h" />
-    <ClInclude Include="lv_demo_conf.h" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="LVGL.Simulator.manifest" />

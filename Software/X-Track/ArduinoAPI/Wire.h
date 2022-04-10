@@ -59,7 +59,7 @@ public:
     /*
      * If object is destroyed, set pin numbers to 0.
      */
-    ~TwoWire();
+    virtual ~TwoWire();
 
     /*
      * Sets pins SDA and SCL to OUPTUT_OPEN_DRAIN, joining I2C bus as

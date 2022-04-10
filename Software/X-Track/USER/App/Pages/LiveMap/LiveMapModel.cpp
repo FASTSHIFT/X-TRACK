@@ -31,22 +31,32 @@ void LiveMapModel::Deinit()
 
 void LiveMapModel::GetGPS_Info(HAL::GPS_Info_t* info)
 {
-    account->Pull("GPS", info, sizeof(HAL::GPS_Info_t));
+    memset(info, 0, sizeof(HAL::GPS_Info_t));
+    if(account->Pull("GPS", info, sizeof(HAL::GPS_Info_t)) != Account::RES_OK)
+    {
+        return;
+    }
 
     /* Use default location */
     if (!info->isVaild)
     {
         DataProc::SysConfig_Info_t sysConfig;
-        account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
-        info->longitude = sysConfig.longitude;
-        info->latitude = sysConfig.latitude;
+        if(account->Pull("SysConfig", &sysConfig, sizeof(sysConfig)) == Account::RES_OK)
+        {
+            info->longitude = sysConfig.longitude;
+            info->latitude = sysConfig.latitude;
+        }
     }
 }
 
 void LiveMapModel::GetArrowTheme(char* buf, uint32_t size)
 {
     DataProc::SysConfig_Info_t sysConfig;
-    account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+    if(account->Pull("SysConfig", &sysConfig, sizeof(sysConfig)) != Account::RES_OK)
+    {
+        buf[0] = '\0';
+        return;
+    }
     strncpy(buf, sysConfig.arrowTheme, size);
     buf[size - 1] = '\0';
 }
@@ -54,7 +64,11 @@ void LiveMapModel::GetArrowTheme(char* buf, uint32_t size)
 bool LiveMapModel::GetTrackFilterActive()
 {
     DataProc::TrackFilter_Info_t info;
-    account->Pull("TrackFilter", &info, sizeof(info));
+    if(account->Pull("TrackFilter", &info, sizeof(info)) != Account::RES_OK)
+    {
+        return false;
+    }
+
     return info.isActive;
 }
 
@@ -80,7 +94,10 @@ int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
 void LiveMapModel::TrackReload(TrackPointFilter::Callback_t callback, void* userData)
 {
     DataProc::TrackFilter_Info_t info;
-    account->Pull("TrackFilter", &info, sizeof(info));
+    if(account->Pull("TrackFilter", &info, sizeof(info)) != Account::RES_OK)
+    {
+        return;
+    }
 
     if (!info.isActive || info.pointCont == nullptr)
     {

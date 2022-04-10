@@ -42,7 +42,7 @@ static void loop()
 {
     HAL::HAL_Update();
     lv_task_handler();
-    __WFI();
+    __wfi();
 }
 
 /**
@@ -52,9 +52,7 @@ static void loop()
   */
 int main(void)
 {
-    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-    GPIO_JTAG_Disable();
-    Delay_Init();
+    Core_Init();
     setup();
     for(;;)loop();
 }

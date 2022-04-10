@@ -86,8 +86,6 @@ static lv_grad_t * next_in_cache(lv_grad_t * item)
 
     if(item == NULL)
         return (lv_grad_t *)LV_GC_ROOT(_lv_grad_cache_mem);
-    if(item == NULL)
-        return NULL;
 
     size_t s = get_cache_item_size(item);
     /*Compute the size for this cache item*/
@@ -325,6 +323,8 @@ LV_ATTRIBUTE_FAST_MEM lv_grad_color_t lv_gradient_calculate(const lv_grad_dsc_t 
             break;
         }
     }
+
+    LV_ASSERT(d != 0);
 
     /*Then interpolate*/
     frac -= min;

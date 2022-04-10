@@ -62,8 +62,9 @@ public:
     virtual int peek() = 0;
 
     Stream()
+        : _timeout(1000)
+        , _startMillis(0)
     {
-        _timeout = 1000;
     }
 
 // parsing methods

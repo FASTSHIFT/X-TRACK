@@ -36,6 +36,15 @@
   */
 void PageManager::onRootDragEvent(lv_event_t* event)
 {
+    lv_event_code_t code = lv_event_get_code(event);
+
+    if (code != LV_EVENT_PRESSED
+        || code != LV_EVENT_PRESSING
+        || code != LV_EVENT_RELEASED)
+    {
+        return;
+    }
+
     lv_obj_t* root = lv_event_get_current_target(event);
     PageBase* base = (PageBase*)lv_event_get_user_data(event);
 
@@ -159,19 +168,7 @@ void PageManager::RootEnableDrag(lv_obj_t* root)
     lv_obj_add_event_cb(
         root,
         onRootDragEvent,
-        LV_EVENT_PRESSED,
-        base
-    );
-    lv_obj_add_event_cb(
-        root,
-        onRootDragEvent,
-        LV_EVENT_PRESSING,
-        base
-    );
-    lv_obj_add_event_cb(
-        root,
-        onRootDragEvent,
-        LV_EVENT_RELEASED,
+        LV_EVENT_ALL,
         base
     );
     PM_LOG_INFO("Root drag enabled");

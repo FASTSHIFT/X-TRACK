@@ -35,9 +35,11 @@ static bool Clock_Calibrate(Account* account, HAL::GPS_Info_t* gpsInfo)
     if(gpsInfo->isVaild)
     {
         HAL::Clock_Info_t clock;
-        account->Pull("TzConv", &clock, sizeof(clock));
-        HAL::Clock_SetInfo(&clock);
-        retval = true;
+        if (account->Pull("TzConv", &clock, sizeof(clock)) == Account::RES_OK)
+        {
+            HAL::Clock_SetInfo(&clock);
+            retval = true;
+        }
     }
     return retval;
 }

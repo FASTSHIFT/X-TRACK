@@ -25,7 +25,10 @@ void DialplateModel::Deinit()
 bool DialplateModel::GetGPSReady()
 {
     HAL::GPS_Info_t gps;
-    account->Pull("GPS", &gps, sizeof(gps));
+    if(account->Pull("GPS", &gps, sizeof(gps)) != Account::RES_OK)
+    {
+        return false;
+    }
     return (gps.satellites > 0);
 }
 

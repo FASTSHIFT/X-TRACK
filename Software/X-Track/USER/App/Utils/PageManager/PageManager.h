@@ -67,10 +67,10 @@ public:
         ROOT_DRAG_DIR_VER,
     } RootDragDir_t;
 
-    /* Animated setter  */
+    /* Animated setter */
     typedef void(*lv_anim_setter_t)(void*, int32_t);
 
-    /* Animated getter  */
+    /* Animated getter */
     typedef int32_t(*lv_anim_getter_t)(void*);
 
     /* Animation switching record  */
@@ -117,7 +117,7 @@ public:
     bool BackHome();
     const char* GetPagePrevName();
 
-    /* Global Anim */
+    /* Global Animation */
     void SetGlobalLoadAnimType(
         LoadAnim_t anim = LOAD_ANIM_OVER_LEFT,
         uint16_t time = 500,
@@ -135,7 +135,7 @@ private:
     void SetStackClear(bool keepBottom = true);
     bool FourceUnload(PageBase* base);
 
-    /* Anim */
+    /* Animation */
     bool GetLoadAnimAttr(uint8_t anim, LoadAnimAttr_t* attr);
     bool GetIsOverAnim(uint8_t anim)
     {
@@ -203,9 +203,9 @@ private:
     /* Page animation status */
     struct
     {
-        bool IsSwitchReq;              // Whether to switch request
+        bool IsSwitchReq;              // Has switch request
         bool IsBusy;                   // Is switching
-        bool IsPushing;                // Whether it is in push state
+        bool IsPushing;                // Is in push state
 
         PageBase::AnimAttr_t Current;  // Current animation properties
         PageBase::AnimAttr_t Global;   // Global animation properties

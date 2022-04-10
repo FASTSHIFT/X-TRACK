@@ -83,9 +83,7 @@ static bool onLoad(Account* account)
     }
 
     SysConfig_Info_t sysConfig;
-    int ret = account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
-
-    if (ret != Account::RES_OK)
+    if (account->Pull("SysConfig", &sysConfig, sizeof(sysConfig)) != Account::RES_OK)
     {
         LV_LOG_ERROR("Pull SysConfig failed!");
         return false;
