@@ -38,7 +38,6 @@
 ```
  X-Track
     ├─ArduinoAPI                -- 通用 Arduino API 抽象层
-    ├─Core                      -- 基于标准库二次封装的抽象层
     ├─Doc                       -- 芯片相关文档
     ├─Libraries                 -- 硬件驱动程序
     │  ├─Adafruit_GFX_Library   -- Adafruit_GFX轻量级图形库
