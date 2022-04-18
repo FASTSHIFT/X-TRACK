@@ -73,8 +73,8 @@ void test_txt_should_identify_space_after_parameter(void)
 
 void test_txt_should_insert_string_into_another(void)
 {
-    const char *msg = "Hello ";
-    const char *suffix = "World";
+    const char * msg = "Hello ";
+    const char * suffix = "World";
     char target[20] = {0};
     size_t msg_len = strlen(msg);
 
@@ -87,7 +87,7 @@ void test_txt_should_insert_string_into_another(void)
 
 void test_txt_should_handle_null_pointers_when_inserting(void)
 {
-    const char *msg = "Hello ";
+    const char * msg = "Hello ";
     char target[20] = {0};
     size_t msg_len = strlen(msg);
 
@@ -194,12 +194,12 @@ void test_txt_get_encoded_next_detect_invalid_4_byte_input(void)
 /* See #2615 for more information */
 void test_txt_next_line_should_handle_empty_string(void)
 {
-    const lv_font_t *font_ptr = NULL;
+    const lv_font_t * font_ptr = NULL;
     lv_coord_t letter_space = 0;
     lv_coord_t max_width = 0;
     lv_text_flag_t flag = LV_TEXT_FLAG_NONE;
 
-    uint32_t next_line = _lv_txt_get_next_line("", font_ptr, letter_space, max_width, flag);
+    uint32_t next_line = _lv_txt_get_next_line("", font_ptr, letter_space, max_width, NULL, flag);
 
     TEST_ASSERT_EQUAL_UINT32(0, next_line);
 }

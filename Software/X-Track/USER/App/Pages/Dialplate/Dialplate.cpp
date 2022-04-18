@@ -52,7 +52,7 @@ void Dialplate::onViewWillAppear()
         lv_group_focus_obj(View.ui.btnCont.btnRec);
     }
 
-    StatusBar::SetStyle(StatusBar::STYLE_TRANSP);
+    Model.SetStatusBarStyle(DataProc::STATUS_BAR_STYLE_TRANSP);
 
     Update();
 
@@ -205,7 +205,7 @@ void Dialplate::onEvent(lv_event_t* event)
     Dialplate* instance = (Dialplate*)lv_event_get_user_data(event);
     LV_ASSERT_NULL(instance);
 
-    lv_obj_t* obj = lv_event_get_target(event);
+    lv_obj_t* obj = lv_event_get_current_target(event);
     lv_event_code_t code = lv_event_get_code(event);
 
 

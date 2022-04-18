@@ -7,7 +7,7 @@
 <p align="center">
 LVGL provides everything you need to create an embedded GUI with easy-to-use graphical elements, beautiful visual effects and a low memory footprint.
 </p>
- 
+
 <h4 align="center">
 <a href="https://lvgl.io">Website </a> &middot;
 <a href="https://docs.lvgl.io/">Docs</a> &middot;
@@ -15,6 +15,10 @@ LVGL provides everything you need to create an embedded GUI with easy-to-use gra
 <a href="https://lvgl.io/services">Services</a>  &middot;
 <a href="https://docs.lvgl.io/master/examples.html">Interactive examples</a>
 </h4>
+
+
+**English** | [中文](./README_zh.md) |
+
 
 ---
 
@@ -38,9 +42,9 @@ LVGL provides everything you need to create an embedded GUI with easy-to-use gra
 * Powerful layouts inspired by CSS: [Flexbox](https://docs.lvgl.io/master/layouts/flex.html) and [Grid](https://docs.lvgl.io/master/layouts/grid.html)
 * OS, External memory and GPU are supported but not required. (built in support for STM32 DMA2D, and NXP PXP and VGLite)
 * Smooth rendering even with a [single frame buffer](https://docs.lvgl.io/master/porting/display.html)
-* Written in C and compatibile with C++
+* Written in C and compatible with C++
 * Micropython Binding exposes [LVGL API in Micropython](https://blog.lvgl.io/2019-02-20/micropython-bindings)
-* [Simulator](https://docs.lvgl.io/master/get-started/pc-simulator.html) to develop on PC without embedded hardware
+* [Simulator](https://docs.lvgl.io/master/get-started/platforms/pc-simulator.html) to develop on PC without embedded hardware
 * 100+ simple [Examples](https://github.com/lvgl/lvgl/tree/master/examples)
 * [Documentation](http://docs.lvgl.io/) and API references online and in PDF
 
@@ -89,7 +93,7 @@ Basically, every modern controller (which is able to drive a display) is suitabl
 *Note that the memory usage might vary depending on the architecture, compiler and build options.*
 
 ### Supported platforms
-LVGL is completely platform independent and can be used with any MCU that fulfills the requirements. 
+LVGL is completely platform independent and can be used with any MCU that fulfills the requirements.
 Just to mention some platforms:
 - NXP: Kinetis, LPC, iMX, iMX RT
 - STM32F1, STM32F3, STM32F4, STM32F7, STM32L4, STM32L5, STM32H7
@@ -101,13 +105,14 @@ Just to mention some platforms:
 - Nordic NRF52 Bluetooth modules
 - Quectel modems
 
-LVGL is also avaiable as:
-- [Arduino library](https://docs.lvgl.io/master/get-started/arduino.html)
+LVGL is also available as:
+- [Arduino library](https://docs.lvgl.io/master/get-started/platforms/arduino.html)
 - [PlatformIO package](https://platformio.org/lib/show/12440/lvgl)
 - [Zephyr library](https://docs.zephyrproject.org/latest/reference/kconfig/CONFIG_LVGL.html)
-- [ESP32 component](https://docs.lvgl.io/master/get-started/espressif.html)
+- [ESP32 component](https://docs.lvgl.io/master/get-started/platforms/espressif.html)
 - [NXP MCUXpresso component](https://www.nxp.com/design/software/embedded-software/lvgl-open-source-graphics-library:LITTLEVGL-OPEN-SOURCE-GRAPHICS-LIBRARY)
-- [NuttX library](https://docs.lvgl.io/master/get-started/nuttx.html)
+- [NuttX library](https://docs.lvgl.io/master/get-started/os/nuttx.html)
+- [RT-Thread RTOS](https://docs.lvgl.io/master/get-started/os/rt-thread.html)
 
 
 ## Get started
@@ -115,7 +120,7 @@ This list shows the recommended way of learning the library:
 1. Check the [Online demos](https://lvgl.io/demos) to see LVGL in action (3 minutes)
 2. Read the [Introduction](https://docs.lvgl.io/master/intro/index.html) page of the documentation (5 minutes)
 3. Get familiar with the basics on the [Quick overview](https://docs.lvgl.io/master/get-started/quick-overview.html) page (15 minutes)
-4. Set up a [Simulator](https://docs.lvgl.io/master/get-started/pc-simulator.html) (10 minutes)
+4. Set up a [Simulator](https://docs.lvgl.io/master/get-started/platforms/pc-simulator.html) (10 minutes)
 5. Try out some [Examples](https://github.com/lvgl/lvgl/tree/master/examples)
 6. Port LVGL to a board. See the [Porting](https://docs.lvgl.io/master/porting/index.html) guide or check the ready to use [Projects](https://github.com/lvgl?q=lv_port_)
 7. Read the [Overview](https://docs.lvgl.io/master/overview/index.html) page to get a better understanding of the library (2-3 hours)
@@ -147,7 +152,7 @@ void btn_event_cb(lv_event_t * e)
 }
 ```
 ### Micropython
-Learn more about [Micropython](https://docs.lvgl.io/master/get-started/micropython.html).
+Learn more about [Micropython](https://docs.lvgl.io/master/get-started/bindings/micropython.html).
 ```python
 def btn_event_cb(e):
   print("Clicked")
@@ -177,4 +182,4 @@ Feel free to contact us if you have any questions.
 LVGL is an open project and contribution is very welcome. There are many ways to contribute from simply speaking about your project, through writing examples, improving the documentation, fixing bugs to hosting your own project under the LVGL organization.
 
 For a detailed description of contribution opportunities visit the [Contributing](https://docs.lvgl.io/master/CONTRIBUTING.html) section of the documentation.
- 
+

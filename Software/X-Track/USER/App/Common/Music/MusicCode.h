@@ -113,7 +113,7 @@ typedef struct
 
 #define ADD_MUSIC(mc) {Music_##mc,(sizeof(Music_##mc) / sizeof(Music_##mc[0])), #mc}
 
-/*提示音地址储存列表*/
+/*提示音列表*/
 static const MusicList_t MusicList[] =
 {
     ADD_MUSIC(Startup),

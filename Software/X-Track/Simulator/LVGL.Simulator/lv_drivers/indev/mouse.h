@@ -23,17 +23,19 @@ extern "C" {
 
 #if USE_MOUSE
 
+#warning "Deprecated, use the SDL driver instead. See lv_drivers/sdl/sdl.c"
+
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
 #include "lvgl.h"
 #else
 #include "lvgl/lvgl.h"
 #endif
 
-#ifndef MONITOR_SDL_INCLUDE_PATH
-#define MONITOR_SDL_INCLUDE_PATH <SDL2/SDL.h>
+#if USE_SDL_GPU
+#include "../sdl/sdl_gpu.h"
+#else
+#include "../sdl/sdl.h"
 #endif
-
-#include MONITOR_SDL_INCLUDE_PATH
 
 /*********************
  *      DEFINES
@@ -47,22 +49,24 @@ extern "C" {
  * GLOBAL PROTOTYPES
  **********************/
 
+
 /**
  * Initialize the mouse
  */
-void mouse_init(void);
+static inline void mouse_init(void)
+{
+    /*Nothing to do*/
+}
 
 /**
  * Get the current position and state of the mouse
  * @param indev_drv pointer to the related input device driver
  * @param data store the mouse data here
  */
-void mouse_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data);
-
-/**
- * It will be called from the main SDL thread
- */
-void mouse_handler(SDL_Event *event);
+void mouse_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
+{
+    sdl_mouse_read(indev_drv, data);
+}
 
 /**********************
  *      MACROS

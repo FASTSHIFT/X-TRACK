@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_crm.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the crm firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -345,6 +345,7 @@ void crm_clock_source_enable(crm_clock_source_type source, confirm_state new_sta
   *         - CRM_WDT_RESET_FLAG
   *         - CRM_WWDT_RESET_FLAG
   *         - CRM_LOWPOWER_RESET_FLAG
+  *         - CRM_ALL_RESET_FLAG
   *         interrupt flag:
   *         - CRM_LICK_READY_INT_FLAG
   *         - CRM_LEXT_READY_INT_FLAG
@@ -364,6 +365,7 @@ void crm_flag_clear(uint32_t flag)
     case CRM_WDT_RESET_FLAG:
     case CRM_WWDT_RESET_FLAG:
     case CRM_LOWPOWER_RESET_FLAG:
+    case CRM_ALL_RESET_FLAG:
       CRM->ctrlsts_bit.rstfc = TRUE;
       break;
     case CRM_LICK_READY_INT_FLAG:

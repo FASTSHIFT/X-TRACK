@@ -8,9 +8,9 @@ def get_icon(filename,xres,yres):
         with open(sdl_filename,'rb') as f:
             icon_data = f.read()
     except:
-        print("Could not find image file: " + filename) 
+        print("Could not find image file: " + filename)
         return None
-    
+
     icon_dsc = lv.img_dsc_t(
         {
             "header": {"always_zero": 0, "w": xres, "h": yres, "cf": lv.img.CF.TRUE_COLOR_ALPHA},
@@ -25,7 +25,7 @@ def get_icon(filename,xres,yres):
 #
 
 img_skew_strip_dsc = get_icon("img_skew_strip",80,20)
-style_indic =  lv.style_t()
+style_indic = lv.style_t()
 
 style_indic.init()
 style_indic.set_bg_img_src(img_skew_strip_dsc)
@@ -42,4 +42,4 @@ bar.set_value(90, lv.ANIM.OFF)
 bar.set_start_value(20, lv.ANIM.OFF)
 
 
-    
+

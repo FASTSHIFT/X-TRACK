@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2019-2021 _VIFEXTech
+ * Copyright (c) 2017 - 2022 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -172,29 +172,29 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
   */
 uint32_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint32_t bitOrder)
 {
-    uint8_t value = 0 ;
-    uint8_t i ;
+    uint8_t value = 0;
+    uint8_t i;
 
     if(!(IS_PIN(dataPin) && IS_PIN(clockPin)))
     {
         return 0;
     }
 
-    for (i = 0 ; i < 8 ; ++i)
+    for (i = 0; i < 8; ++i)
     {
-        digitalWrite_HIGH(clockPin) ;
+        digitalWrite_HIGH(clockPin);
         if (bitOrder == LSBFIRST )
         {
-            value |= digitalRead(dataPin) << i ;
+            value |= digitalRead(dataPin) << i;
         }
         else
         {
-            value |= digitalRead(dataPin) << (7 - i) ;
+            value |= digitalRead(dataPin) << (7 - i);
         }
         digitalWrite_LOW(clockPin);
     }
 
-    return value ;
+    return value;
 }
 
 /**
@@ -258,7 +258,7 @@ uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
     // Excluding time taking up by the interrupts, it needs 16 clock cycles to look through the last while loop
     // 5 is added as a fiddle factor to correct for interrupts etc. But ultimately this would only be accurate if it was done ona hardware timer
 
-    return (uint32_t)( ( (unsigned long long)(width + 5) *  (unsigned long long) 16000000.0) / (unsigned long long)F_CPU ) ;
+    return (uint32_t)( ( (unsigned long long)(width + 5) *  (unsigned long long) 16000000.0) / (unsigned long long)F_CPU );
 }
 
 /**

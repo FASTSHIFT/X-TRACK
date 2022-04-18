@@ -90,7 +90,7 @@ protected:
     virtual uint8_t process() = 0;
 public:
     WireBase() {}
-    ~WireBase() {}
+    virtual ~WireBase() {}
 
     /*
      * Initialises the class interface

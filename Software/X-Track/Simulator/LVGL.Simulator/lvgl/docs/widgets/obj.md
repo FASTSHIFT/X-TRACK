@@ -1,5 +1,5 @@
 ```eval_rst
-.. include:: /header.rst 
+.. include:: /header.rst
 :github_url: |github_link_base|/widgets/obj.md
 ```
 # Base object (lv_obj)
@@ -13,7 +13,7 @@ The 'Base Object' implements the basic properties of widgets on a screen, such a
 - contains the styles
 - attributes like *Clickable*, *Scrollable*, etc.
 
-In object-oriented thinking, it is the base class from which all other objects in LVGL are inherited. 
+In object-oriented thinking, it is the base class from which all other objects in LVGL are inherited.
 
 The functions and functionalities of the Base object can be used with other widgets too. For example `lv_obj_set_width(slider, 100)`
 
@@ -69,7 +69,7 @@ for(i = 0; i < lv_obj_get_child_cnt(parent); i++) {
 
 You can bring an object to the foreground or send it to the background with `lv_obj_move_foreground(obj)` and `lv_obj_move_background(obj)`.
 
-You can change the index of an object in its parent using  `lv_obj_move_to_index(obj, index)`. 
+You can change the index of an object in its parent using  `lv_obj_move_to_index(obj, index)`.
 
 You can swap the position of two objects with `lv_obj_swap(obj1, obj2)`.
 
@@ -95,10 +95,10 @@ Read the [Event overview](/overview/event) to learn more about events.
 ### Styles
 Be sure to read the [Style overview](/overview/style). Here only the most essential functions are described.
 
-A new style can be added to an object with the `lv_obj_add_style(obj, &new_style, selector)` function. 
+A new style can be added to an object with the `lv_obj_add_style(obj, &new_style, selector)` function.
 `selector` is an ORed combination of part and state(s). E.g. `LV_PART_SCROLLBAR | LV_STATE_PRESSED`.
 
-The base objects use `LV_PART_MAIN` style properties and `LV_PART_SCROLLBAR` with the typical backgroud style properties. 
+The base objects use `LV_PART_MAIN` style properties and `LV_PART_SCROLLBAR` with the typical background style properties.
 
 
 ### Flags
@@ -112,8 +112,11 @@ There are some attributes which can be enabled/disabled by `lv_obj_add/clear_fla
 - `LV_OBJ_FLAG_SCROLL_ELASTIC`  Allow scrolling inside but with slower speed
 - `LV_OBJ_FLAG_SCROLL_MOMENTUM`  Make the object scroll further when "thrown"
 - `LV_OBJ_FLAG_SCROLL_ONE` Allow scrolling only one snappable children
-- `LV_OBJ_FLAG_SCROLL_CHAIN`  Allow propagating the scroll to a parent
+- `LV_OBJ_FLAG_SCROLL_CHAIN_HOR`  Allow propagating the horizontal scroll to a parent
+- `LV_OBJ_FLAG_SCROLL_CHAIN_VER`  Allow propagating the vertical scroll to a parent
+- `LV_OBJ_FLAG_SCROLL_CHAIN`  Simple packaging for (`LV_OBJ_FLAG_SCROLL_CHAIN_HOR | LV_OBJ_FLAG_SCROLL_CHAIN_VER`)
 - `LV_OBJ_FLAG_SCROLL_ON_FOCUS`  Automatically scroll object to make it visible when focused
+- `LV_OBJ_FLAG_SCROLL_WITH_ARROW`  Allow scrolling the focused object with arrow keys
 - `LV_OBJ_FLAG_SNAPPABLE` If scroll snap is enabled on the parent it can snap to this object
 - `LV_OBJ_FLAG_PRESS_LOCK` Keep the object pressed even if the press slid from the object
 - `LV_OBJ_FLAG_EVENT_BUBBLE` Propagate the events to the parent too
@@ -121,6 +124,7 @@ There are some attributes which can be enabled/disabled by `lv_obj_add/clear_fla
 - `LV_OBJ_FLAG_ADV_HITTEST` Allow performing more accurate hit (click) test. E.g. accounting for rounded corners
 - `LV_OBJ_FLAG_IGNORE_LAYOUT` Make the object positionable by the layouts
 - `LV_OBJ_FLAG_FLOATING` Do not scroll the object when the parent scrolls and ignore layout
+- `LV_OBJ_FLAG_OVERFLOW_VISIBLE` Do not clip the children's content to the parent's boundary
 
 - `LV_OBJ_FLAG_LAYOUT_1`  Custom flag, free to use by layouts
 - `LV_OBJ_FLAG_LAYOUT_2`  Custom flag, free to use by layouts

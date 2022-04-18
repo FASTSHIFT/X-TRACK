@@ -116,7 +116,7 @@ void WireBase::write(uint8_t value)
 
 void WireBase::write(uint8_t* buf, int len)
 {
-    for (uint8_t i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)
     {
         write(buf[i]);
     }

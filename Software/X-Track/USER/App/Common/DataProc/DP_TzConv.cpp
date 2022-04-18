@@ -47,7 +47,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     info->minute = minute();
     info->second = second();
 
-    return 0;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(TzConv)

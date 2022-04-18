@@ -106,15 +106,19 @@
 /* HAL Interrupt Update Timer */
 #define CONFIG_HAL_UPDATE_TIM       TIM4
 
-/* Show stack Info */
+/* Show Stack & Heap Info */
 #define CONFIG_SHOW_STACK_INFO      0
-
-/* Show heap Info */
 #define CONFIG_SHOW_HEAP_INFO       0
 
 /* Backlight Config */
 #define CONFIG_BACKLIGHT_MIN        150  // Range [0, 1000]
 #define CONFIG_BACKLIGHT_MAX        1000 // Range [0, 1000]
 #define CONFIG_BACKLIGHT_CTRL_RANGE 60   // minute Range[1, 120]
+
+/* Use Watch Dog */
+#define CONFIG_WATCH_DOG_ENABLE     1
+#if CONFIG_WATCH_DOG_ENABLE
+#  define CONFIG_WATCH_DOG_TIMEOUT (10 * 1000) // [ms]
+#endif
 
 #endif

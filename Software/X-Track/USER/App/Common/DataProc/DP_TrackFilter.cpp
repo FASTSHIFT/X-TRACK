@@ -19,10 +19,8 @@ typedef struct
 
 static TrackFilter_t trackFilter;
 
-static int onNotify(Account* account, TrackFilter_Info_t* info)
+static void onNotify(Account* account, TrackFilter_Info_t* info)
 {
-    int retval = 0;
-
     switch (info->cmd)
     {
     case TRACK_FILTER_CMD_START:
@@ -64,8 +62,6 @@ static int onNotify(Account* account, TrackFilter_Info_t* info)
     default:
         break;
     }
-
-    return retval;
 }
 
 static void onPublish(Account* account, HAL::GPS_Info_t* gps)
@@ -86,8 +82,6 @@ static void onPublish(Account* account, HAL::GPS_Info_t* gps)
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    int retval = Account::RES_UNKNOW;
-
     if (param->event == Account::EVENT_PUB_PUBLISH
             && param->size == sizeof(HAL::GPS_Info_t))
     {
@@ -96,7 +90,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
             onPublish(account, (HAL::GPS_Info_t*)param->data_p);
         }
 
-        return 0;
+        return Account::RES_OK;
     }
 
     if (param->size != sizeof(TrackFilter_Info_t))
@@ -115,14 +109,14 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         break;
     }
     case Account::EVENT_NOTIFY:
-        retval = onNotify(account, (TrackFilter_Info_t*)param->data_p);
+        onNotify(account, (TrackFilter_Info_t*)param->data_p);
         break;
 
     default:
         break;
     }
 
-    return retval;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(TrackFilter)

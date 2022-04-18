@@ -17,7 +17,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
 
     HAL::Audio_PlayMusic(info->music);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(MusicPlayer)

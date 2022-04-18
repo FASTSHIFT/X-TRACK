@@ -51,6 +51,7 @@ typedef struct
 #define STORAGE_VALUE_REG(act, data, dataType)\
 do{\
     DataProc::Storage_Info_t info; \
+    DATA_PROC_INIT_STRUCT(info); \
     info.cmd = DataProc::STORAGE_CMD_ADD; \
     info.key = #data; \
     info.value = &data; \
@@ -68,10 +69,32 @@ typedef struct
 } Storage_Basic_Info_t;
 
 /* StatusBar */
+typedef enum
+{
+    STATUS_BAR_STYLE_TRANSP,
+    STATUS_BAR_STYLE_BLACK,
+} StatusBar_Style_t;
+
+typedef enum
+{
+    STATUS_BAR_CMD_APPEAR,
+    STATUS_BAR_CMD_SET_STYLE,
+    STATUS_BAR_CMD_SET_LABEL_REC
+} StatusBar_Cmd_t;
+
 typedef struct
 {
-    bool showLabelRec;
-    const char* labelRecStr;
+    StatusBar_Cmd_t cmd;
+    union
+    {
+        bool appear;
+        StatusBar_Style_t style;
+        struct
+        {
+            bool show;
+            const char* str;
+        } labelRec;
+    } param;
 } StatusBar_Info_t;
 
 /* MusicPlayer */

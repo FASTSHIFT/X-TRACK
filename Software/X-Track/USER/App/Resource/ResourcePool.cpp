@@ -1,5 +1,5 @@
 #include "ResourcePool.h"
-#include "Utils/PageManager/ResourceManager.h"
+#include "Utils/ResourceManager/ResourceManager.h"
 
 static ResourceManager Font_;
 static ResourceManager Image_;
@@ -57,7 +57,7 @@ do{\
 void ResourcePool::Init()
 {
     Resource_Init();
-    Font_.SetDefault((void*)&lv_font_montserrat_14);
+    Font_.SetDefault((void*)LV_FONT_DEFAULT);
 }
 
 lv_font_t* ResourcePool::GetFont(const char* name)

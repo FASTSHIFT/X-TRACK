@@ -16,6 +16,7 @@ void LiveMapModel::Init()
     account->Subscribe("SportStatus");
     account->Subscribe("TrackFilter");
     account->Subscribe("SysConfig");
+    account->Subscribe("StatusBar");
     account->SetEventCallback(onEvent);
 }
 
@@ -30,24 +31,45 @@ void LiveMapModel::Deinit()
 
 void LiveMapModel::GetGPS_Info(HAL::GPS_Info_t* info)
 {
-    account->Pull("GPS", info, sizeof(HAL::GPS_Info_t));
+    memset(info, 0, sizeof(HAL::GPS_Info_t));
+    if(account->Pull("GPS", info, sizeof(HAL::GPS_Info_t)) != Account::RES_OK)
+    {
+        return;
+    }
 
     /* Use default location */
     if (!info->isVaild)
     {
         DataProc::SysConfig_Info_t sysConfig;
-        account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
-        info->longitude = sysConfig.longitude;
-        info->latitude = sysConfig.latitude;
+        if(account->Pull("SysConfig", &sysConfig, sizeof(sysConfig)) == Account::RES_OK)
+        {
+            info->longitude = sysConfig.longitude;
+            info->latitude = sysConfig.latitude;
+        }
     }
 }
 
 void LiveMapModel::GetArrowTheme(char* buf, uint32_t size)
 {
     DataProc::SysConfig_Info_t sysConfig;
-    account->Pull("SysConfig", &sysConfig, sizeof(sysConfig));
+    if(account->Pull("SysConfig", &sysConfig, sizeof(sysConfig)) != Account::RES_OK)
+    {
+        buf[0] = '\0';
+        return;
+    }
     strncpy(buf, sysConfig.arrowTheme, size);
     buf[size - 1] = '\0';
+}
+
+bool LiveMapModel::GetTrackFilterActive()
+{
+    DataProc::TrackFilter_Info_t info;
+    if(account->Pull("TrackFilter", &info, sizeof(info)) != Account::RES_OK)
+    {
+        return false;
+    }
+
+    return info.isActive;
 }
 
 int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
@@ -60,19 +82,22 @@ int LiveMapModel::onEvent(Account* account, Account::EventParam_t* param)
     if (strcmp(param->tran->ID, "SportStatus") != 0
             || param->size != sizeof(HAL::SportStatus_Info_t))
     {
-        return -1;
+        return Account::RES_PARAM_ERROR;
     }
 
     LiveMapModel* instance = (LiveMapModel*)account->UserData;
     memcpy(&(instance->sportStatusInfo), param->data_p, param->size);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 void LiveMapModel::TrackReload(TrackPointFilter::Callback_t callback, void* userData)
 {
     DataProc::TrackFilter_Info_t info;
-    account->Pull("TrackFilter", &info, sizeof(info));
+    if(account->Pull("TrackFilter", &info, sizeof(info)) != Account::RES_OK)
+    {
+        return;
+    }
 
     if (!info.isActive || info.pointCont == nullptr)
     {
@@ -104,4 +129,15 @@ void LiveMapModel::TrackReload(TrackPointFilter::Callback_t callback, void* user
         ptFilter.PushPoint(mapX, mapY);
     }
     ptFilter.PushEnd();
+}
+
+void LiveMapModel::SetStatusBarStyle(DataProc::StatusBar_Style_t style)
+{
+    DataProc::StatusBar_Info_t info;
+    DATA_PROC_INIT_STRUCT(info);
+
+    info.cmd = DataProc::STATUS_BAR_CMD_SET_STYLE;
+    info.param.style = style;
+
+    account->Notify("StatusBar", &info, sizeof(info));
 }

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_dma.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the dma firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -263,13 +263,13 @@ flag_status dma_flag_get(uint32_t dmax_flag)
   */
 void dma_flag_clear(uint32_t dmax_flag)
 {
-  if(dmax_flag > 0x10000000)
+  if(dmax_flag > ((uint32_t)0x10000000))
   {
-    DMA2->clr = dmax_flag;  
+    DMA2->clr = (uint32_t)(dmax_flag & 0x0FFFFFFF);
   }
   else
   {
-    DMA1->clr = dmax_flag;     
+    DMA1->clr = dmax_flag; 
   } 
 }
 

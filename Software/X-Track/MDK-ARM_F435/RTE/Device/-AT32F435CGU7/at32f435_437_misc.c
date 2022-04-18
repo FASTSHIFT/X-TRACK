@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_misc.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the misc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -61,16 +61,16 @@ void nvic_system_reset(void)
   * @param  sub_priority: subpriority value (starting from 0)
   * @retval none
   */
-void nvic_irq_enable(uint32_t irqn, uint32_t preempt_priority, uint32_t sub_priority)
+void nvic_irq_enable(IRQn_Type irqn, uint32_t preempt_priority, uint32_t sub_priority)
 {
   uint32_t temp_priority = 0;
 
   /* encode priority */
   temp_priority = NVIC_EncodePriority(NVIC_GetPriorityGrouping(), preempt_priority, sub_priority);
   /* set priority */
-  NVIC_SetPriority((IRQn_Type)irqn, temp_priority);
+  NVIC_SetPriority(irqn, temp_priority);
   /* enable irqn */
-  NVIC_EnableIRQ((IRQn_Type)irqn);
+  NVIC_EnableIRQ(irqn);
 }
 
 /**
@@ -78,9 +78,9 @@ void nvic_irq_enable(uint32_t irqn, uint32_t preempt_priority, uint32_t sub_prio
   * @param  irqn (IRQn_Type number)
   * @retval none
   */
-void nvic_irq_disable(uint32_t irqn)
+void nvic_irq_disable(IRQn_Type irqn)
 {
-  NVIC_DisableIRQ((IRQn_Type)irqn);
+  NVIC_DisableIRQ(irqn);
 }
 
 /**

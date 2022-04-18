@@ -2,6 +2,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof(arr[0]))
+
 using namespace Page;
 
 void DialplateView::Create(lv_obj_t* root)

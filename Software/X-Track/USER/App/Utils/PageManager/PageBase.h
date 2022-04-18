@@ -100,25 +100,28 @@ public:
     /* Synchronize user-defined attribute configuration */
     virtual void onCustomAttrConfig() {}
 
-    /* Page load */
+    /* Page load start */
     virtual void onViewLoad() {}
 
-    /* Page load complete */
+    /* Page load end */
     virtual void onViewDidLoad() {}
 
-    /* Page will be displayed soon  */
+    /* Page appear animation start */
     virtual void onViewWillAppear() {}
 
-    /* Page is displayed  */
+    /* Page appear animation end  */
     virtual void onViewDidAppear() {}
 
-    /* Page is about to disappear */
+    /* Page disappear animation start */
     virtual void onViewWillDisappear() {}
 
-    /* Page disappeared complete  */
+    /* Page disappear animation end */
     virtual void onViewDidDisappear() {}
 
-    /* Page uninstall complete  */
+    /* Page unload start */
+    virtual void onViewUnload() {}
+
+    /* Page unload end */
     virtual void onViewDidUnload() {}
 
     /* Set whether to manually manage the cache */

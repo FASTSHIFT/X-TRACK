@@ -362,3 +362,47 @@
 * 8.添加轨迹记录状态指示渐变动画
 * 9.添加文本动画组件lv_anim_label，替换旧的lv_label_anim_effect
 * 10.去除lv_settings
+
+## [v2.3] - 2022-1-30
+* 1.Arduino API 更新
+* 2.添加wdg看门狗，系统卡死时自动重启
+* 3.lvgl主程序更新
+* 4.添加低内存开销(<50KB)的PNGdec解码器（暂不启用）
+* 5.更新LiveMap，适配新的PNGdec
+* 6.更新StatusBar，调整字体，新的轨迹记录状态指示渐变动画
+* 7.ResourceManager从PageManager分离
+* 8.lv_anim_label组件从lv_ext分离
+* 9.添加lv_img_png组件
+
+## [v2.4] - 2022-2-27
+* 1.添加指定的Pack
+* 2.AT32F435 Pack更新 2.0.0 -> 2.0.6
+* 3.__wfi() -> __WFI()
+* 4.移除lv_demo_conf.h
+* 5.更新lvgl v8.3.0 dev
+* 6.AT32F403A Stack size 0x2000 -> 0x1000
+
+## [v2.5] - 2022-3-18
+* 1.更新Adafruit_ST7789，支持颜色大小端切换
+* 2.更新CommonMacro库
+* 3.更新lv_conf.h
+* 4.去除lv_lib_png，使用lvgl内置PNG库
+* 5.DataProc 添加 DATA_PROC_INIT_STRUCT() 结构体初始化
+* 6.StatusBar 统一走 DataCenter 通信，只保留初始化API
+* 7.规范 DataProc 的 onEvent 回调函数的返回值
+* 8.去除 Page.h 公共空间的 ARRAY_SIZE() 宏定义
+* 9.ResourcePool::Font 默认返回 LV_FONT_DEFAULT，关闭不必要的内置字体
+* 10.更新PageManager，lv_event_get_target() -> lv_event_get_current_target()
+
+## [v2.6] - 2022-4-10
+* 1.ArduinoAPI更新
+* 2.整理 Core，统一移动到 MDK-ARM_F4XX/Platform 中
+* 3.更新lvgl主程序
+* 4.LV_SPRINTF_CUSTOM使能，减少FLASH占用
+* 5.account->Pull()操作全部添加返回值检查
+* 6.PageManager更新
+* 7.页面Template添加生命周期LOG
+* 8.DataCenter添加ACCOUNT_DISCARD_READ_DATA
+* 9.__WFI() -> __wfi()
+* 10.main.cpp复用
+* 11.修复[TscanCode](https://github.com/Tencent/TscanCode)静态扫描出来的漏洞

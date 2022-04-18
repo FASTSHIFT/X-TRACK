@@ -1,5 +1,5 @@
 ```eval_rst
-.. include:: /header.rst 
+.. include:: /header.rst
 :github_url: |github_link_base|/porting/log.md
 ```
 # Logging
@@ -24,7 +24,7 @@ If your system supports `printf`, you just need to enable `LV_LOG_PRINTF` in `lv
 
 
 ### Custom log function
-If you can't use `printf` or want to use a custom function to log, you can register a "logger" callback with `lv_log_register_print_cb()`. 
+If you can't use `printf` or want to use a custom function to log, you can register a "logger" callback with `lv_log_register_print_cb()`.
 
 For example:
 
@@ -43,4 +43,11 @@ lv_log_register_print_cb(my_log_cb);
 
 ## Add logs
 
-You can also use the log module via the `LV_LOG_TRACE/INFO/WARN/ERROR/USER(text)` functions.
+You can also use the log module via the `LV_LOG_TRACE/INFO/WARN/ERROR/USER(text)` or `LV_LOG(text)` functions. Here:
+
+-  `LV_LOG_TRACE/INFO/WARN/ERROR/USER(text)` append following information to your `text`
+  - Log Level
+  - \_\_FILE\_\_
+  - \_\_LINE\_\_
+  - \_\_func\_\_
+- `LV_LOG(text)` is similar to `LV_LOG_USER` but has no extra information attached.

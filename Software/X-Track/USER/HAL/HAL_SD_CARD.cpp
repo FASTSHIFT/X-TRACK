@@ -151,5 +151,6 @@ void HAL::SD_SetEventCallback(SD_CallbackFunction_t callback)
 void HAL::SD_Update()
 {
     bool isInsert = (digitalRead(CONFIG_SD_CD_PIN) == LOW);
-    __ValueMonitor(isInsert, SD_Check(isInsert));
+
+    CM_VALUE_MONITOR(isInsert, SD_Check(isInsert));
 }

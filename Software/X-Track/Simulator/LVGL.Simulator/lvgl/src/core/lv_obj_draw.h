@@ -34,7 +34,7 @@ typedef enum {
 } lv_cover_res_t;
 
 typedef struct {
-    const lv_area_t * clip_area;        /**< The current clip area, required if you need to draw something in the event*/
+    lv_draw_ctx_t * draw_ctx;           /**< Draw context*/
     const struct _lv_obj_class_t * class_p;     /**< The class that sent the event */
     uint32_t type;                      /**< The type if part being draw. Element of `lv_<name>_draw_part_type_t` */
     lv_area_t * draw_area;              /**< The area of the part being drawn*/
@@ -67,7 +67,7 @@ typedef struct {
 /**
  * Initialize a rectangle draw descriptor from an object's styles in its current state
  * @param obj pointer to an object
- * @param part part of the object. E.g.  `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
+ * @param part part of the object, e.g. `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
  * @param draw_dsc the descriptor to initialize.
  *                 If an `..._opa` field is set to `LV_OPA_TRANSP` the related properties won't be initialized.
  *                 Should be initialized with `lv_draw_rect_dsc_init(draw_dsc)`.
@@ -79,7 +79,7 @@ void lv_obj_init_draw_rect_dsc(struct _lv_obj_t * obj, uint32_t part, lv_draw_re
 /**
  * Initialize a label draw descriptor from an object's styles in its current state
  * @param obj pointer to an object
- * @param part part of the object. E.g.  `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
+ * @param part part of the object, e.g. `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
  * @param draw_dsc the descriptor to initialize.
  *                 If the `opa` field is set to or the property is equal to `LV_OPA_TRANSP` the rest won't be initialized.
  *                 Should be initialized with `lv_draw_label_dsc_init(draw_dsc)`.
@@ -89,7 +89,7 @@ void lv_obj_init_draw_label_dsc(struct _lv_obj_t * obj, uint32_t part, lv_draw_l
 /**
  * Initialize an image draw descriptor from an object's styles in its current state
  * @param obj pointer to an object
- * @param part part of the object. E.g.  `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
+ * @param part part of the object, e.g. `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
  * @param draw_dsc the descriptor to initialize.
  *                 Should be initialized with `lv_draw_image_dsc_init(draw_dsc)`.
  */
@@ -99,7 +99,7 @@ void lv_obj_init_draw_img_dsc(struct _lv_obj_t * obj, uint32_t part, lv_draw_img
 /**
  * Initialize a line draw descriptor from an object's styles in its current state
  * @param obj pointer to an object
- * @param part part of the object. E.g.  `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
+ * @param part part of the object, e.g. `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
  * @param draw_dsc the descriptor to initialize.
  *                 Should be initialized with `lv_draw_line_dsc_init(draw_dsc)`.
  */
@@ -108,7 +108,7 @@ void lv_obj_init_draw_line_dsc(struct _lv_obj_t * obj, uint32_t part, lv_draw_li
 /**
  * Initialize an arc draw descriptor from an object's styles in its current state
  * @param obj pointer to an object
- * @param part part of the object. E.g.  `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
+ * @param part part of the object, e.g. `LV_PART_MAIN`, `LV_PART_SCROLLBAR`, `LV_PART_KNOB`, etc
  * @param draw_dsc the descriptor to initialize.
  *                 Should be initialized with `lv_draw_arc_dsc_init(draw_dsc)`.
  */
@@ -124,10 +124,10 @@ lv_coord_t lv_obj_calculate_ext_draw_size(struct _lv_obj_t * obj, uint32_t part)
 
 /**
  * Initialize a draw descriptor used in events.
- * @param dsc pointer to a descriptor. Later it should be passed as parameter to an `LV_EEVNT_DRAW_PART_BEGIN/END` event.
- * @param clip_area the current clip area of the drawing
+ * @param dsc pointer to a descriptor. Later it should be passed as parameter to an `LV_EVENT_DRAW_PART_BEGIN/END` event.
+ * @param draw the current draw context. (usually returned by `lv_event_get_draw_ctx(e)`)
  */
-void lv_obj_draw_dsc_init(lv_obj_draw_part_dsc_t * dsc, const lv_area_t * clip_area);
+void lv_obj_draw_dsc_init(lv_obj_draw_part_dsc_t * dsc, lv_draw_ctx_t * draw_ctx);
 
 /**
  * Check the type obj a part draw descriptor

@@ -1,4 +1,4 @@
-#include "HAL.h"
+﻿#include "HAL.h"
 
 void HAL::HAL_Init()
 {

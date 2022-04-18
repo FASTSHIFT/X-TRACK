@@ -35,9 +35,11 @@ static bool Clock_Calibrate(Account* account, HAL::GPS_Info_t* gpsInfo)
     if(gpsInfo->isVaild && gpsInfo->clock.year >= 2020)  // 避免在日期未取得数据且GPS数据可用时修改时间
     {
         HAL::Clock_Info_t clock;
-        account->Pull("TzConv", &clock, sizeof(clock));
-        HAL::Clock_SetInfo(&clock);
-        retval = true;
+        if (account->Pull("TzConv", &clock, sizeof(clock)) == Account::RES_OK)
+        {
+            HAL::Clock_SetInfo(&clock);
+            retval = true;
+        }
     }
     return retval;
 }
@@ -54,7 +56,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
             }
         }
         
-        return 0;
+        return Account::RES_OK;
     }
 
     if (param->event != Account::EVENT_SUB_PULL)
@@ -70,7 +72,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     HAL::Clock_Info_t* info = (HAL::Clock_Info_t*)param->data_p;
     HAL::Clock_GetInfo(info);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(Clock)

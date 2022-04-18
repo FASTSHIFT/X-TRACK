@@ -35,7 +35,10 @@ static double SportStatus_GetDistanceOffset(HAL::GPS_Info_t* gpsInfo)
 static void onTimer(Account* account)
 {
     HAL::GPS_Info_t gpsInfo;
-    account->Pull("GPS", &gpsInfo, sizeof(gpsInfo));
+    if(account->Pull("GPS", &gpsInfo, sizeof(gpsInfo)) != Account::RES_OK)
+    {
+        return;
+    }
 
     uint32_t timeElaps = DataProc::GetTickElaps(sportStatus.lastTick);
 
@@ -85,7 +88,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     if (param->event == Account::EVENT_TIMER)
     {
         onTimer(account);
-        return 0;
+        return Account::RES_OK;
     }
 
     if (param->event != Account::EVENT_SUB_PULL)
@@ -99,7 +102,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
     }
 
     memcpy(param->data_p, &sportStatus, param->size);
-    return 0;
+    return Account::RES_OK;
 }
 
 DATA_PROC_INIT_DEF(SportStatus)

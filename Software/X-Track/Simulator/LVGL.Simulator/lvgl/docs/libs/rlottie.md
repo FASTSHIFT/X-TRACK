@@ -12,7 +12,7 @@ LVGL provides the interface to [Samsung/rlottie](https://github.com/Samsung/rlot
 ## Build Rlottie
 To build Samsung's Rlottie C++14-compatible compiler and optionally CMake 3.14 or higher is required.
 
-To build on desktop you can follow the instrutions from Rlottie's [README](https://github.com/Samsung/rlottie/blob/master/README.md). In the most basic case it looks like this:
+To build on desktop you can follow the instructions from Rlottie's [README](https://github.com/Samsung/rlottie/blob/master/README.md). In the most basic case it looks like this:
 ```
 mkdir rlottie_workdir
 cd rlottie_workdir
@@ -93,7 +93,7 @@ The default animation mode is **play forward with loop**.
 
 If you don't enable looping, a `LV_EVENT_READY` is sent when the animation can not make more progress without looping.
 
-To get the number of frames in an animation or the current frame index, you can cast the `lv_obj_t` instance to a `lv_rlottie_t` instance and inspect the `current_frame` and `total_frames` members. 
+To get the number of frames in an animation or the current frame index, you can cast the `lv_obj_t` instance to a `lv_rlottie_t` instance and inspect the `current_frame` and `total_frames` members.
 
 ## Example
 ```eval_rst

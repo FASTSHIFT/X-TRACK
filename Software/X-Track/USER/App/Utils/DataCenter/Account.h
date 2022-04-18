@@ -70,7 +70,7 @@ public:
     } EventParam_t;
 
     /* Event callback function pointer */
-    typedef int (*EventCallback_t)(Account* account, EventParam_t* param);
+    typedef int(*EventCallback_t)(Account* account, EventParam_t* param);
 
     typedef std::vector<Account*> AccountVector_t;
 

@@ -41,20 +41,23 @@ static int Recorder_GetTimeConv(
     uint32_t size)
 {
     HAL::Clock_Info_t clock;
-    recorder->account->Pull("Clock", &clock, sizeof(clock));
+    int retval = -1;
+    if (recorder->account->Pull("Clock", &clock, sizeof(clock)) == Account::RES_OK)
+    {
+        retval = snprintf(
+            buf,
+            size,
+            format,
+            clock.year,
+            clock.month,
+            clock.day,
+            clock.hour,
+            clock.minute,
+            clock.second
+        );
+    }
 
-    int ret = snprintf(
-                  buf,
-                  size,
-                  format,
-                  clock.year,
-                  clock.month,
-                  clock.day,
-                  clock.hour,
-                  clock.minute,
-                  clock.second
-              );
-    return ret;
+    return retval;
 }
 
 static void Recorder_RecPoint(Recorder_t* recorder, HAL::GPS_Info_t* gpsInfo)
@@ -62,12 +65,18 @@ static void Recorder_RecPoint(Recorder_t* recorder, HAL::GPS_Info_t* gpsInfo)
     //LV_LOG_USER("Track recording...");
 
     char timeBuf[64];
-    Recorder_GetTimeConv(
+    int ret = Recorder_GetTimeConv(
         recorder,
         RECORDER_GPX_TIME_FMT,
         timeBuf,
         sizeof(timeBuf)
     );
+
+    if (ret < 0)
+    {
+        LV_LOG_WARN("cant't get time");
+        return;
+    }
 
     recorder->gpx.setEle(String(gpsInfo->altitude, 2));
     recorder->gpx.setTime(timeBuf);
@@ -86,11 +95,17 @@ static void Recorder_RecStart(Recorder_t* recorder, uint16_t time)
     LV_LOG_USER("Track record start");
 
     char filepath[128];
-    Recorder_GetTimeConv(
+    int ret = Recorder_GetTimeConv(
         recorder,
         RECORDER_GPX_FILE_NAME,
         filepath, sizeof(filepath)
     );
+
+    if (ret < 0)
+    {
+        LV_LOG_WARN("cant't get time");
+        return;
+    }
 
     lv_fs_res_t res = lv_fs_open(&(recorder->file), filepath, LV_FS_MODE_WR | LV_FS_MODE_RD);
 
@@ -136,8 +151,6 @@ static void Recorder_RecStop(Recorder_t* recorder)
 
 static int onNotify(Recorder_t* recorder, Recorder_Info_t* info)
 {
-    int retval = 0;
-
     switch (info->cmd)
     {
     case RECORDER_CMD_START:
@@ -156,18 +169,16 @@ static int onNotify(Recorder_t* recorder, Recorder_Info_t* info)
         break;
     }
 
-    TrackFilter_Info_t tfInfo =
-    {
-        .cmd = (TrackFilter_Cmd_t)info->cmd
-    };
-    recorder->account->Notify("TrackFilter", &tfInfo, sizeof(tfInfo));
+    TrackFilter_Info_t tfInfo;
+    DATA_PROC_INIT_STRUCT(tfInfo);
+    tfInfo.cmd = (TrackFilter_Cmd_t)info->cmd;
 
-    return retval;
+    return recorder->account->Notify("TrackFilter", &tfInfo, sizeof(tfInfo));
 }
 
 static int onEvent(Account* account, Account::EventParam_t* param)
 {
-    int retval = Account::RES_UNKNOW;
+    Account::ResCode_t res = Account::RES_UNKNOW;
     Recorder_t* recorder = (Recorder_t*)account->UserData;;
 
     switch (param->event)
@@ -179,11 +190,11 @@ static int onEvent(Account* account, Account::EventParam_t* param)
             {
                 Recorder_RecPoint(recorder, (HAL::GPS_Info_t*)param->data_p);
             }
-            retval = Account::RES_OK;
+            res = Account::RES_OK;
         }
         else
         {
-            retval = Account::RES_SIZE_MISMATCH;
+            res = Account::RES_SIZE_MISMATCH;
         }
         break;
 
@@ -194,18 +205,19 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         }
         else
         {
-            retval = Account::RES_SIZE_MISMATCH;
+            res = Account::RES_SIZE_MISMATCH;
         }
         break;
 
     case Account::EVENT_NOTIFY:
         if (param->size == sizeof(Recorder_Info_t))
         {
-            retval = onNotify(recorder, (Recorder_Info_t*)param->data_p);
+            onNotify(recorder, (Recorder_Info_t*)param->data_p);
+            res = Account::RES_OK;
         }
         else
         {
-            retval = Account::RES_SIZE_MISMATCH;
+            res = Account::RES_SIZE_MISMATCH;
         }
         break;
 
@@ -213,7 +225,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         break;
     }
 
-    return retval;
+    return res;
 }
 
 DATA_PROC_INIT_DEF(Recorder)

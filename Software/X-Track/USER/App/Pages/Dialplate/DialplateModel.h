@@ -39,6 +39,7 @@ public:
 
     void RecorderCommand(RecCmd_t cmd);
     void PlayMusic(const char* music);
+    void SetStatusBarStyle(DataProc::StatusBar_Style_t style);
 
 private:
     Account* account;

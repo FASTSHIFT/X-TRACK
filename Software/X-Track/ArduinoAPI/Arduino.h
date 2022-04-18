@@ -1,17 +1,17 @@
 /*
  * MIT License
- * Copyright (c) 2019 - 2021 _VIFEXTech
- * 
+ * Copyright (c) 2017 - 2022 _VIFEXTech
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,33 +25,35 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <mcu_core.h>
 #include "binary.h"
 #include "avr/pgmspace.h"
-#include "mcu_core.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define PI          3.1415926535897932384626433832795f
-#define HALF_PI     1.5707963267948966192313216916398f
-#define TWO_PI      6.283185307179586476925286766559f
-#define DEG_TO_RAD  0.017453292519943295769236907684886f
-#define RAD_TO_DEG  57.295779513082320876798154814105f
-#define EULER       2.718281828459045235360287471352f
+#define KEILDUINO_VERSION       100
 
-#define SERIAL      0x0
-#define DISPLAY     0x1
+#define PI                      3.1415926535897932384626433832795f
+#define HALF_PI                 1.5707963267948966192313216916398f
+#define TWO_PI                  6.283185307179586476925286766559f
+#define DEG_TO_RAD              0.017453292519943295769236907684886f
+#define RAD_TO_DEG              57.295779513082320876798154814105f
+#define EULER                   2.718281828459045235360287471352f
 
-#define LSBFIRST    0x0
-#define MSBFIRST    0x1
+#define SERIAL                  0x0
+#define DISPLAY                 0x1
 
-#define LOW         0x0
-#define HIGH        0x1
+#define LSBFIRST                0x0
+#define MSBFIRST                0x1
+
+#define LOW                     0x0
+#define HIGH                    0x1
 
 #define min(a,b)                ((a)<(b)?(a):(b))
 #define max(a,b)                ((a)>(b)?(a):(b))
-#define ABS(x)                  (((x)>0)?(x):-(x))//abs(x) is define in stdlib.h
+#define ABS(x)                  (((x)>0)?(x):-(x)) //abs(x) is define in stdlib.h
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 #define round(x)                ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg)            ((deg)*DEG_TO_RAD)
@@ -68,7 +70,7 @@ extern "C" {
 
 #ifndef _BV
 #  define _BV(bit)              (1 << (bit))
-#endif 
+#endif
 
 #define clockCyclesPerMicrosecond()  (F_CPU / 1000000L)
 #define clockCyclesToMicroseconds(a) (((a) * 1000L) / (F_CPU / 1000L))
@@ -109,8 +111,8 @@ void     yield(void);
 #  include "WCharacter.h"
 #  include "WString.h"
 #  include "WMath.h"
-#  include "Tone.h"
-#  include "HardwareSerial.h"
+#  include <Tone.h>
+#  include <HardwareSerial.h>
 #endif
 
 #endif
