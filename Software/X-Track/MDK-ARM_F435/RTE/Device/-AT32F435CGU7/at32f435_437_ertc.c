@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_ertc.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the ertc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -102,7 +102,7 @@ error_status ertc_wait_update(void)
   ertc_write_protect_disable();
 
   /* clear updf flag */
-  ERTC->sts_bit.updf = 0;
+  ERTC->sts = ~(ERTC_UPDF_FLAG | 0x00000080) | (ERTC->sts_bit.imen << 7);
 
   /* enable write protection */
   ertc_write_protect_enable();
@@ -160,7 +160,7 @@ error_status ertc_wait_flag(uint32_t flag, flag_status status)
   * @param  none.
   * @retval error_status (ERROR or SUCCESS).
   */
-error_status ertc_enter_init_mode(void)
+error_status ertc_init_mode_enter(void)
 {
   uint32_t timeout = ERTC_TIMEOUT * 2;
 
@@ -170,7 +170,7 @@ error_status ertc_enter_init_mode(void)
   if(ERTC->sts_bit.imf == 0)
   {
     /* enter init mode */
-    ERTC->sts_bit.imen = 1;
+    ERTC->sts = 0xFFFFFFFF;
 
     while(ERTC->sts_bit.imf == 0)
     {
@@ -190,13 +190,13 @@ error_status ertc_enter_init_mode(void)
 }
 
 /**
-  * @brief  ertc exint init mode.
+  * @brief  ertc exit init mode.
   * @param  none.
   * @retval none.
   */
 void ertc_init_mode_exit(void)
 {
-  ERTC->sts_bit.imen = FALSE;
+  ERTC->sts = 0xFFFFFF7F;
 }
 
 /**
@@ -212,7 +212,7 @@ error_status ertc_reset(void)
   ERTC->ctrl = (uint32_t)0x00000000;
 
   /* enter init mode */
-  if(ertc_enter_init_mode() != SUCCESS)
+  if(ertc_init_mode_enter() != SUCCESS)
   {
     return ERROR;
   }
@@ -254,7 +254,7 @@ error_status ertc_divider_set(uint16_t div_a, uint16_t div_b)
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() != SUCCESS)
+  if(ertc_init_mode_enter() != SUCCESS)
   {
     return ERROR;
   }
@@ -286,7 +286,7 @@ error_status ertc_hour_mode_set(ertc_hour_mode_set_type mode)
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() != SUCCESS)
+  if(ertc_init_mode_enter() != SUCCESS)
   {
     return ERROR;
   }
@@ -326,7 +326,7 @@ error_status ertc_date_set(uint8_t year, uint8_t month, uint8_t date, uint8_t we
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() != SUCCESS)
+  if(ertc_init_mode_enter() != SUCCESS)
   {
     return ERROR;
   }
@@ -375,7 +375,7 @@ error_status ertc_time_set(uint8_t hour, uint8_t min, uint8_t sec, ertc_am_pm_ty
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() != SUCCESS)
+  if(ertc_init_mode_enter() != SUCCESS)
   {
     return ERROR;
   }
@@ -859,7 +859,7 @@ error_status ertc_coarse_calibration_set(ertc_cal_direction_type dir, uint32_t v
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() == ERROR)
+  if(ertc_init_mode_enter() == ERROR)
   {
     return ERROR;
   }
@@ -888,7 +888,7 @@ error_status ertc_coarse_calibration_enable(confirm_state new_state)
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() == ERROR)
+  if(ertc_init_mode_enter() == ERROR)
   {
     return ERROR;
   }
@@ -1039,7 +1039,7 @@ error_status ertc_refer_clock_detect_enable(confirm_state new_state)
   ertc_write_protect_disable();
 
   /* enter init mode */
-  if(ertc_enter_init_mode() != SUCCESS)
+  if(ertc_init_mode_enter() != SUCCESS)
   {
     return ERROR;
   }
@@ -1374,7 +1374,7 @@ void ertc_tamper_enable(ertc_tamper_select_type tamper_x, confirm_state new_stat
 /**
   * @brief  enable or disable interrupt.
   * @param  source: interrupts sources
-  *         this parameter can be one of the following values:
+  *         this parameter can be any combination of the following values:
   *         - ERTC_TP_INT: tamper interrupt.
   *         - ERTC_ALA_INT: alarm a interrupt.
   *         - ERTC_ALB_INT: alarm b interrupt.
@@ -1509,7 +1509,7 @@ void ertc_flag_clear(uint32_t flag)
   /* disable write protection */
   ertc_write_protect_disable();
 
-  ERTC->sts &= ~flag;
+  ERTC->sts = ~(flag | 0x00000080) | (ERTC->sts_bit.imen << 7);
 
   /* enable write protection */
   ertc_write_protect_enable();

@@ -17,6 +17,11 @@ extern "C" {
 
 #if LV_USE_IMG != 0
 
+/*Testing of dependencies*/
+#if LV_USE_LABEL == 0
+#error "lv_img: lv_label is required. Enable it in lv_conf.h (LV_USE_LABEL 1)"
+#endif
+
 #include "../core/lv_obj.h"
 #include "../misc/lv_fs.h"
 #include "../draw/lv_draw.h"
@@ -60,7 +65,7 @@ enum {
 
     /** If the object size is set to SIZE_CONTENT, then object size equals zoomed image size.
      *  It causes layout recalculation.
-     *  If the object size is set explicitly the the image will be cropped if zoomed in.*/
+     *  If the object size is set explicitly, the image will be cropped when zoomed in.*/
     LV_IMG_SIZE_MODE_REAL,
 };
 
@@ -82,7 +87,7 @@ lv_obj_t * lv_img_create(lv_obj_t * parent);
  *====================*/
 
 /**
- * Set the image data to display on the the object
+ * Set the image data to display on the object
  * @param obj       pointer to an image object
  * @param src_img   1) pointer to an ::lv_img_dsc_t descriptor (converted by LVGL's image converter) (e.g. &my_img) or
  *                  2) path to an image file (e.g. "S:/dir/img.bin")or

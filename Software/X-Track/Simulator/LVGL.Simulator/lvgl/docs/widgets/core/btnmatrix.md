@@ -1,18 +1,18 @@
 ```eval_rst
-.. include:: /header.rst 
-:github_url: |github_link_base|/widgets/btnmatrix.md
+.. include:: /header.rst
+:github_url: |github_link_base|/widgets/core/btnmatrix.md
 ```
 # Button matrix (lv_btnmatrix)
 
 ## Overview
 
-The Button Matrix object is a lightweight way to display multiple buttons in rows and columns. Lightweight because the buttons are not actually created but just virtually drawn on the fly. This way, one button use only eight extra bytes of memory instead of the ~100-150 bytes a normal [Button](/widgets/core/btn) object plus the 100 or so bytes for the the [Label](/widgets/core/label) object.
+The Button Matrix object is a lightweight way to display multiple buttons in rows and columns. Lightweight because the buttons are not actually created but just virtually drawn on the fly. This way, one button use only eight extra bytes of memory instead of the ~100-150 bytes a normal [Button](/widgets/core/btn) object plus the 100 or so bytes for the [Label](/widgets/core/label) object.
 
 The Button matrix is added to the default group (if one is set). Besides the Button matrix is an editable object to allow selecting and clicking the buttons with encoder navigation too.
 
 ## Parts and Styles
 - `LV_PART_MAIN` The background of the button matrix, uses the typical background style properties. `pad_row` and `pad_column` sets the space between the buttons.
-- `LV_PART_ITEMS` The buttons all use the text and typical background style properties except translations and transformations. 
+- `LV_PART_ITEMS` The buttons all use the text and typical background style properties except translations and transformations.
 
 ## Usage
 
@@ -27,7 +27,7 @@ So in the example the first row will have 2 buttons each with 50% width and a se
 
 ### Control buttons
 The buttons' width can be set relative to the other button in the same row with `lv_btnmatrix_set_btn_width(btnm, btn_id, width)`
-E.g. in a line with two buttons: *btnA, width = 1* and *btnB, width = 2*, *btnA* will have 33 % width and *btnB* will have 66 % width. 
+E.g. in a line with two buttons: *btnA, width = 1* and *btnB, width = 2*, *btnA* will have 33 % width and *btnB* will have 66 % width.
 It's similar to how the [`flex-grow`](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow) property works in CSS.
 The width must be in the \[1..7\] range and the default width is 1.
 
@@ -45,25 +45,25 @@ In addition to the width, each button can be customized with the following param
 
 By default, all flags are disabled.
 
-To set or clear a button's control attribute, use `lv_btnmatrix_set_btn_ctrl(btnm, btn_id, LV_BTNM_CTRL_...)` and 
+To set or clear a button's control attribute, use `lv_btnmatrix_set_btn_ctrl(btnm, btn_id, LV_BTNM_CTRL_...)` and
 `lv_btnmatrix_clear_btn_ctrl(btnm, btn_id, LV_BTNMATRIX_CTRL_...)` respectively. More `LV_BTNM_CTRL_...` values can be OR-ed
 
-To set/clear the same control attribute for all buttons of a button matrix, use `lv_btnmatrix_set_btn_ctrl_all(btnm, LV_BTNM_CTRL_...)` and 
+To set/clear the same control attribute for all buttons of a button matrix, use `lv_btnmatrix_set_btn_ctrl_all(btnm, LV_BTNM_CTRL_...)` and
 `lv_btnmatrix_clear_btn_ctrl_all(btnm, LV_BTNMATRIX_CTRL_...)`.
 
 The set a control map for a button matrix (similarly to the map for the text), use `lv_btnmatrix_set_ctrl_map(btnm, ctrl_map)`.
-An element of `ctrl_map` should look like `ctrl_map[0] = width | LV_BTNM_CTRL_NO_REPEAT |  LV_BTNM_CTRL_CHECHKABLE`. 
+An element of `ctrl_map` should look like `ctrl_map[0] = width | LV_BTNM_CTRL_NO_REPEAT |  LV_BTNM_CTRL_CHECHKABLE`.
 The number of elements should be equal to the number of buttons (excluding newlines characters).
 
 ### One check
-The "One check" feature can be enabled with `lv_btnmatrix_set_one_check(btnm, true)` to allow only one button to be checked at a time.
+The "One check" feature can be enabled with `lv_btnmatrix_set_one_checked(btnm, true)` to allow only one button to be checked at a time.
 
 ## Events
 - `LV_EVENT_VALUE_CHANGED` Sent when a button is pressed/released or repeated after long press. The event parameter is set to the ID of the pressed/released button.
 - `LV_EVENT_DRAW_PART_BEGIN` and `LV_EVENT_DRAW_PART_END` are sent for the following types:
     - `LV_BTNMATRIX_DRAW_PART_BTN` The individual buttons.
         - `part`: `LV_PART_ITEMS`
-        - `id`:index of the button being drawn 
+        - `id`:index of the button being drawn
         - `draw_area`: the area of teh button
         - `rect_dsc`
 

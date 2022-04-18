@@ -10,7 +10,7 @@
  * 选择自己所在区域下载即可，**切勿选择过大范围**，下载区域设置小一些后续下载会快很多。
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%9C%B0%E5%9B%BE%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B/3-%E9%80%89%E6%8B%A9%E4%B8%8B%E8%BD%BD%E5%8C%BA%E5%9F%9F.png)
 ## 3.下载地图
- * 下载地图等级根据自己喜好选择，等级越高地图越详细，但是文件也越大（建议只勾选**0~16级**）。命名格式为`/z/x/y.png`格式，保存路径新建一个`MAP`文件夹
+ * 下载地图等级根据自己喜好选择，等级越高地图越详细，但是文件也越大（建议只勾选**0~16级**，如果出现0~2级下载失败的情况，可以不勾选）。命名格式为`/z/x/y.png`格式，保存路径新建一个`MAP`文件夹
  
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%9C%B0%E5%9B%BE%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B/4-%E5%9C%B0%E5%9B%BE%E4%B8%8B%E8%BD%BD%E9%85%8D%E7%BD%AE.png)
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%9C%B0%E5%9B%BE%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B/5-%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90.png)

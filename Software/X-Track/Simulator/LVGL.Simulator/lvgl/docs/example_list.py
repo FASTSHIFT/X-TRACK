@@ -21,13 +21,13 @@ def process_index_rst(path):
       line = fp.readline()
 
     return(d)
-      
+
 h1= {
-  "get_started":"Get started", 
-  "styles":"Styles", 
-  "anim":"Animations", 
-  "event":"Events", 
-  "layouts":"Layouts", 
+  "get_started":"Get started",
+  "styles":"Styles",
+  "anim":"Animations",
+  "event":"Events",
+  "layouts":"Layouts",
   "scroll":"Scrolling",
   "widgets":"Widgets"
 }
@@ -84,14 +84,15 @@ def print_item(path, lvl, d, fout):
      fout.write("\n")
 
 def exec():
-  path ="../examples/"
+  paths = [ "../examples/", "../demos/"]
   fout = open("examples.md", "w")
   filelist = []
 
-  for root, dirs, files in os.walk(path):
-	  for f in files:
-      #append the file name to the list
-		  filelist.append(os.path.join(root,f))
+  for path in paths:
+    for root, dirs, files in os.walk(path):
+      for f in files:
+        #append the file name to the list
+        filelist.append(os.path.join(root,f))
 
   filelist = [ fi for fi in filelist if fi.endswith("index.rst") ]
 
@@ -102,7 +103,7 @@ def exec():
      d_all.update(d_act)
 
   fout.write("```eval_rst\n")
-  fout.write(".. include:: /header.rst\n") 
+  fout.write(".. include:: /header.rst\n")
   fout.write(":github_url: |github_link_base|/examples.md\n")
   fout.write("```\n")
   fout.write("\n")
@@ -110,7 +111,7 @@ def exec():
 
   for h in h1:
     fout.write("## " + h1[h] + "\n")
-    
+
     if h == "widgets":
       for w in widgets:
         fout.write("### " + widgets[w] + "\n")
@@ -120,7 +121,7 @@ def exec():
         fout.write("### " + layouts[l] + "\n")
         print_item(h + "/" + l, 4, d_all, fout)
     else:
-      print_item(h, 3, d_all, fout)   
-      
+      print_item(h, 3, d_all, fout)
+
     fout.write("")
-  
+

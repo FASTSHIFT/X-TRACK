@@ -58,7 +58,7 @@
 *.lnp
 *.orc
 # define exception below if needed
-*.pack
+#*.pack
 # define exception below if needed
 *.pdsc
 *.plg

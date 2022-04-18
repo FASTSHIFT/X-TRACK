@@ -24,6 +24,8 @@
 #include "DataCenter.h"
 #include "DataCenterLog.h"
 
+#define ACCOUNT_DISCARD_READ_DATA   1
+
 /**
   * @brief  Account constructor
   * @param  id:       Unique name
@@ -262,7 +264,9 @@ int Account::Publish()
         }
     }
 
+#if ACCOUNT_DISCARD_READ_DATA
     PingPongBuffer_SetReadDone(&priv.BufferManager);
+#endif
 
     return retval;
 }
@@ -322,7 +326,9 @@ int Account::Pull(Account* pub, void* data_p, uint32_t size)
             if (PingPongBuffer_GetReadBuf(&pub->priv.BufferManager, &rBuf))
             {
                 memcpy(data_p, rBuf, size);
+#if ACCOUNT_DISCARD_READ_DATA
                 PingPongBuffer_SetReadDone(&pub->priv.BufferManager);
+#endif
                 DC_LOG_INFO("read done");
                 retval = 0;
             }

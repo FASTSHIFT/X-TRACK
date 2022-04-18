@@ -214,6 +214,7 @@ PageBase::State_t PageManager::StateUnloadExecute(PageBase* base)
         goto Exit;
     }
 
+    base->onViewUnload();
     if (base->priv.Stash.ptr != nullptr && base->priv.Stash.size != 0)
     {
         PM_LOG_INFO("Page(%s) free stash(0x%p)[%d]", base->Name, base->priv.Stash.ptr, base->priv.Stash.size);

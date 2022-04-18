@@ -45,8 +45,8 @@ static void event_cb(lv_event_t * e)
             a.y1 = chart->coords.y1 + p.y - 30;
             a.y2 = chart->coords.y1 + p.y - 10;
 
-            const lv_area_t * clip_area = lv_event_get_clip_area(e);
-            lv_draw_rect(&a, clip_area, &draw_rect_dsc);
+            lv_draw_ctx_t * draw_ctx = lv_event_get_draw_ctx(e);
+            lv_draw_rect(draw_ctx, &draw_rect_dsc, &a);
 
             ser = lv_chart_get_series_next(chart, ser);
         }
@@ -78,8 +78,8 @@ void lv_example_chart_4(void)
     lv_chart_series_t * ser2 = lv_chart_add_series(chart, lv_palette_main(LV_PALETTE_GREEN), LV_CHART_AXIS_PRIMARY_Y);
     uint32_t i;
     for(i = 0; i < 10; i++) {
-        lv_chart_set_next_value(chart, ser1, lv_rand(60,90));
-        lv_chart_set_next_value(chart, ser2, lv_rand(10,40));
+        lv_chart_set_next_value(chart, ser1, lv_rand(60, 90));
+        lv_chart_set_next_value(chart, ser2, lv_rand(10, 40));
     }
 }
 

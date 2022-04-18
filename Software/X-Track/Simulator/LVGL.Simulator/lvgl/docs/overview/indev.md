@@ -1,5 +1,5 @@
 ```eval_rst
-.. include:: /header.rst 
+.. include:: /header.rst
 :github_url: |github_link_base|/overview/indev.md
 ```
 # Input devices
@@ -16,21 +16,55 @@ An input device usually means:
 
 ## Pointers
 
+### Cursor
+
 Pointer input devices (like a mouse) can have a cursor.
 
 ```c
 ...
 lv_indev_t * mouse_indev = lv_indev_drv_register(&indev_drv);
 
-LV_IMG_DECLARE(mouse_cursor_icon);                          /*Declare the image file.*/
-lv_obj_t * cursor_obj =  lv_img_create(lv_scr_act());       /*Create an image object for the cursor */
+LV_IMG_DECLARE(mouse_cursor_icon);                          /*Declare the image source.*/
+lv_obj_t * cursor_obj = lv_img_create(lv_scr_act());       /*Create an image object for the cursor */
 lv_img_set_src(cursor_obj, &mouse_cursor_icon);             /*Set the image source*/
 lv_indev_set_cursor(mouse_indev, cursor_obj);               /*Connect the image  object to the driver*/
-
 ```
 
 Note that the cursor object should have `lv_obj_clear_flag(cursor_obj, LV_OBJ_FLAG_CLICKABLE)`.
 For images, *clicking* is disabled by default.
+
+### Gestures
+Pointer input devices can detect basic gestures. By default, most of the widgets send the gestures to its parent, so finally the gestures can be detected on the screen object in a form of an `LV_EVENT_GESTURE` event. For example:
+
+```c
+void my_event(lv_event_t * e)
+{
+  lv_obj_t * screen = lv_event_get_current_target(e);
+  lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_act());
+  switch(dir) {
+    case LV_DIR_LEFT:
+      ...
+      break;
+    case LV_DIR_RIGHT:
+      ...
+      break;
+    case LV_DIR_TOP:
+      ...
+      break;
+    case LV_DIR_BOTTOM:
+      ...
+      break;
+  }
+}
+
+...
+
+lv_obj_add_event_cb(screen1, my_event, LV_EVENT_GESTURE, NULL);
+```
+
+To prevent passing the gesture event to the parent from an object use `lv_obj_clear_flag(obj, LV_OBJ_FLAG_GESTURE_BUBBLE)`.
+
+Note that, gestures are not triggered if an object is being scrolled.
 
 ## Keypad and encoder
 
@@ -90,9 +124,9 @@ Don't forget to assign one or more input devices to the default group with ` lv_
 
 ### Styling
 
-If an object is focused either by clicking it via touchpad or focused via an encoder or keypad it goes to the `LV_STATE_FOCUSED` state. Hence, focused styles will be applied to it. 
+If an object is focused either by clicking it via touchpad or focused via an encoder or keypad it goes to the `LV_STATE_FOCUSED` state. Hence, focused styles will be applied to it.
 
-If an object switches to edit mode it enters the `LV_STATE_FOCUSED | LV_STATE_EDITED` states so these style properties will be shown. 
+If an object switches to edit mode it enters the `LV_STATE_FOCUSED | LV_STATE_EDITED` states so these style properties will be shown.
 
 For a more detailed description read the [Style](https://docs.lvgl.io/v7/en/html/overview/style.html) section.
 

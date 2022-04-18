@@ -163,7 +163,7 @@ void lv_btnmatrix_set_btn_width(lv_obj_t * obj, uint16_t btn_id, uint8_t width);
 /**
  * Make the button matrix like a selector widget (only one button may be checked at a time).
  * `LV_BTNMATRIX_CTRL_CHECKABLE` must be enabled on the buttons to be selected using
- *  `lv_btnmatrix_set_ctrl()` or `lv_btnmatrix_set_btn_ctrl_all()`.
+ * `lv_btnmatrix_set_ctrl()` or `lv_btnmatrix_set_btn_ctrl_all()`.
  * @param obj       pointer to a button matrix object
  * @param en        whether "one check" mode is enabled
  */
@@ -182,7 +182,7 @@ const char ** lv_btnmatrix_get_map(const lv_obj_t * obj);
 
 /**
  * Get the index of the lastly "activated" button by the user (pressed, released, focused etc)
- * Useful in the the `event_cb` to get the text of the button, check if hidden etc.
+ * Useful in the `event_cb` to get the text of the button, check if hidden etc.
  * @param obj       pointer to button matrix object
  * @return          index of the last released button (LV_BTNMATRIX_BTN_NONE: if unset)
  */

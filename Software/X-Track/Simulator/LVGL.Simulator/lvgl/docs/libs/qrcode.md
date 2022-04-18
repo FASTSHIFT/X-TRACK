@@ -1,5 +1,5 @@
 ```eval_rst
-.. include:: /header.rst 
+.. include:: /header.rst
 :github_url: |github_link_base|/libs/qrcode.md
 ```
 
@@ -24,7 +24,7 @@ lv_qrcode_update(qr, data, strlen(data));
 ```
 
 ## Notes
-- QR codes with less data are smaller but they scaled by an integer numbers number to best fit to the given size
+- QR codes with less data are smaller, but they scaled by an integer number to best fit to the given size.
 
 
 ## Example

@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_pwc.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the pwc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -93,29 +93,27 @@ void pwc_power_voltage_monitor_enable(confirm_state new_state)
 }
 
 /**
-  * @brief  enable or disable pwc standby wakeup pin1  
-  * @param  new_state: new state of the standby wakeup pin1.
+  * @brief  enable or disable pwc standby wakeup pin  
+  * @param  pin_num: choose the wakeup pin.
+  *         this parameter can be be any combination of the following values:
+  *         - PWC_WAKEUP_PIN_1
+  *         - PWC_WAKEUP_PIN_2 
+  * @param  new_state: new state of the standby wakeup pin.
   *         this parameter can be one of the following values:
-  *         - TRUE <wakeup pin1 is used for wake up cpu from standby mode>
-  *         - FALSE <wakeup pin1 is used for general purpose I/O>
+  *         - TRUE <wakeup pin is used for wake up cpu from standby mode>
+  *         - FALSE <wakeup pin is used for general purpose I/O>
   * @retval none
   */
-void pwc_wakeup_pin1_enable(confirm_state new_state)
+void pwc_wakeup_pin_enable(uint32_t pin_num, confirm_state new_state)
 {
-  PWC->ctrlsts_bit.swpen1= new_state;
-}
-
-/**
-  * @brief  enable or disable pwc standby wakeup pin2  
-  * @param  new_state: new state of the standby wakeup pin2.
-  *         this parameter can be one of the following values:
-  *         - TRUE <wakeup pin2 is used for wake up cpu from standby mode>
-  *         - FALSE <wakeup pin2 is used for general purpose I/O>
-  * @retval none
-  */
-void pwc_wakeup_pin2_enable(confirm_state new_state)
-{
-  PWC->ctrlsts_bit.swpen2= new_state;
+  if(new_state == TRUE)
+  {
+    PWC->ctrlsts |= pin_num;
+  }
+  else
+  {
+    PWC->ctrlsts &= ~pin_num;
+  }
 }
 
 /**

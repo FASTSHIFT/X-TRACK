@@ -1,6 +1,6 @@
 ```eval_rst
-.. include:: /header.rst 
-:github_url: |github_link_base|/widgets/span.md
+.. include:: /header.rst
+:github_url: |github_link_base|/widgets/extra/span.md
 ```
 # Span (lv_span)
 
@@ -10,7 +10,7 @@ A spangroup is the object that is used to display rich text. Different from the 
 
 ## Parts and Styles
 - `LV_PART_MAIN` The spangroup has only one part.
- 
+
 ## Usage
 
 ### Set text and style
@@ -19,7 +19,7 @@ The spangroup object uses span to describe text and text style. so, first we nee
 
 If spangroup object `mode != LV_SPAN_MODE_FIXED` you must call `lv_spangroup_refr_mode()` after you have modified `span` style(eg:set text, changed the font size, del span).
 
-### Retreiving a span child
+### Retrieving a span child
 Spangroups store their children differently from normal objects, so normal functions for getting children won't work.
 
 `lv_spangroup_get_child(spangroup, id)` will return a pointer to the child span at index `id`. In addition, `id` can be negative to index from the end of the spangroup where `-1` is the youngest child, `-2` is second youngest, etc.
@@ -58,8 +58,11 @@ Use `lv_spangroup_set_overflow(spangroup, LV_SPAN_OVERFLOW_CLIP)` to set object 
 ### first line indent
 Use `lv_spangroup_set_indent(spangroup, 20)` to set the indent of the first line. all modes support pixel units, in addition to LV_SPAN_MODE_FIXED and LV_SPAN_MODE_BREAK mode supports percentage units too.
 
+### lines
+Use `lv_spangroup_set_lines(spangroup, 10)` to set the maximum number of lines to be displayed in LV_SPAN_MODE_BREAK mode, negative values indicate no limit.
+
 ## Events
-No special events are sent by this widget. 
+No special events are sent by this widget.
 
 Learn more about [Events](/overview/event).
 

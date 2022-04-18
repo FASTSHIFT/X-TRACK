@@ -1,8 +1,8 @@
 /**
   **************************************************************************
   * @file     at32f435_437_adc.c
-  * @version  v2.0.0
-  * @date     2021-09-06
+  * @version  v2.0.5
+  * @date     2022-02-11
   * @brief    contains all the functions for the adc firmware library
   **************************************************************************
   *                       Copyright notice & Disclaimer
@@ -1105,7 +1105,7 @@ flag_status adc_flag_get(adc_type *adc_x, uint8_t adc_flag)
   */
 void adc_flag_clear(adc_type *adc_x, uint32_t adc_flag)
 {
-  adc_x->sts &= ~adc_flag;
+  adc_x->sts = ~adc_flag;
 }
 
 /**

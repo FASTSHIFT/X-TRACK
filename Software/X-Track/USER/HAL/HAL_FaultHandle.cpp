@@ -22,7 +22,7 @@ void HAL::FaultHandle_Init()
     cm_backtrace_init(
         VERSION_FIRMWARE_NAME,
         VERSION_HARDWARE,
-        VERSION_SOFTWARE" "__DATE__
+        VERSION_SOFTWARE " " __DATE__
     );
 }
 

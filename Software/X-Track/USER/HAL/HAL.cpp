@@ -77,6 +77,12 @@ void HAL::HAL_Init()
 
     Display_Init();
 
+#if CONFIG_WATCH_DOG_ENABLE
+    uint32_t timeout = WDG_Init(CONFIG_WATCH_DOG_TIMEOUT);
+    taskManager.Register(WDG_ReloadCounter, CONFIG_WATCH_DOG_TIMEOUT / 10);
+    Serial.printf("WatchDog: Timeout = %dms\r\n", timeout);
+#endif
+
     taskManager.Register(Power_EventMonitor, 100);
     taskManager.Register(GPS_Update, 200);
     taskManager.Register(SD_Update, 500);

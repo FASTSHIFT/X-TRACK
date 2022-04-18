@@ -22,14 +22,8 @@
 #include "WString.h"
 #include "itoa.h"
 #include "dtostrf.h"
-#include "mcu_config.h"
-
-#if WSTRING_MEM_CUSTOM
-#  include WSTRING_MEM_INCLUDE
-#else
-#  define WSTRING_MEM_REALLOC realloc
-#  define WSTRING_MEM_FREE    free
-#endif
+#include <mcu_config.h>
+#include WSTRING_MEM_INCLUDE
 
 /*********************************************/
 /*  Constructors                             */
@@ -119,14 +113,14 @@ String::String(float value, unsigned char decimalPlaces)
 {
     init();
     char buf[33];
-    *this = dtostrf(value, (decimalPlaces + 2), decimalPlaces, buf);
+    *this = dtostrnf(value, (decimalPlaces + 2), decimalPlaces, buf, sizeof(buf));
 }
 
 String::String(double value, unsigned char decimalPlaces)
 {
     init();
     char buf[33];
-    *this = dtostrf(value, (decimalPlaces + 2), decimalPlaces, buf);
+    *this = dtostrnf(value, (decimalPlaces + 2), decimalPlaces, buf, sizeof(buf));
 }
 
 String::~String()
@@ -341,14 +335,14 @@ unsigned char String::concat(unsigned long num)
 unsigned char String::concat(float num)
 {
     char buf[20];
-    char* string = dtostrf(num, 4, 2, buf);
+    char* string = dtostrnf(num, 4, 2, buf, sizeof(buf));
     return concat(string, strlen(string));
 }
 
 unsigned char String::concat(double num)
 {
     char buf[20];
-    char* string = dtostrf(num, 4, 2, buf);
+    char* string = dtostrnf(num, 4, 2, buf, sizeof(buf));
     return concat(string, strlen(string));
 }
 
@@ -731,7 +725,7 @@ void String::remove(unsigned int index, unsigned int count)
     {
         return;
     }
-    if (count <= 0)
+    if (count == 0)
     {
         return;
     }

@@ -17,6 +17,7 @@ public:
     {
         HAL::Encoder_SetEnable(en);
     }
+    void SetStatusBarAppear(bool en);
 
 private:
     Account* account;

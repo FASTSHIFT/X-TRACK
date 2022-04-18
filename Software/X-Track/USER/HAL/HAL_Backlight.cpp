@@ -61,7 +61,7 @@ uint16_t HAL::Backlight_GetValue()
   */
 void HAL::Backlight_SetValue(int16_t val)
 {
-    __LimitValue(val, 0, 1000);
+    CM_VALUE_LIMIT(val, 0, 1000);
     analogWrite(CONFIG_SCREEN_BLK_PIN, val);
 }
 

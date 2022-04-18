@@ -1,14 +1,286 @@
 # Changelog
 
+
+## [v8.2.0](https://github.com/littlevgl/lvgl/compare/v8.1.0...v8.2.0) 31 January 2022
+
+
+### Overview
+
+Among many fixes and minor updates these are the most important features in v8.2.0:
+- Abstract render layer to make it easier to attach external draw engines
+- Add `LV_FLAD_OVERFLOW_VISIBLE`. If enabled the children of an object won't be clipped to the boundary of the object
+- Add ffmpeg decoder support to play videos and open a wide variety of image formats
+- Add font fallback support
+- Add gradient dithering support
+- Add "monkey test"
+- Add cmsis-pack support
+- Add Grid navigation (`lv_gridnav`)
+
+The GPU support for NXP microcontrollers is still not updated to the new draw architecture. See [#3052](https://github.com/lvgl/lvgl/issues/3052)
+
+### Breaking Changes
+
+- :warning: feat(fs): add caching option for lv_fs-read [`2979`](https://github.com/littlevgl/lvgl/pull/2979)
+- :warning: feat(span): lv_spangroup_get_expand_width() adds a parameter [`2968`](https://github.com/littlevgl/lvgl/pull/2968)
+- :warning: arch(draw): allow replacing the draw engine [`db53ea9`](https://github.com/littlevgl/lvgl/commit/db53ea925c9502b20f38db0fc30c4ef599bdfc33)
+- :warning: indexed images are not chroma keyed. Use the alpha chaneel instead.
+
+### Architectural
+
+- arch(draw): separate SW renderer to allow replacing it [`2803`](https://github.com/littlevgl/lvgl/pull/2803)
+- arch: merge lv_demos [`5414652`](https://github.com/littlevgl/lvgl/commit/5414652a4108dc6761b859fbb48a43e37e67a37a)
+- arch(sdl): migrated to use new backend architecture [`2840`](https://github.com/littlevgl/lvgl/pull/2840)
+- arch(env): move rt-thread into env_support folder [`3025`](https://github.com/littlevgl/lvgl/pull/3025)
+- arch(env): arch(env): move the cmake folder into the env_support folder [`773d50f`](https://github.com/littlevgl/lvgl/commit/773d50f0acafa279fa7440ddcf15e80cf07eda54)
+- arch(env): move the zephyr folder into the env_support folder [`4bd1e7e`](https://github.com/littlevgl/lvgl/commit/4bd1e7e9f7acc5295b65440477e76a048094afbf)
+
+### New Features
+
+- feat(cmsis-pack): prepare for lvgl v8.2.0 release [`3062`](https://github.com/littlevgl/lvgl/pull/3062)
+- feat(gridnav): add lv_gridnav [`2911`](https://github.com/littlevgl/lvgl/pull/2911)
+- feat: update the cmsis-pack to 0.8.3 [`3021`](https://github.com/littlevgl/lvgl/pull/3021)
+- feat(sdl): support rounded images [`3012`](https://github.com/littlevgl/lvgl/pull/3012)
+- feat(cmsis-pack): add cmsis-pack support [`2993`](https://github.com/littlevgl/lvgl/pull/2993)
+- feat(event): add preprocessing and stop bubbling features for events [`3003`](https://github.com/littlevgl/lvgl/pull/3003)
+- feat(draw): add gradient dithering support [`2872`](https://github.com/littlevgl/lvgl/pull/2872)
+- feat(symbols): add guards to LV_SYMBOL_* to allow redefining them [`2973`](https://github.com/littlevgl/lvgl/pull/2973)
+- feat(obj): subdivide LV_OBJ_FLAG_SCROLL_CHAIN into ...CHAIN_HOR and ...CHAIN_VER [`2961`](https://github.com/littlevgl/lvgl/pull/2961)
+- feat(draw): add draw_bg callback to draw_ctx #2934 [`2935`](https://github.com/littlevgl/lvgl/pull/2935)
+- feat(docs): add Chinese readme [`2919`](https://github.com/littlevgl/lvgl/pull/2919)
+- feat(txt): add used_width parameter to _lv_txt_get_next_line()  [`2898`](https://github.com/littlevgl/lvgl/pull/2898)
+- feat(others) add monkey test [`2885`](https://github.com/littlevgl/lvgl/pull/2885)
+- feat(rlottie): add animation control options [`2857`](https://github.com/littlevgl/lvgl/pull/2857)
+- feat(lv_hal_indev): add missing lv_indev_delete() [`2854`](https://github.com/littlevgl/lvgl/pull/2854)
+- feat(freetype): optimize memory allocation [`2849`](https://github.com/littlevgl/lvgl/pull/2849)
+- feat(Kconfig): add FreeType config [`2846`](https://github.com/littlevgl/lvgl/pull/2846)
+- feat(widgets): add menu widget [`2603`](https://github.com/littlevgl/lvgl/pull/2603)
+- feat(refr): add reset function for FPS statistics [`2832`](https://github.com/littlevgl/lvgl/pull/2832)
+- feat(Kconfig): add monitor position configuration [`2834`](https://github.com/littlevgl/lvgl/pull/2834)
+- feat(examples) add micropython versions of the external library examples [`2762`](https://github.com/littlevgl/lvgl/pull/2762)
+- feat(freetype): support bold and italic [`2824`](https://github.com/littlevgl/lvgl/pull/2824)
+- feat(font) add fallback support and mem. font load option to FreeType [`2796`](https://github.com/littlevgl/lvgl/pull/2796)
+- feat(lib) add ffmpeg video and image decoder [`2805`](https://github.com/littlevgl/lvgl/pull/2805)
+- feat(obj): add LV_OBJ_FLAG_OVERFLOW_VISIBLE [`e7ac0e4`](https://github.com/littlevgl/lvgl/commit/e7ac0e41988e5fda772e17292c05d65bcaf58394)
+- feat(scrollbar): add more control over scrollbar paddings [`4197b2f`](https://github.com/littlevgl/lvgl/commit/4197b2fd6ebec4b4dcfeeb2c41b724e09b77d1d0)
+- feat(dropdown): keep the list on open/close for simpler styling [`9d3134b`](https://github.com/littlevgl/lvgl/commit/9d3134b66e40882c232afa79498c41294603f437)
+- feat(qrcode) use destructor instead of lv_qrcode_delete() [`318edd8`](https://github.com/littlevgl/lvgl/commit/318edd8a3f61a65be3ed15a97c0870de0ad4125a)
+- feat(disp) allow decoupling the disp_refr timer [`85cc84a`](https://github.com/littlevgl/lvgl/commit/85cc84ad947786bb3d4857290503047946a55c43)
+- feat(obj): add lv_obj_get_event_user_data() [`53ececc`](https://github.com/littlevgl/lvgl/commit/53ececc5ec6f62ee4ab47ea66a847679e3836f52)
+- feat(obj) add LV_OBJ_FLAG_SCROLL_WITH_ARROW [`70327bd`](https://github.com/littlevgl/lvgl/commit/70327bdb2d758336340c5a3b378ab876bfee2d53)
+- feat(slider): consider ext_click_area on the knob with LV_OBJ_FLAG_ADV_HITTEST [`9d3fb41`](https://github.com/littlevgl/lvgl/commit/9d3fb418969c13b93f01a6b0342a1cd8d02e9b6c)
+
+### Performance
+
+- perf(sdl): optimize the use of SDL_RenderSetClipRect [`2941`](https://github.com/littlevgl/lvgl/pull/2941)
+- perf(color): add faster lv_color_hex function [`2864`](https://github.com/littlevgl/lvgl/pull/2864)
+
+### Fixes
+
+- fix(micropython) update examples for new API [`3059`](https://github.com/littlevgl/lvgl/pull/3059)
+- fix: increase default value of LV_MEM_SIZE for lv_demo_widgets #3057 [`3058`](https://github.com/littlevgl/lvgl/pull/3058)
+- fix(cmsis-pack): fix issue #3032 [`3056`](https://github.com/littlevgl/lvgl/pull/3056)
+- fix(porting): add missing function prototypes [`3054`](https://github.com/littlevgl/lvgl/pull/3054)
+- fix(kconfig): add missing default values [`3050`](https://github.com/littlevgl/lvgl/pull/3050)
+- fix(canvas): force canvas to use sw draw [`3045`](https://github.com/littlevgl/lvgl/pull/3045)
+- fix(rt-thread): use ARCH_CPU_BIG_ENDIAN to replace RT_USING_BIG_ENDIAN [`3044`](https://github.com/littlevgl/lvgl/pull/3044)
+- fix(gradient): general cleanup and fix for alignment issues [`3036`](https://github.com/littlevgl/lvgl/pull/3036)
+- fix(draw): rendering issues for vertical gradient with and without dithering [`3034`](https://github.com/littlevgl/lvgl/pull/3034)
+- fix uninitialized variable [`3033`](https://github.com/littlevgl/lvgl/pull/3033)
+- fix(lru): lower dependency for standard C functions [`3024`](https://github.com/littlevgl/lvgl/pull/3024)
+- fix(env_support): move cmsis-pack to env_support folder [`3026`](https://github.com/littlevgl/lvgl/pull/3026)
+- fix(doc): full covering opacity is 255, not 256 [`3022`](https://github.com/littlevgl/lvgl/pull/3022)
+- fix uninitialized variables [`3023`](https://github.com/littlevgl/lvgl/pull/3023)
+- fix various issues for esp32 [`3007`](https://github.com/littlevgl/lvgl/pull/3007)
+- fix(sdl): fix clipped image drawing [`2992`](https://github.com/littlevgl/lvgl/pull/2992)
+- fix(draw): missed bg_color renaming in the draw function [`3002`](https://github.com/littlevgl/lvgl/pull/3002)
+- fix(porting): fix typo and an unmatched prototype [`2998`](https://github.com/littlevgl/lvgl/pull/2998)
+- fix(conf) add missing LV_LOG_LEVEL default definition [`2996`](https://github.com/littlevgl/lvgl/pull/2996)
+- fix(refr): crash if full_refresh = 1 [`2999`](https://github.com/littlevgl/lvgl/pull/2999)
+- fix(Kconfig): adapt to lvgl's built-in demos [`2989`](https://github.com/littlevgl/lvgl/pull/2989)
+- fix(Makefile): compilation errors [`2944`](https://github.com/littlevgl/lvgl/pull/2944)
+- fix(rlottie): fix variable name [`2971`](https://github.com/littlevgl/lvgl/pull/2971)
+- fix(group): in lv_group_del() remove group from indev (lvgl#2963) [`2964`](https://github.com/littlevgl/lvgl/pull/2964)
+- fix(obj): old parent's scroll is not updated in lv_obj_set_parent() [`2965`](https://github.com/littlevgl/lvgl/pull/2965)
+- fix(fatfs) add missing cast [`2969`](https://github.com/littlevgl/lvgl/pull/2969)
+- fix(snapshot) fix memory leak [`2970`](https://github.com/littlevgl/lvgl/pull/2970)
+- fix(examples) move event callback registration outside loop in `lv_example_event_3` [`2959`](https://github.com/littlevgl/lvgl/pull/2959)
+- fix(canvas): off by one error in size check in lv_canvas_copy_buf [`2950`](https://github.com/littlevgl/lvgl/pull/2950)
+- fix(indev) add braces to avoid compiler warning [`2947`](https://github.com/littlevgl/lvgl/pull/2947)
+- fix: fix parameter order in function prototypes [`2929`](https://github.com/littlevgl/lvgl/pull/2929)
+- fix(style):add const qualifier for lv_style_get_prop() [`2933`](https://github.com/littlevgl/lvgl/pull/2933)
+- fix(dropdown): in lv_dropdown_get_selected_str handle if there are no options [`2925`](https://github.com/littlevgl/lvgl/pull/2925)
+- fix: lv_deinit/lv_init crash or hang [`2910`](https://github.com/littlevgl/lvgl/pull/2910)
+- fix(rt-thread): improve the structure [`2912`](https://github.com/littlevgl/lvgl/pull/2912)
+- fix: removed string format warnings for int32_t and uint32_t [`2924`](https://github.com/littlevgl/lvgl/pull/2924)
+- fix(lv_fs_win32): add missing include of &lt;stdio.h&gt; [`2918`](https://github.com/littlevgl/lvgl/pull/2918)
+- fix: use unsigned integer literal for bit shifing. [`2888`](https://github.com/littlevgl/lvgl/pull/2888)
+- chore(lottie) move rlottie_capi.h to lv_rlottie.c [`2902`](https://github.com/littlevgl/lvgl/pull/2902)
+- fix(qrcodegen) add brackets around assert calls [`2897`](https://github.com/littlevgl/lvgl/pull/2897)
+- fix(list) guard image creation with LV_USE_IMG [`2881`](https://github.com/littlevgl/lvgl/pull/2881)
+- fix(snapshot): make fake display size big enough to avoid align issue. [`2883`](https://github.com/littlevgl/lvgl/pull/2883)
+- fix(sdl) correct makefile [`2884`](https://github.com/littlevgl/lvgl/pull/2884)
+- fix(draw): fix set_px_cb memory write overflow crash. [`2882`](https://github.com/littlevgl/lvgl/pull/2882)
+- fix(freetype): fix memset error [`2877`](https://github.com/littlevgl/lvgl/pull/2877)
+- fix(span): fix align and break word  [`2861`](https://github.com/littlevgl/lvgl/pull/2861)
+- fix(refr): swap buffers only on the last area with direct mode [`2867`](https://github.com/littlevgl/lvgl/pull/2867)
+- fix(arc) free memory when drawing full-circle arc [`2869`](https://github.com/littlevgl/lvgl/pull/2869)
+- fix(indev): update lv_indev_drv_update to free the read_timer [`2850`](https://github.com/littlevgl/lvgl/pull/2850)
+- fix(draw): fix memory access out of bounds when using blend subtract [`2860`](https://github.com/littlevgl/lvgl/pull/2860)
+- fix(chart) add lv_chart_refresh() to the functions which modify the data [`2841`](https://github.com/littlevgl/lvgl/pull/2841)
+- fix(conf) mismatched macro judgment [`2843`](https://github.com/littlevgl/lvgl/pull/2843)
+- fix(ffmpeg): when disabled LV_FFMPEG_AV_DUMP_FORMAT makes av_log quiet [`2838`](https://github.com/littlevgl/lvgl/pull/2838)
+- fix(rt-thread): fix a bug of log [`2811`](https://github.com/littlevgl/lvgl/pull/2811)
+- fix(log): to allow printf and custom_print_cb to work at same time [`2837`](https://github.com/littlevgl/lvgl/pull/2837)
+- fix(keyboard): add missing functions [`2835`](https://github.com/littlevgl/lvgl/pull/2835)
+- fix(checkbox) remove unnecessary events [`2829`](https://github.com/littlevgl/lvgl/pull/2829)
+- fix(qrcode): replace memcpy() with lv_memcpy() and delete useless macros [`2827`](https://github.com/littlevgl/lvgl/pull/2827)
+- fix(font) improve builtin font source files generation process [`2825`](https://github.com/littlevgl/lvgl/pull/2825)
+- fix(CMake) split CMakeLists.txt, add options, includes and dependencies [`2753`](https://github.com/littlevgl/lvgl/pull/2753)
+- fix(obj): make lv_obj_fade_in/out use the current opa as start value [`2819`](https://github.com/littlevgl/lvgl/pull/2819)
+- fix(qrcode):minimize margins as much as possible [`2804`](https://github.com/littlevgl/lvgl/pull/2804)
+- fix(scripts): switch all scripts to python3 [`2820`](https://github.com/littlevgl/lvgl/pull/2820)
+- fix(event): event_send_core crash in special case. [`2807`](https://github.com/littlevgl/lvgl/pull/2807)
+- fix(Kconfig) remove duplicate LV_BUILD_EXAMPLES configuration [`2813`](https://github.com/littlevgl/lvgl/pull/2813)
+- fix(obj): in obj event use the current target instead of target [`2785`](https://github.com/littlevgl/lvgl/pull/2785)
+- fix(draw_label): radius Mask doesn't work in Specific condition [`2784`](https://github.com/littlevgl/lvgl/pull/2784)
+- fix(draw_mask): will crash if get_width/height &lt; 0 [`2793`](https://github.com/littlevgl/lvgl/pull/2793)
+- fix(theme) make the basic theme really basic [`a369f18`](https://github.com/littlevgl/lvgl/commit/a369f18c57c6b9d20a37959d621f9cb16348ef99)
+- fix(arc): fix knob invalidation [`345f688`](https://github.com/littlevgl/lvgl/commit/345f6882c9802dd9be55dfda5fe50c17e8c002b0)
+- fix(theme): add arc, spinner and colorwheel to basic theme [`adc218a`](https://github.com/littlevgl/lvgl/commit/adc218a7b303c564da021714e5a109a5d003fc30)
+- fix(conf) define LV_LOG_TRACE_... to 0 in lv_conf_internal.h to avoid warnings [`305284c`](https://github.com/littlevgl/lvgl/commit/305284c2b5aadec7bcfa68c6517c98d44be7c8a9)
+- fix(draw): consider opa and clip corner on bg_img [`d51aea4`](https://github.com/littlevgl/lvgl/commit/d51aea4dffc706876ac729373c33a74743bc05e9)
+- fix(draw): add grad_cache_mem to GC_ROOTs [`138db9c`](https://github.com/littlevgl/lvgl/commit/138db9c5d6b1f1d42c48d1307f5f508149ab0fda)
+- fix(bar, slider): fix shadow drawing on short indicators [`364ca3c`](https://github.com/littlevgl/lvgl/commit/364ca3ca1763fb732a049bfce689e2f588593cd4)
+- fix(theme): fix theme initialization issue introduced in 6e0072479 [`d231644`](https://github.com/littlevgl/lvgl/commit/d2316447c5c240960236d41814ef20e63cd56f00)
+- fix(draw): add lv_draw_sw_bg [`49642d3`](https://github.com/littlevgl/lvgl/commit/49642d3891c563b6c82bb407bacc4b73329a8c93)
+- fix(draw) border_draw crash is special case [`075831a`](https://github.com/littlevgl/lvgl/commit/075831a54c30d294879619c90ca4d16676c0775a)
+- fix(theme): fix crash in lv_theme_basic_init [`ca5f04c`](https://github.com/littlevgl/lvgl/commit/ca5f04cfe33e1db0b72a07812557634b86028c27)
+- fix(draw): fix indexed image drawing [`5a0dbcc`](https://github.com/littlevgl/lvgl/commit/5a0dbccf890b7a86315140dfe052da6b6aeca531)
+- fix(roller): clip overflowing text [`5709528`](https://github.com/littlevgl/lvgl/commit/5709528550f7bdb0a16da1c05ea8094fc085db08)
+- fix(align) fix LV_SIZE_CONTENT size calculation with not LEFT or TOP alignment [`9c67642`](https://github.com/littlevgl/lvgl/commit/9c676421ff159de1a96409f5557d36090c1728f9)
+- fix(draw): futher bg_img draw fixes [`81bfb76`](https://github.com/littlevgl/lvgl/commit/81bfb765e5baba359e61dcb030f3ee96160a6335)
+- fix(btnmatrix): keep the selected button even on release [`d47cd1d`](https://github.com/littlevgl/lvgl/commit/d47cd1d7fe910efc189e2f43f046a09184cfff13)
+- fix(sw): make knob size calculation more intuitive [`5ec532d`](https://github.com/littlevgl/lvgl/commit/5ec532dfd5ffa0d47a1ac80c9a468d6362f3d933)
+- fix(switch): make knob height calculation similar to slider [`0921dfc`](https://github.com/littlevgl/lvgl/commit/0921dfc8cd9d00e70ead8cbef8a898711af8f43e)
+- fix(span): explicitly set span-&gt;txt to the return value of lv_mem_realloc(#3005) [`a9a6cb8`](https://github.com/littlevgl/lvgl/commit/a9a6cb8efd16c55a175791a43a3f4043a3a5e01f)
+- fix(example): update LVGL_Arduino.ino [`d79283c`](https://github.com/littlevgl/lvgl/commit/d79283c145f92124c800453bcaf1caf1f9684bc5)
+- fix(draw) simplify how outline_pad is compnesated [`81d8be1`](https://github.com/littlevgl/lvgl/commit/81d8be13d67d6b17b663bc703c1e0e18a18890a7)
+- fix(obj) make LV_OBJ_FLAG_SCROLL_CHAIN part of the enum instead of define [`f8d8856`](https://github.com/littlevgl/lvgl/commit/f8d88567f635f325d6738ce2343f3b3c29f1e40a)
+- fix(label): dot not add dots if the label height &gt; 1 font line height [`4d61f38`](https://github.com/littlevgl/lvgl/commit/4d61f3802013b31b0af5f08f66bb86f5179db141)
+- fix(event): crash if an object was deleted in an event [`9810920`](https://github.com/littlevgl/lvgl/commit/9810920fc5d34a984bddf6e41156e87e509cfd27)
+- fix(build) fix sdl build with make [`43729d1`](https://github.com/littlevgl/lvgl/commit/43729d1502dad0ca797b4b6fb8c69a48c81a2af7)
+- fix(config): fix anonymous choice [`71c739c`](https://github.com/littlevgl/lvgl/commit/71c739cc2dbcebf16e8adc805dda182011e725da)
+- chore(docs): fix lv_list_add_text [`a5fbf22`](https://github.com/littlevgl/lvgl/commit/a5fbf22d415a52cb2641c6dfda6937a10e4952cc)
+- fix(png) check png magic number to be sure it's a png image [`1092550`](https://github.com/littlevgl/lvgl/commit/1092550775c464f9ae8c406786fe02115776d5c6)
+- fix(btnmatrix): fix crash if an empty btnmatrix is pressed [`2392f58`](https://github.com/littlevgl/lvgl/commit/2392f585bb9317153f6fb648d2a660cbdc3e276f)
+- fix(mem/perf monitor): fix issue introduced in #2910 [`0788d91`](https://github.com/littlevgl/lvgl/commit/0788d918990fd1c03bd7a04941cfbbdf6d21987c)
+- fix(layout) fix layout recalculation trigger in lv_obj_add/clear_fleg [`ee65410`](https://github.com/littlevgl/lvgl/commit/ee65410c3725070ed1779c95fb8742107cdd9267)
+- fix(obj) fix lv_obj_fade_in [`4931384`](https://github.com/littlevgl/lvgl/commit/49313840ee9b249f2ef9142e872657856810acfc)
+- fix(draw): fix clipping children to parent [`5c98ac8`](https://github.com/littlevgl/lvgl/commit/5c98ac85117c24f4da61803f0dc5a9bb6cfd1fdc)
+- fix: remove symlinks to be accepted as an Ardunio library [`6701d36`](https://github.com/littlevgl/lvgl/commit/6701d36afe40130479dc83efc05d4860f3f29636)
+- chore: fix typos in FATFS config [`74091c4`](https://github.com/littlevgl/lvgl/commit/74091c42f7cf4e85e46e706692accb65879741e2)
+- fix(refr): fix missed buffer switch in double full-screen buffer + direct_mode [`731ef5a`](https://github.com/littlevgl/lvgl/commit/731ef5a75ea7feb7319315bd15bc1a43b899c1ca)
+- chore(qrcode): fix warnings [`e9d7080`](https://github.com/littlevgl/lvgl/commit/e9d70803e11378eddf435e66c2181c0fa77211c7)
+- docs(event): tell to not adjust widgets in draw events [`933d67f`](https://github.com/littlevgl/lvgl/commit/933d67fe5b8596da203c318aa9551aad1c2887e6)
+- fix(table, chart): fix memory leaks [`8d52de1`](https://github.com/littlevgl/lvgl/commit/8d52de14b33262a11de87f5d782611a38726a1a7)
+- fix(event): handle object deletion in indev-&gt;fedback_cb [`bfc8edf`](https://github.com/littlevgl/lvgl/commit/bfc8edf802382f78e96125c886427c99c7f9a600)
+- fix(roller): snap on press lost [`fa9340c`](https://github.com/littlevgl/lvgl/commit/fa9340c45fd4a86b4a44878286850f3f67133bf4)
+- fix(dropdown) be sure the list is the top object on the screen [`cb7fc2b`](https://github.com/littlevgl/lvgl/commit/cb7fc2bb59f788ce8024d62a5b1e821575a9cb74)
+- fix(img) fix invalidation issue on transformations [`d5ede0e`](https://github.com/littlevgl/lvgl/commit/d5ede0ebc6685d4857b5ac554d53c0a7373d7532)
+- fix(obj) fix comments of lv_obj_set_pos/x/y [`b9a5078`](https://github.com/littlevgl/lvgl/commit/b9a5078cd9d57662fc6e684d57a0ee4e70ca49c0)
+
+### Examples
+
+- example: add non-null judgment to lv_example_obj_2 [`2799`](https://github.com/littlevgl/lvgl/pull/2799)
+- example(table): fix text alignment [`b03dc9c`](https://github.com/littlevgl/lvgl/commit/b03dc9cf862584c2e2be2c900fa4ff6e67b336f8)
+
+### Docs
+
+- docs(demos) update information to reflect new layout [`3029`](https://github.com/littlevgl/lvgl/pull/3029)
+- docs(porting): remove duplicated content [`2984`](https://github.com/littlevgl/lvgl/pull/2984)
+- docs(display) fix typo [`2946`](https://github.com/littlevgl/lvgl/pull/2946)
+- docs(get-started) add introduction for Tasmota and Berry  [`2874`](https://github.com/littlevgl/lvgl/pull/2874)
+- docs fix spelling, parameter descriptions, comments, etc [`2865`](https://github.com/littlevgl/lvgl/pull/2865)
+- docs: spelling fixes [`2828`](https://github.com/littlevgl/lvgl/pull/2828)
+- docs(style) minor style fix [`2818`](https://github.com/littlevgl/lvgl/pull/2818)
+- docs(porting/display) fix formatting [`2812`](https://github.com/littlevgl/lvgl/pull/2812)
+- docs(roadmap) update [`084439e`](https://github.com/littlevgl/lvgl/commit/084439e9476339ff571820e38bb677157edef135)
+- docs(widgets) fix edit links [`7ed1a56`](https://github.com/littlevgl/lvgl/commit/7ed1a5625a5139ede832c0058b2bc6309b395321)
+- docs(contributing) update commit message format [`1cd851f`](https://github.com/littlevgl/lvgl/commit/1cd851f8c09e813d75feaf9bf312f887f5ba76f0)
+- docs(porting): add more details about adding lvgl to your project [`6ce7348`](https://github.com/littlevgl/lvgl/commit/6ce73486d319bfdb1c379d090036a7eeaabf5b43)
+- docs(indev): add description about gestures [`2719862`](https://github.com/littlevgl/lvgl/commit/2719862fc3065b5d72c74c3f5f0923c3f6cc82c6)
+- docs(style): describe const styles [`28ffae8`](https://github.com/littlevgl/lvgl/commit/28ffae8c931ff01a4e5d426a2e496053e840c094)
+- docs(faq): add "LVGL doesn't start, nothing is drawn on the display" section [`0388d92`](https://github.com/littlevgl/lvgl/commit/0388d9218a36debf6c989eb999ae68478d8f6b02)
+- docs add demos [`02a6614`](https://github.com/littlevgl/lvgl/commit/02a6614b38b7d94e56d8fc1f858b0e40a46c024d)
+- docs(fs): update fs interface description to the latest API [`285e6b3`](https://github.com/littlevgl/lvgl/commit/285e6b39f99c078e57a611cf84cbfc3b546e112e)
+- docs(format) let  wrap [`4bf49a8`](https://github.com/littlevgl/lvgl/commit/4bf49a82a3df422ebbfc4e47d4a93c945afdf0fa)
+- docs(imgbtn) fix typo [`d792c5f`](https://github.com/littlevgl/lvgl/commit/d792c5f6c2e9d85c693e4f8089cb59c82d8cf805)
+- docs(porting) clarify that displays must be registered before input devices [`1c64b78`](https://github.com/littlevgl/lvgl/commit/1c64b78866b4bb920db75a4b19f8ff1eb7f68a76)
+- docs(event) fix lv_event_get_original_target vs lv_event_get_current_target [`cdd5128`](https://github.com/littlevgl/lvgl/commit/cdd5128bc0e17b2ffa3f9fc8f5f133d35fca4e35)
+- docs(events) rename LV_EVENT_APPLY to LV_EVENT_READY (#2791) [`bf6837f`](https://github.com/littlevgl/lvgl/commit/bf6837f4c045b01144842ae63c4052e4cac7dafb)
+- docs(gpu): link style properties and boxing model [`6266851`](https://github.com/littlevgl/lvgl/commit/6266851381d3b1f1e350dc4689e6bc71ece2f5c1)
+- docs(gesture): clarify gesture triggering with scrolling [`e3b43ee`](https://github.com/littlevgl/lvgl/commit/e3b43eec943db48f7cbee83e07e531d41bc61ac0)
+- docs(contributing): remove the mentioning of the dev branch [`00d4ef3`](https://github.com/littlevgl/lvgl/commit/00d4ef3c53d9b53e993c76d1eb0bafa7b1c9b721)
+- docs(bar) fix default range [`eeee48b`](https://github.com/littlevgl/lvgl/commit/eeee48b1c943fc288521e4479d874348f4690842)
+- docs(event): tell to not adjust widgets in draw events [`933d67f`](https://github.com/littlevgl/lvgl/commit/933d67fe5b8596da203c318aa9551aad1c2887e6)
+- docs(switch) improve wording [`b4986ab`](https://github.com/littlevgl/lvgl/commit/b4986ab5dceb47f934c0a44a58152367f1bf8f43)
+- docs(font) fix example to match v8 [`2f80896`](https://github.com/littlevgl/lvgl/commit/2f808965a1892e11cb84f50c6546871d2f2aa122)
+
+### CI and tests
+
+- test(bar): add unit tests [`2845`](https://github.com/littlevgl/lvgl/pull/2845)
+- test(switch): add initial unit test [`2794`](https://github.com/littlevgl/lvgl/pull/2794)
+- test(demo) add tests for widget and stress demos [`3bd6ad8`](https://github.com/littlevgl/lvgl/commit/3bd6ad80e7e7d0936b6e54ca88760db551f7848b)
+- test(dropdown) fix to pass again [`918b3de`](https://github.com/littlevgl/lvgl/commit/918b3defd78245136da92f46fac937815ef35a1a)
+- test add support for using system heap [`446b1eb`](https://github.com/littlevgl/lvgl/commit/446b1ebf2bc1ba38b5349c660534f113a9a066a9)
+- ci remove formatting request workflow [`6de89e4`](https://github.com/littlevgl/lvgl/commit/6de89e4b7b0a0f72cf53e59a90bd22362088eb71)
+- ci initial support for cross-architecture tests [`7008770`](https://github.com/littlevgl/lvgl/commit/7008770261903170d19472a52b54fedaafa7bbda)
+- ci create handler for formatting requests [`7af7849`](https://github.com/littlevgl/lvgl/commit/7af78498a898cba6263b51094ffbc486d6b30b3a)
+- test(style) add test for gradient [`da8f345`](https://github.com/littlevgl/lvgl/commit/da8f34566b0c0f3335c471c518f0766bdeb65766)
+- test(event) add test for #2886 [`51ef9c2`](https://github.com/littlevgl/lvgl/commit/51ef9c242ccfff37905d71132aab33d2f642b427)
+- ci add workflow to check code formatting [`a2b555e`](https://github.com/littlevgl/lvgl/commit/a2b555e096f7d401b5d8e877a6b5e81ff81c747a)
+- ci attempt to speed up cross tests [`80408f7`](https://github.com/littlevgl/lvgl/commit/80408f704e8442a27f6dca96c41f1d3bded7ce52)
+- ci apply my updates to the verify-formatting action [`02f02fa`](https://github.com/littlevgl/lvgl/commit/02f02fa78fc4101b1cde87fe912cb3105a689195)
+- ci: add arduino linter action [`f79b00c`](https://github.com/littlevgl/lvgl/commit/f79b00cce0d31c7e5519a871b27d803fdb30fdfd)
+- ci update action [`be9722c`](https://github.com/littlevgl/lvgl/commit/be9722c420a1ac2e9efde79135bf96bc508edb33)
+- ci more formatting action updates [`1f6037c`](https://github.com/littlevgl/lvgl/commit/1f6037ce98c8617221d321d3371ad6dc8649553a)
+- ci disable LeakSanitizer on dockerized tests [`c9e1927`](https://github.com/littlevgl/lvgl/commit/c9e19272c62f01544ff7cb5ef15d65b0d4fce5a5)
+- ci one last try at this for tonight [`dddafae`](https://github.com/littlevgl/lvgl/commit/dddafaec942b7886722cdec28e2bd0f20f2a3413)
+- ci try alternate checkout mechanism [`cb3de30`](https://github.com/littlevgl/lvgl/commit/cb3de308fdcdebb9c980df1d167a6be3657b2540)
+- test(style) fix compile error [`ba083df`](https://github.com/littlevgl/lvgl/commit/ba083dfd6dc31d1d9127542cd1aff860d5a0153c)
+- test(template) simplify _test_template.c [`b279f63`](https://github.com/littlevgl/lvgl/commit/b279f63d6bf84159aab855b962a9f431d5c40eb3)
+- ci force ccache to be saved every time [`a7c590f`](https://github.com/littlevgl/lvgl/commit/a7c590f10d4c39ae33d89ad86ef608092030654b)
+- ci switch to codecov v2 [`6b84155`](https://github.com/littlevgl/lvgl/commit/6b841555cd847d07375b92b54a814c41ccb522de)
+- ci more debugging for formatting action [`2f8e4bc`](https://github.com/littlevgl/lvgl/commit/2f8e4bc4c43fa395676e2be5d3d55999206190b4)
+- ci inline apt-get commands [`90e2b9f`](https://github.com/littlevgl/lvgl/commit/90e2b9f05e73527dfa2b2df0b1da30512827b8a8)
+- ci(micropython) use ESP-IDF 4.4 [`b34fe9e`](https://github.com/littlevgl/lvgl/commit/b34fe9ed8b945fd83a1956cf4ddf2d40485a62ca)
+- ci add 5k stack limit [`4122dda`](https://github.com/littlevgl/lvgl/commit/4122dda399679baa3b8bbd2e7055412b132227ab)
+- ci force use of ccache in PATH [`6de3fa8`](https://github.com/littlevgl/lvgl/commit/6de3fa8004639ea02d45c1be2985290e65a3d6c0)
+- ci add back stack usage check at 4 kilobytes [`89135d6`](https://github.com/littlevgl/lvgl/commit/89135d663daca34c9d9695a4c12b4208ef4ba217)
+- ci temporarily disable stack usage check [`1900c21`](https://github.com/littlevgl/lvgl/commit/1900c215482b9b1b5af1dd7c5cb8a95e89906b77)
+- ci(cross) use python3 instead of python [`df7eaa0`](https://github.com/littlevgl/lvgl/commit/df7eaa020d656c519b5197cd3d19c587cb1dd234)
+- ci use specific version tag [`59b4769`](https://github.com/littlevgl/lvgl/commit/59b476934452d5821424c70954aa32be6f476608)
+- ci fix check style action [`5bb3686`](https://github.com/littlevgl/lvgl/commit/5bb3686ea8b6feb55d6bb2b345f5c6cee52d514a)
+- ci fix typo in formatting action [`d1ccbf6`](https://github.com/littlevgl/lvgl/commit/d1ccbf607fd3aec61c4606a8f2c268225654b792)
+- ci test formatting action [`065d821`](https://github.com/littlevgl/lvgl/commit/065d821c7050af6ad94c7d6dc2d4976a817e54a0)
+- ci(micropython) switch to newer GCC action [`1fa7257`](https://github.com/littlevgl/lvgl/commit/1fa7257801f4e0d3c184be438fd7ecb067818c48)
+- ci(style) force color on diff to help highlight whitespace changes [`04f47ea`](https://github.com/littlevgl/lvgl/commit/04f47eae0d40c8385535428566d1851ff8ea20eb)
+- ci(cross) install build-essential [`772f219`](https://github.com/littlevgl/lvgl/commit/772f219c0af4ba013ee9b71883e7dc265e5d22f9)
+- ci force pushing to upstream branch [`8277f78`](https://github.com/littlevgl/lvgl/commit/8277f78d132b4c397f39a9e17cdb7bdd381d1778)
+- ci ensure lvgl-bot is used to make commits [`9fcf52a`](https://github.com/littlevgl/lvgl/commit/9fcf52a82bb4dbcfc47e69b7875d66a3d25ba87f)
+
+
+
+
 ## [v8.1.0](https://github.com/lvgl/lvgl/compare/v8.0.2...v8.1.0) 10 November 2021
 
 ### Overview
-v8.1 is minor release so besides many fixes it contains a lot of new features too. 
+v8.1 is a minor release, so besides many fixes it contains a lot of new features too.
 
 Some of the most important features are
 - Built in support for SDL based GPU drawing
 - Much faster circle drawing in the software renderer
-- Several [3rd party libraries](https://docs.lvgl.io/master/libs/index.html) are merged directly into LVGL. 
+- Several [3rd party libraries](https://docs.lvgl.io/master/libs/index.html) are merged directly into LVGL.
 - Add LVGL as an [RT-Thread](https://packages.rt-thread.org/en/detail.html?package=LVGL) and [ESP32](https://components.espressif.com/component/lvgl/lvgl) component
 
 ### Breaking Changes
@@ -56,7 +328,7 @@ Some of the most important features are
 - feat(spinbox ) add function to set cursor to specific position [`2314`](https://github.com/lvgl/lvgl/pull/2314)
 
 - feat(timer) check if lv_tick_inc is called [`aa6641a`](https://github.com/lvgl/lvgl/commit/aa6641a6f1c1311ce7e0f94783ee7f582452a88f)
-- feat(event, widgets) improve the paramter of LV_EVENT_DRAW_PART_BEGIN/END [`88c4859`](https://github.com/lvgl/lvgl/commit/88c485949fca2686357a7dee88d5730678ba9bc7)
+- feat(event, widgets) improve the parameter of LV_EVENT_DRAW_PART_BEGIN/END [`88c4859`](https://github.com/lvgl/lvgl/commit/88c485949fca2686357a7dee88d5730678ba9bc7)
 - feat(docs) improvements to examples [`4b8c73a`](https://github.com/lvgl/lvgl/commit/4b8c73a5770657ab55bbe825f7887e28c55a8a4a)
 - feat(obj) send LV_EVENT_DRAW_PART_BEGIN/END for MAIN and SCROLLBAR parts [`b203167`](https://github.com/lvgl/lvgl/commit/b203167c7583905e2cb4006e57a16432841a2353)
 - feat(led) send LV_EVENT_DRAW_PART_BEGIN/END [`fcd4aa3`](https://github.com/lvgl/lvgl/commit/fcd4aa3924469c2a92ab6a04b7bc6de6304cc54a)
@@ -65,7 +337,7 @@ Some of the most important features are
 - feat(conf) add better check for Kconfig default [`f8fe536`](https://github.com/lvgl/lvgl/commit/f8fe5366bb051cd5090e4a06658eb0d32decc0b3)
 - feat(draw) add LV_BLEND_MODE_MULTIPLY [`cc78ef4`](https://github.com/lvgl/lvgl/commit/cc78ef450649a10f260649dc3ba19ac8a6b88e86)
 - feat(test) add assert for screenshot compare [`2f7a005`](https://github.com/lvgl/lvgl/commit/2f7a005bd31c10d0a048f55641e4af11bcb5bbfa)
-- feat(event) pass the scroll aniamtion to LV_EVENT_SCROLL_BEGIN [`ca54ecf`](https://github.com/lvgl/lvgl/commit/ca54ecfe0eac880203d23b2d2244b9b63b9f7b77)
+- feat(event) pass the scroll animation to LV_EVENT_SCROLL_BEGIN [`ca54ecf`](https://github.com/lvgl/lvgl/commit/ca54ecfe0eac880203d23b2d2244b9b63b9f7b77)
 - feat(obj) place the scrollbar to the left with RTL base dir. [`906448e`](https://github.com/lvgl/lvgl/commit/906448ef6321f160859f21c5937180bb89d8ef1e)
 - feat(log) allow overwriting LV_LOG_... macros [`17b8a76`](https://github.com/lvgl/lvgl/commit/17b8a76c4a887c9cf464484406a6631ea0194ad5)
 - feat(arc) add support to LV_OBJ_FLAG_ADV_HITTEST [`dfa4f5c`](https://github.com/lvgl/lvgl/commit/dfa4f5cff561a60b4ffcec17e025f1e056854fff)
@@ -206,7 +478,7 @@ Some of the most important features are
 - fix(pxp): update RTOS macro for SDK 2.10 [`00c3eb1`](https://github.com/lvgl/lvgl/commit/00c3eb197cb85e480809d97eb722589d75d81d94)
 - fix(textarea) style update in oneline mode + improve sroll to cursor [`60d9a5e`](https://github.com/lvgl/lvgl/commit/60d9a5e493bf17ee9887ba44890d00905bc55970)
 - feat(led) send LV_EVENT_DRAW_PART_BEGIN/END [`fcd4aa3`](https://github.com/lvgl/lvgl/commit/fcd4aa3924469c2a92ab6a04b7bc6de6304cc54a)
-- fix warnigs introduced by 3fb8baf5 [`e302403`](https://github.com/lvgl/lvgl/commit/e3024032dc5de2ece4fa17059ebad4189a5fa670)
+- fix warnings introduced by 3fb8baf5 [`e302403`](https://github.com/lvgl/lvgl/commit/e3024032dc5de2ece4fa17059ebad4189a5fa670)
 - fix(roller) fix partial redraw of the selected area [`6bc40f8`](https://github.com/lvgl/lvgl/commit/6bc40f8c4417a94ab26b25220324e471e03ce443)
 - fix(flex) fix layout update and invalidation issues [`5bd82b0`](https://github.com/lvgl/lvgl/commit/5bd82b038b841c0f7c93bbdacdbd61d6b9585846)
 - fix(indev) focus on objects on release instead of press [`76a8293`](https://github.com/lvgl/lvgl/commit/76a8293375b705a5e02e4f9c8f8a42d99db762e2)
@@ -227,19 +499,19 @@ Some of the most important features are
 - fix(README) improve grammar [`de81889`](https://github.com/lvgl/lvgl/commit/de81889cbdc889360e8bc00684f9ca77ff97d89f)
 - fix(printf) skip defining attribute if pycparser is used [`ee9bbea`](https://github.com/lvgl/lvgl/commit/ee9bbea29c807707353e8b9ec09048990de18e4e)
 - fix(README) spelling correction [`41869f2`](https://github.com/lvgl/lvgl/commit/41869f238e773e599959c9ef2fee0b7206712ee2)
-- fix(color) overflow with 16 bit color depth [`fe6d8d7`](https://github.com/lvgl/lvgl/commit/fe6d8d7636ae283afda68e85b2d1f143d8d05462)
+- fix(color) overflow with 16-bit color depth [`fe6d8d7`](https://github.com/lvgl/lvgl/commit/fe6d8d7636ae283afda68e85b2d1f143d8d05462)
 - fix(docs) consider an example to be visible over a wider area [`145a0fa`](https://github.com/lvgl/lvgl/commit/145a0fad0857dad7f2066e7d22436827e0d3fd7d)
 - fix(codecov) disable uploading coverage for pull requests [`27d88de`](https://github.com/lvgl/lvgl/commit/27d88de899e91cd5bb9fc69fe9d71cb180cfb44b)
 - fix(arc) disable LV_OBJ_FLAG_SCROLL_CHAIN by default [`f172eb3`](https://github.com/lvgl/lvgl/commit/f172eb3fd78481d6076ead395abfd765646ad21e)
-- fix(template) udpate lv_objx_template to v8 [`38bb8af`](https://github.com/lvgl/lvgl/commit/38bb8afc16720e8d8fe6e72be6fae4f9da593bbc)
+- fix(template) update lv_objx_template to v8 [`38bb8af`](https://github.com/lvgl/lvgl/commit/38bb8afc16720e8d8fe6e72be6fae4f9da593bbc)
 - fix(align) avoid circular references with LV_SIZE_CONTENT [`038b781`](https://github.com/lvgl/lvgl/commit/038b78122e72db67cec886d09eb2d21aaa019df7)
-- fix(draw) with additive blending with 32 bit color depth [`786db2a`](https://github.com/lvgl/lvgl/commit/786db2afe6458e24681b8a40fa798429956d3420)
+- fix(draw) with additive blending with 32-bit color depth [`786db2a`](https://github.com/lvgl/lvgl/commit/786db2afe6458e24681b8a40fa798429956d3420)
 - fix(arc) fix arc invalidation again [`5ced080`](https://github.com/lvgl/lvgl/commit/5ced08001c384bf7c840750c0e254b5f0115a070)
 - fix(align) fix lv_obj_align_to [`93b38e9`](https://github.com/lvgl/lvgl/commit/93b38e92be9ed3ae050a1ee6e5b680ab43fd4850)
 - fix(scroll) keep the scroll position on object deleted [`52edbb4`](https://github.com/lvgl/lvgl/commit/52edbb46b0741d2761a11ef1b3d516ec96a7c8b3)
 - fix(dropdown) handle LV_KEY_ENTER [`8a50edd`](https://github.com/lvgl/lvgl/commit/8a50edd0689c7133ca18fd476596ddc4088f86a9)
 - fix various minor warnings [`924bc75`](https://github.com/lvgl/lvgl/commit/924bc754adcbabaf3518bac6067e7ea37f2f0f04)
-- fix(textarea) various cursor darwing fixes [`273a0eb`](https://github.com/lvgl/lvgl/commit/273a0eb32f04e81f326288a71682bea1c812c76a)
+- fix(textarea) various cursor drawing fixes [`273a0eb`](https://github.com/lvgl/lvgl/commit/273a0eb32f04e81f326288a71682bea1c812c76a)
 - fix(label) consider base dir lv_label_get_letter_pos in special cases [`6df5122`](https://github.com/lvgl/lvgl/commit/6df51225c261b252f0935804b0357d6e585da53d)
 - fix(imgbtn) add lv_imgbtn_set_state [`26e15fa`](https://github.com/lvgl/lvgl/commit/26e15fa577f97d510b218fb95fc9a4bd440b00bc)
 - fix(printf) add (int) casts to log messages to avoid warnings on %d [`d9d3f27`](https://github.com/lvgl/lvgl/commit/d9d3f271267e760c8459b65c392914143a58b89c)
@@ -247,9 +519,9 @@ Some of the most important features are
 - fix(test) silence make [`37fd9d8`](https://github.com/lvgl/lvgl/commit/37fd9d8a24c276079ed26b5d6704bcefc9f8dc70)
 - fix(calendar) update the MP example [`0bab4a7`](https://github.com/lvgl/lvgl/commit/0bab4a72cf769872a9adfd5bfa1c4536e6f909a8)
 - fix(scroll) fix scroll_area_into_view with objects larger than the parent [`5240fdd`](https://github.com/lvgl/lvgl/commit/5240fdda5ccc33d166f8201818868add5d1d6d0d)
-- fix(msgbox) handle NULL btn map paramter [`769c4a3`](https://github.com/lvgl/lvgl/commit/769c4a30cf962be1f74e0b1cd7ebaefbd6ba8a8b)
+- fix(msgbox) handle NULL btn map parameter [`769c4a3`](https://github.com/lvgl/lvgl/commit/769c4a30cf962be1f74e0b1cd7ebaefbd6ba8a8b)
 - fix (scroll) do not send unnecessary scroll end events [`3ce5226`](https://github.com/lvgl/lvgl/commit/3ce5226c9d9db279904c4f076ae77e6e03572e4c)
-- fix(obj_pos) consider all alignements in contnt size calculation but only if x and y = 0 [`5b27ebb`](https://github.com/lvgl/lvgl/commit/5b27ebb4097166f8c4a50ee5d39249939bf79814)
+- fix(obj_pos) consider all alignments in content size calculation but only if x and y = 0 [`5b27ebb`](https://github.com/lvgl/lvgl/commit/5b27ebb4097166f8c4a50ee5d39249939bf79814)
 - fix(img decoder) add error handling if the dsc-&gt;data = NULL [`d0c1c67`](https://github.com/lvgl/lvgl/commit/d0c1c673a8ec17b842ebf97d5f21938ec8901346)
 - fix(txt): skip basic arabic vowel characters when processing conjunction [`5b54800`](https://github.com/lvgl/lvgl/commit/5b548006eda0695cabf2ee237a7faee8c69e4659)
 - fix(typo) rename LV_OBJ_FLAG_SNAPABLE to LV_OBJ_FLAG_SNAPPABLE [`e697807`](https://github.com/lvgl/lvgl/commit/e697807cf5c01be2531fc52df78ecad75ce39a7a)
@@ -272,17 +544,17 @@ Some of the most important features are
 - fix(chart) invalidation with LV_CHART_UPDATE_MODE_SHIFT [`d61617c`](https://github.com/lvgl/lvgl/commit/d61617cd67f792908a1554a44c663c73a41bb357)
 - fix(build) fix micropython build error [`54338f6`](https://github.com/lvgl/lvgl/commit/54338f6e57518a59615bdd191fcf5af1365eabea)
 - fix(draw) fix border width of simple (radius=0, no masking) borders [`20f1867`](https://github.com/lvgl/lvgl/commit/20f186759664f31f07d6613ea8d77df256cd4597)
-- fix(calendar) fix caluclation today and highlighted day [`8f0b5ab`](https://github.com/lvgl/lvgl/commit/8f0b5ab0230007fa72127b78db500b9ceb84bf35)
+- fix(calendar) fix calculation today and highlighted day [`8f0b5ab`](https://github.com/lvgl/lvgl/commit/8f0b5ab0230007fa72127b78db500b9ceb84bf35)
 - fix(style) initialize colors to black instead of zero [`524f8dd`](https://github.com/lvgl/lvgl/commit/524f8dd50b4407c78fa6cd947c42e73eab401da1)
 - fix(sjpg) remove unnecessary typedefs [`c2d93f7`](https://github.com/lvgl/lvgl/commit/c2d93f78b98ba347001bd29d58b6654492bb8d70)
 - fix(label) fix clipped italic letters [`2efa6dc`](https://github.com/lvgl/lvgl/commit/2efa6dce78604cdf422ff233a99f7dd5f06b821c)
-- fix(draw) shadow darwing with large shadow width [`f810265`](https://github.com/lvgl/lvgl/commit/f810265c0d91135b71ae110d33d43841ec0e44f8)
-- fix(fropdown) add missing invalifations [`33b5d4a`](https://github.com/lvgl/lvgl/commit/33b5d4a4fe6f28962ee7988f74d5ae842dc49b04)
+- fix(draw) shadow drawing with large shadow width [`f810265`](https://github.com/lvgl/lvgl/commit/f810265c0d91135b71ae110d33d43841ec0e44f8)
+- fix(dropdown) add missing invalidations [`33b5d4a`](https://github.com/lvgl/lvgl/commit/33b5d4a4fe6f28962ee7988f74d5ae842dc49b04)
 - fix(dropdown) adjust the handling of keys sent to the dropdown [`e41c507`](https://github.com/lvgl/lvgl/commit/e41c50780495c7d6ac6a2b0edf12fc98c9d85a6b)
 - fix(disp) be sure the pending scr load animation is finished in lv_scr_load_anim [`eb6ae52`](https://github.com/lvgl/lvgl/commit/eb6ae526432453e4b9dbc7a760cd65d164050548)
-- fix(color) fox color premult precision with 16 bit color depth [`f334226`](https://github.com/lvgl/lvgl/commit/f3342269f272c474265700527f52d3ba92111531)
+- fix(color) fox color premult precision with 16-bit color depth [`f334226`](https://github.com/lvgl/lvgl/commit/f3342269f272c474265700527f52d3ba92111531)
 - fix(obj_pos) save x,y even if the object is on a layout [`a9b660c`](https://github.com/lvgl/lvgl/commit/a9b660c278658224f05fbe43d0199c48711db9fd)
-- fix(scrollbar) hide the scrollbar if the scrollble flag is removed [`d9c6ad0`](https://github.com/lvgl/lvgl/commit/d9c6ad0425e761d605124e4555adc72854fec4a6)
+- fix(scrollbar) hide the scrollbar if the scrollable flag is removed [`d9c6ad0`](https://github.com/lvgl/lvgl/commit/d9c6ad0425e761d605124e4555adc72854fec4a6)
 - fix(dropdown) fix list position with RTL base direction [`79edb37`](https://github.com/lvgl/lvgl/commit/79edb37b0ab5015111bade6074fda81ae101b91b)
 - fix(obj) fix lv_obj_align_to with RTL base direction [`531afcc`](https://github.com/lvgl/lvgl/commit/531afcc6cec7f67df06e369a185aef6fdc85af7b)
 - fix(chart) fix sending LV_EVENT_DRAW_PART_BEGIN/END for the cursor [`34b8cd9`](https://github.com/lvgl/lvgl/commit/34b8cd9c12604bc1029efa39bd66322b8b771dbe)
@@ -296,14 +568,14 @@ Some of the most important features are
 - fix(font) handle the last pixel of the glyphs in font loader correctly [`fa98989`](https://github.com/lvgl/lvgl/commit/fa9898941f8efa1966cb6f326d1eebdd31211d04)
 - fix(table) fix an off-by-one issue in self size calculation [`ea2545a`](https://github.com/lvgl/lvgl/commit/ea2545ae5dade0845889174737d072137bbb6591)
 - fix shadowed variable [`e209260`](https://github.com/lvgl/lvgl/commit/e20926056b28bb64f38abc764a4fca045757e800)
-- fix shadowed wariable [`df60018`](https://github.com/lvgl/lvgl/commit/df600183f211bde0ff34add973a7a401a1da9af1)
+- fix shadowed variable [`df60018`](https://github.com/lvgl/lvgl/commit/df600183f211bde0ff34add973a7a401a1da9af1)
 - fix(chart) be sure the chart doesn't remain scrolled out on zoom out [`ad5b1bd`](https://github.com/lvgl/lvgl/commit/ad5b1bdc00a4a44e775a280f8b686353ef4f2a38)
 - fix(docs) commit to meta repo as lvgl-bot instead of actual commit author [`f0e8549`](https://github.com/lvgl/lvgl/commit/f0e8549fe14d4e95aedcc98a63acce5a4ad1145b)
 - fix(table) invalidate the table on cell value change [`cb3692e`](https://github.com/lvgl/lvgl/commit/cb3692e3029ae452eab04dce21715b7863a9f2a1)
-- fix(group) allow refocusing obejcts [`1520208`](https://github.com/lvgl/lvgl/commit/1520208b14c38713719f507273024624a0f54f1a)
+- fix(group) allow refocusing objects [`1520208`](https://github.com/lvgl/lvgl/commit/1520208b14c38713719f507273024624a0f54f1a)
 - fix(tabview) fix with left and right tabs [`17c5744`](https://github.com/lvgl/lvgl/commit/17c57449eeae8a693ad5601cf4169cf44d57d5c9)
 - fix(msgbox) create modals on top layer instead of act screen [`5cf6303`](https://github.com/lvgl/lvgl/commit/5cf6303e741ec22e2e87f69af4109855eb637e63)
-- fix(theme) show disabled state on buttons of btnmatrix, msgbox and kayboard [`0be582b`](https://github.com/lvgl/lvgl/commit/0be582b391e60774d6158411b835b679b010a99b)
+- fix(theme) show disabled state on buttons of btnmatrix, msgbox and keyboard [`0be582b`](https://github.com/lvgl/lvgl/commit/0be582b391e60774d6158411b835b679b010a99b)
 - fix(label) update lv_label_get_letter_pos to work with LV_BASE_DIR_AUTO too [`580e05a`](https://github.com/lvgl/lvgl/commit/580e05a0e1531d86d5229ade4ced2c336fbce634)
 - fix(label) fix in lv_label_get_letter_pos with when pos==line_start [`58f3f56`](https://github.com/lvgl/lvgl/commit/58f3f5625c2b29278c3e122d8eeba4d9bc597db9)
 - fix(gif) replace printf statement with LVGL logging [`56f62b8`](https://github.com/lvgl/lvgl/commit/56f62b8d7356017319d21d44a8f450705ec6486b)
@@ -312,20 +584,20 @@ Some of the most important features are
 - fix(chart) draw line chart indicator (bullet) [`fba37a3`](https://github.com/lvgl/lvgl/commit/fba37a30abd1b4d7af78a288fb61dccacc99da08)
 - fix(anim) return the first anim if exec_cb is NULL in lv_anim_get() [`fb7ea10`](https://github.com/lvgl/lvgl/commit/fb7ea1040153bd0f2d5c282f9fb31add32c55ce9)
 - fix(label) fix lv_label_get_letter_on with BIDI enabled [`192419e`](https://github.com/lvgl/lvgl/commit/192419e7bb300bd64b51d684827719fe1c22cfdb)
-- fix(checkbox) add missing invalifations [`bb39e9d`](https://github.com/lvgl/lvgl/commit/bb39e9d6f95235445e3ea1bc52b0d5a1b7a2e24a)
-- fix(draw) fix gradent calculation of the rectangle is clipped [`13e3470`](https://github.com/lvgl/lvgl/commit/13e347055bd54c37e7fcb645120ea9ab3134ebec)
+- fix(checkbox) add missing invalidations [`bb39e9d`](https://github.com/lvgl/lvgl/commit/bb39e9d6f95235445e3ea1bc52b0d5a1b7a2e24a)
+- fix(draw) fix gradient calculation of the rectangle is clipped [`13e3470`](https://github.com/lvgl/lvgl/commit/13e347055bd54c37e7fcb645120ea9ab3134ebec)
 - fix(chart) fix typo in 655f42b8 [`6118d63`](https://github.com/lvgl/lvgl/commit/6118d63c2f23e2a157c84a010dcfa0d1fa851382)
-- fix(eaxmple) fix lv_example_chart_2 [`89081c2`](https://github.com/lvgl/lvgl/commit/89081c2d6ee418b326538e1f39345d43864993c8)
+- fix(example) fix lv_example_chart_2 [`89081c2`](https://github.com/lvgl/lvgl/commit/89081c2d6ee418b326538e1f39345d43864993c8)
 - fix(calendar) fix the position calculation today [`ad05e19`](https://github.com/lvgl/lvgl/commit/ad05e196fb3937ebcba211495013700c0022f777)
-- fix(tick) minor optmization on lv_tick_inc call test [`b4305df`](https://github.com/lvgl/lvgl/commit/b4305df5745684a785be071149de8dd342817db4)
+- fix(tick) minor optimization on lv_tick_inc call test [`b4305df`](https://github.com/lvgl/lvgl/commit/b4305df5745684a785be071149de8dd342817db4)
 - fix(docs) use let instead of const for variable which gets changed [`3cf5751`](https://github.com/lvgl/lvgl/commit/3cf5751461d6a85974da4e5c66593736ae140a1a)
 - fix(theme) fix the switch style in the default theme [`0c0dc8e`](https://github.com/lvgl/lvgl/commit/0c0dc8ea30289254732cbba7ada7fd4f092caf22)
 - fix(tlsf) undef printf before define-ing it [`cc935b8`](https://github.com/lvgl/lvgl/commit/cc935b87f69e6107d12d9ba4a2c83103f7dd4356)
-- fix(msgbox) prevent the buttons being wider than the msbgox [`73e036b`](https://github.com/lvgl/lvgl/commit/73e036bba748e8677f219f573cba5f82c4158a17)
+- fix(msgbox) prevent the buttons being wider than the msgbox [`73e036b`](https://github.com/lvgl/lvgl/commit/73e036bba748e8677f219f573cba5f82c4158a17)
 - fix(chart) don't draw series lines with &lt; 1 points [`655f42b`](https://github.com/lvgl/lvgl/commit/655f42b852669f27ab8bfde84bf70cf0b7ea027d)
 - fix(tests) remove src/test_runners when cleaning [`6726b0f`](https://github.com/lvgl/lvgl/commit/6726b0f5df3f4689368782b601bb01f76498123b)
-- fix(label) remove dupliacted lv_obj_refresh_self_size [`a070ecf`](https://github.com/lvgl/lvgl/commit/a070ecfe8c1cf7c07c035ba6c35c3ffaef56d6e1)
-- fix(colowheel) disable LV_OBJ_FLAG_SCROLL_CHAIN by default [`48d1c29`](https://github.com/lvgl/lvgl/commit/48d1c292a3c19380d5669baf911954cc1b083d43)
+- fix(label) remove duplicated lv_obj_refresh_self_size [`a070ecf`](https://github.com/lvgl/lvgl/commit/a070ecfe8c1cf7c07c035ba6c35c3ffaef56d6e1)
+- fix(colorwheel) disable LV_OBJ_FLAG_SCROLL_CHAIN by default [`48d1c29`](https://github.com/lvgl/lvgl/commit/48d1c292a3c19380d5669baf911954cc1b083d43)
 
 - fix(obj) do not set the child's position in lv_obj_set_parent [`d89a5fb`](https://github.com/lvgl/lvgl/commit/d89a5fbbd2af33cf759c120e6a14b334099c4c98)
 - feat: add LV_USE_MEM_PERF/MONITOR_POS [`acd0f4f`](https://github.com/lvgl/lvgl/commit/acd0f4fbc71ffbfeb382b7af1fa52caf3cdcda6c)
@@ -334,14 +606,14 @@ Some of the most important features are
 - feat(canvas) add lv_canvas_set_px_opa [`b3b3ffc`](https://github.com/lvgl/lvgl/commit/b3b3ffc2b3b322f7401d15c4ba2ef0cdb00e2990)
 - fix(textarea) allow using cursor with not full bg_opa [`c9d3965`](https://github.com/lvgl/lvgl/commit/c9d396571d0726aab5d011f37df648d337e5bc12)
 - fix(txt) _lv_txt_get_next_line return 0 on empty texts [`82f3fbc`](https://github.com/lvgl/lvgl/commit/82f3fbcad7b710a89b876c32f3583090c99e847c)
-- fix(btnmatrix) always udpate row_cnt [`86012ae`](https://github.com/lvgl/lvgl/commit/86012aefc7197209357290c780029aa39b3738dc)
+- fix(btnmatrix) always update row_cnt [`86012ae`](https://github.com/lvgl/lvgl/commit/86012aefc7197209357290c780029aa39b3738dc)
 - fix(scroll) minor fixes on obj scroll handling [`a4128a8`](https://github.com/lvgl/lvgl/commit/a4128a83562e0daacd949333ba7cbfec650f8050)
 - fix(table) consider border width for cell positions [`f2987b6`](https://github.com/lvgl/lvgl/commit/f2987b6591046f1384b0089187fd81da10834021)
 - fix(log) be sure LV_LOG_... is not empty if logs are disabled [`47734c4`](https://github.com/lvgl/lvgl/commit/47734c4abedf6b6005069d15a8c4c2fcff73f85e)
 - fix(arc) fix LV_ARC_MODE_REVERSE [`df3b969`](https://github.com/lvgl/lvgl/commit/df3b96900b1266ed4856438d9121e39905d510bb)
 - fix(obj) in lv_obj_move_to_index() do not send LV_EVENT_CHILD_CHANGED on all changed child [`32e8276`](https://github.com/lvgl/lvgl/commit/32e8276db7403d8dc9c9b9f0c77d331049e8c07d)
 - feat(event) add lv_obj_remove_event_cb_with_user_data [`4eddeb3`](https://github.com/lvgl/lvgl/commit/4eddeb35abee1f9cd2d1fd210f11cc096cb609c7)
-- fix(draw) fix shdow drawing with readius=0 [`4250e3c`](https://github.com/lvgl/lvgl/commit/4250e3c62737697cd8bc78d991a3d66216efa437)
+- fix(draw) fix shadow drawing with radius=0 [`4250e3c`](https://github.com/lvgl/lvgl/commit/4250e3c62737697cd8bc78d991a3d66216efa437)
 - fix(msgbox) directly store the pointer of all children [`eb5eaa3`](https://github.com/lvgl/lvgl/commit/eb5eaa39406473cd90a7f78d710ce950cbf47548)
 - fix(draw) use the filtered colors in lv_obj_init_draw_xxx_dsc() functions [`78725f2`](https://github.com/lvgl/lvgl/commit/78725f23da24fe22543ab3388c87bf3cfbd0e51a)
 - fix(arc) fix full arc invalidation [`98b9ce5`](https://github.com/lvgl/lvgl/commit/98b9ce599751c9de0421acd419430cc6ccd7cad9)
@@ -354,7 +626,7 @@ Some of the most important features are
 - fix(arc) fix other invalidation issues [`b0a7337`](https://github.com/lvgl/lvgl/commit/b0a733766daee1edfabaec8df4a5fedd0180ccaf)
 - feat(obj) add lv_obj_get_x/y_aligned [`98bc1fe`](https://github.com/lvgl/lvgl/commit/98bc1fe09e12a64333e91b4c25327c283a700af5)
 - fix(calendar) fix incorrect highlight of today [`adbac52`](https://github.com/lvgl/lvgl/commit/adbac5220b2d75f08de110b3f426066e24f46998)
-- fix(arc, merter) fix invaidation in special cases [`0f14f49`](https://github.com/lvgl/lvgl/commit/0f14f49465ca701c98f76ac95bda4a537c0fadfa)
+- fix(arc, meter) fix invalidation in special cases [`0f14f49`](https://github.com/lvgl/lvgl/commit/0f14f49465ca701c98f76ac95bda4a537c0fadfa)
 - fix(canvas) invalidate the image on delete [`a1b362c`](https://github.com/lvgl/lvgl/commit/a1b362c98622ecbc063cfb17fb091fdab4522e8a)
 - fix(msgbox) return the correct pointer from lv_msgbox_get_text [`50ea6fb`](https://github.com/lvgl/lvgl/commit/50ea6fb3fefb3a6edc958154c575dcdcacbfdb3a)
 - fix(bidi) fix the handling of LV_BASE_DIR_AUTO in several widgets [`7672847`](https://github.com/lvgl/lvgl/commit/7672847ce325e909981582b4153993025da7fe50)
@@ -459,17 +731,17 @@ Some of the most important features are
 - docs update changelog [`c386110`](https://github.com/lvgl/lvgl/commit/c386110e2390399ab97936622e59c510ba414e19)
 - docs(extra) add extra/README.md [`8cd504d`](https://github.com/lvgl/lvgl/commit/8cd504d58bb679fe1f260e3eee59fcb0b85cb589)
 - docs add lazy load to the iframes of the examples [`c49e830`](https://github.com/lvgl/lvgl/commit/c49e830aad2c847611f3398767e85c193909559a)
-- docs(os) add example and clarify some poinits [`d996453`](https://github.com/lvgl/lvgl/commit/d996453207caa50a90a66d05565431fa288be96b)
+- docs(os) add example and clarify some points [`d996453`](https://github.com/lvgl/lvgl/commit/d996453207caa50a90a66d05565431fa288be96b)
 - docs(rlottie) fix build error [`ce0b564`](https://github.com/lvgl/lvgl/commit/ce0b56458846daa65288f901e9b8ef1083eab468)
 - docs include paths in libs [`f5f9562`](https://github.com/lvgl/lvgl/commit/f5f956233657f95b45a45d872e5d6e68c05eecd4)
 - docs libs fixes [`8e7bba6`](https://github.com/lvgl/lvgl/commit/8e7bba6acec66a4f6b80496de9fd21a8e3c4c6ee)
 - docs(obj) add comment lv_obj_get_x/y/width/height about postponed layout recalculation [`533066e`](https://github.com/lvgl/lvgl/commit/533066e6accbe2cbe1b60556eb61ebb2a07185a2)
-- docs fix eaxmple list [`ed77ed1`](https://github.com/lvgl/lvgl/commit/ed77ed1dae088ef29194cf3c6bb552e1ee67d78b)
+- docs fix example list [`ed77ed1`](https://github.com/lvgl/lvgl/commit/ed77ed1dae088ef29194cf3c6bb552e1ee67d78b)
 - docs describe the options to include or skip lv_conf.h [`174ef66`](https://github.com/lvgl/lvgl/commit/174ef6692e0b05338890a1cf524d9dcbf5c25f6c)
 - docs(overview) spelling fixes [`d2efb8c`](https://github.com/lvgl/lvgl/commit/d2efb8c6e5ceedbb9d9c1a1c89ef709e6570e360)
 - docs(table) describe keypad/encoder navigation [`749d1b3`](https://github.com/lvgl/lvgl/commit/749d1b3ec31ec2ef27f594ed0a4af93edb2c10f0)
 - docs update CHANGELOG [`0f8bc18`](https://github.com/lvgl/lvgl/commit/0f8bc18f6aacb6a74e0bda59068d3d178fa66434)
-- docs(image) mention the frame_id paramter of lv_img_decoder_open [`2433732`](https://github.com/lvgl/lvgl/commit/2433732570a817f566308e025d89227a8c650f5f)
+- docs(image) mention the frame_id parameter of lv_img_decoder_open [`2433732`](https://github.com/lvgl/lvgl/commit/2433732570a817f566308e025d89227a8c650f5f)
 - docs(arduino) update how to use the examples  [`06962a5`](https://github.com/lvgl/lvgl/commit/06962a564fd668eced22b2e9bc19e7732abf94ec)
 - docs(rlottie): fix typo in commands [`ed9169c`](https://github.com/lvgl/lvgl/commit/ed9169c56dc1f34b1f021457b78c9f3eccba13cf)
 - docs(indev, layer) update lv_obj_set_click() to lv_obj_add_flag() [`bcd99e8`](https://github.com/lvgl/lvgl/commit/bcd99e8e438cc1b63762f8933d26bbb38fd42a2d)
@@ -504,20 +776,20 @@ Some of the most important features are
 - test convert Makefile to CMake [`2495`](https://github.com/lvgl/lvgl/pull/2495)
 - test Refactor unit test scripts. [`2473`](https://github.com/lvgl/lvgl/pull/2473)
 
-- test(font_loader) migrate the exisiting font loader test [`bc5b3be`](https://github.com/lvgl/lvgl/commit/bc5b3be61f7751852dc99509a6ab83faaf6d1235)
+- test(font_loader) migrate the existing font loader test [`bc5b3be`](https://github.com/lvgl/lvgl/commit/bc5b3be61f7751852dc99509a6ab83faaf6d1235)
 - test add build test again, add dropdown test, integrate gcov and gvocr [`e35b1d0`](https://github.com/lvgl/lvgl/commit/e35b1d04bdc7d531d72ebce7d1f031be2631e776)
 - test(dropdown) add tess for keypad and encoder [`4143b80`](https://github.com/lvgl/lvgl/commit/4143b804c8f4b4324141ad0f529bac4e9acf1442)
 - test add keypad and encoder emulators [`e536bb6`](https://github.com/lvgl/lvgl/commit/e536bb6325728db21ef5c729a99f2161a8125625)
-- tests add mosue emulator [`2ba810b`](https://github.com/lvgl/lvgl/commit/2ba810b8de19afc3e9ac18e5bd8ab16af10a4433)
+- tests add mouse emulator [`2ba810b`](https://github.com/lvgl/lvgl/commit/2ba810b8de19afc3e9ac18e5bd8ab16af10a4433)
 - tests add README [`b765643`](https://github.com/lvgl/lvgl/commit/b765643e4902de359e88fdf6d314e9afdb2daa9a)
 - test add move tests to test_cases and test_runners directories [`e9e010a`](https://github.com/lvgl/lvgl/commit/e9e010a8468ee307c350e071251f22459173e601)
 - test fix CI build error [`c38cae2`](https://github.com/lvgl/lvgl/commit/c38cae22fbf6cef7564fbebe2145a7def20d52e1)
 - ci add config for 8bpp [`3eacc59`](https://github.com/lvgl/lvgl/commit/3eacc5923c0a554e7ff4489776a8982dfc142115)
 - test move more source files to src folder [`3672f87`](https://github.com/lvgl/lvgl/commit/3672f873328b4471ac9d5d23696f7bc99a87bc43)
 - test update CI for the new tests [`a3898b9`](https://github.com/lvgl/lvgl/commit/a3898b931e81860acf197bc88fd3dd6f8885eb2c)
-- test cleant up report folder [`b9b4ba5`](https://github.com/lvgl/lvgl/commit/b9b4ba5b2608f5709678463f62b3d3f937780235)
+- test cleaned up report folder [`b9b4ba5`](https://github.com/lvgl/lvgl/commit/b9b4ba5b2608f5709678463f62b3d3f937780235)
 - test fix build error [`61cda59`](https://github.com/lvgl/lvgl/commit/61cda59cbe8569326ef9d366c520b89be292f5ea)
-- test(font_loader) migrate the exisiting font loader test [`d6dbbaa`](https://github.com/lvgl/lvgl/commit/d6dbbaaa34304b4c889415439ab562056e0840a5)
+- test(font_loader) migrate the existing font loader test [`d6dbbaa`](https://github.com/lvgl/lvgl/commit/d6dbbaaa34304b4c889415439ab562056e0840a5)
 - test add move tests to test_cases and test_runners directories [`d2e735e`](https://github.com/lvgl/lvgl/commit/d2e735ef36bd99c16ccaa281dcaa5f418e2dec98)
 - test add 3rd party libs to all tests and also fix them [`7a95fa9`](https://github.com/lvgl/lvgl/commit/7a95fa9e2de9639a3c2f1990ff63b467be54a7aa)
 - test(arc): add test case for adv_hittest [`e83df6f`](https://github.com/lvgl/lvgl/commit/e83df6f14de1a9eb1d137b123fac96c25a1b7715)
@@ -572,12 +844,12 @@ Some of the most important features are
 - Update ROADMAP.md [`2b1ae3c`](https://github.com/lvgl/lvgl/commit/2b1ae3c107539dec130b988cddca5ddb2b5af652)
 - Create .codecov.yml [`e53aa82`](https://github.com/lvgl/lvgl/commit/e53aa82658a1d7324f328c986cb5b7b669803ba2)
 - refactor(examples) drop JS-specific code from header.py [`ef41450`](https://github.com/lvgl/lvgl/commit/ef41450ed87f4f4dd936b63349b5a0c9ce880618)
-- make test run on mseter and release/v8.* [`227402a`](https://github.com/lvgl/lvgl/commit/227402a81a1cdd34cd57ec04682166d3961c4481)
+- make test run on master and release/v8.* [`227402a`](https://github.com/lvgl/lvgl/commit/227402a81a1cdd34cd57ec04682166d3961c4481)
 - Update release.yml [`0838f12`](https://github.com/lvgl/lvgl/commit/0838f1296b2c55c0b265650ee4310a79730536dd)
 - refactor(examples) drop usys import from header.py [`ad1f91a`](https://github.com/lvgl/lvgl/commit/ad1f91ab32c38cab7f0d1448ce3c4e67b47f4526)
 - Update ROADMAP.md [`a38fcf2`](https://github.com/lvgl/lvgl/commit/a38fcf2c7aa5fd156d3f2b6965ec4f81d7ff5503)
 - Revert "feat(conf) add better check for Kconfig default" [`a5793c7`](https://github.com/lvgl/lvgl/commit/a5793c70a9a60340a5f1c5d33ba1d118af0a76e2)
-- remove temorary test file [`a958c29`](https://github.com/lvgl/lvgl/commit/a958c29af7df66f84520036766929232e0c437c4)
+- remove temporary test file [`a958c29`](https://github.com/lvgl/lvgl/commit/a958c29af7df66f84520036766929232e0c437c4)
 - start to implement release/patch [`1626a0c`](https://github.com/lvgl/lvgl/commit/1626a0c029504f26e568677debcb7ab0f6053f83)
 - chore(indev) minor formatting [`79ab3d2`](https://github.com/lvgl/lvgl/commit/79ab3d29b01e5f0bff1c754fdc36230584aeaaae)
 - add basic patch release script [`1c3ecf1`](https://github.com/lvgl/lvgl/commit/1c3ecf1cc14f5501a345472278cc485a24b8ab9c)
@@ -592,7 +864,7 @@ Some of the most important features are
 - Update CHANGELOG.md [`48fd73d`](https://github.com/lvgl/lvgl/commit/48fd73d20da4f19556660a9fca7faf042c965f56)
 - Fix compile errors [`6c956cc`](https://github.com/lvgl/lvgl/commit/6c956cc0f402b96512ed07f8a93003a0319fc49c)
 - Update textarea.md [`6d8799f`](https://github.com/lvgl/lvgl/commit/6d8799fbbfb1477ad2e0887644fb4cd900817199)
-- chore(assert) add warnign about higher memory usage if LV_USE_ASSERT_STYLE is enabled [`33e4330`](https://github.com/lvgl/lvgl/commit/33e433008e23b48540e83bc5399fd0ccb9e90630)
+- chore(assert) add warning about higher memory usage if LV_USE_ASSERT_STYLE is enabled [`33e4330`](https://github.com/lvgl/lvgl/commit/33e433008e23b48540e83bc5399fd0ccb9e90630)
 - Update page.html [`9573bab`](https://github.com/lvgl/lvgl/commit/9573bab5cbe2da643f5146e62c176bdd0113d954)
 - chore(docs) force docs rebuild [`4a0f413`](https://github.com/lvgl/lvgl/commit/4a0f4139eb98e73b37abf62f66e2cf1c5d4e58db)
 - Fix typo error in color.md [`572880c`](https://github.com/lvgl/lvgl/commit/572880ccd3374ccbe81cf09a0620bf95659ca883)
@@ -613,104 +885,104 @@ Some of the most important features are
 - fix(imgbtn) use the correct src in LV_EVENT_GET_SELF_SIZE
 - fix(color) remove extraneous cast for 8-bit color
 - fix(obj style) fix children reposition if the parent's padding changes.
-- fix(color) remove extraneous _LV_COLOR_MAKE_TYPE_HELPER (#2372) 
-- fix(spinner) should not be clickable (#2373) 
-- fix(obj) improve how the focusing indev is determined  
-- fix(template) update indev template for v8 
-- fix(printf) skip defining attribute if pycparser is used  
-- refactor(printf) add printf-like function attribute to _lv_txt_set_text_vfmt and lv_label_set_text_fmt (#2332) 
-- fix(template) include lvgl.h in lv_port_*_template.c files 
-- fix(obj) detecting which indev sent LV_EVENT_FOCUS  
-- fix (span) fill LV_EVENT_GET_SELF_SIZE (#2360) 
-- fix(arc) disable LV_OBJ_FLAG_SCROLL_CHAIN by default 
-- fix (draw) fix arc bg image drawing with full arcs 
-- fix(disp) fix memory leak in lv_disp_remove (#2355) 
-- fix warnigs introduced by 3fb8baf5 
-- fix(widgets) use lv_obj_class for all the widgets  
+- fix(color) remove extraneous _LV_COLOR_MAKE_TYPE_HELPER (#2372)
+- fix(spinner) should not be clickable (#2373)
+- fix(obj) improve how the focusing indev is determined
+- fix(template) update indev template for v8
+- fix(printf) skip defining attribute if pycparser is used
+- refactor(printf) add printf-like function attribute to _lv_txt_set_text_vfmt and lv_label_set_text_fmt (#2332)
+- fix(template) include lvgl.h in lv_port_*_template.c files
+- fix(obj) detecting which indev sent LV_EVENT_FOCUS
+- fix (span) fill LV_EVENT_GET_SELF_SIZE (#2360)
+- fix(arc) disable LV_OBJ_FLAG_SCROLL_CHAIN by default
+- fix (draw) fix arc bg image drawing with full arcs
+- fix(disp) fix memory leak in lv_disp_remove (#2355)
+- fix warnings introduced by 3fb8baf5
+- fix(widgets) use lv_obj_class for all the widgets
 - fix(obj) move clean ups from lv_obj_del to lv_obj_destructor
-- fix(roller) fix partial redraw of the selected area 
-- fix(roller) adjust the size of the selected area correctly  
-- fix(obj) delete useless type conversion (#2343)  
+- fix(roller) fix partial redraw of the selected area
+- fix(roller) adjust the size of the selected area correctly
+- fix(obj) delete useless type conversion (#2343)
 - fix(lv_obj_scroll.h) typos (#2345)
 - fix(scroll) fire LV_EVENT_SCROLL_BEGIN in the same spot for both axes
-- fix(btnmatrix) fix button invalidation on focus change 
-- fix(textarea) style update in oneline mode + improve sroll to cursor  
-- fix(tlsf) do not use <assert.h>  
-- fix(imgbtn) consider width==LV_SIZE_CONTENT if only mid. img is set 
-- fix(refr) reduce the nesting level in lv_refr_area 
-- fix(txt) enhance the function of break_chars (#2327) 
-- fix(pxp): update RTOS macro for SDK 2.10  
-- fix(vglite): update for v8  
-- fix(pxp): update for v8  
-- fix(flex) fix layout update and invalidation issues 
-- fix(flex) fix NULL pointer dereference 
-- fix(obj, switch) do not send LV_EVENT_VALUE_CHANGED twice  
-- fix(color) overflow with 16-bit color depth  
-- fix(coords) fix using large coordinates  
-- fix(chart) fix crash if no series are added 
-- fix(chart) invalidation with LV_CHART_UPDATE_MODE_SHIFT 
+- fix(btnmatrix) fix button invalidation on focus change
+- fix(textarea) style update in oneline mode + improve scroll to cursor
+- fix(tlsf) do not use <assert.h>
+- fix(imgbtn) consider width==LV_SIZE_CONTENT if only mid. img is set
+- fix(refr) reduce the nesting level in lv_refr_area
+- fix(txt) enhance the function of break_chars (#2327)
+- fix(pxp): update RTOS macro for SDK 2.10
+- fix(vglite): update for v8
+- fix(pxp): update for v8
+- fix(flex) fix layout update and invalidation issues
+- fix(flex) fix NULL pointer dereference
+- fix(obj, switch) do not send LV_EVENT_VALUE_CHANGED twice
+- fix(color) overflow with 16-bit color depth
+- fix(coords) fix using large coordinates
+- fix(chart) fix crash if no series are added
+- fix(chart) invalidation with LV_CHART_UPDATE_MODE_SHIFT
 - fix(align) fix lv_obj_align_to  G
-- fix(table) invalidate the table on cell value change  
-- fix(label) remove duplicated lv_obj_refresh_self_size 
-- fix(draw) underflow in subpixel font drawing 
-- fix (scroll) do not send unnecessary scroll end events  
+- fix(table) invalidate the table on cell value change
+- fix(label) remove duplicated lv_obj_refresh_self_size
+- fix(draw) underflow in subpixel font drawing
+- fix (scroll) do not send unnecessary scroll end events
 
 
 ## v8.0.1 (14.06.2021)
-- docs(filesystem) update to v8 <a href="https://github.com/lvgl/lvgl/commit/7971ade4">7971ade4</a> 
-- fix(msgbox) create modals on top layer instead of act screen <a href="https://github.com/lvgl/lvgl/commit/5cf6303e">5cf6303e</a> 
-- fix(colorwheel) disable LV_OBJ_FLAG_SCROLL_CHAIN by default <a href="https://github.com/lvgl/lvgl/commit/48d1c292">48d1c292</a> 
-- docs(grid) typo fix (#2310) <a href="https://github.com/lvgl/lvgl/commit/69d109d2">69d109d2</a> 
-- fix(arduino) fix the prototype of my_touchpad_read in the LVGL_Arduino.ino <a href="https://github.com/lvgl/lvgl/commit/1a62f7a6">1a62f7a6</a> 
-- fix(meter) fix needle image invalidation <a href="https://github.com/lvgl/lvgl/commit/54d8e817">54d8e817</a> 
-- fix(mem) add lv_ prefix to tlsf functions and types <a href="https://github.com/lvgl/lvgl/commit/0d52b59c">0d52b59c</a> 
-- fix(calendar) fix the position calculation today <a href="https://github.com/lvgl/lvgl/commit/ad05e196">ad05e196</a> 
-- fix(typo) rename LV_OBJ_FLAG_SNAPABLE to LV_OBJ_FLAG_SNAPPABLE <a href="https://github.com/lvgl/lvgl/commit/e697807c">e697807c</a> 
-- docs(color) language fixes (#2302) <a href="https://github.com/lvgl/lvgl/commit/07ecc9f1">07ecc9f1</a> 
-- fix(tick) minor optimization on lv_tick_inc call test <a href="https://github.com/lvgl/lvgl/commit/b4305df5">b4305df5</a> 
-- Spelling and other language fixes to documentation (#2293) <a href="https://github.com/lvgl/lvgl/commit/d0aaacaf">d0aaacaf</a> 
-- fix(theme) show disabled state on buttons of btnmatrix, msgbox and keyboard <a href="https://github.com/lvgl/lvgl/commit/0be582b3">0be582b3</a> 
-- fix(scroll) keep the scroll position on object deleted <a href="https://github.com/lvgl/lvgl/commit/52edbb46">52edbb46</a> 
-- fix(msgbox) handle NULL btn map parameter <a href="https://github.com/lvgl/lvgl/commit/769c4a30">769c4a30</a> 
-- fix(group) allow refocusing objects <a href="https://github.com/lvgl/lvgl/commit/1520208b">1520208b</a> 
-- docs(overview) spelling fixes <a href="https://github.com/lvgl/lvgl/commit/d2efb8c6">d2efb8c6</a> 
-- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/45960838">45960838</a> 
-- feat(timer) check if lv_tick_inc is called <a href="https://github.com/lvgl/lvgl/commit/aa6641a6">aa6641a6</a> 
-- feat(docs) add view on GitHub link <a href="https://github.com/lvgl/lvgl/commit/a716ac6e">a716ac6e</a> 
-- fix(theme) fix the switch style in the default theme <a href="https://github.com/lvgl/lvgl/commit/0c0dc8ea">0c0dc8ea</a> 
-- docs fix typo <a href="https://github.com/lvgl/lvgl/commit/8ab80645">8ab80645</a> 
-- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/e796448f">e796448f</a> 
-- feat(event) pass the scroll animation to LV_EVENT_SCROLL_BEGIN <a href="https://github.com/lvgl/lvgl/commit/ca54ecfe">ca54ecfe</a> 
-- fix(tabview) fix with left and right tabs <a href="https://github.com/lvgl/lvgl/commit/17c57449">17c57449</a> 
-- chore(docs) force docs rebuild <a href="https://github.com/lvgl/lvgl/commit/4a0f4139">4a0f4139</a> 
-- chore(docs) always deploy master to docs/master as well <a href="https://github.com/lvgl/lvgl/commit/6d05692d">6d05692d</a> 
-- fix(template) update lv_objx_template to v8 <a href="https://github.com/lvgl/lvgl/commit/38bb8afc">38bb8afc</a> 
-- docs(extra) add extra/README.md <a href="https://github.com/lvgl/lvgl/commit/8cd504d5">8cd504d5</a> 
-- Update CHANGELOG.md <a href="https://github.com/lvgl/lvgl/commit/48fd73d2">48fd73d2</a> 
-- Update quick-overview.md (#2295) <a href="https://github.com/lvgl/lvgl/commit/5616471c">5616471c</a> 
-- fix(pxp) change LV_COLOR_TRANSP to LV_COLOR_CHROMA_KEY to v8 compatibility <a href="https://github.com/lvgl/lvgl/commit/81f3068d">81f3068d</a> 
-- adding micropython examples (#2286) <a href="https://github.com/lvgl/lvgl/commit/c60ed68e">c60ed68e</a> 
-- docs(color) minor fix <a href="https://github.com/lvgl/lvgl/commit/ac8f4534">ac8f4534</a> 
-- fix(example) revert test code <a href="https://github.com/lvgl/lvgl/commit/77e2c1ff">77e2c1ff</a> 
-- fix(draw) with additive blending with 32-bit color depth <a href="https://github.com/lvgl/lvgl/commit/786db2af">786db2af</a> 
-- docs(color) update colors' docs <a href="https://github.com/lvgl/lvgl/commit/9056b5ee">9056b5ee</a> 
-- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/a711a1dd">a711a1dd</a> 
-- perf(refresh) optimize where to wait for lv_disp_flush_ready with 2 buffers <a href="https://github.com/lvgl/lvgl/commit/d0172f14">d0172f14</a> 
-- docs(lv_obj_style) update add_style and remove_style function headers (#2287) <a href="https://github.com/lvgl/lvgl/commit/60f7bcbf">60f7bcbf</a> 
-- fix memory leak of spangroup (#2285) <a href="https://github.com/lvgl/lvgl/commit/33e0926a">33e0926a</a> 
-- fix make lv_img_cache.h public because cache invalidation is public <a href="https://github.com/lvgl/lvgl/commit/38ebcd81">38ebcd81</a> 
-- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/2b292495">2b292495</a> 
-- fix(btnmatrix) fix focus event handling <a href="https://github.com/lvgl/lvgl/commit/3b58ef14">3b58ef14</a> 
-- Merge pull request #2280 from lvgl/dependabot/pip/docs/urllib3-1.26.5 <a href="https://github.com/lvgl/lvgl/commit/a2f45b26">a2f45b26</a> 
-- fix(label) calculating the clip area <a href="https://github.com/lvgl/lvgl/commit/57e211cc">57e211cc</a> 
-- chore(deps): bump urllib3 from 1.26.4 to 1.26.5 in /docs <a href="https://github.com/lvgl/lvgl/commit/b2f77dfc">b2f77dfc</a> 
-- fix(docs) add docs about the default group <a href="https://github.com/lvgl/lvgl/commit/29bfe604">29bfe604</a> 
+- docs(filesystem) update to v8 <a href="https://github.com/lvgl/lvgl/commit/7971ade4">7971ade4</a>
+- fix(msgbox) create modals on top layer instead of act screen <a href="https://github.com/lvgl/lvgl/commit/5cf6303e">5cf6303e</a>
+- fix(colorwheel) disable LV_OBJ_FLAG_SCROLL_CHAIN by default <a href="https://github.com/lvgl/lvgl/commit/48d1c292">48d1c292</a>
+- docs(grid) typo fix (#2310) <a href="https://github.com/lvgl/lvgl/commit/69d109d2">69d109d2</a>
+- fix(arduino) fix the prototype of my_touchpad_read in the LVGL_Arduino.ino <a href="https://github.com/lvgl/lvgl/commit/1a62f7a6">1a62f7a6</a>
+- fix(meter) fix needle image invalidation <a href="https://github.com/lvgl/lvgl/commit/54d8e817">54d8e817</a>
+- fix(mem) add lv_ prefix to tlsf functions and types <a href="https://github.com/lvgl/lvgl/commit/0d52b59c">0d52b59c</a>
+- fix(calendar) fix the position calculation today <a href="https://github.com/lvgl/lvgl/commit/ad05e196">ad05e196</a>
+- fix(typo) rename LV_OBJ_FLAG_SNAPABLE to LV_OBJ_FLAG_SNAPPABLE <a href="https://github.com/lvgl/lvgl/commit/e697807c">e697807c</a>
+- docs(color) language fixes (#2302) <a href="https://github.com/lvgl/lvgl/commit/07ecc9f1">07ecc9f1</a>
+- fix(tick) minor optimization on lv_tick_inc call test <a href="https://github.com/lvgl/lvgl/commit/b4305df5">b4305df5</a>
+- Spelling and other language fixes to documentation (#2293) <a href="https://github.com/lvgl/lvgl/commit/d0aaacaf">d0aaacaf</a>
+- fix(theme) show disabled state on buttons of btnmatrix, msgbox and keyboard <a href="https://github.com/lvgl/lvgl/commit/0be582b3">0be582b3</a>
+- fix(scroll) keep the scroll position on object deleted <a href="https://github.com/lvgl/lvgl/commit/52edbb46">52edbb46</a>
+- fix(msgbox) handle NULL btn map parameter <a href="https://github.com/lvgl/lvgl/commit/769c4a30">769c4a30</a>
+- fix(group) allow refocusing objects <a href="https://github.com/lvgl/lvgl/commit/1520208b">1520208b</a>
+- docs(overview) spelling fixes <a href="https://github.com/lvgl/lvgl/commit/d2efb8c6">d2efb8c6</a>
+- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/45960838">45960838</a>
+- feat(timer) check if lv_tick_inc is called <a href="https://github.com/lvgl/lvgl/commit/aa6641a6">aa6641a6</a>
+- feat(docs) add view on GitHub link <a href="https://github.com/lvgl/lvgl/commit/a716ac6e">a716ac6e</a>
+- fix(theme) fix the switch style in the default theme <a href="https://github.com/lvgl/lvgl/commit/0c0dc8ea">0c0dc8ea</a>
+- docs fix typo <a href="https://github.com/lvgl/lvgl/commit/8ab80645">8ab80645</a>
+- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/e796448f">e796448f</a>
+- feat(event) pass the scroll animation to LV_EVENT_SCROLL_BEGIN <a href="https://github.com/lvgl/lvgl/commit/ca54ecfe">ca54ecfe</a>
+- fix(tabview) fix with left and right tabs <a href="https://github.com/lvgl/lvgl/commit/17c57449">17c57449</a>
+- chore(docs) force docs rebuild <a href="https://github.com/lvgl/lvgl/commit/4a0f4139">4a0f4139</a>
+- chore(docs) always deploy master to docs/master as well <a href="https://github.com/lvgl/lvgl/commit/6d05692d">6d05692d</a>
+- fix(template) update lv_objx_template to v8 <a href="https://github.com/lvgl/lvgl/commit/38bb8afc">38bb8afc</a>
+- docs(extra) add extra/README.md <a href="https://github.com/lvgl/lvgl/commit/8cd504d5">8cd504d5</a>
+- Update CHANGELOG.md <a href="https://github.com/lvgl/lvgl/commit/48fd73d2">48fd73d2</a>
+- Update quick-overview.md (#2295) <a href="https://github.com/lvgl/lvgl/commit/5616471c">5616471c</a>
+- fix(pxp) change LV_COLOR_TRANSP to LV_COLOR_CHROMA_KEY to v8 compatibility <a href="https://github.com/lvgl/lvgl/commit/81f3068d">81f3068d</a>
+- adding micropython examples (#2286) <a href="https://github.com/lvgl/lvgl/commit/c60ed68e">c60ed68e</a>
+- docs(color) minor fix <a href="https://github.com/lvgl/lvgl/commit/ac8f4534">ac8f4534</a>
+- fix(example) revert test code <a href="https://github.com/lvgl/lvgl/commit/77e2c1ff">77e2c1ff</a>
+- fix(draw) with additive blending with 32-bit color depth <a href="https://github.com/lvgl/lvgl/commit/786db2af">786db2af</a>
+- docs(color) update colors' docs <a href="https://github.com/lvgl/lvgl/commit/9056b5ee">9056b5ee</a>
+- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/a711a1dd">a711a1dd</a>
+- perf(refresh) optimize where to wait for lv_disp_flush_ready with 2 buffers <a href="https://github.com/lvgl/lvgl/commit/d0172f14">d0172f14</a>
+- docs(lv_obj_style) update add_style and remove_style function headers (#2287) <a href="https://github.com/lvgl/lvgl/commit/60f7bcbf">60f7bcbf</a>
+- fix memory leak of spangroup (#2285) <a href="https://github.com/lvgl/lvgl/commit/33e0926a">33e0926a</a>
+- fix make lv_img_cache.h public because cache invalidation is public <a href="https://github.com/lvgl/lvgl/commit/38ebcd81">38ebcd81</a>
+- Merge branch 'master' of https://github.com/lvgl/lvgl <a href="https://github.com/lvgl/lvgl/commit/2b292495">2b292495</a>
+- fix(btnmatrix) fix focus event handling <a href="https://github.com/lvgl/lvgl/commit/3b58ef14">3b58ef14</a>
+- Merge pull request #2280 from lvgl/dependabot/pip/docs/urllib3-1.26.5 <a href="https://github.com/lvgl/lvgl/commit/a2f45b26">a2f45b26</a>
+- fix(label) calculating the clip area <a href="https://github.com/lvgl/lvgl/commit/57e211cc">57e211cc</a>
+- chore(deps): bump urllib3 from 1.26.4 to 1.26.5 in /docs <a href="https://github.com/lvgl/lvgl/commit/b2f77dfc">b2f77dfc</a>
+- fix(docs) add docs about the default group <a href="https://github.com/lvgl/lvgl/commit/29bfe604">29bfe604</a>
 
 ## v8.0.0 (01.06.2021)
 
 v8.0 brings many new features like simplified and more powerful scrolling, new layouts inspired by CSS Flexbox and Grid, simplified and improved widgets, more powerful events, hookable drawing, and more.
 
-v8 is a major change and therefore it's not backward compatible with v7. 
+v8 is a major change and therefore it's not backward compatible with v7.
 
 ### Directory structure
 - The `lv_` prefix is removed from the folder names
@@ -754,7 +1026,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
 - `lv_disp_drv_t`, `lv_indev_drv_t`, `lv_fs_drv_t` needs to be `static`
 - `...disp_buf...` is renamed to `draw_buf`. See an initialization example [here](https://github.com/lvgl/lv_sim_eclipse_sdl/blob/release/v8.0/main.c#L128-L141).
 - No partial update if two screen sized buffers are set
-- `disp_drv->full_refresh = 1` makes always the whole display redraw. 
+- `disp_drv->full_refresh = 1` makes always the whole display redraw.
 - `hor_res` and `ver_res` need to be set in `disp_drv`
 - `indev_read_cb` returns `void`. To indicate that there is more that to read set `data->continue_reading = 1` in the `read_cb`
 
@@ -783,7 +1055,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
   - Use the new layouts instead of `lv_cont` features
   - Use `lv_obj` instead of `lv_page`
   - See the changes in [Colors](https://docs.lvgl.io/8.0/overview/color.html)
-  - The other parts are mainly minor renames and refactoring. See the functions' documentation for descriptions. 
+  - The other parts are mainly minor renames and refactoring. See the functions' documentation for descriptions.
 
 ## v7.11.0 (16.03.2021)
 
@@ -797,7 +1069,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
 
 ## v7.10.1 (16.02.2021)
 
-### Bugfixes 
+### Bugfixes
 - fix(draw) overlap outline with background to prevent aliasing artifacts
 - fix(indev) clear the indev's `act_obj` in `lv_indev_reset`
 - fix(text) fix out of bounds read in `_lv_txt_get_width`
@@ -855,7 +1127,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
 ## v7.8.0 (01.12.2020)
 
 ### New features
-- make DMA2D non blocking 
+- make DMA2D non blocking
 - add unscii-16 built-in font
 - add KConfig
 - add lv_refr_get_fps_avg()
@@ -872,7 +1144,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
 - fix(slider) adjusting the left knob too with encoder
 - fix reference to LV_DRAW_BUF_MAX_NUM in lv_mem.c
 - fix(polygon draw) join adjacent points if they are on the same coordinate
-- fix(linemeter) fix invalidation when setting new value 
+- fix(linemeter) fix invalidation when setting new value
 - fix(table) add missing invalidation when changing cell type
 - refactor(roller) rename LV_ROLLER_MODE_INIFINITE -> LV_ROLLER_MODE_INFINITE
 
@@ -884,7 +1156,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
 - label: Repair calculate back `dot` character logical error which cause infinite loop.
 - fix(theme_material): remove the bottom border from tabview header
 - fix(imgbtn) guess the closest available state with valid src
-- fix(spinbox) update cursor position in lv_spinbox_set_step 
+- fix(spinbox) update cursor position in lv_spinbox_set_step
 
 ## v7.7.1 (03.11.2020)
 ### Bugfixes
@@ -929,7 +1201,7 @@ v8 is a major change and therefore it's not backward compatible with v7.
 - Check whether any style property has changed on a state change to decide if any redraw is required
 
 ### Bugfixes
-- Fix selection of options with non-ASCII letters in dropdown list 
+- Fix selection of options with non-ASCII letters in dropdown list
 - Fix font loader to support LV_FONT_FMT_TXT_LARGE
 
 ## v7.5.0 (15.09.2020)
@@ -976,7 +1248,7 @@ The main new features of v7.4 are run-time font loading, style caching and arc k
 - Rename  `lv_chart_clear_serie` to `lv_chart_clear_series` and `lv_obj_align_origo` to `lv_obj_align_mid`
 - Add linemeter's mirror feature again
 - Fix text decor (underline strikethrough) with older versions of font converter
-- Fix setting local style property multiple times 
+- Fix setting local style property multiple times
 - Add missing background drawing and radius handling to image button
 - Allow adding extra label to list buttons
 - Fix crash if `lv_table_set_col_cnt` is called before `lv_table_set_row_cnt` for the first time
@@ -1028,7 +1300,7 @@ The main new features of v7.4 are run-time font loading, style caching and arc k
 
 ### Bugfixes
 - `tileview` fix navigation when not screen sized
-- Use 14px font by default to for better compatibility with smaller displays 
+- Use 14px font by default to for better compatibility with smaller displays
 - `linemeter` fix conversation of current value to "level"
 - Fix drawing on right border
 - Set the cursor image non-clickable by default
@@ -1085,7 +1357,7 @@ The main new features of v7.4 are run-time font loading, style caching and arc k
 
 ### Bugfixes
 - Make Micropython working by adding the required variables as GC_ROOT
-- Prefix some internal API functions with `_` to reduce the API of LVGL 
+- Prefix some internal API functions with `_` to reduce the API of LVGL
 - Fix built-in SimSun CJK font
 - Fix UTF-8 encoding when `LV_USE_ARABIC_PERSIAN_CHARS` is enabled
 - Fix DMA2D usage when 32 bit images directly blended
@@ -1110,12 +1382,12 @@ The name of the project is changed to LVGL and the new website is on https://lvg
 LVGL remains free under the same conditions (MIT license) and a company is created to manage LVGL and offer services.
 
 ### New drawing system
-Complete rework of LVGL's draw engine to use "masks" for more advanced and higher quality graphical effects. 
+Complete rework of LVGL's draw engine to use "masks" for more advanced and higher quality graphical effects.
 A possible use-case of this system is to remove the overflowing content from the rounded edges.
 It also allows drawing perfectly anti-aliased circles, lines, and arcs.
-Internally, the drawings happen by defining masks (such as rounded rectangle, line, angle). 
-When something is drawn the currently active masks can make some pixels transparent. 
-For example, rectangle borders are drawn by using 2 rectangle masks: one mask removes the inner part and another the outer part. 
+Internally, the drawings happen by defining masks (such as rounded rectangle, line, angle).
+When something is drawn the currently active masks can make some pixels transparent.
+For example, rectangle borders are drawn by using 2 rectangle masks: one mask removes the inner part and another the outer part.
 
 The API in this regard remained the same but some new functions were added:
 - `lv_img_set_zoom`: set image object's zoom factor
@@ -1125,12 +1397,12 @@ The API in this regard remained the same but some new functions were added:
 The new drawing engine brought new drawing features too. They are highlighted in the "style" section.
 
 ### New style system
-The old style system is replaced with a new more flexible and lightweighted one. 
-It uses an approach similar to CSS: support cascading styles, inheriting properties and local style properties per object. 
-As part of these updates, a lot of objects were reworked and the APIs have been changed. 
+The old style system is replaced with a new more flexible and lightweighted one.
+It uses an approach similar to CSS: support cascading styles, inheriting properties and local style properties per object.
+As part of these updates, a lot of objects were reworked and the APIs have been changed.
 
 - more shadows options: *offset* and *spread*
-- gradient stop position to shift the gradient area and horizontal gradient 
+- gradient stop position to shift the gradient area and horizontal gradient
 - `LV_BLEND_MODE_NORMAL/ADDITIVE/SUBTRACTIVE` blending modes
 - *clip corner*: crop the content on the rounded corners
 - *text underline* and *strikethrough*
@@ -1174,16 +1446,16 @@ The following object types are renamed:
 - `linemeter`, `gauge`: can have background if the related style properties are set. Padding makes the scale/lines smaller. scale_border_width and scale_end_border_width allow to draw an arc on the outer part of the scale lines.
 - `gauge`: `lv_gauge_set_needle_img` allows use image as needle
 - `canvas`: allow drawing to true color alpha and alpha only canvas, add `lv_canvas_blur_hor/ver` and rename `lv_canvas_rotate` to `lv_canvas_transform`
-- `textarea`: If available in the font use bullet (`U+2022`) character in text area password 
+- `textarea`: If available in the font use bullet (`U+2022`) character in text area password
 
 ### New object types
-- `lv_objmask`: masks can be added to it. The children will be masked accordingly. 
+- `lv_objmask`: masks can be added to it. The children will be masked accordingly.
 
 ### Others
 - Change the built-in fonts to [Montserrat](https://fonts.google.com/specimen/Montserrat) and add built-in fonts from 12 px to 48 px for every 2nd size.
 - Add example CJK and Arabic/Persian/Hebrew built-in font
 - Add ° and "bullet" to the built-in fonts
-- Add Arabic/Persian script support: change the character according to its position in the text. 
+- Add Arabic/Persian script support: change the character according to its position in the text.
 - Add `playback_time` to animations.
 - Add `repeat_count` to animations instead of the current "repeat forever".
 - Replace `LV_LAYOUT_PRETTY` with `LV_LAYOUT_PRETTY_TOP/MID/BOTTOM`
@@ -1200,4 +1472,4 @@ The following object types are renamed:
 - First and foremost, create a new `lv_conf.h` based on `lv_conf_template.h`.
 - To try the new version it suggested using a simulator project and see the examples.
 - If you have a running project, the most difficult part of the migration is updating to the new style system. Unfortunately, there is no better way than manually updating to the new format.
-- The other parts are mainly minor renames and refactoring as described above. 
+- The other parts are mainly minor renames and refactoring as described above.

@@ -1,8 +1,43 @@
+## 编译说明
+* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（旧版本编译器不能完全支持**C++ 11**的语法），在Keil中编译器版本设置为ARM Compiler 5。
+* 编译前需要安装[Artery](https://www.arterytek.com/cn/index.jsp)官方Pack，**为了确保顺利编译请安装[Software/Pack](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/Pack)目录下的指定版本**。
+
+* 如果安装Pack后，Keil依然报以下这类错误，可能是之前安装了 Keil v4 兼容包 (MDK v4 Legacy Support) 导致的，请尝试**卸载此包或重新安装 Keil v5**。
+
+`Error #540: 'Keil::Device:StdPeriph Drivers:ADC:1.0.1' component is not available for target 'X-Track'`
+ 
+  ### 注意
+  **不要修改芯片选型**，因为修改芯片选型后启动文件会重新生成，堆栈大小会恢复默认值，而使用默认的栈大小会导致**栈溢出**。现象是启动后立即蓝屏，提示发生**HardFault**(如下图所示)，串口会输出详细的错误信息。如果确实需要修改芯片选型，请参考工程原始的启动文件进行修改。
+
+![IMG_20210816_201213](https://user-images.githubusercontent.com/26767803/129562550-5de4f4b6-f96c-481c-9a4e-b2470f7b3477.jpg)
+
+* VS模拟器: 使用**Visual Studio 2019**编译，配置为**Release x86**。在`App/Common/HAL/HAL_GPS.cpp`里修改`CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH`宏定义指定被读取的GPX文件的路径。
+
+## 系统配置文件
+系统会在根目录下自动生成`SystemSave.json`的文件，用于储存和配置系统参数:
+```javascript
+{
+  "sportStatus.totalDistance": 0,              // 总里程(m)
+  "sportStatus.totalTimeUINT32[0]": 0,         // 总行驶时间(ms)，低32位
+  "sportStatus.totalTimeUINT32[1]": 0,         // 总行驶时间(ms)，高32位
+  "sportStatus.speedMaxKph": 0,                // 最高时速(km/h)
+  "sportStatus.weight": 65,                    // 体重(kg)
+  "sysConfig.longitude": 116.3913345,          // 上次开机记录的位置(经度)
+  "sysConfig.latitude": 39.90741348,           // 上次开机记录的位置(纬度)
+  "sysConfig.soundEnable": 1,                  // 系统提示音使能(1:开启，0:关闭)
+  "sysConfig.timeZone": 8,                     // 时区(GMT+)
+  "sysConfig.language": "en-GB",               // 语言(尚不支持多语言切换)
+  "sysConfig.arrowTheme": "default",           // 导航箭头主题(default:全黑，dark:橙底黑边，light:橙底白边)
+  "sysConfig.mapDirPath": "/MAP",              // 存放地图的文件夹路径
+  "sysConfig.mapExtName": "bin",               // 地图文件扩展名
+  "sysConfig.mapWGS84": 0                      // 坐标系统配置(0:GCJ02, 1:WGS84)
+}
+```
+
 ## 目录结构
 ```
  X-Track
     ├─ArduinoAPI                -- 通用 Arduino API 抽象层
-    ├─Core                      -- 基于标准库二次封装的抽象层
     ├─Doc                       -- 芯片相关文档
     ├─Libraries                 -- 硬件驱动程序
     │  ├─Adafruit_GFX_Library   -- Adafruit_GFX轻量级图形库
@@ -43,13 +78,15 @@
         │      ├─GPX            -- GPX生成器
         │      ├─GPX_Parser     -- GPX解析器
         │      ├─lv_allocator   -- 自定义allocator
+        │      ├─lv_anim_label  -- 文本动画组件
         │      ├─lv_ext         -- lvgl功能扩展
-        │      ├─lv_lib_png     -- PNG解码库
+        │      ├─lv_img_png     -- PNG显示组件
         │      ├─lv_poly_line   -- 多段线控件
         │      ├─MapConv        -- WGS84/GCJ02 地图坐标转换器
         │      ├─new            -- new/delete 重载
         │      ├─PageManager    -- 页面调度器
         │      ├─PointContainer -- 坐标压缩容器
+        │      ├─ResourceManager-- 资源管理器
         │      ├─StorageService -- KV储存服务
         │      ├─Stream         -- Arduino Stream 流式库
         │      ├─TileConv       -- 瓦片坐标转换器
@@ -59,39 +96,4 @@
         │      └─WString        -- Arduino WString 字符串库
         ├─HAL                   -- 硬件抽象层
         └─lv_port               -- lvgl与硬件的接口
-```
-## 编译说明
-* MCU固件: 务必使用**Keil v5.25**或以上的版本进行编译（旧版本编译器不能完全支持**C++ 11**的语法）。
-* 编译前需要安装[雅特力](https://www.arterytek.com/cn/index.jsp)官方Pack:
-> [AT32F4xx标准外设库](http://www.arterytek.com/download/Pack_Keil_AT32F4xx_CH_V1.3.7.zip)
-> 
-> [AT32F43x标准外设库](https://www.arterytek.com/download/Keil5_AT32MCU_AddOn_CH_V2.0.6.zip)
-  ### 注意
-  **不要修改芯片选型**，因为修改芯片选型后启动文件会重新生成，堆栈大小会恢复默认值，而使用默认的栈大小会导致**栈溢出**。现象是启动后立即蓝屏，提示发生**HardFault**(如下图所示)，串口会输出详细的错误信息。如果确实需要修改芯片选型，请参考工程原始的启动文件进行修改。
-
-![IMG_20210816_201213](https://user-images.githubusercontent.com/26767803/129562550-5de4f4b6-f96c-481c-9a4e-b2470f7b3477.jpg)
-
-* VS模拟器: 使用**Visual Studio 2019**编译，配置为**Release x86**。在`App/Common/HAL/HAL_GPS.cpp`里修改`CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH`宏定义指定被读取的GPX文件的路径。
-
-## 系统配置文件
-系统会在根目录下自动生成`SystemSave.json`的文件，用于储存和配置系统参数:
-```C
-{
-  "sportStatus.totalDistance": 0,              //总里程(m)
-  "sportStatus.totalTimeUINT32[0]": 0,         //总行驶时间(ms)，低32位
-  "sportStatus.totalTimeUINT32[1]": 0,         //总行驶时间(ms)，高32位
-  "sportStatus.speedMaxKph": 0,                //最高时速(km/h)
-  "sportStatus.weight": 65,                    //体重(kg)
-  "sysConfig.longitude": 116.3913345,          //上次开机记录的位置(经度)
-  "sysConfig.latitude": 39.90741348,           //上次开机记录的位置(纬度)
-  "sysConfig.soundEnable": 1,                  //系统提示音使能(1:开启，0:关闭)
-  "sysConfig.timeZone": 8,                     //时区(GMT+)
-  "sysConfig.language": "en-GB",               //语言(尚不支持多语言切换)
-  "sysConfig.arrowTheme": "default",           //导航箭头主题(default:全黑，dark:橙底黑边，light:橙底白边)
-  "sysConfig.mapDirPath": "/MAP",              //存放地图的文件夹路径
-  "sysConfig.mapExtName": "bin",               //地图文件扩展名
-  "sysConfig.mapWGS84": 0,                     //坐标系统配置(0:GCJ02, 1:WGS84)
-  "sysConfig.designCap": 1000,                 //电池设计容量
-  "sysConfig.fullChgCap": 1000                 //电池充满容量(随电池损耗变化，用于持久化电量计数据，不建议修改，值需要小于等于电池设计容量)
-}
 ```

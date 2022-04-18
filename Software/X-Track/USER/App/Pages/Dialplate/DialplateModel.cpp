@@ -25,7 +25,10 @@ void DialplateModel::Deinit()
 bool DialplateModel::GetGPSReady()
 {
     HAL::GPS_Info_t gps;
-    account->Pull("GPS", &gps, sizeof(gps));
+    if(account->Pull("GPS", &gps, sizeof(gps)) != Account::RES_OK)
+    {
+        return false;
+    }
     return (gps.satellites > 0);
 }
 
@@ -39,13 +42,13 @@ int DialplateModel::onEvent(Account* account, Account::EventParam_t* param)
     if (strcmp(param->tran->ID, "SportStatus") != 0
             || param->size != sizeof(HAL::SportStatus_Info_t))
     {
-        return -1;
+        return Account::RES_PARAM_ERROR;
     }
 
     DialplateModel* instance = (DialplateModel*)account->UserData;
     memcpy(&(instance->sportStatusInfo), param->data_p, param->size);
 
-    return 0;
+    return Account::RES_OK;
 }
 
 void DialplateModel::RecorderCommand(RecCmd_t cmd)
@@ -53,30 +56,33 @@ void DialplateModel::RecorderCommand(RecCmd_t cmd)
     if (cmd != REC_READY_STOP)
     {
         DataProc::Recorder_Info_t recInfo;
+        DATA_PROC_INIT_STRUCT(recInfo);
         recInfo.cmd = (DataProc::Recorder_Cmd_t)cmd;
         recInfo.time = 1000;
         account->Notify("Recorder", &recInfo, sizeof(recInfo));
     }
 
     DataProc::StatusBar_Info_t statInfo;
+    DATA_PROC_INIT_STRUCT(statInfo);
+    statInfo.cmd = DataProc::STATUS_BAR_CMD_SET_LABEL_REC;
 
     switch (cmd)
     {
     case REC_START:
     case REC_CONTINUE:
-        statInfo.showLabelRec = true;
-        statInfo.labelRecStr = "REC";
+        statInfo.param.labelRec.show = true;
+        statInfo.param.labelRec.str = "REC";
         break;
     case REC_PAUSE:
-        statInfo.showLabelRec = true;
-        statInfo.labelRecStr = "PAUSE";
-        break;
+        statInfo.param.labelRec.show = true;
+        statInfo.param.labelRec.str = "PAUSE";
+        break;  
     case REC_READY_STOP:
-        statInfo.showLabelRec = true;
-        statInfo.labelRecStr = "STOP";
+        statInfo.param.labelRec.show = true;
+        statInfo.param.labelRec.str = "STOP";
         break;
     case REC_STOP:
-        statInfo.showLabelRec = false;
+        statInfo.param.labelRec.show = false;
         break;
     default:
         break;
@@ -88,6 +94,19 @@ void DialplateModel::RecorderCommand(RecCmd_t cmd)
 void DialplateModel::PlayMusic(const char* music)
 {
     DataProc::MusicPlayer_Info_t info;
+    DATA_PROC_INIT_STRUCT(info);
+
     info.music = music;
     account->Notify("MusicPlayer", &info, sizeof(info));
+}
+
+void DialplateModel::SetStatusBarStyle(DataProc::StatusBar_Style_t style)
+{
+    DataProc::StatusBar_Info_t info;
+    DATA_PROC_INIT_STRUCT(info);
+
+    info.cmd = DataProc::STATUS_BAR_CMD_SET_STYLE;
+    info.param.style = style;
+
+    account->Notify("StatusBar", &info, sizeof(info));
 }

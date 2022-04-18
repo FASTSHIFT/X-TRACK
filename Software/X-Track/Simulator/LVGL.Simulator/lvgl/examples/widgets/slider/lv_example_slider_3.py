@@ -5,7 +5,7 @@ def slider_event_cb(e):
     # Provide some extra space for the value
     if code == lv.EVENT.REFR_EXT_DRAW_SIZE:
         e.set_ext_draw_size(50)
-        
+
     elif code == lv.EVENT.DRAW_PART_END:
         # print("DRAW_PART_END")
         dsc = lv.obj_draw_part_dsc_t.__cast__(e.get_param())
@@ -24,7 +24,7 @@ def slider_event_cb(e):
             label_draw_dsc = lv.draw_label_dsc_t()
             label_draw_dsc.init()
 
-            lv.draw_label(label_area, dsc.clip_area, label_draw_dsc, label_text, None)
+            dsc.draw_ctx.label(label_draw_dsc, label_area, label_text, None)
 #
 # Show the current value when the slider if pressed by extending the drawer
 #

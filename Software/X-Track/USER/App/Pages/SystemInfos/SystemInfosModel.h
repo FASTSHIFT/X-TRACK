@@ -63,6 +63,8 @@ public:
         char* size, uint32_t len
     );
 
+    void SetStatusBarStyle(DataProc::StatusBar_Style_t style);
+
 private:
     Account* account;
 
