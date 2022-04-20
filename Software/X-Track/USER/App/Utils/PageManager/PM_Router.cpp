@@ -72,7 +72,7 @@ PageBase* PageManager::Push(const char* name, const PageBase::Stash_t* stash)
   * @param  None
   * @retval Pointer to the next page 
   */
-PageBase* PageManager::Pop()
+PageBase* PageManager::Pop(const PageBase::Stash_t* stash)
 {
     /* Check whether the animation of switching pages is being executed */
     if (!SwitchAnimStateCheck())
@@ -107,7 +107,7 @@ PageBase* PageManager::Pop()
     if (top != nullptr)
     {
         /* Page switching execution */
-        SwitchTo(top, false, nullptr);
+        SwitchTo(top, false, stash);
     }
 
     return top;
