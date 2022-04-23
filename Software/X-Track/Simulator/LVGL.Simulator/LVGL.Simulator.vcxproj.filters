@@ -2784,17 +2784,11 @@
     <Filter Include="lv_drivers\.github">
       <UniqueIdentifier>{00ab8232-c5e3-43dd-8a98-1883e2f0a455}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lv_drivers\display">
-      <UniqueIdentifier>{5cdcab7c-c178-4c57-b0e3-479d1992827c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lv_drivers\docs">
       <UniqueIdentifier>{0691398e-18dc-4e41-9e7b-321576bcfd05}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\gtkdrv">
       <UniqueIdentifier>{4578c4f8-b7c2-4a1d-afc1-b03fd753e1bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lv_drivers\indev">
-      <UniqueIdentifier>{a42359b9-e8e2-476f-af83-e8232ac96f68}</UniqueIdentifier>
     </Filter>
     <Filter Include="lv_drivers\wayland">
       <UniqueIdentifier>{483c32ae-15c7-49f7-9527-2101e93edc60}</UniqueIdentifier>
@@ -2804,62 +2798,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lv_drivers\display\drm.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\fbdev.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\GC9A01.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\ILI9341.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\monitor.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\R61581.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\SHARP_MIP.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\SSD1963.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\ST7565.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\display\UC1610.h">
-      <Filter>lv_drivers\display</Filter>
-    </ClInclude>
     <ClInclude Include="lv_drivers\gtkdrv\gtkdrv.h">
       <Filter>lv_drivers\gtkdrv</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\AD_touch.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\evdev.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\FT5406EE8.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\keyboard.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\libinput_drv.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\mouse.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\mousewheel.h">
-      <Filter>lv_drivers\indev</Filter>
-    </ClInclude>
-    <ClInclude Include="lv_drivers\indev\XPT2046.h">
-      <Filter>lv_drivers\indev</Filter>
     </ClInclude>
     <ClInclude Include="lv_drivers\wayland\wayland.h">
       <Filter>lv_drivers\wayland</Filter>
@@ -2875,50 +2815,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lv_drivers\display\drm.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\fbdev.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\GC9A01.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\ILI9341.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\R61581.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\SHARP_MIP.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\SSD1963.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\ST7565.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\display\UC1610.c">
-      <Filter>lv_drivers\display</Filter>
-    </ClCompile>
     <ClCompile Include="lv_drivers\gtkdrv\gtkdrv.c">
       <Filter>lv_drivers\gtkdrv</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\AD_touch.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\evdev.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\FT5406EE8.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\libinput.c">
-      <Filter>lv_drivers\indev</Filter>
-    </ClCompile>
-    <ClCompile Include="lv_drivers\indev\XPT2046.c">
-      <Filter>lv_drivers\indev</Filter>
     </ClCompile>
     <ClCompile Include="lv_drivers\wayland\wayland.c">
       <Filter>lv_drivers\wayland</Filter>

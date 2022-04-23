@@ -874,46 +874,14 @@
     <None Include="lv_fs_if\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lv_drivers\display\drm.h" />
-    <ClInclude Include="lv_drivers\display\fbdev.h" />
-    <ClInclude Include="lv_drivers\display\GC9A01.h" />
-    <ClInclude Include="lv_drivers\display\ILI9341.h" />
-    <ClInclude Include="lv_drivers\display\monitor.h" />
-    <ClInclude Include="lv_drivers\display\R61581.h" />
-    <ClInclude Include="lv_drivers\display\SHARP_MIP.h" />
-    <ClInclude Include="lv_drivers\display\SSD1963.h" />
-    <ClInclude Include="lv_drivers\display\ST7565.h" />
-    <ClInclude Include="lv_drivers\display\UC1610.h" />
     <ClInclude Include="lv_drivers\gtkdrv\gtkdrv.h" />
-    <ClInclude Include="lv_drivers\indev\AD_touch.h" />
-    <ClInclude Include="lv_drivers\indev\evdev.h" />
-    <ClInclude Include="lv_drivers\indev\FT5406EE8.h" />
-    <ClInclude Include="lv_drivers\indev\keyboard.h" />
-    <ClInclude Include="lv_drivers\indev\libinput_drv.h" />
-    <ClInclude Include="lv_drivers\indev\mouse.h" />
-    <ClInclude Include="lv_drivers\indev\mousewheel.h" />
-    <ClInclude Include="lv_drivers\indev\XPT2046.h" />
     <ClInclude Include="lv_drivers\wayland\wayland.h" />
     <ClInclude Include="lv_drivers\win32drv\win32drv.h" />
     <ClInclude Include="lv_drivers\lv_drv_conf_template.h" />
     <ClInclude Include="lv_drivers\win_drv.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lv_drivers\display\drm.c" />
-    <ClCompile Include="lv_drivers\display\fbdev.c" />
-    <ClCompile Include="lv_drivers\display\GC9A01.c" />
-    <ClCompile Include="lv_drivers\display\ILI9341.c" />
-    <ClCompile Include="lv_drivers\display\R61581.c" />
-    <ClCompile Include="lv_drivers\display\SHARP_MIP.c" />
-    <ClCompile Include="lv_drivers\display\SSD1963.c" />
-    <ClCompile Include="lv_drivers\display\ST7565.c" />
-    <ClCompile Include="lv_drivers\display\UC1610.c" />
     <ClCompile Include="lv_drivers\gtkdrv\gtkdrv.c" />
-    <ClCompile Include="lv_drivers\indev\AD_touch.c" />
-    <ClCompile Include="lv_drivers\indev\evdev.c" />
-    <ClCompile Include="lv_drivers\indev\FT5406EE8.c" />
-    <ClCompile Include="lv_drivers\indev\libinput.c" />
-    <ClCompile Include="lv_drivers\indev\XPT2046.c" />
     <ClCompile Include="lv_drivers\wayland\wayland.c" />
     <ClCompile Include="lv_drivers\win32drv\win32drv.c" />
     <ClCompile Include="lv_drivers\win_drv.c" />
