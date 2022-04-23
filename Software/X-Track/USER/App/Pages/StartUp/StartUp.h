@@ -1,8 +1,8 @@
 #ifndef __STARTUP_PRESENTER_H
 #define __STARTUP_PRESENTER_H
 
-#include "StartupView.h"
-#include "StartupModel.h"
+#include "StartUpView.h"
+#include "StartUpModel.h"
 
 namespace Page
 {

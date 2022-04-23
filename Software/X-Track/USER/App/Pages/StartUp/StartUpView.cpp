@@ -1,4 +1,4 @@
-#include "StartupView.h"
+#include "StartUpView.h"
 #include "Version.h"
 
 using namespace Page;
