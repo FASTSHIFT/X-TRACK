@@ -406,3 +406,4 @@
 * 9.__WFI() -> __wfi()
 * 10.main.cpp复用
 * 11.修复[TscanCode](https://github.com/Tencent/TscanCode)静态扫描出来的漏洞
+* 12.添加Linux移植
