@@ -21,15 +21,15 @@
 //
 #ifndef __PNGDEC__
 #define __PNGDEC__
-#if defined( __MACH__ ) || defined( __LINUX__ ) || defined( __MCUXPRESSO ) || defined( WIN32 )
+#if defined(ARDUINO)
+#include <Arduino.h>
+#else
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdio.h>
 #define memcpy_P memcpy
 #define PROGMEM
-#else
-#include <Arduino.h>
 #endif
 #include "zutil.h"
 #include "inftrees.h"

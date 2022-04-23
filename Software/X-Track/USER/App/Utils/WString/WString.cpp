@@ -32,9 +32,13 @@
 #  define WS_MEM_FREE(ptr)              lv_mem_free(ptr) 
 #endif
 
-#define ultoa  _ultoa_s
-#define ltoa   _ltoa_s
-#define itoa   _itoa_s
+#ifdef WIN32
+#  define ultoa  _ultoa_s
+#  define ltoa   _ltoa_s
+#  define itoa   _itoa_s
+#else
+#  include "itoa.h"
+#endif
 
 /*********************************************/
 /*  Constructors                             */

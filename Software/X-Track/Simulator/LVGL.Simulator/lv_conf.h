@@ -93,12 +93,16 @@
  *It removes the need to manually update the tick with `lv_tick_inc()`)*/
 #define LV_TICK_CUSTOM     1
 #if LV_TICK_CUSTOM
-#ifdef ARDUINO
+#if defined(ARDUINO)
 #  define LV_TICK_CUSTOM_INCLUDE       "Arduino.h"    /*Header for the system time function*/
 #  define LV_TICK_CUSTOM_SYS_TIME_EXPR (millis())     /*Expression evaluating to current system time in ms*/
-#else
+#elif defined(WIN32)
 #  define LV_TICK_CUSTOM_INCLUDE  <Windows.h>
 #  define LV_TICK_CUSTOM_SYS_TIME_EXPR (GetTickCount())
+#else
+#  define LV_TICK_CUSTOM_INCLUDE  <stdint.h>
+#  define LV_TICK_CUSTOM_SYS_TIME_EXPR (custom_tick_get())
+uint32_t custom_tick_get(void);
 #endif
 #endif   /*LV_TICK_CUSTOM*/
 

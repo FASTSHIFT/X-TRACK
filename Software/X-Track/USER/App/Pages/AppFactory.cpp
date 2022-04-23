@@ -25,7 +25,7 @@
 #include "LiveMap/LiveMap.h"
 #include "Dialplate/Dialplate.h"
 #include "SystemInfos/SystemInfos.h"
-#include "Startup/Startup.h"
+#include "StartUp/StartUp.h"
 
 #define APP_CLASS_MATCH(className)\
 do{\
