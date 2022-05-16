@@ -57,3 +57,5 @@ https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-
 > 感谢[@MouriNaruto](https://github.com/MouriNaruto)的LVGL Visual Studio模拟器[lv_sim_visual_studio](https://github.com/lvgl/lv_sim_visual_studio)。
 
 > 感谢[@dj140](https://github.com/dj140)编写[地图下载教程](https://github.com/FASTSHIFT/X-TRACK/blob/main/Tools/README.md)。
+> 
+> 软件设计 介绍  https://mp.weixin.qq.com/s/rCtmW7tawr7zRIuMK1l5Iw
