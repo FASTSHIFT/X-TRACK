@@ -25,5 +25,48 @@
 ## 焊接
 * [焊接教程](https://github.com/FASTSHIFT/X-TRACK/blob/main/Hardware/%E7%84%8A%E6%8E%A5%E8%B0%83%E8%AF%95%E6%8C%87%E5%8C%97.md)
 
+## 常见故障排查
+> GPS连不上
+* 到开阔地带进行定位
+* 进入系统信息页面查看GPS栏是否能获取到UTC时间
+* 如果一直无法获取UTC时间，则检查GPS模块和MCU的硬件连接，确保通信波特率为9600
+* 检查GPS天线朝向，参考下图
+
+![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%86%85%E9%83%A8%E8%A3%85%E9%85%8D%E5%9B%BE%E5%8F%82%E8%80%83.jpg)
+
+> 地图不显示
+* 在首次定位成功前，默认加载的地图区域是北京，等待定位成功或者修改**SystemSave.json**里的经纬度配置
+* 检查状态栏是否有SD卡图标
+* 检查地图文件路径
+* **不要使用旧版地图工具**
+
+> 不开机 & 关不了机
+* 长按编码器开关机
+* 检查供电是否正常，MCU和其他器件上的电压是否是3.3V
+
+> 开机了但黑屏
+* 检查屏幕排线和MCU间是否短路或虚焊
+* 检查背光是否有电压
+
+> SD卡无法读取
+* 在系统信息页面查看"Storage"项，是否能正常读取到SD卡容量和类型
+* 检查SD卡座和MCU间是否有短路或虚焊
+* 检查SD卡格式是否为FAT32
+
+> SD卡内没有生成**SystemSave.json**配置文件
+* **SystemSave.json**在第一次关机后自动生成
+
+> 地图坐标有恒定偏移
+* 尝试修改SD卡根目录下的**SystemSave.json**里的**useWGS84**选项[配置地图坐标系统](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software#%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+
+> 速度不准
+* 不同厂家的GPS模块性能不一，测得的速度可能会有小幅度跳动(<±2KM/h)
+* 检查GPS天线朝向，参考第一点
+* 更换GPS模块
+
+> 在PC模拟器上无法显示地图
+* MAP地图文件夹放在X-TRACK工程的根目录`~/X-TRACK/MAP/`
+* 修改**SystemSave.json**里的经纬度配置到希望显示地图的地方
+
 ## 2.0寸屏版本
 https://github.com/FASTSHIFT/X-TRACK/tree/2.0-inch by[@HanfG](https://github.com/HanfG)
