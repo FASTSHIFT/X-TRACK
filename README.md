@@ -15,7 +15,7 @@
 > [LVGL V8](https://github.com/lvgl/lvgl)
 
 ## 硬件配置
-* 1.主控: AT32F403ACGU7 (主频:240MHz RAM:224KB ROM:1MB)
+* 1.主控: AT32F435CGU7 (主频:288MHz RAM:512KB ROM:1MB)
 * 2.屏幕: ST7789 IPS 1.54inch SPI接口 240x240分辨率 60Hz刷新率
 * 3.储存器: Micro SD CARD 32GB 
 * 4.输入设备: 旋转编码器
