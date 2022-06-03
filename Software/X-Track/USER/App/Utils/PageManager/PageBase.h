@@ -29,7 +29,11 @@
 #define PAGE_STASH_MAKE(data) {&(data), sizeof(data)}
 
 /* Get the data in the stash area */
-#define PAGE_STASH_POP(data)  this->GetStash(&(data), sizeof(data))
+#define PAGE_STASH_POP(data)  this->StashPop(&(data), sizeof(data))
+
+#define PAGE_ANIM_TIME_DEFAULT 500 //[ms]
+
+#define PAGE_ANIM_PATH_DEFAULT lv_anim_path_ease_out
 
 class PageManager;
 
@@ -51,7 +55,7 @@ public:
         _PAGE_STATE_LAST
     } State_t;
 
-    /* Data area */
+    /* Stash data area */
     typedef struct
     {
         void* ptr;
@@ -67,11 +71,11 @@ public:
     } AnimAttr_t;
 
 public:
-    lv_obj_t* root;       // UI root node
-    PageManager* Manager; // Page manager pointer
-    const char* Name;     // Page name
-    uint16_t ID;          // Page ID
-    void* UserData;       // User data pointer
+    lv_obj_t* _root;       // UI root node
+    PageManager* _Manager; // Page manager pointer
+    const char* _Name;     // Page name
+    uint16_t _ID;          // Page ID
+    void* _UserData;       // User data pointer
 
     /* Private data, Only page manager access */
     struct
@@ -125,43 +129,20 @@ public:
     virtual void onViewDidUnload() {}
 
     /* Set whether to manually manage the cache */
-    void SetCustomCacheEnable(bool en)
-    {
-        SetCustomAutoCacheEnable(false);
-        priv.ReqEnableCache = en;
-    }
+    void SetCustomCacheEnable(bool en);
 
     /* Set whether to enable automatic cache */
-    void SetCustomAutoCacheEnable(bool en)
-    {
-        priv.ReqDisableAutoCache = !en;
-    }
+    void SetCustomAutoCacheEnable(bool en);
 
     /* Set custom animation properties  */
     void SetCustomLoadAnimType(
         uint8_t animType,
-        uint16_t time = 500,
-        lv_anim_path_cb_t path = lv_anim_path_ease_out
-    )
-    {
-        priv.Anim.Attr.Type = animType;
-        priv.Anim.Attr.Time = time;
-        priv.Anim.Attr.Path = path;
-    }
+        uint16_t time = PAGE_ANIM_TIME_DEFAULT,
+        lv_anim_path_cb_t path = PAGE_ANIM_PATH_DEFAULT
+    );
 
-    /* Get the data in the stash area */
-    bool GetStash(void* ptr, uint32_t size)
-    {
-        bool retval = false;
-        if (priv.Stash.ptr != nullptr && priv.Stash.size == size)
-        {
-            memcpy(ptr, priv.Stash.ptr, priv.Stash.size);
-            //lv_mem_free(priv.Stash.ptr);
-            //priv.Stash.ptr = nullptr;
-            retval = true;
-        }
-        return retval;
-    }
+    /* Pop the data from stash area */
+    bool StashPop(void* ptr, uint32_t size);
 };
 
 #endif // ! __PAGE_BASE_H

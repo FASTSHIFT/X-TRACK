@@ -23,25 +23,25 @@
 #include "PageManager.h"
 #include "PM_Log.h"
 
-/**
-  * @brief  Enter a new page, the old page is pushed onto the stack
-  * @param  name: The name of the page to enter 
-  * @param  stash: Parameters passed to the new page
-  * @retval Pointer to the page pushed onto the stack 
-  */
-PageBase* PageManager::Push(const char* name, const PageBase::Stash_t* stash)
+ /**
+   * @brief  Enter a new page, replace the old page
+   * @param  name: The name of the page to enter
+   * @param  stash: Parameters passed to the new page
+   * @retval Return true if successful
+   */
+bool PageManager::Replace(const char* name, const PageBase::Stash_t* stash)
 {
     /* Check whether the animation of switching pages is being executed */
     if (!SwitchAnimStateCheck())
     {
-        return nullptr;
+        return false;
     }
 
     /* Check whether the stack is repeatedly pushed  */
     if (FindPageInStack(name) != nullptr)
     {
         PM_LOG_ERROR("Page(%s) was multi push", name);
-        return nullptr;
+        return false;
     }
 
     /* Check if the page is registered in the page pool */
@@ -50,34 +50,89 @@ PageBase* PageManager::Push(const char* name, const PageBase::Stash_t* stash)
     if (base == nullptr)
     {
         PM_LOG_ERROR("Page(%s) was not install", name);
-        return nullptr;
+        return false;
+    }
+
+    /* Get the top page of the stack */
+    PageBase* top = GetStackTop();
+
+    if (top == nullptr)
+    {
+        PM_LOG_ERROR("Stack top is NULL");
+        return false;
+    }
+
+    /* Force disable cache */
+    top->priv.IsCached = false;
+
+    /* Synchronous automatic cache configuration */
+    base->priv.IsDisableAutoCache = base->priv.ReqDisableAutoCache;
+
+    /* Remove current page */
+    _PageStack.pop();
+
+    /* Push into the stack */
+    _PageStack.push(base);
+
+    PM_LOG_INFO("Page(%s) replace Page(%s) (stash = 0x%p)", name, top->_Name, stash);
+
+    /* Page switching execution */
+    return SwitchTo(base, true, stash);
+}
+
+/**
+  * @brief  Enter a new page, the old page is pushed onto the stack
+  * @param  name: The name of the page to enter 
+  * @param  stash: Parameters passed to the new page
+  * @retval Return true if successful
+  */
+bool PageManager::Push(const char* name, const PageBase::Stash_t* stash)
+{
+    /* Check whether the animation of switching pages is being executed */
+    if (!SwitchAnimStateCheck())
+    {
+        return false;
+    }
+
+    /* Check whether the stack is repeatedly pushed  */
+    if (FindPageInStack(name) != nullptr)
+    {
+        PM_LOG_ERROR("Page(%s) was multi push", name);
+        return false;
+    }
+
+    /* Check if the page is registered in the page pool */
+    PageBase* base = FindPageInPool(name);
+
+    if (base == nullptr)
+    {
+        PM_LOG_ERROR("Page(%s) was not install", name);
+        return false;
     }
 
     /* Synchronous automatic cache configuration */
     base->priv.IsDisableAutoCache = base->priv.ReqDisableAutoCache;
 
     /* Push into the stack */
-    PageStack.push(base);
+    _PageStack.push(base);
 
     PM_LOG_INFO("Page(%s) push >> [Screen] (stash = 0x%p)", name, stash);
 
     /* Page switching execution */
-    SwitchTo(base, true, stash);
-
-    return base;
+    return SwitchTo(base, true, stash);
 }
 
 /**
   * @brief  Pop the current page
   * @param  None
-  * @retval Pointer to the next page 
+  * @retval Return true if successful
   */
-PageBase* PageManager::Pop()
+bool PageManager::Pop()
 {
     /* Check whether the animation of switching pages is being executed */
     if (!SwitchAnimStateCheck())
     {
-        return nullptr;
+        return false;
     }
 
     /* Get the top page of the stack */
@@ -86,61 +141,56 @@ PageBase* PageManager::Pop()
     if (top == nullptr)
     {
         PM_LOG_WARN("Page stack is empty, cat't pop");
-        return nullptr;
+        return false;
     }
 
     /* Whether to turn off automatic cache */
     if (!top->priv.IsDisableAutoCache)
     {
-        PM_LOG_INFO("Page(%s) has auto cache, cache disabled", top->Name);
+        PM_LOG_INFO("Page(%s) has auto cache, cache disabled", top->_Name);
         top->priv.IsCached = false;
     }
 
-    PM_LOG_INFO("Page(%s) pop << [Screen]", top->Name);
+    PM_LOG_INFO("Page(%s) pop << [Screen]", top->_Name);
 
     /* Page popup */
-    PageStack.pop();
+    _PageStack.pop();
 
     /* Get the next page */
     top = GetStackTop();
 
-    if (top != nullptr)
-    {
-        /* Page switching execution */
-        SwitchTo(top, false, nullptr);
-    }
-
-    return top;
+    /* Page switching execution */
+    return SwitchTo(top, false, nullptr);;
 }
 
 /**
   * @brief  Page switching
   * @param  newNode: Pointer to new page
-  * @param  isPushAct: Whether it is a push action
+  * @param  isEnterAct: Whether it is a ENTER action
   * @param  stash: Parameters passed to the new page
-  * @retval None
+  * @retval Return true if successful
   */
-void PageManager::SwitchTo(PageBase* newNode, bool isPushAct, const PageBase::Stash_t* stash)
+bool PageManager::SwitchTo(PageBase* newNode, bool isEnterAct, const PageBase::Stash_t* stash)
 {
     if (newNode == nullptr)
     {
         PM_LOG_ERROR("newNode is nullptr");
-        return;
+        return false;
     }
 
     /* Whether page switching has been requested */
-    if (AnimState.IsSwitchReq)
+    if (_AnimState.IsSwitchReq)
     {
-        PM_LOG_WARN("Page switch busy, reqire(%s) is ignore", newNode->Name);
-        return;
+        PM_LOG_WARN("Page switch busy, reqire(%s) is ignore", newNode->_Name);
+        return false;
     }
 
-    AnimState.IsSwitchReq = true;
+    _AnimState.IsSwitchReq = true;
 
     /* Is there a parameter to pass */
     if (stash != nullptr)
     {
-        PM_LOG_INFO("stash is detect, %s >> stash(0x%p) >> %s", GetPagePrevName(), stash, newNode->Name);
+        PM_LOG_INFO("stash is detect, %s >> stash(0x%p) >> %s", GetPagePrevName(), stash, newNode->_Name);
 
         void* buffer = nullptr;
 
@@ -172,55 +222,56 @@ void PageManager::SwitchTo(PageBase* newNode, bool isPushAct, const PageBase::St
     }
 
     /* Record current page */
-    PageCurrent = newNode;
+    _PageCurrent = newNode;
 
     /* If the current page has a cache */
-    if (PageCurrent->priv.IsCached)
+    if (_PageCurrent->priv.IsCached)
     {
         /* Direct display, no need to load */
-        PM_LOG_INFO("Page(%s) has cached, appear driectly", PageCurrent->Name);
-        PageCurrent->priv.State = PageBase::PAGE_STATE_WILL_APPEAR;
+        PM_LOG_INFO("Page(%s) has cached, appear driectly", _PageCurrent->_Name);
+        _PageCurrent->priv.State = PageBase::PAGE_STATE_WILL_APPEAR;
     }
     else
     {
         /* Load page */
-        PageCurrent->priv.State = PageBase::PAGE_STATE_LOAD;
+        _PageCurrent->priv.State = PageBase::PAGE_STATE_LOAD;
     }
 
-    if (PagePrev != nullptr)
+    if (_PagePrev != nullptr)
     {
-        PagePrev->priv.Anim.IsEnter = false;
+        _PagePrev->priv.Anim.IsEnter = false;
     }
 
-    PageCurrent->priv.Anim.IsEnter = true;
+    _PageCurrent->priv.Anim.IsEnter = true;
 
-    AnimState.IsPushing = isPushAct;
+    _AnimState.IsEntering = isEnterAct;
 
-    if (AnimState.IsPushing)
+    if (_AnimState.IsEntering)
     {
         /* Update the animation configuration according to the current page */
-        SwitchAnimTypeUpdate(PageCurrent);
+        SwitchAnimTypeUpdate(_PageCurrent);
     }
 
     /* Update the state machine of the previous page */
-    StateUpdate(PagePrev);
+    StateUpdate(_PagePrev);
 
     /* Update the state machine of the current page */
-    StateUpdate(PageCurrent);
+    StateUpdate(_PageCurrent);
 
     /* Move the layer, move the new page to the front */
-    if (AnimState.IsPushing)
+    if (_AnimState.IsEntering)
     {
-        PM_LOG_INFO("Page PUSH is detect, move Page(%s) to foreground", PageCurrent->Name);
-        if (PagePrev)lv_obj_move_foreground(PagePrev->root);
-        lv_obj_move_foreground(PageCurrent->root);
+        PM_LOG_INFO("Page ENTER is detect, move Page(%s) to foreground", _PageCurrent->_Name);
+        if (_PagePrev)lv_obj_move_foreground(_PagePrev->_root);
+        lv_obj_move_foreground(_PageCurrent->_root);
     }
     else
     {
-        PM_LOG_INFO("Page POP is detect, move Page(%s) to foreground", GetPagePrevName());
-        lv_obj_move_foreground(PageCurrent->root);
-        if (PagePrev)lv_obj_move_foreground(PagePrev->root);
+        PM_LOG_INFO("Page EXIT is detect, move Page(%s) to foreground", GetPagePrevName());
+        lv_obj_move_foreground(_PageCurrent->_root);
+        if (_PagePrev)lv_obj_move_foreground(_PagePrev->_root);
     }
+    return true;
 }
 
 /**
@@ -236,7 +287,7 @@ bool PageManager::FourceUnload(PageBase* base)
         return false;
     }
 
-    PM_LOG_INFO("Page(%s) Fource unloading...", base->Name);
+    PM_LOG_INFO("Page(%s) Fource unloading...", base->_Name);
 
     if (base->priv.State == PageBase::PAGE_STATE_ACTIVITY)
     {
@@ -265,7 +316,7 @@ bool PageManager::BackHome()
 
     SetStackClear(true);
 
-    PagePrev = nullptr;
+    _PagePrev = nullptr;
 
     PageBase* home = GetStackTop();
 
@@ -281,14 +332,14 @@ bool PageManager::BackHome()
   */
 bool PageManager::SwitchAnimStateCheck()
 {
-    if (AnimState.IsSwitchReq || AnimState.IsBusy)
+    if (_AnimState.IsSwitchReq || _AnimState.IsBusy)
     {
         PM_LOG_WARN(
             "Page switch busy[AnimState.IsSwitchReq = %d,"
             "AnimState.IsBusy = %d],"
             "request ignored",
-            AnimState.IsSwitchReq,
-            AnimState.IsBusy
+            _AnimState.IsSwitchReq,
+            _AnimState.IsBusy
         );
         return false;
     }
@@ -304,20 +355,20 @@ bool PageManager::SwitchAnimStateCheck()
 bool PageManager::SwitchReqCheck()
 {
     bool ret = false;
-    bool lastNodeBusy = PagePrev && PagePrev->priv.Anim.IsBusy;
+    bool lastNodeBusy = _PagePrev && _PagePrev->priv.Anim.IsBusy;
 
-    if (!PageCurrent->priv.Anim.IsBusy && !lastNodeBusy)
+    if (!_PageCurrent->priv.Anim.IsBusy && !lastNodeBusy)
     {
         PM_LOG_INFO("----Page switch was all finished----");
-        AnimState.IsSwitchReq = false;
+        _AnimState.IsSwitchReq = false;
         ret = true;
-        PagePrev = PageCurrent;
+        _PagePrev = _PageCurrent;
     }
     else
     {
-        if (PageCurrent->priv.Anim.IsBusy)
+        if (_PageCurrent->priv.Anim.IsBusy)
         {
-            PM_LOG_WARN("Page PageCurrent(%s) is busy", PageCurrent->Name);
+            PM_LOG_WARN("Page PageCurrent(%s) is busy", _PageCurrent->_Name);
         }
         else
         {
@@ -336,17 +387,17 @@ bool PageManager::SwitchReqCheck()
 void PageManager::onSwitchAnimFinish(lv_anim_t* a)
 {
     PageBase* base = (PageBase*)lv_anim_get_user_data(a);
-    PageManager* manager = base->Manager;
+    PageManager* manager = base->_Manager;
 
-    PM_LOG_INFO("Page(%s) Anim finish", base->Name);
+    PM_LOG_INFO("Page(%s) Anim finish", base->_Name);
 
     manager->StateUpdate(base);
     base->priv.Anim.IsBusy = false;
     bool isFinished = manager->SwitchReqCheck();
 
-    if (!manager->AnimState.IsPushing && isFinished)
+    if (!manager->_AnimState.IsEntering && isFinished)
     {
-        manager->SwitchAnimTypeUpdate(manager->PageCurrent);
+        manager->SwitchAnimTypeUpdate(manager->_PageCurrent);
     }
 }
 
@@ -366,7 +417,7 @@ void PageManager::SwitchAnimCreate(PageBase* base)
     lv_anim_t a;
     AnimDefaultInit(&a);
     lv_anim_set_user_data(&a, base);
-    lv_anim_set_var(&a, base->root);
+    lv_anim_set_var(&a, base->_root);
     lv_anim_set_ready_cb(&a, onSwitchAnimFinish);
     lv_anim_set_exec_cb(&a, animAttr.setter);
 
@@ -374,10 +425,10 @@ void PageManager::SwitchAnimCreate(PageBase* base)
 
     if (animAttr.getter)
     {
-        start = animAttr.getter(base->root);
+        start = animAttr.getter(base->_root);
     }
 
-    if (AnimState.IsPushing)
+    if (_AnimState.IsEntering)
     {
         if (base->priv.Anim.IsEnter)
         {
@@ -434,9 +485,9 @@ void PageManager::SetGlobalLoadAnimType(LoadAnim_t anim, uint16_t time, lv_anim_
         anim = LOAD_ANIM_NONE;
     }
 
-    AnimState.Global.Type = anim;
-    AnimState.Global.Time = time;
-    AnimState.Global.Path = path;
+    _AnimState.Global.Type = anim;
+    _AnimState.Global.Time = time;
+    _AnimState.Global.Path = path;
 
     PM_LOG_INFO("Set global load anim type = %d", anim);
 }
@@ -452,10 +503,10 @@ void PageManager::SwitchAnimTypeUpdate(PageBase* base)
     {
         PM_LOG_INFO(
             "Page(%s) Anim.Type was not set, use AnimState.Global.Type = %d",
-            base->Name,
-            AnimState.Global.Type
+            base->_Name,
+            _AnimState.Global.Type
         );
-        AnimState.Current = AnimState.Global;
+        _AnimState.Current = _AnimState.Global;
     }
     else
     {
@@ -463,21 +514,21 @@ void PageManager::SwitchAnimTypeUpdate(PageBase* base)
         {
             PM_LOG_ERROR(
                 "Page(%s) ERROR custom Anim.Type = %d, use AnimState.Global.Type = %d",
-                base->Name,
+                base->_Name,
                 base->priv.Anim.Attr.Type,
-                AnimState.Global.Type
+                _AnimState.Global.Type
             );
-            base->priv.Anim.Attr = AnimState.Global;
+            base->priv.Anim.Attr = _AnimState.Global;
         }
         else
         {
             PM_LOG_INFO(
                 "Page(%s) custom Anim.Type set = %d",
-                base->Name,
+                base->_Name,
                 base->priv.Anim.Attr.Type
             );
         }
-        AnimState.Current = base->priv.Anim.Attr;
+        _AnimState.Current = base->priv.Anim.Attr;
     }
 }
 
@@ -490,7 +541,7 @@ void PageManager::AnimDefaultInit(lv_anim_t* a)
 {
     lv_anim_init(a);
 
-    uint32_t time = (GetCurrentLoadAnimType() == LOAD_ANIM_NONE) ? 0 : AnimState.Current.Time;
+    uint32_t time = (GetCurrentLoadAnimType() == LOAD_ANIM_NONE) ? 0 : _AnimState.Current.Time;
     lv_anim_set_time(a, time);
-    lv_anim_set_path_cb(a, AnimState.Current.Path);
+    lv_anim_set_path_cb(a, _AnimState.Current.Path);
 }

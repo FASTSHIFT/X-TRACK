@@ -1,7 +1,3 @@
-```eval_rst
-.. include:: /header.rst
-:github_url: |github_link_base|/widgets/core/img.md
-```
 # Image (lv_img)
 
 
@@ -91,6 +87,11 @@ The transformations require the whole image to be available. Therefore indexed i
 In other words transformations work only on true color images stored as C array, or if a custom [Image decoder](/overview/images#image-edecoder) returns the whole image.
 
 Note that the real coordinates of image objects won't change during transformation. That is `lv_obj_get_width/height/x/y()` will return the original, non-zoomed coordinates.
+
+**IMPORTANT**
+The transformation of the image is independent of the transformation properties coming from styles. (See [here](/overview/style#opacity-and-transformations)). The main differences are that pure image widget transformation
+- doesn't transform the children of the image widget
+- image is transformed directly without creating an intermediate layer (buffer) to snapshot the widget
 
 ### Size mode
 

@@ -1,7 +1,3 @@
-```eval_rst
-.. include:: /header.rst
-:github_url: |github_link_base|/porting/display.md
-```
 # Display interface
 
 To register a display for LVGL, a `lv_disp_draw_buf_t` and a `lv_disp_drv_t` variable have to be initialized.
@@ -109,6 +105,7 @@ It can be used if the display controller can refresh only areas with specific he
 This way the buffers used in `lv_disp_draw_buf_t` can be smaller to hold only the required number of bits for the given area size. Note that rendering with `set_px_cb` is slower than normal rendering.
 - `monitor_cb` A callback function that tells how many pixels were refreshed and in how much time. Called when the last chunk is rendered and sent to the display.
 - `clean_dcache_cb` A callback for cleaning any caches related to the display.
+- `render_start_cb` A callback function that notifies the display driver that rendering has started. It also could be used to wait for VSYNC to start rendering. It's useful if rendering is faster than a VSYNC period.
 
 LVGL has built-in support to several GPUs (see `lv_conf.h`) but if something else is required these functions can be used to make LVGL use a GPU:
 - `gpu_fill_cb` fill an area in the memory with a color.

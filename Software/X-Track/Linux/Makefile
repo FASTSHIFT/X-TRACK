@@ -19,9 +19,7 @@ WARNINGS_CFG ?= -Wall -Wextra \
 
 INCLUDE_CFG = -I$(LVGL_DIR)/ -I$(PROJECT_DIR)/USER/App -I$(PROJECT_DIR)/USER/App/Utils/ArduinoJson/src
 
-LVGL_FS_PATH = $(PROJECT_DIR)/../..
-
-CFLAGS ?= -O3 -g0 $(INCLUDE_CFG) $(WARNING_CFG) -DLV_FS_PC_PATH=\"$(LVGL_FS_PATH)\"
+CFLAGS ?= -O3 -g0 $(INCLUDE_CFG) $(WARNING_CFG)
 CXXFLAGS ?= $(CFLAGS)
 LDFLAGS ?= -lm -lstdc++
 BIN = xtrack

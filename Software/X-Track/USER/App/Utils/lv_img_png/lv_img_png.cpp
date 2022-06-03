@@ -165,7 +165,7 @@ static void lv_img_png_event(const lv_obj_class_t* class_p, lv_event_t* e)
             return;
         }
 
-        const lv_area_t* obj_ext_mask = (const lv_area_t*)lv_event_get_param(e);
+        const lv_draw_ctx_t* draw_ctx = (const lv_draw_ctx_t*)lv_event_get_param(e);
 
         lv_disp_t* disp = _lv_refr_get_disp_refreshing();
         lv_disp_draw_buf_t* draw_buf = lv_disp_get_draw_buf(disp);
@@ -176,12 +176,12 @@ static void lv_img_png_event(const lv_obj_class_t* class_p, lv_event_t* e)
         lv_coord_t disp_width = lv_area_get_width(&disp_area);
 
         lv_area_t src_area;
-        src_area = *obj_ext_mask;
+        src_area = *draw_ctx->clip_area;
         lv_area_move(&src_area, -obj->coords.x1, -obj->coords.y1);
 
         lv_img_png_draw_dsc_t dsc;
-        dsc.dest_buf = disp_buf + obj_ext_mask->y1 * disp_width + obj_ext_mask->x1;
-        dsc.dest_area = obj_ext_mask;
+        dsc.dest_buf = disp_buf + draw_ctx->clip_area->y1 * disp_width + draw_ctx->clip_area->x1;
+        dsc.dest_area = draw_ctx->clip_area;
         dsc.src_area = &src_area;
         dsc.disp_area = &disp_area;
 
@@ -193,19 +193,19 @@ static void png_draw_line(PNGDRAW* p_draw)
 {
     lv_img_png_draw_dsc_t* dsc = (lv_img_png_draw_dsc_t*)p_draw->pUser;
 
-    int iEndianness;
+    int iEndianness = PNG_RGB565_LITTLE_ENDIAN;
+    lv_color16_t* line_buf;
 
 #if LV_COLOR_DEPTH == 16
-#  if LV_COLOR_16_SWAP
+#if LV_COLOR_16_SWAP == 1
     iEndianness = PNG_RGB565_BIG_ENDIAN;
-#  else
-    iEndianness = PNG_RGB565_LITTLE_ENDIAN;
-#  endif
+#endif
+    line_buf = dsc->line_buf;
 #else
-#  error "Unsupport color format"
+    line_buf = (lv_color16_t*)lv_mem_buf_get(p_draw->iWidth * sizeof(lv_color16_t));
 #endif
 
-    dsc->png_dec->getLineAsRGB565(p_draw, (uint16_t*)dsc->line_buf, iEndianness, 0xffffffff);
+    dsc->png_dec->getLineAsRGB565(p_draw, (uint16_t*)line_buf, iEndianness, 0xffffffff);
 
     lv_coord_t draw_y = p_draw->y;
 
@@ -216,10 +216,26 @@ static void png_draw_line(PNGDRAW* p_draw)
         lv_coord_t y_offset = draw_y - dsc->src_area->y1;
 
         lv_color_t* dest = dsc->dest_buf + y_offset * lv_area_get_width(dsc->disp_area);
-        const lv_color_t* src = dsc->line_buf + x_offset;
-
+        const lv_color16_t* src = line_buf + x_offset;
+#if LV_COLOR_DEPTH == 16
         lv_memcpy(dest, src, width * sizeof(lv_color_t));
+#else
+        for (int i = 0; i < width; i++)
+        {
+            *dest = lv_color_make(
+                src->ch.red   << 3,
+                src->ch.green << 2,
+                src->ch.blue  << 3
+            );
+            dest++;
+            src++;
+        }
+#endif
     }
+
+#if LV_COLOR_DEPTH != 16
+    lv_mem_buf_release(line_buf);
+#endif
 }
 
 static lv_res_t lv_png_draw(const char* src, lv_img_png_draw_dsc_t* dsc)

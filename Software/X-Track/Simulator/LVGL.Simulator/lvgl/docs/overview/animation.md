@@ -1,7 +1,3 @@
-```eval_rst
-.. include:: /header.rst
-:github_url: |github_link_base|/overview/animation.md
-```
 # Animations
 
 You can automatically change the value of a variable between a start and an end value using animations.

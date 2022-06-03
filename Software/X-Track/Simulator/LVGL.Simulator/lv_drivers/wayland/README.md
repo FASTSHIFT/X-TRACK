@@ -114,3 +114,44 @@ or `false` as `fullscreen` argument.
 Even when client-side decorations are enabled at compile time, they can be
 disabled at runtime setting the `LV_WAYLAND_DISABLE_WINDOWDECORATION`
 environment variable to `1`.
+
+### Event-driven timer handler
+
+Set `LV_WAYLAND_TIMER_HANDLER` in `lv_drv_conf.h` and call `lv_wayland_timer_handler()`
+in your timer loop (in place of `lv_timer_handler()`).
+
+You can now sleep/wait until the next timer/event is ready, e.g.:
+```
+/* [After initialization and display creation] */
+#include <limits.h>
+#include <errno.h>
+#include <poll.h>
+
+struct pollfd pfd;
+uint32_t time_till_next;
+int sleep;
+
+pfd.fd = lv_wayland_get_fd();
+pfd.events = POLLIN;
+
+while (1) {
+    /* Handle any Wayland/LVGL timers/events */
+    time_till_next = lv_wayland_timer_handler();
+
+    /* Run until the last window closes */
+    if (!lv_wayland_window_is_open(NULL)) {
+        break;
+    }
+
+    /* Wait for something interesting to happen */
+    if (time_till_next == LV_NO_TIMER_READY) {
+        sleep = -1;
+    } else if (time_till_next > INT_MAX) {
+        sleep = INT_MAX;
+    } else {
+       sleep = time_till_next;
+    }
+
+    while ((poll(&pfd, 1, sleep) < 0) && (errno == EINTR));
+}
+```

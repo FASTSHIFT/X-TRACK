@@ -48,7 +48,7 @@ void lv_anim_label_set_custom_enter_anim(lv_obj_t * obj, const lv_anim_t * a);
 
 void lv_anim_label_set_custom_exit_anim(lv_obj_t * obj, const lv_anim_t * a);
 
-void lv_anim_label_set_text(lv_obj_t * obj, const char* txt);
+void lv_anim_label_push_text(lv_obj_t * obj, const char* txt);
 
 lv_dir_t lv_anim_label_get_enter_dir(lv_obj_t * obj);
 

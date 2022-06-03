@@ -164,6 +164,7 @@
     <ClInclude Include="..\..\USER\App\Utils\WString\WString.h" />
     <ClInclude Include="..\..\USER\App\Version.h" />
     <ClInclude Include="HAL\HAL.h" />
+    <ClInclude Include="lvgl\examples\anim\lv_example_anim.h" />
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h" />
     <ClInclude Include="lvgl\examples\layouts\flex\lv_example_flex.h" />
     <ClInclude Include="lvgl\examples\layouts\grid\lv_example_grid.h" />
@@ -334,7 +335,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_dark.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_default.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_arrow_light.c" />
-    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_pin.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gyroscope.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_locate.c" />
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_map_location.c" />
@@ -372,6 +372,7 @@
     <ClCompile Include="..\..\USER\App\Utils\MapConv\MapConv.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\MapConv\TileSystem\TileSystem.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\new\new.cpp" />
+    <ClCompile Include="..\..\USER\App\Utils\PageManager\PageBase.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Base.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Drag.cpp" />
     <ClCompile Include="..\..\USER\App\Utils\PageManager\PM_Router.cpp" />
@@ -400,6 +401,10 @@
     <ClCompile Include="HAL\HAL_MAG.cpp" />
     <ClCompile Include="HAL\HAL_Power.cpp" />
     <ClCompile Include="HAL\HAL_SD_CARD.cpp" />
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_1.c" />
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_2.c" />
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_3.c" />
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_timeline_1.c" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_left.c" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_mid.c" />
     <ClCompile Include="lvgl\examples\assets\imgbtn_right.c" />
@@ -525,6 +530,7 @@
     <ClCompile Include="lvgl\src\draw\lv_draw_line.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_mask.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_rect.c" />
+    <ClCompile Include="lvgl\src\draw\lv_draw_transform.c" />
     <ClCompile Include="lvgl\src\draw\lv_draw_triangle.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_buf.c" />
     <ClCompile Include="lvgl\src\draw\lv_img_cache.c" />
@@ -538,6 +544,7 @@
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_line.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_polygon.c" />
     <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_rect.c" />
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_transform.c" />
     <ClCompile Include="lvgl\src\extra\layouts\flex\lv_flex.c" />
     <ClCompile Include="lvgl\src\extra\layouts\grid\lv_grid.c" />
     <ClCompile Include="lvgl\src\extra\libs\png\lodepng.c" />
@@ -759,6 +766,11 @@
     <None Include="lvgl\docs\CODING_STYLE.md" />
     <None Include="lvgl\docs\CONTRIBUTING.md" />
     <None Include="lvgl\docs\ROADMAP.md" />
+    <None Include="lvgl\examples\anim\index.rst" />
+    <None Include="lvgl\examples\anim\lv_example_anim_1.py" />
+    <None Include="lvgl\examples\anim\lv_example_anim_2.py" />
+    <None Include="lvgl\examples\anim\lv_example_anim_3.py" />
+    <None Include="lvgl\examples\anim\lv_example_anim_timeline_1.py" />
     <None Include="lvgl\examples\arduino\LVGL_Arduino.ino" />
     <None Include="lvgl\examples\assets\caret_down.png" />
     <None Include="lvgl\examples\assets\imgbtn_left.png" />

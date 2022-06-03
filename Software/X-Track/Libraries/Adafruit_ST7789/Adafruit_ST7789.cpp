@@ -1,8 +1,6 @@
 #include "Adafruit_ST7789.h"
 #include "SPI.h"
 
-#define SCREEN_WIDTH                240
-#define SCREEN_HEIGHT               240
 #define SCREEN_USE_LITTLE_ENDIAN    0
 
 #if defined(__STM32__)
@@ -28,44 +26,43 @@
 #endif
 
 
-Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* spix)
-    : Adafruit_GFX(SCREEN_WIDTH, SCREEN_HEIGHT)
+Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* spix, int16_t w, int16_t h)
+    : Adafruit_GFX(w, h)
+    , cs_pin(cs)
+    , dc_pin(dc)
+    , rst_pin(rst)
+    , sck_pin(NOT_A_PIN)
+    , mosi_pin(NOT_A_PIN)
+    , spi(spix)
 {
-    cs_pin = cs;
-    dc_pin = dc;
-    rst_pin = rst;
-
 #if defined(__STM32__)
     csport = digitalPinToPort(cs);
     cspinmask = digitalPinToBitMask(cs);
     dcport = digitalPinToPort(dc);
     dcpinmask = digitalPinToBitMask(dc);
 #endif
-
-    spi = spix;
 }
 
-Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, uint8_t clk, uint8_t mosi)
-    : Adafruit_GFX(SCREEN_WIDTH, SCREEN_HEIGHT)
+Adafruit_ST7789::Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, uint8_t sck, uint8_t mosi, int16_t w, int16_t h)
+    : Adafruit_GFX(w, h)
+    , cs_pin(cs)
+    , dc_pin(dc)
+    , rst_pin(rst)
+    , sck_pin(sck)
+    , mosi_pin(mosi)
+    , spi(NULL)
 {
-    cs_pin = cs;
-    dc_pin = dc;
-    rst_pin = rst;
-    sck_pin = clk;
-    mosi_pin = mosi;
 
 #if defined(__STM32__)
     csport = digitalPinToPort(cs);
     cspinmask = digitalPinToBitMask(cs);
     dcport = digitalPinToPort(dc);
     dcpinmask = digitalPinToBitMask(dc);
-    sckport = digitalPinToPort(clk);
-    sckpinmask = digitalPinToBitMask(clk);
+    sckport = digitalPinToPort(sck);
+    sckpinmask = digitalPinToBitMask(sck);
     mosiport = digitalPinToPort(mosi);
     mosipinmask = digitalPinToBitMask(mosi);
 #endif
-
-    spi = NULL;
 }
 
 void Adafruit_ST7789::begin()
@@ -101,7 +98,7 @@ void Adafruit_ST7789::begin()
     writeData(0x05);
 
 #if SCREEN_USE_LITTLE_ENDIAN
-    // Change to Little Endian
+    /* Change to Little Endian */
     writeCommand(0xB0);
     writeData(0x00);  // RM = 0; DM = 00
     writeData(0xF8);  // EPF = 11; ENDIAN = 1; RIM = 0; MDT = 00 (ENDIAN -> 0 MSBFirst; 1 LSB First)
@@ -233,29 +230,29 @@ void Adafruit_ST7789::setRotation(uint8_t r)
     switch(rotation)
     {
     case 0:
-        _width = SCREEN_WIDTH;
-        _height = SCREEN_HEIGHT;
+        _width = WIDTH;
+        _height = HEIGHT;
 
         writeData(0x00);
         break;
 
     case 1:
-        _width = SCREEN_HEIGHT;
-        _height = SCREEN_WIDTH;
+        _width = HEIGHT;
+        _height = WIDTH;
 
         writeData(0xC0);
         break;
 
     case 2:
-        _width = SCREEN_WIDTH;
-        _height = SCREEN_HEIGHT;
+        _width = WIDTH;
+        _height = HEIGHT;
 
         writeData(0x70);
         break;
 
     case 3:
-        _width = SCREEN_HEIGHT;
-        _height = SCREEN_WIDTH;
+        _width = HEIGHT;
+        _height = WIDTH;
 
         writeData(0xA0);
         break;
@@ -351,68 +348,6 @@ void Adafruit_ST7789::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t co
         pushColor(color);
 }
 
-void Adafruit_ST7789::drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h)
-{
-    if((x >= _width) || (y >= _height)) return;
-
-    int16_t actual_cursor_x = x;
-    int16_t actual_cursor_y = y;
-    int16_t actual_cursor_x1 = x + w - 1;
-    int16_t actual_cursor_y1 = y + h - 1;
-
-    if(actual_cursor_x < 0)
-    {
-        actual_cursor_x = 0;
-    }
-    else if(actual_cursor_x >= _width)
-    {
-        actual_cursor_x = _width - 1;
-    }
-
-    if(actual_cursor_y < 0)
-    {
-        actual_cursor_y = 0;
-    }
-    else if(actual_cursor_y >= _height)
-    {
-        actual_cursor_y = _height - 1;
-    }
-
-    if(actual_cursor_x1 < 0)
-    {
-        actual_cursor_x1 = 0;
-    }
-    else if(actual_cursor_x1 >= _width)
-    {
-        actual_cursor_x1 = _width - 1;
-    }
-
-    if(actual_cursor_y1 < 0)
-    {
-        actual_cursor_y1 = 0;
-    }
-    else if(actual_cursor_y1 >= _height)
-    {
-        actual_cursor_y1 = _height - 1;
-    }
-
-    setAddrWindow(actual_cursor_x, actual_cursor_y, actual_cursor_x1, actual_cursor_y1);
-
-    for(int16_t Y = 0; Y < h; Y++)
-    {
-        for(int16_t X = 0; X < w; X++)
-        {
-            int16_t index = X + Y * w;
-            int16_t actualX = x + X;
-            int16_t actualY = y + Y;
-            if(actualX >= 0 && actualX < _width && actualY >= 0 && actualY < _height)
-            {
-                pushColor(bitmap[index]);
-            }
-        }
-    }
-}
-
 void Adafruit_ST7789::fillScreen(uint16_t color)
 {
     setAddrWindow(0, 0, _width - 1, _height - 1);
@@ -445,7 +380,7 @@ void Adafruit_ST7789::fillScreen(uint16_t color)
     }
 #endif
 
-    for(uint32_t i = 0; i < size; i++)
+    while(size--)
     {
         pushColor(color);
     }

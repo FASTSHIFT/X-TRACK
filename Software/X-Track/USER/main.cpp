@@ -26,6 +26,12 @@
 #include "lvgl/lvgl.h"
 #include "lv_port/lv_port.h"
 
+#if LV_USE_DEMO_BENCHMARK
+
+#include "benchmark.inc"
+
+#else
+
 static void setup()
 {
     HAL::HAL_Init();
@@ -44,6 +50,8 @@ static void loop()
     lv_task_handler();
     __wfi();
 }
+
+#endif
 
 /**
   * @brief  Main Function

@@ -383,7 +383,7 @@ static int onEvent(Account* account, Account::EventParam_t* param)
         StatusBar_SetStyle(info->param.style);
         break;
     case DataProc::STATUS_BAR_CMD_SET_LABEL_REC:
-        lv_anim_label_set_text(ui.labelRec, info->param.labelRec.show ? info->param.labelRec.str : " ");
+        lv_anim_label_push_text(ui.labelRec, info->param.labelRec.show ? info->param.labelRec.str : " ");
         break;
     default:
         return Account::RES_PARAM_ERROR;

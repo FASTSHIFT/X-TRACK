@@ -29,11 +29,13 @@ extern "C" {
 #include "lvgl/lvgl.h"
 #endif
 
-// #include "../../lv_drv_conf.h"
-// #if USE_GC9A01 != 0
+#if LV_COLOR_DEPTH != 16
+#error "GC9A01 currently supports 'LV_COLOR_DEPTH == 16'. Set it in lv_conf.h"
+#endif
 
-// #include <stdint.h>
-// #include "lvgl/lv_misc/lv_color.h"
+#if LV_COLOR_16_SWAP != 1
+#error "GC9A01 SPI requires LV_COLOR_16_SWAP == 1. Set it in lv_conf.h"
+#endif
 
 /*********************
  *      DEFINES
@@ -43,27 +45,12 @@ extern "C" {
  *      TYPEDEFS
  **********************/
 
-/* Init script function */
-struct GC9A01_function {
-	uint16_t cmd;
-	uint16_t data;
-};
-
-/* Init script commands */
-enum GC9A01_cmd {
-	GC9A01_START,
-	GC9A01_END,
-	GC9A01_CMD,
-	GC9A01_DATA,
-	GC9A01_DELAY
-};
-
 /**********************
  * GLOBAL PROTOTYPES
  **********************/
 
 int GC9A01_init(void);
-void GC9A01_flush(struct _disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
+void GC9A01_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
 void GC9A01_fill(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t color);
 void GC9A01_map(int32_t x1, int32_t y1, int32_t x2, int32_t y2, lv_color_t * color_p);
 void GC9A01_setRotation(uint8_t m);
@@ -86,3 +73,4 @@ void GC9A01_drawFastVLine(int16_t x, int16_t y, int16_t w, uint16_t color);
 #endif
 
 #endif /* GC9A01_H */
+

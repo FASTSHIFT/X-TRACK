@@ -2,19 +2,21 @@
 #include "lvgl/lvgl.h"
 #include "HAL/HAL.h"
 
-static lv_disp_drv_t* disp_drv_p;
+#define SCREEN_BUFFER_SIZE (CONFIG_SCREEN_HOR_RES * CONFIG_SCREEN_VER_RES)
 
-static void disp_flush_cb(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
+static lv_disp_drv_t* disp_drv_p = NULL;
+
+static void disp_flush_cb(lv_disp_drv_t* disp, const lv_area_t* area, lv_color_t* color_p)
 {
     disp_drv_p = disp;
 
     const lv_coord_t w = (area->x2 - area->x1 + 1);
     const lv_coord_t h = (area->y2 - area->y1 + 1);
-    const uint32_t size = w * h;
+    const uint32_t len = w * h;
 
     HAL::Display_SetAddrWindow(area->x1, area->y1, area->x2, area->y2);
 
-    HAL::Display_SendPixels((uint16_t*)color_p, size);
+    HAL::Display_SendPixels((uint16_t*)color_p, len);
 }
 
 static void disp_send_finish_callback()
@@ -31,11 +33,11 @@ void lv_port_disp_init()
 {
     HAL::Display_SetSendFinishCallback(disp_send_finish_callback);
 
-    static lv_color_t lv_disp_buf1[CONFIG_SCREEN_BUFFER_SIZE];
-    static lv_color_t lv_disp_buf2[CONFIG_SCREEN_BUFFER_SIZE];
+    static lv_color_t lv_disp_buf1[SCREEN_BUFFER_SIZE];
+    static lv_color_t lv_disp_buf2[SCREEN_BUFFER_SIZE];
 
     static lv_disp_draw_buf_t disp_buf;
-    lv_disp_draw_buf_init(&disp_buf, lv_disp_buf1, lv_disp_buf2, CONFIG_SCREEN_BUFFER_SIZE);
+    lv_disp_draw_buf_init(&disp_buf, lv_disp_buf1, lv_disp_buf2, SCREEN_BUFFER_SIZE);
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;

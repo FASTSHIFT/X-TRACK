@@ -407,3 +407,21 @@
 * 10.main.cpp复用
 * 11.修复[TscanCode](https://github.com/Tencent/TscanCode)静态扫描出来的漏洞
 * 12.添加Linux移植
+
+## [v2.7] - 2022-6-3
+* 1.Adafruit_ST7789: 添加多分辨率支持; 去除drawRGBBitmap(); 删除Adafruit_ST7789V2
+* 2.AT32F403A: 更新Platform; 更新链接脚本，将lv_tlsf和font_bahnschrift_13载入RAM提升访问性能
+* 3.AT32F435: 更新Platform
+* 4.lv_conf.h: 同步主线配置; 使能LV_COLOR_SCREEN_TRANSP; WIN平台 GetTickCount() -> timeGetTime()
+* 5.lvgl: 同步 commit 941d95b0491a1e78fadeeb5ea8aa552f82669336
+* 6.App.cpp: 自动创建未设置的默认group; 设置scr的透明度和颜色; 添加rootStyle
+* 7.PageManager: 添加PageBase.cpp; 规范成员变量命名; 添加Replace()方法; 支持设置RootDefaultStyle; 修复PM_Drag不生效
+* 8.Pages/_Tempalte: 添加LOG输出
+* 9.Pages/Dialplate: 同步PageManager更新
+* 10.Pages/LiveMap: 同步PageManager更新
+* 11.Pages/Startup: 同步PageManager更新; 使用Replace()方法替换Push()方法，支持BackHome()
+* 12.Pages/SystemInfos: 同步PageManager更新; 优化item自动添加AttachEvent()
+* 13.ResourcePool: 移除无用的gps_pin图片
+* 14.lv_anim_label: lv_anim_label_set_text() -> lv_anim_label_push_text()
+* 15.lv_img_png: 添加多色深支持
+* 16.USER: 添加benchmark.inc，方便测试lvgl以及对比性能

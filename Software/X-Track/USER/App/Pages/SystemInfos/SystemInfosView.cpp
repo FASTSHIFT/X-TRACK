@@ -7,10 +7,6 @@ using namespace Page;
 
 void SystemInfosView::Create(lv_obj_t* root)
 {
-    lv_obj_remove_style_all(root);
-    lv_obj_set_size(root, LV_HOR_RES, LV_VER_RES);
-    lv_obj_set_style_bg_color(root, lv_color_black(), 0);
-    lv_obj_set_style_bg_opa(root, LV_OPA_COVER, 0);
     lv_obj_set_style_pad_ver(root, ITEM_PAD, 0);
 
     lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
@@ -139,16 +135,15 @@ void SystemInfosView::Group_Init()
     lv_group_set_wrap(group, true);
     lv_group_set_focus_cb(group, onFocus);
 
-    lv_group_add_obj(group, ui.system.icon);
-    lv_group_add_obj(group, ui.storage.icon);
-    lv_group_add_obj(group, ui.battery.icon);
-    lv_group_add_obj(group, ui.rtc.icon);
-    lv_group_add_obj(group, ui.imu.icon);
-    lv_group_add_obj(group, ui.mag.icon);
-    lv_group_add_obj(group, ui.gps.icon);
-    lv_group_add_obj(group, ui.sport.icon);
+    item_t* item_grp = ((item_t*)&ui);
 
-    lv_group_focus_obj(ui.sport.icon);
+    /* Reverse adding to group makes encoder operation more comfortable */
+    for (int i = sizeof(ui) / sizeof(item_t) - 1; i >= 0; i--)
+    {
+        lv_group_add_obj(group, item_grp[i].icon);
+    }
+
+    lv_group_focus_obj(item_grp[0].icon);
 }
 
 void SystemInfosView::Delete()
@@ -232,6 +227,7 @@ void SystemInfosView::Item_Create(
 )
 {
     lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_enable_style_refresh(false);
     lv_obj_remove_style_all(cont);
     lv_obj_set_width(cont, 220);
 
@@ -240,6 +236,7 @@ void SystemInfosView::Item_Create(
 
     /* icon */
     lv_obj_t* icon = lv_obj_create(cont);
+    lv_obj_enable_style_refresh(false);
     lv_obj_remove_style_all(icon);
     lv_obj_clear_flag(icon, LV_OBJ_FLAG_SCROLLABLE);
 
@@ -256,14 +253,17 @@ void SystemInfosView::Item_Create(
     );
 
     lv_obj_t* img = lv_img_create(icon);
+    lv_obj_enable_style_refresh(false);
     lv_img_set_src(img, ResourcePool::GetImage(img_src));
 
     lv_obj_t* label = lv_label_create(icon);
+    lv_obj_enable_style_refresh(false);
     lv_label_set_text(label, name);
     item->icon = icon;
 
     /* infos */
     label = lv_label_create(cont);
+    lv_obj_enable_style_refresh(false);
     lv_label_set_text(label, infos);
     lv_obj_add_style(label, &style.info, 0);
     lv_obj_align(label, LV_ALIGN_LEFT_MID, 75, 0);
@@ -271,12 +271,14 @@ void SystemInfosView::Item_Create(
 
     /* datas */
     label = lv_label_create(cont);
+    lv_obj_enable_style_refresh(false);
     lv_label_set_text(label, "-");
     lv_obj_add_style(label, &style.data, 0);
     lv_obj_align(label, LV_ALIGN_CENTER, 60, 0);
     item->labelData = label;
 
     lv_obj_move_foreground(icon);
+    lv_obj_enable_style_refresh(true);
 
     /* get real max height */
     lv_obj_update_layout(item->labelInfo);

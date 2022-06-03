@@ -23,6 +23,8 @@ extern "C" {
 
 #if USE_MONITOR || USE_SDL
 
+#include "sdl_common.h"
+
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
 #include "lvgl.h"
 #else

@@ -20,32 +20,52 @@
 /*********************
  *      DEFINES
  *********************/
-#define GC9A01_BAUD      		2000000    /*< 2,5 MHz (400 ns)*/
+#ifndef GC9A01_XSTART
+#define GC9A01_XSTART   	0
+#endif
+#ifndef GC9A01_YSTART
+#define GC9A01_YSTART   	0
+#endif
 
-#define GC9A01_CMD_MODE     0
-#define GC9A01_DATA_MODE    1
+#define GC9A01_CMD_MODE		0
+#define GC9A01_DATA_MODE     	1
 
-#define GC9A01_HOR_RES  		240
-#define GC9A01_VER_RES  		240
+#define GC9A01_HOR_RES  	240
+#define GC9A01_VER_RES  	240
 
 /* GC9A01 Commands that we know of.  Limited documentation */
-#define GC9A01_INVOFF	0x20
-#define GC9A01_INVON	0x21
-#define GC9A01_DISPON	0x29
-#define GC9A01_CASET	0x2A
-#define GC9A01_RASET	0x2B
-#define GC9A01_RAMWR	0x2C
-#define GC9A01_COLMOD	0x3A
-#define GC9A01_MADCTL	0x36
-#define GC9A01_MADCTL_MY  0x80
-#define GC9A01_MADCTL_MX  0x40
-#define GC9A01_MADCTL_MV  0x20
-#define GC9A01_MADCTL_RGB 0x00
+#define GC9A01_INVOFF		0x20
+#define GC9A01_INVON		0x21
+#define GC9A01_DISPON		0x29
+#define GC9A01_CASET		0x2A
+#define GC9A01_RASET		0x2B
+#define GC9A01_RAMWR		0x2C
+#define GC9A01_COLMOD		0x3A
+#define GC9A01_MADCTL		0x36
+#define GC9A01_MADCTL_MY  	0x80
+#define GC9A01_MADCTL_MX  	0x40
+#define GC9A01_MADCTL_MV  	0x20
+#define GC9A01_MADCTL_RGB 	0x00
 #define GC9A01_DISFNCTRL	0xB6
 
 /**********************
  *      TYPEDEFS
  **********************/
+
+/* Init script function */
+struct GC9A01_function {
+	uint16_t cmd;
+	uint16_t data;
+};
+
+/* Init script commands */
+enum GC9A01_cmd {
+	GC9A01_START,
+	GC9A01_END,
+	GC9A01_CMD,
+	GC9A01_DATA,
+	GC9A01_DELAY
+};
 
 /**********************
  *  STATIC PROTOTYPES
@@ -143,10 +163,10 @@ static struct GC9A01_function GC9A01_cfg_script[] = {
 	{ GC9A01_CMD, 0xC9}, // Power Control 4
 	{ GC9A01_DATA, 0x22},
 
-	{ GC9A01_CMD, 0xBE}, 
+	{ GC9A01_CMD, 0xBE},
 	{ GC9A01_DATA, 0x11},
 
-	{ GC9A01_CMD, 0xE1}, 
+	{ GC9A01_CMD, 0xE1},
 	{ GC9A01_DATA, 0x10},
 	{ GC9A01_DATA, 0x0E},
 
@@ -330,7 +350,7 @@ static int GC9A01_data_array(uint8_t *buf, uint32_t len)
 	for (uint32_t lp = 0; lp < len; lp++, pt++)
 	{
 		LV_DRV_DISP_SPI_WR_BYTE(*pt);
-	} 
+	}
 	return 0;
 }
 
@@ -409,7 +429,7 @@ void GC9A01_drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color) {
   GC9A01_set_addr_win(x, y, x, y + h - 1);
 
   uint8_t hi = color >> 8, lo = color;
-    
+
   while (h--) {
     GC9A01_data(hi);
     GC9A01_data(lo);
@@ -510,7 +530,7 @@ void GC9A01_setRotation(uint8_t m) {
      break;
   case 2:
      GC9A01_data(GC9A01_MADCTL_RGB);
- 
+
     //  _xstart = _colstart;
     //  _ystart = _rowstart;
      break;
@@ -529,9 +549,6 @@ void GC9A01_setRotation(uint8_t m) {
  */
 int GC9A01_init(void)
 {
-  LV_DRV_DISP_SPI_FREQ(GC9A01_SPI_BAUD);
-  LV_DRV_DISP_SPI_MODE(GC9A01_SPI_BITS, GC9A01_SPI_MODE);
-
 	GC9A01_hard_reset();
 	GC9A01_run_cfg_script();
 
@@ -549,7 +566,7 @@ static void GC9A01_set_addr_win(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t 
 
   GC9A01_command(GC9A01_CASET); // Column addr set
   GC9A01_data(x_start >> 8);
-  GC9A01_data(x_start & 0xFF);     // XSTART 
+  GC9A01_data(x_start & 0xFF);     // XSTART
   GC9A01_data(x_end >> 8);
   GC9A01_data(x_end & 0xFF);     // XEND
 
@@ -562,14 +579,14 @@ static void GC9A01_set_addr_win(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t 
   GC9A01_command(GC9A01_RAMWR);
 }
 
-void GC9A01_flush(struct _disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t *color_p)
+void GC9A01_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t *color_p)
 {
   LV_DRV_DISP_SPI_CS(0); // Listen to us
 
   GC9A01_set_addr_win(area->x1, area->y1, area->x2, area->y2);
   int32_t len = (area->x2 - area->x1 + 1) * (area->y2 - area->y1 + 1) * 2;
 
-	LV_DRV_DISP_CMD_DATA(GC9A01_DATA_MODE);
+  LV_DRV_DISP_CMD_DATA(GC9A01_DATA_MODE);
   LV_DRV_DISP_SPI_WR_ARRAY((char*)color_p, len);
 
   LV_DRV_DISP_SPI_CS(1);
@@ -577,3 +594,4 @@ void GC9A01_flush(struct _disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
 }
 
 #endif
+

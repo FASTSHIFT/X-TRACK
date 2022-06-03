@@ -387,6 +387,11 @@
               <FileType>8</FileType>
               <FilePath>..\USER\main.cpp</FilePath>
             </File>
+            <File>
+              <FileName>benchmark.inc</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\benchmark.inc</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2233,9 +2238,9 @@
           </GroupOption>
           <Files>
             <File>
-              <FileName>PageBase.h</FileName>
+              <FileName>PageManager.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageBase.h</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PageManager.h</FilePath>
             </File>
             <File>
               <FileName>PageFactory.h</FileName>
@@ -2243,9 +2248,19 @@
               <FilePath>..\USER\App\Utils\PageManager\PageFactory.h</FilePath>
             </File>
             <File>
-              <FileName>PageManager.h</FileName>
+              <FileName>PageBase.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PageManager.h</FilePath>
+              <FilePath>..\USER\App\Utils\PageManager\PageBase.h</FilePath>
+            </File>
+            <File>
+              <FileName>PageBase.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\USER\App\Utils\PageManager\PageBase.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>PM_Log.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\App\Utils\PageManager\PM_Log.h</FilePath>
             </File>
             <File>
               <FileName>PM_Anim.cpp</FileName>
@@ -2261,11 +2276,6 @@
               <FileName>PM_Drag.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\USER\App\Utils\PageManager\PM_Drag.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>PM_Log.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\App\Utils\PageManager\PM_Log.h</FilePath>
             </File>
             <File>
               <FileName>PM_Router.cpp</FileName>
@@ -2933,7 +2943,7 @@
             <File>
               <FileName>HAL_Display.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Display.cpp</FilePath>
+              <FilePath>.\Platform\HAL\HAL_Display.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_Encoder.cpp</FileName>
@@ -2973,7 +2983,7 @@
             <File>
               <FileName>HAL_Power.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>..\USER\HAL\HAL_Power.cpp</FilePath>
+              <FilePath>.\Platform\HAL\HAL_Power.cpp</FilePath>
             </File>
             <File>
               <FileName>HAL_SD_CARD.cpp</FileName>
@@ -3675,6 +3685,11 @@
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw.c</FilePath>
             </File>
             <File>
+              <FileName>lv_draw_transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\lv_draw_transform.c</FilePath>
+            </File>
+            <File>
               <FileName>lv_draw_sw.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw.c</FilePath>
@@ -3718,6 +3733,61 @@
               <FileName>lv_draw_sw_gradient.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_gradient.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_draw_sw_transform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\src\draw\sw\lv_draw_sw_transform.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lvgl/demos/benchmark</GroupName>
+          <Files>
+            <File>
+              <FileName>lv_demo_benchmark.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\lv_demo_benchmark.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_alpha16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_alpha16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_argb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_argb.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_chroma_keyed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_chroma_keyed.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_indexed16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_indexed16.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_benchmark_cogwheel_rgb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\img_benchmark_cogwheel_rgb.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_bechmark_montserrat_12_compr_az.c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_12_compr_az.c.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_bechmark_montserrat_16_compr_az.c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_16_compr_az.c.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_font_bechmark_montserrat_28_compr_az.c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Simulator\LVGL.Simulator\lvgl\demos\benchmark\assets\lv_font_bechmark_montserrat_28_compr_az.c.c</FilePath>
             </File>
           </Files>
         </Group>

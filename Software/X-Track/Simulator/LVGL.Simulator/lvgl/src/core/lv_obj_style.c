@@ -51,6 +51,7 @@ static bool trans_del(lv_obj_t * obj, lv_part_t part, lv_style_prop_t prop, tran
 static void trans_anim_cb(void * _tr, int32_t v);
 static void trans_anim_start_cb(lv_anim_t * a);
 static void trans_anim_ready_cb(lv_anim_t * a);
+static lv_layer_type_t calculate_layer_type(lv_obj_t * obj);
 static void fade_anim_cb(void * obj, int32_t v);
 static void fade_in_anim_ready(lv_anim_t * a);
 
@@ -176,6 +177,7 @@ void lv_obj_refresh_style(lv_obj_t * obj, lv_style_selector_t selector, lv_style
     bool is_layout_refr = lv_style_prop_has_flag(prop, LV_STYLE_PROP_LAYOUT_REFR);
     bool is_ext_draw = lv_style_prop_has_flag(prop, LV_STYLE_PROP_EXT_DRAW);
     bool is_inherit = lv_style_prop_has_flag(prop, LV_STYLE_PROP_INHERIT);
+    bool is_layer_refr = lv_style_prop_has_flag(prop, LV_STYLE_PROP_LAYER_REFR);
 
     if(is_layout_refr) {
         if(part == LV_PART_ANY ||
@@ -189,6 +191,16 @@ void lv_obj_refresh_style(lv_obj_t * obj, lv_style_selector_t selector, lv_style
     if((part == LV_PART_ANY || part == LV_PART_MAIN) && (prop == LV_STYLE_PROP_ANY || is_layout_refr)) {
         lv_obj_t * parent = lv_obj_get_parent(obj);
         if(parent) lv_obj_mark_layout_as_dirty(parent);
+    }
+
+    /*Cache the layer type*/
+    if((part == LV_PART_ANY || part == LV_PART_MAIN) && is_layer_refr) {
+        lv_layer_type_t layer_type = calculate_layer_type(obj);
+        if(obj->spec_attr) obj->spec_attr->layer_type = layer_type;
+        else if(layer_type != LV_LAYER_TYPE_NONE) {
+            lv_obj_allocate_spec_attr(obj);
+            obj->spec_attr->layer_type = layer_type;
+        }
     }
 
     if(prop == LV_STYLE_PROP_ANY || is_ext_draw) {
@@ -241,7 +253,12 @@ lv_style_value_t lv_obj_get_style_prop(const lv_obj_t * obj, lv_part_t part, lv_
                 cls = cls->base_class;
             }
 
-            value_act.num = prop == LV_STYLE_WIDTH ? cls->width_def : cls->height_def;
+            if(cls) {
+                value_act.num = prop == LV_STYLE_WIDTH ? cls->width_def : cls->height_def;
+            }
+            else {
+                value_act.num = 0;
+            }
         }
         else {
             value_act = lv_style_prop_get_default(prop);
@@ -566,12 +583,11 @@ static bool get_prop_core(const lv_obj_t * obj, lv_part_t part, lv_style_prop_t 
     }
 
     for(; i < obj->style_cnt; i++) {
+        if((obj->styles[i].style->has_group & group) == 0) continue;
         _lv_obj_style_t * obj_style = &obj->styles[i];
         lv_part_t part_act = lv_obj_style_get_selector_part(obj->styles[i].selector);
         lv_state_t state_act = lv_obj_style_get_selector_state(obj->styles[i].selector);
         if(part_act != part) continue;
-
-        if((obj_style->style->has_group & group) == 0) continue;
 
         /*Be sure the style not specifies other state than the requested.
          *E.g. For HOVER+PRESS object state, HOVER style only is OK, but HOVER+FOCUS style is not*/
@@ -804,6 +820,18 @@ static void trans_anim_ready_cb(lv_anim_t * a)
             }
         }
     }
+}
+
+static lv_layer_type_t calculate_layer_type(lv_obj_t * obj)
+{
+    if(lv_obj_get_style_transform_angle(obj, 0) != 0) return LV_LAYER_TYPE_TRANSFORM;
+    if(lv_obj_get_style_transform_zoom(obj, 0) != 256) return LV_LAYER_TYPE_TRANSFORM;
+    if(lv_obj_get_style_opa(obj, 0) != LV_OPA_COVER) return LV_LAYER_TYPE_SIMPLE;
+
+#if LV_DRAW_COMPLEX
+    if(lv_obj_get_style_blend_mode(obj, 0) != LV_BLEND_MODE_NORMAL) return LV_LAYER_TYPE_SIMPLE;
+#endif
+    return LV_LAYER_TYPE_NONE;
 }
 
 static void fade_anim_cb(void * obj, int32_t v)

@@ -415,6 +415,9 @@
     <Filter Include="lvgl\src\extra\libs\png">
       <UniqueIdentifier>{59c3430e-c531-44b5-bb50-2116dbb18ecd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lvgl\examples\anim">
+      <UniqueIdentifier>{effdcfb6-96d7-4c48-b546-18ac6c30c910}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h">
@@ -1031,6 +1034,9 @@
     </ClInclude>
     <ClInclude Include="lvgl\src\extra\libs\lv_libs.h">
       <Filter>lvgl\src\extra\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="lvgl\examples\anim\lv_example_anim.h">
+      <Filter>lvgl\examples\anim</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1730,9 +1736,6 @@
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_battery.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\USER\App\Resource\Image\img_src_gps_pin.c">
-      <Filter>App\Resource\Image</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\USER\App\Resource\Image\img_src_locate.c">
       <Filter>App\Resource\Image</Filter>
     </ClCompile>
@@ -2083,6 +2086,27 @@
     </ClCompile>
     <ClCompile Include="lvgl\src\extra\libs\png\lv_png.c">
       <Filter>lvgl\src\extra\libs\png</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\USER\App\Utils\PageManager\PageBase.cpp">
+      <Filter>App\Utils\PageManager</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\lv_draw_transform.c">
+      <Filter>lvgl\src\draw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\src\draw\sw\lv_draw_sw_transform.c">
+      <Filter>lvgl\src\draw\sw</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_1.c">
+      <Filter>lvgl\examples\anim</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_2.c">
+      <Filter>lvgl\examples\anim</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_3.c">
+      <Filter>lvgl\examples\anim</Filter>
+    </ClCompile>
+    <ClCompile Include="lvgl\examples\anim\lv_example_anim_timeline_1.c">
+      <Filter>lvgl\examples\anim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2775,6 +2799,21 @@
     </None>
     <None Include="lv_fs_if\README.md">
       <Filter>lv_fs_if</Filter>
+    </None>
+    <None Include="lvgl\examples\anim\index.rst">
+      <Filter>lvgl\examples\anim</Filter>
+    </None>
+    <None Include="lvgl\examples\anim\lv_example_anim_1.py">
+      <Filter>lvgl\examples\anim</Filter>
+    </None>
+    <None Include="lvgl\examples\anim\lv_example_anim_2.py">
+      <Filter>lvgl\examples\anim</Filter>
+    </None>
+    <None Include="lvgl\examples\anim\lv_example_anim_3.py">
+      <Filter>lvgl\examples\anim</Filter>
+    </None>
+    <None Include="lvgl\examples\anim\lv_example_anim_timeline_1.py">
+      <Filter>lvgl\examples\anim</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

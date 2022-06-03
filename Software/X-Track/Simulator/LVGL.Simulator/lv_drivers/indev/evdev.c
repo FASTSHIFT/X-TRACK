@@ -148,11 +148,12 @@ void evdev_read(lv_indev_drv_t * drv, lv_indev_data_t * data)
                                 #else
                                         evdev_root_y = in.value;
                                 #endif
-            else if(in.code == ABS_MT_TRACKING_ID)
+            else if(in.code == ABS_MT_TRACKING_ID) {
                                 if(in.value == -1)
                                     evdev_button = LV_INDEV_STATE_REL;
                                 else if(in.value == 0)
                                     evdev_button = LV_INDEV_STATE_PR;
+            }
         } else if(in.type == EV_KEY) {
             if(in.code == BTN_MOUSE || in.code == BTN_TOUCH) {
                 if(in.value == 0)

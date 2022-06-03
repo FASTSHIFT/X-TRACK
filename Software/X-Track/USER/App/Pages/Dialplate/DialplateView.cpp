@@ -8,9 +8,6 @@ using namespace Page;
 
 void DialplateView::Create(lv_obj_t* root)
 {
-    lv_obj_remove_style_all(root);
-    lv_obj_set_size(root, LV_HOR_RES, LV_VER_RES);
-
     BottomInfo_Create(root);
     TopInfo_Create(root);
     BtnCont_Create(root);

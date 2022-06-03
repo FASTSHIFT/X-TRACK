@@ -156,6 +156,15 @@ menu "LVGL configuration"
                     radiuses are saved).
                     Set to 0 to disable caching.
 
+            config LV_LAYER_SIMPLE_BUF_SIZE
+                int "Optimal size to buffer the widget with opacity"
+                default 24576
+                help
+                    "Simple layers" are used when a widget has `style_opa < 255`
+                    to buffer the widget into a layer and blend it as an image
+                    with the given opacity. Note that `bg_opa`, `text_opa` etc
+                    don't require buffering into layer.
+
             config LV_IMG_CACHE_DEF_SIZE
                 int "Default image cache size. 0 to disable caching."
                 default 0
@@ -205,17 +214,14 @@ menu "LVGL configuration"
         endmenu
 
         menu "GPU"
-            config LV_USE_EXTERNAL_RENDERER
-                bool
-                
             config LV_USE_GPU_ARM2D
                 bool "Enable Arm's 2D image processing library (Arm-2D) for all Cortex-M processors."
-            config LV_USE_GPU_STM32_DMA2D
-                bool "Enable STM32 DMA2D (aka Chrom Art) GPU."
                 default n
                 help
                     Must deploy arm-2d library to your project and add include PATH for "arm_2d.h".
                 
+            config LV_USE_GPU_STM32_DMA2D
+                bool "Enable STM32 DMA2D (aka Chrom Art) GPU."
             config LV_GPU_DMA2D_CMSIS_INCLUDE
                 string "include path of CMSIS header of target processor"
                 depends on LV_USE_GPU_STM32_DMA2D
@@ -224,6 +230,16 @@ menu "LVGL configuration"
                     Must be defined to include path of CMSIS header of target processor
                     e.g. "stm32f769xx.h" or "stm32f429xx.h"
 
+            config LV_USE_GPU_SWM341_DMA2D
+                bool "Enable SWM341 DMA2D GPU."
+            config LV_GPU_SWM341_DMA2D_INCLUDE
+                string "include path of CMSIS header of target processor"
+                depends on LV_USE_GPU_SWM341_DMA2D
+                default "SWM341.h"
+                help
+                    Must be defined to include path of CMSIS header of target processor
+                    e.g. "SWM341.h"
+                    
             config LV_USE_GPU_NXP_PXP
                 bool "Use NXP's PXP GPU iMX RTxxx platforms."
             config LV_USE_GPU_NXP_PXP_AUTO_INIT
@@ -244,7 +260,6 @@ menu "LVGL configuration"
 
             config LV_USE_GPU_SDL
                 bool "Use SDL renderer API"
-                select LV_USE_EXTERNAL_RENDERER
                 default n
             config LV_GPU_SDL_INCLUDE_PATH
                 string "include path of SDL header"
@@ -380,7 +395,7 @@ menu "LVGL configuration"
                     bool "Left middle"
                 config LV_PERF_MONITOR_ALIGN_RIGHT_MID
                     bool "Right middle"
-                config LV_PERF_MONITOR_ALIGN_BOTTOM_CENTER
+                config LV_PERF_MONITOR_ALIGN_CENTER
                     bool "Center"
             endchoice
 
@@ -409,7 +424,7 @@ menu "LVGL configuration"
                     bool "Left middle"
                 config LV_MEM_MONITOR_ALIGN_RIGHT_MID
                     bool "Right middle"
-                config LV_MEM_MONITOR_ALIGN_BOTTOM_CENTER
+                config LV_MEM_MONITOR_ALIGN_CENTER
                     bool "Center"
             endchoice
 
@@ -821,6 +836,13 @@ menu "LVGL configuration"
         config LV_USE_MSGBOX
             bool "Msgbox."
             default y if !LV_CONF_MINIMAL
+        config LV_USE_SPAN
+            bool "span"
+            default y if !LV_CONF_MINIMAL
+        config LV_SPAN_SNIPPET_STACK_SIZE
+            int "Maximum number of span descriptor"
+            default 64
+            depends on LV_USE_SPAN
         config LV_USE_SPINBOX
             bool "Spinbox."
             default y if !LV_CONF_MINIMAL
@@ -836,13 +858,6 @@ menu "LVGL configuration"
         config LV_USE_WIN
             bool "Win"
             default y if !LV_CONF_MINIMAL
-        config LV_USE_SPAN
-            bool "span"
-            default y if !LV_CONF_MINIMAL
-        config LV_SPAN_SNIPPET_STACK_SIZE
-            int "Maximum number of span descriptor"
-            default 64
-            depends on LV_USE_SPAN
     endmenu
 
     menu "Themes"
@@ -881,7 +896,8 @@ menu "LVGL configuration"
         config LV_USE_FS_STDIO
             bool "File system on top of stdio API"
         config LV_FS_STDIO_LETTER
-            string "Set an upper cased letter on which the drive will accessible (e.g. 'A' i.e. 65 )"
+            int "Set an upper cased letter on which the drive will accessible (e.g. 'A' i.e. 65 )"
+            default 0
             depends on LV_USE_FS_STDIO
         config LV_FS_STDIO_PATH
             string "Set the working directory"
@@ -984,6 +1000,14 @@ menu "LVGL configuration"
         config LV_USE_MONKEY
             bool "Enable Monkey test"
             default n
+
+        config LV_USE_GRIDNAV
+            bool "Enable grid navigation"
+            default n 
+
+        config LV_USE_FRAGMENT
+            bool "Enable lv_obj fragment"
+            default n 
 
         config LV_USE_IMGFONT
             bool "draw img in label or span obj"

@@ -175,7 +175,7 @@ static void lv_anim_label_start_anim(
     lv_anim_start(&a);
 }
 
-void lv_anim_label_set_text(lv_obj_t * obj, const char * txt)
+void lv_anim_label_push_text(lv_obj_t * obj, const char * txt)
 {
     LV_ASSERT_OBJ(obj, MY_CLASS);
 

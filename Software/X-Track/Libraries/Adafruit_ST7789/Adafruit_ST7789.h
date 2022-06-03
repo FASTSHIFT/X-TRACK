@@ -4,11 +4,21 @@
 #include "Adafruit_GFX_Library/Adafruit_GFX.h"
 #include "SPI.h"
 
+#define ADAFRUIT_ST7789_SCREEN_WIDTH_DEFAULT    240
+#define ADAFRUIT_ST7789_SCREEN_HEIGHT_DEFAULT   240
+
 class Adafruit_ST7789 : public Adafruit_GFX
 {
 public:
-    Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, SPIClass* spix = &SPI);
-    Adafruit_ST7789(uint8_t cs, uint8_t dc, uint8_t rst, uint8_t clk, uint8_t mosi);
+    Adafruit_ST7789(
+        uint8_t cs, uint8_t dc, uint8_t rst,
+        SPIClass* spix = &SPI, 
+        int16_t w = ADAFRUIT_ST7789_SCREEN_WIDTH_DEFAULT, int16_t h = ADAFRUIT_ST7789_SCREEN_HEIGHT_DEFAULT
+    );
+    Adafruit_ST7789(
+        uint8_t cs, uint8_t dc, uint8_t rst, uint8_t sck, uint8_t mosi,
+        int16_t w = ADAFRUIT_ST7789_SCREEN_WIDTH_DEFAULT, int16_t h = ADAFRUIT_ST7789_SCREEN_HEIGHT_DEFAULT
+    );
 
     typedef enum
     {
@@ -35,12 +45,11 @@ public:
     virtual void fillScreen(uint16_t color);
     virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
     virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
-    virtual void drawRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h);
     virtual void drawFastRGBBitmap(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h);
     virtual void pushColor(uint16_t color);
 
 private:
-    uint8_t rst_pin, cs_pin, dc_pin, sck_pin, mosi_pin;
+    uint8_t cs_pin, dc_pin, rst_pin, sck_pin, mosi_pin;
     SPIClass* spi;
 
 #if defined(__STM32__)

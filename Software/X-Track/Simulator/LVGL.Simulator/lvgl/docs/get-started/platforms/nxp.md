@@ -1,7 +1,3 @@
-```eval_rst
-.. include:: /header.rst
-:github_url: |github_link_base|/get-started/platforms/nxp.md
-```
 # NXP
 NXP has integrated LVGL into the MCUXpresso SDK packages for several of their general
 purpose and crossover microcontrollers, allowing easy evaluation and migration into your
