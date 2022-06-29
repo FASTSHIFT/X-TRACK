@@ -25,7 +25,7 @@
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/6.png)
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/MapConverter%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/7.png)
 
-## 5.拷贝地图文件至SD卡根目录
+## 5.拷贝"MAP"文件夹至SD卡根目录
 ### 注意：
  * SD卡需要格式化为**FAT32格式**。
  * SD卡插入开机以后，会在第一次关机时自动创建`SystemSave.json`文件，其中：
