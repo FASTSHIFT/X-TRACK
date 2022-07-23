@@ -11,7 +11,11 @@
 
 ![IMG_20210816_201213](https://user-images.githubusercontent.com/26767803/129562550-5de4f4b6-f96c-481c-9a4e-b2470f7b3477.jpg)
 
-* VS模拟器: 使用**Visual Studio 2019**编译，配置为**Release x86**。在`App/Common/HAL/HAL_GPS.cpp`里修改`CONFIG_TRACK_VIRTUAL_GPX_FILE_PATH`宏定义指定被读取的GPX文件的路径。
+## VS模拟器配置
+* 编译：使用`Visual Studio 2019`编译，配置为`Release` `x86`模式，`Debug`模式需要额外安装[ASAN](https://docs.microsoft.com/en-us/cpp/sanitizers/asan?view=msvc-170)插件。
+* 文件配置：
+
+![images](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E6%A8%A1%E6%8B%9F%E5%99%A8%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE.png)
 
 ## 系统配置文件
 系统会在根目录下自动生成`SystemSave.json`的文件，用于储存和配置系统参数:
