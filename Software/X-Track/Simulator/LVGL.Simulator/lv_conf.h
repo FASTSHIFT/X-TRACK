@@ -25,10 +25,14 @@
  *====================*/
 
 /*Color depth: 1 (1 byte per pixel), 8 (RGB332), 16 (RGB565), 32 (ARGB8888)*/
+#ifndef LV_COLOR_DEPTH
 #define LV_COLOR_DEPTH 16
+#endif
 
 /*Swap the 2 bytes of RGB565 color. Useful if the display has an 8-bit interface (e.g. SPI)*/
+#ifndef LV_COLOR_16_SWAP
 #define LV_COLOR_16_SWAP 1
+#endif
 
 /*Enable features to draw on transparent background.
  *It's required if opa, and transform_* style properties are used.
