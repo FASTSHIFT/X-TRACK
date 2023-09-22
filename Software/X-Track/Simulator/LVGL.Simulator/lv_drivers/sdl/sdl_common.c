@@ -4,6 +4,8 @@
 
 #include "sdl_common.h"
 
+#if USE_MONITOR || USE_SDL
+
 /*********************
  *      DEFINES
  *********************/
@@ -262,4 +264,4 @@ uint32_t keycode_to_ctrl_key(SDL_Keycode sdl_key)
     }
 }
 
-
+#endif /* USE_MONITOR || USE_SDL */
