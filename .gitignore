@@ -77,3 +77,7 @@
 
 # To explicitly override the above, define any exceptions here; e.g.:
 # !my_customized_scatter_file.sct
+
+# Other files
+xtrack
+MAP/
