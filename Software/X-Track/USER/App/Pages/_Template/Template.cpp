@@ -14,14 +14,14 @@ Template::~Template()
 
 void Template::onCustomAttrConfig()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
     SetCustomCacheEnable(true);
     SetCustomLoadAnimType(PageManager::LOAD_ANIM_OVER_BOTTOM, 1000, lv_anim_path_bounce);
 }
 
 void Template::onViewLoad()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
     View.Create(_root);
     lv_label_set_text(View.ui.labelTitle, _Name);
 
@@ -32,12 +32,12 @@ void Template::onViewLoad()
 
 void Template::onViewDidLoad()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
 }
 
 void Template::onViewWillAppear()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
     Param_t param;
     param.color = lv_color_white();
     param.time = 1000;
@@ -51,28 +51,28 @@ void Template::onViewWillAppear()
 
 void Template::onViewDidAppear()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
 }
 
 void Template::onViewWillDisappear()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
 }
 
 void Template::onViewDidDisappear()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
     lv_timer_del(timer);
 }
 
 void Template::onViewUnload()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
 }
 
 void Template::onViewDidUnload()
 {
-    LV_LOG_USER(__func__);
+    LV_LOG_USER("begin");
 }
 
 void Template::AttachEvent(lv_obj_t* obj)
