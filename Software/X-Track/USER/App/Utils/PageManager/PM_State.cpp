@@ -188,7 +188,6 @@ PageBase::State_t PageManager::StateWillDisappearExecute(PageBase* base)
 PageBase::State_t PageManager::StateDidDisappearExecute(PageBase* base)
 {
     PM_LOG_INFO("Page(%s) state did disappear", base->_Name);
-    lv_obj_add_flag(base->_root, LV_OBJ_FLAG_HIDDEN);
     base->onViewDidDisappear();
     if (base->priv.IsCached)
     {

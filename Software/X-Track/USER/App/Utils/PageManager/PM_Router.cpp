@@ -399,6 +399,17 @@ void PageManager::onSwitchAnimFinish(lv_anim_t* a)
     {
         manager->SwitchAnimTypeUpdate(manager->_PageCurrent);
     }
+
+    LoadAnim_t animType = GetCurrentLoadAnimType();
+    PageBase::State_t state = base->priv.State;
+
+    if (animType == LOAD_ANIM_FADE_ON)
+    {
+        if (state == PageBase::PAGE_STATE_WILL_APPEAR) {
+            lv_obj_add_flag(base->_root, 
+                LV_OBJ_FLAG_HIDDEN);
+        }
+    }
 }
 
 /**
