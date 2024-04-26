@@ -270,7 +270,7 @@ void TrackPointFilter::GetVerticalLine(Line_t* verLine, const Line_t* oriLine, c
 double TrackPointFilter::GetOffset(const Line_t* line, const Point_t* point)
 {
     double temp = line->a * point->x + line->b * point->y + line->c;
-    double offset = std::abs(temp) * QuickSort(SQ(line->a) + SQ(line->b));
+    double offset = std::abs(temp) * QuickSqrt(SQ(line->a) + SQ(line->b));
     return offset;
 }
 
@@ -294,7 +294,7 @@ bool TrackPointFilter::GetIsPointInLine(const Line_t* line, const Point_t* point
     return std::abs(result) < FLOAT_0;
 }
 
-double TrackPointFilter::QuickSort(double num)
+double TrackPointFilter::QuickSqrt(double num)
 {
     long i;
     float x2, y;

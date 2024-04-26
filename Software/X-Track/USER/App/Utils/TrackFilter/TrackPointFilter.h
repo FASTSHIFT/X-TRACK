@@ -90,7 +90,7 @@ private:
     void DumpLine(const char* name, const Line_t* line);
     void DumpPoint(const char* name, const Point_t* point);
     void OutputPoint(const Point_t* point);
-    double QuickSort(double num);
+    double QuickSqrt(double num);
 };
 
 #endif
