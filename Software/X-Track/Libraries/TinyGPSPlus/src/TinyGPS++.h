@@ -3,7 +3,7 @@ TinyGPS++ - a small GPS library for Arduino providing universal NMEA parsing
 Based on work by and "distanceBetween" and "courseTo" courtesy of Maarten Lamers.
 Suggestion to add satellites, courseTo(), and cardinal() by Matt Monson.
 Location precision improvements suggested by Wayne Holder.
-Copyright (C) 2008-2013 Mikal Hart
+Copyright (C) 2008-2024 Mikal Hart
 All rights reserved.
 
 This library is free software; you can redistribute it and/or
@@ -21,17 +21,16 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+
+
 #ifndef __TinyGPSPlus_h
 #define __TinyGPSPlus_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
+#include <inttypes.h>
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 #include <limits.h>
 
-#define _GPS_VERSION "1.0.2" // software version of this library
+#define _GPS_VERSION "1.1.0" // software version of this library
 #define _GPS_MPH_PER_KNOT 1.15077945
 #define _GPS_MPS_PER_KNOT 0.51444444
 #define _GPS_KMPH_PER_KNOT 1.852
@@ -39,6 +38,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define _GPS_KM_PER_METER 0.001
 #define _GPS_FEET_PER_METER 3.2808399
 #define _GPS_MAX_FIELD_SIZE 15
+#define _GPS_EARTH_MEAN_RADIUS 6371009 // old: 6372795
 
 struct RawDegrees
 {
@@ -54,6 +54,9 @@ struct TinyGPSLocation
 {
    friend class TinyGPSPlus;
 public:
+   enum Quality { Invalid = '0', GPS = '1', DGPS = '2', PPS = '3', RTK = '4', FloatRTK = '5', Estimated = '6', Manual = '7', Simulated = '8' };
+   enum Mode { N = 'N', A = 'A', D = 'D', E = 'E'};
+
    bool isValid() const    { return valid; }
    bool isUpdated() const  { return updated; }
    uint32_t age() const    { return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX; }
@@ -61,13 +64,17 @@ public:
    const RawDegrees &rawLng()     { updated = false; return rawLngData; }
    double lat();
    double lng();
+   Quality FixQuality()           { updated = false; return fixQuality; }
+   Mode FixMode()                 { updated = false; return fixMode; }
 
-   TinyGPSLocation() : valid(false), updated(false)
+   TinyGPSLocation() : valid(false), updated(false), fixQuality(Invalid), fixMode(N)
    {}
 
 private:
    bool valid, updated;
    RawDegrees rawLatData, rawLngData, rawNewLatData, rawNewLngData;
+   Quality fixQuality, newFixQuality;
+   Mode fixMode, newFixMode;
    uint32_t lastCommitTime;
    void commit();
    void setLatitude(const char *term);
@@ -247,7 +254,7 @@ public:
   uint32_t passedChecksum()   const { return passedChecksumCount; }
 
 private:
-  enum {GPS_SENTENCE_GPGGA, GPS_SENTENCE_GPRMC, GPS_SENTENCE_OTHER};
+  enum {GPS_SENTENCE_GGA, GPS_SENTENCE_RMC, GPS_SENTENCE_OTHER};
 
   // parsing state variables
   uint8_t parity;

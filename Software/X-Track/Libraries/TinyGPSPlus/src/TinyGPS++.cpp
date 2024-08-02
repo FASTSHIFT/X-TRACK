@@ -3,7 +3,7 @@ TinyGPS++ - a small GPS library for Arduino providing universal NMEA parsing
 Based on work by and "distanceBetween" and "courseTo" courtesy of Maarten Lamers.
 Suggestion to add satellites, courseTo(), and cardinal() by Matt Monson.
 Location precision improvements suggested by Wayne Holder.
-Copyright (C) 2008-2013 Mikal Hart
+Copyright (C) 2008-2024 Mikal Hart
 All rights reserved.
 
 This library is free software; you can redistribute it and/or
@@ -28,10 +28,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <stdlib.h>
 #include <math.h>
 
-#define _GPRMCterm   "GPRMC"
-#define _GPGGAterm   "GPGGA"
-#define _GNRMCterm   "GNRMC"
-#define _GNGGAterm   "GNGGA"
+#define _RMCterm "RMC"
+#define _GGAterm "GGA"
+
+#if !defined(ARDUINO) && !defined(__AVR__)
+// Alternate implementation of millis() that relies on std
+unsigned long millis()
+{
+    static auto start_time = std::chrono::high_resolution_clock::now();
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+    return static_cast<unsigned long>(duration.count());
+}
+#endif
 
 TinyGPSPlus::TinyGPSPlus()
   :  parity(0)
@@ -171,7 +182,7 @@ bool TinyGPSPlus::endOfTermHandler()
 
       switch(curSentenceType)
       {
-      case GPS_SENTENCE_GPRMC:
+      case GPS_SENTENCE_RMC:
         date.commit();
         time.commit();
         if (sentenceHasFix)
@@ -181,7 +192,7 @@ bool TinyGPSPlus::endOfTermHandler()
            course.commit();
         }
         break;
-      case GPS_SENTENCE_GPGGA:
+      case GPS_SENTENCE_GGA:
         time.commit();
         if (sentenceHasFix)
         {
@@ -210,10 +221,10 @@ bool TinyGPSPlus::endOfTermHandler()
   // the first term determines the sentence type
   if (curTermNumber == 0)
   {
-    if (!strcmp(term, _GPRMCterm) || !strcmp(term, _GNRMCterm))
-      curSentenceType = GPS_SENTENCE_GPRMC;
-    else if (!strcmp(term, _GPGGAterm) || !strcmp(term, _GNGGAterm))
-      curSentenceType = GPS_SENTENCE_GPGGA;
+    if (term[0] == 'G' && strchr("PNABL", term[1]) != NULL && !strcmp(term + 2, _RMCterm))
+      curSentenceType = GPS_SENTENCE_RMC;
+    else if (term[0] == 'G' && strchr("PNABL", term[1]) != NULL && !strcmp(term + 2, _GGAterm))
+      curSentenceType = GPS_SENTENCE_GGA;
     else
       curSentenceType = GPS_SENTENCE_OTHER;
 
@@ -228,49 +239,53 @@ bool TinyGPSPlus::endOfTermHandler()
   if (curSentenceType != GPS_SENTENCE_OTHER && term[0])
     switch(COMBINE(curSentenceType, curTermNumber))
   {
-    case COMBINE(GPS_SENTENCE_GPRMC, 1): // Time in both sentences
-    case COMBINE(GPS_SENTENCE_GPGGA, 1):
+    case COMBINE(GPS_SENTENCE_RMC, 1): // Time in both sentences
+    case COMBINE(GPS_SENTENCE_GGA, 1):
       time.setTime(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 2): // GPRMC validity
+    case COMBINE(GPS_SENTENCE_RMC, 2): // RMC validity
       sentenceHasFix = term[0] == 'A';
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 3): // Latitude
-    case COMBINE(GPS_SENTENCE_GPGGA, 2):
+    case COMBINE(GPS_SENTENCE_RMC, 3): // Latitude
+    case COMBINE(GPS_SENTENCE_GGA, 2):
       location.setLatitude(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 4): // N/S
-    case COMBINE(GPS_SENTENCE_GPGGA, 3):
+    case COMBINE(GPS_SENTENCE_RMC, 4): // N/S
+    case COMBINE(GPS_SENTENCE_GGA, 3):
       location.rawNewLatData.negative = term[0] == 'S';
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 5): // Longitude
-    case COMBINE(GPS_SENTENCE_GPGGA, 4):
+    case COMBINE(GPS_SENTENCE_RMC, 5): // Longitude
+    case COMBINE(GPS_SENTENCE_GGA, 4):
       location.setLongitude(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 6): // E/W
-    case COMBINE(GPS_SENTENCE_GPGGA, 5):
+    case COMBINE(GPS_SENTENCE_RMC, 6): // E/W
+    case COMBINE(GPS_SENTENCE_GGA, 5):
       location.rawNewLngData.negative = term[0] == 'W';
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 7): // Speed (GPRMC)
+    case COMBINE(GPS_SENTENCE_RMC, 7): // Speed (RMC)
       speed.set(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 8): // Course (GPRMC)
+    case COMBINE(GPS_SENTENCE_RMC, 8): // Course (RMC)
       course.set(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPRMC, 9): // Date (GPRMC)
+    case COMBINE(GPS_SENTENCE_RMC, 9): // Date (RMC)
       date.setDate(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPGGA, 6): // Fix data (GPGGA)
+    case COMBINE(GPS_SENTENCE_GGA, 6): // Fix data (GGA)
       sentenceHasFix = term[0] > '0';
+      location.newFixQuality = (TinyGPSLocation::Quality)term[0];
       break;
-    case COMBINE(GPS_SENTENCE_GPGGA, 7): // Satellites used (GPGGA)
+    case COMBINE(GPS_SENTENCE_GGA, 7): // Satellites used (GGA)
       satellites.set(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPGGA, 8): // HDOP
+    case COMBINE(GPS_SENTENCE_GGA, 8): // HDOP
       hdop.set(term);
       break;
-    case COMBINE(GPS_SENTENCE_GPGGA, 9): // Altitude (GPGGA)
+    case COMBINE(GPS_SENTENCE_GGA, 9): // Altitude (GGA)
       altitude.set(term);
+      break;
+    case COMBINE(GPS_SENTENCE_RMC, 12):
+      location.newFixMode = (TinyGPSLocation::Mode)term[0];
       break;
   }
 
@@ -287,7 +302,7 @@ double TinyGPSPlus::distanceBetween(double lat1, double long1, double lat2, doub
 {
   // returns distance in meters between two positions, both specified
   // as signed decimal-degrees latitude and longitude. Uses great-circle
-  // distance computation for hypothetical sphere of radius 6372795 meters.
+  // distance computation for hypothetical sphere of radius 6371009 meters.
   // Because Earth is no exact sphere, rounding errors may be up to 0.5%.
   // Courtesy of Maarten Lamers
   double delta = radians(long1-long2);
@@ -305,7 +320,7 @@ double TinyGPSPlus::distanceBetween(double lat1, double long1, double lat2, doub
   delta = sqrt(delta);
   double denom = (slat1 * slat2) + (clat1 * clat2 * cdlong);
   delta = atan2(delta, denom);
-  return delta * 6372795;
+  return delta * _GPS_EARTH_MEAN_RADIUS;
 }
 
 double TinyGPSPlus::courseTo(double lat1, double long1, double lat2, double long2)
@@ -339,6 +354,8 @@ void TinyGPSLocation::commit()
 {
    rawLatData = rawNewLatData;
    rawLngData = rawNewLngData;
+   fixQuality = newFixQuality;
+   fixMode = newFixMode;
    lastCommitTime = millis();
    valid = updated = true;
 }
@@ -485,8 +502,7 @@ void TinyGPSCustom::commit()
 
 void TinyGPSCustom::set(const char *term)
 {
-    strncpy(this->stagingBuffer, term, sizeof(this->stagingBuffer));
-    this->stagingBuffer[sizeof(this->stagingBuffer) - 1] = '\0';
+   strncpy(this->stagingBuffer, term, sizeof(this->stagingBuffer) - 1);
 }
 
 void TinyGPSPlus::insertCustom(TinyGPSCustom *pElt, const char *sentenceName, int termNumber)
