@@ -62,6 +62,9 @@ static int16_t calcBacklightLevel(uint8_t hour, uint8_t minute, uint8_t second){
     int32_t nowSeconds = MINUTE_OF_DAY(hour, minute) * 60 + second;
     int32_t sunriseSeconds = MINUTE_OF_DAY(sunriseHour, sunriseMinute) * 60;
     int32_t sunsetSeconds = MINUTE_OF_DAY(sunsetHour, sunsetMinute) * 60;
+    if ((gpsInfo.speed >= 250)){
+        return MIN_LIGHT_LEVEL * 0.5;
+    }
     if (sunriseSeconds + LIGHT_CTRL_SECOND_RANGE <= nowSeconds && nowSeconds <= sunsetSeconds - LIGHT_CTRL_SECOND_RANGE)
     {
         return MAX_LIGHT_LEVEL;
