@@ -8,6 +8,7 @@
 > 全新设计的["页面生命周期管理"](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/USER/App/Utils/PageManager)和["消息订阅发布框架"](https://github.com/FASTSHIFT/X-TRACK/tree/main/Software/X-Track/USER/App/Utils/DataCenter)。
 >
 > 演示视频：https://www.bilibili.com/video/BV1GB4y1K7VV
+> 二代版本：https://www.bilibili.com/video/BV1aS421X779
 
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%9C%B0%E5%9B%BE.jpg)
 
