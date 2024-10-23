@@ -1,2 +1,0 @@
-"With Two.dots.txt" 
-Lots of reasons this is a Long File Name.

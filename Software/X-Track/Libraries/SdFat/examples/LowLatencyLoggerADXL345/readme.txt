@@ -1,1 +1,0 @@
-Test of shared SPI for LowLatencyLogger.
