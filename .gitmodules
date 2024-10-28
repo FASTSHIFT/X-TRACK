@@ -1,0 +1,6 @@
+[submodule "Firmware/X-TRACK/External/graphics/lvgl"]
+	path = Firmware/X-TRACK/External/graphics/lvgl
+	url = https://github.com/lvgl/lvgl.git
+[submodule "Firmware/X-TRACK/External/freetype"]
+	path = Firmware/X-TRACK/External/freetype
+	url = https://github.com/freetype/freetype.git
