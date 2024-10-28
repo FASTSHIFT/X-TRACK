@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,47 +20,58 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#include "Arduino.h"
 #include "App/App.h"
 #include "HAL/HAL.h"
 #include "lvgl/lvgl.h"
-#include "lv_port/lv_port.h"
+#include <unistd.h>
 
-#if LV_USE_DEMO_BENCHMARK
+#ifndef LV_SCREEN_HOR_RES
+#define LV_SCREEN_HOR_RES 240
+#endif
 
-#include "benchmark.inc"
-
-#else
-
-static void setup()
-{
-    HAL::HAL_Init();
-    lv_init();
-    lv_port_init();
-
-    App_Init();
-
-    HAL::Power_SetEventCallback(App_Uninit);
-    HAL::Memory_DumpInfo();
-}
-
-static void loop()
-{
-    HAL::HAL_Update();
-    lv_task_handler();
-    __wfi();
-}
-
+#ifndef LV_SCREEN_VER_RES
+#define LV_SCREEN_VER_RES 240
 #endif
 
 /**
-  * @brief  Main Function
-  * @param  None
-  * @retval None
-  */
-int main(void)
+ * Initialize the Hardware Abstraction Layer (HAL) forLVGL
+ */
+static lv_disp_t* hal_init(int32_t w, int32_t h)
 {
-    Core_Init();
-    setup();
-    for(;;)loop();
+    lv_disp_t* disp = lv_sdl_window_create(w, h);
+    lv_indev_t* mouse = lv_sdl_mouse_create();
+    // lv_display_set_rotation(disp, LV_DISP_ROTATION_90);
+    lv_indev_set_group(mouse, lv_group_get_default());
+    lv_indev_set_disp(mouse, disp);
+
+    lv_indev_t* mousewheel = lv_sdl_mousewheel_create();
+    lv_indev_set_disp(mousewheel, disp);
+    lv_indev_set_group(mousewheel, lv_group_get_default());
+
+    lv_indev_t* keyboard = lv_sdl_keyboard_create();
+    lv_indev_set_disp(keyboard, disp);
+    lv_indev_set_group(keyboard, lv_group_get_default());
+
+    return disp;
+}
+
+/**
+ * @brief  Main Function
+ * @param  argc: Argument count
+ * @param  argv: Argument vector
+ * @retval error code
+ */
+int main(int argc, const char* argv[])
+{
+    // HAL::HAL_Init();
+    lv_init();
+    hal_init(LV_SCREEN_HOR_RES, LV_SCREEN_VER_RES);
+    // App_Init();
+    while (1) {
+        // HAL::HAL_Update();
+        uint32_t time_until_next = lv_timer_handler();
+        usleep(time_until_next * 1000);
+    }
+
+    lv_deinit();
 }

@@ -24,8 +24,6 @@
 #define __HAL_INTERNAL_H
 
 #include "App/Common/HAL/HAL.h"
-
-#include "Arduino.h"
 #include "HAL_Config.h"
 #include "CommonMacro.h"
 
