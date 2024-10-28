@@ -22,6 +22,7 @@
  */
 #include "PageLog.h"
 #include "PageManager.h"
+#include <string.h>
 
 PageManager::RES_TYPE PageManager::replace(const char* name, const PageBase::PARAM* param)
 {

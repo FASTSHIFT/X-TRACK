@@ -23,6 +23,7 @@
 #include "PageManager.h"
 #include "PageLog.h"
 #include <algorithm>
+#include <string.h>
 
 #define PM_EMPTY_PAGE_NAME "EMPTY_PAGE"
 
