@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2024 _VIFEXTech
+ * Copyright (c) 2021 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,47 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#ifndef __DATA_PROC_LED_DEF_H
+#define __DATA_PROC_LED_DEF_H
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+#include <cstdint>
 
-#endif // __DATA_PROC_HELPER_H
+namespace DataProc {
+
+enum class LED_STATUS {
+    STOP,
+    RESET,
+    OFF,
+    ON,
+};
+
+enum class LED_ID {
+    NONE,
+    RED,
+    GREEN,
+    BLUE
+};
+
+typedef struct LED_Squence {
+    LED_Squence(LED_STATUS stat, uint16_t dur)
+        : status(stat)
+        , duration(dur)
+    {
+    }
+    LED_STATUS status;
+    uint32_t duration;
+} LED_Squence_t;
+
+typedef struct LED_Info {
+    LED_Info()
+        : id(LED_ID::NONE)
+        , squence(nullptr)
+    {
+    }
+    LED_ID id;
+    const LED_Squence_t* squence;
+} LED_Info_t;
+
+} // namespace DataProc
+
+#endif // __DATA_PROC_LED_DEF_H

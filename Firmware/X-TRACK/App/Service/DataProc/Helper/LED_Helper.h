@@ -20,15 +20,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#ifndef __DATA_PROC_LED_HELPER_H
+#define __DATA_PROC_LED_HELPER_H
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+#include "../Def/DP_LED.h"
 
-#endif // __DATA_PROC_HELPER_H
+class DataNode;
+
+namespace DataProc {
+
+class LED_Helper {
+public:
+    LED_Helper(DataNode* node, LED_ID id);
+    int start(const LED_Squence_t* squence);
+    int on();
+    int off();
+    operator const DataNode*() const
+    {
+        return _nodeLED;
+    }
+
+private:
+    DataNode* _node;
+    const DataNode* _nodeLED;
+    LED_ID _id;
+};
+
+} // namespace DataProc
+
+#endif // __DATA_PROC_LED_HELPER_H

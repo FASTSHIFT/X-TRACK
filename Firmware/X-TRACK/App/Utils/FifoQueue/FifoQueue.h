@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2024 _VIFEXTech
+ * Copyright (c) 2020 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,71 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#ifndef __FIFO_QUEUE_H
+#define __FIFO_QUEUE_H
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+#include <cstddef>
 
-#endif // __DATA_PROC_HELPER_H
+template <class T, size_t SIZE>
+class FifoQueue {
+public:
+    FifoQueue()
+        : _head(0)
+        , _tail(0) {};
+
+    size_t available()
+    {
+        return (SIZE + _head - _tail) % SIZE;
+    }
+
+    size_t size()
+    {
+        return SIZE - 1;
+    }
+
+    bool full()
+    {
+        return (available() == size());
+    }
+
+    bool empty()
+    {
+        return (_head == _tail);
+    }
+
+    bool write(const T& data)
+    {
+        size_t i = (_head + 1) % SIZE;
+
+        if (i == _tail) {
+            return false;
+        }
+
+        _buffer[_head] = data;
+        _head = i;
+        return true;
+    }
+
+    bool read(T& data)
+    {
+        if (empty()) {
+            return false;
+        }
+
+        data = _buffer[_tail];
+        _tail = (_tail + 1) % SIZE;
+        return true;
+    }
+
+    void flush()
+    {
+        _head = _tail;
+    }
+
+private:
+    T _buffer[SIZE];
+    size_t _head;
+    size_t _tail;
+};
+
+#endif /* __FIFO_QUEUE_H */

@@ -1,0 +1,12 @@
+en-US:
+  EPHEMERIS: ~
+  LOAD_SUCCESS: ~
+  LOW_BATTERY: ~
+  SHUTDOWN?: ~
+  NO_OPERATION: ~
+  'NO': ~
+  'YES': ~
+  START_RECORD: ~
+  STOP_RECORD: ~
+  GNSS_NOT_READY: ~
+  OPEN_FILE_FAILED: ~

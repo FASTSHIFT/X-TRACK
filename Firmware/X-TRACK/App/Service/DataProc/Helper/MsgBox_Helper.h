@@ -20,15 +20,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#ifndef __DATA_PROC_MSGBOX_HELPER_H
+#define __DATA_PROC_MSGBOX_HELPER_H
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+#include "../Def/DP_MsgBox.h"
 
-#endif // __DATA_PROC_HELPER_H
+class DataNode;
+
+namespace DataProc {
+
+class MsgBox_Helper {
+public:
+    MsgBox_Helper(DataNode* node);
+    int show(const char* title, const char* txt, const char** btns);
+    int show(const DataProc::MsgBox_Info_t* info);
+    operator const DataNode*() const
+    {
+        return _nodeMsgBox;
+    }
+
+private:
+    DataNode* _node;
+    const DataNode* _nodeMsgBox;
+};
+
+} // namespace DataProc
+
+#endif // __DATA_PROC_MSGBOX_HELPER_H

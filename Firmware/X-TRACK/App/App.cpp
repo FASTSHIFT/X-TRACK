@@ -25,6 +25,7 @@
 #include "Frameworks/PageManager/PageManager.h"
 #include "Service/DataProc/DataProc.h"
 #include "UI/AppFactory.h"
+#include "UI/Resource/ResourcePool.h"
 
 struct AppContext {
     DataBroker* broker;
@@ -35,6 +36,9 @@ struct AppContext {
 AppContext_t* App_CreateContext(int argc, const char* argv[])
 {
     AppContext_t* context = new AppContext;
+
+    /* Resource pool manager */
+    ResourcePool::init();
 
     /* Data processor */
     context->broker = new DataBroker("Broker");
@@ -68,5 +72,6 @@ void App_DestroyContext(AppContext_t* context)
 
     delete context->manager;
     delete context->broker;
+    ResourcePool::deinit();
     delete context;
 }

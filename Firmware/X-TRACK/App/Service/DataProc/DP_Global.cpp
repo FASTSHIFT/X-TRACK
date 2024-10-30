@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2024 _VIFEXTech
+ * Copyright (c) 2021 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#include "DataProc.h"
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+using namespace DataProc;
 
-#endif // __DATA_PROC_HELPER_H
+class DP_Global {
+public:
+    DP_Global(DataNode* node);
+
+private:
+    DataNode* _node;
+
+private:
+    int onEvent(DataNode::EventParam_t* param);
+};
+
+DP_Global::DP_Global(DataNode* node)
+    : _node(node)
+{
+    _node->setEventCallback(
+        [](DataNode* n, DataNode::EventParam_t* param) {
+            auto ctx = (DP_Global*)n->getUserData();
+            return ctx->onEvent(param);
+        },
+        DataNode::EVENT_NOTIFY);
+}
+
+int DP_Global::onEvent(DataNode::EventParam_t* param)
+{
+    if (param->size != sizeof(Global_Info_t)) {
+        return DataNode::RES_SIZE_MISMATCH;
+    }
+
+    return _node->publish(param->data_p, param->size);
+}
+
+DATA_PROC_DESCRIPTOR_DEF(Global)

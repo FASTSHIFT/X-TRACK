@@ -1056,7 +1056,7 @@
 
 /** 1: Enable freetype font manager
  *  - Requires: LV_USE_FREETYPE */
-#define LV_USE_FONT_MANAGER                     0
+#define LV_USE_FONT_MANAGER                     1
 #if LV_USE_FONT_MANAGER
 
 /*Font manager name max length*/

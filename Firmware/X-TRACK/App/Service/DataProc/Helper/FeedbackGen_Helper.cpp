@@ -20,15 +20,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#include "FeedbackGen_Helper.h"
+#include "Frameworks/DataBroker/DataBroker.h"
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+using namespace DataProc;
 
-#endif // __DATA_PROC_HELPER_H
+FeedbackGen_Helper::FeedbackGen_Helper(DataNode* node)
+    : _node(node)
+{
+    _nodeFeedBackGen = node->subscribe("FeedbackGen");
+}
+
+int FeedbackGen_Helper::trigger(DataProc::FEEDBACK_GEN_EFFECT effect)
+{
+    DataProc::FeedbackGen_Info_t info;
+    info.cmd = DataProc::FEEDBACK_GEN_CMD::PREPARE;
+    info.effect = effect;
+
+    int retval = _node->notify(_nodeFeedBackGen, &info, sizeof(info));
+    if (retval != DataNode::RES_OK) {
+        return retval;
+    }
+
+    info.cmd = DataProc::FEEDBACK_GEN_CMD::TRIGGER;
+    return _node->notify(_nodeFeedBackGen, &info, sizeof(info));
+}

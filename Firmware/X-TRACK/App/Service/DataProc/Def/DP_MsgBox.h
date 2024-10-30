@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2024 _VIFEXTech
+ * Copyright (c) 2021 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#ifndef __DATA_PROC_MSG_BOX_DEF_H
+#define __DATA_PROC_MSG_BOX_DEF_H
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+#include <cstdint>
 
-#endif // __DATA_PROC_HELPER_H
+namespace DataProc {
+
+typedef struct MsgBox_Info {
+    MsgBox_Info()
+        : title(nullptr)
+        , txt(nullptr)
+        , btns(nullptr)
+        , defaultBtn(0)
+        , autoSelectBtn(-1)
+        , autoSelecTimeoutSec(10)
+    {
+    }
+    union {
+        struct {
+            const char* title;
+            const char* txt;
+            const char** btns;
+            int defaultBtn;
+            int autoSelectBtn;
+            uint32_t autoSelecTimeoutSec;
+        };
+
+        /* return text value */
+
+        struct
+        {
+            int activeBtn;
+            const char* activeTxt;
+        };
+    };
+} MsgBox_Info_t;
+
+} // namespace DataProc
+
+#endif // __DATA_PROC_MSG_BOX_DEF_H

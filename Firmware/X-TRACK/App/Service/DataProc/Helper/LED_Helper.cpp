@@ -20,15 +20,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#include "LED_Helper.h"
+#include "Frameworks/DataBroker/DataBroker.h"
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+using namespace DataProc;
 
-#endif // __DATA_PROC_HELPER_H
+LED_Helper::LED_Helper(DataNode* node, LED_ID id)
+    : _node(node)
+    , _nodeLED(node->subscribe("LED"))
+    , _id(id)
+{
+}
+
+int LED_Helper::start(const LED_Squence_t* squence)
+{
+    LED_Info_t info;
+    info.id = _id;
+    info.squence = squence;
+    return _node->notify(_nodeLED, &info, sizeof(info));
+}
+
+int LED_Helper::on()
+{
+    static const LED_Squence_t seq[] = {
+        { LED_STATUS::ON, 0 },
+        { LED_STATUS::STOP, 0 },
+    };
+
+    return start(seq);
+}
+
+int LED_Helper::off()
+{
+    static const LED_Squence_t seq[] = {
+        { LED_STATUS::OFF, 0 },
+        { LED_STATUS::STOP, 0 },
+    };
+
+    return start(seq);
+}

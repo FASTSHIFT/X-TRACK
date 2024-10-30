@@ -25,13 +25,17 @@
 
 #include "Def/DP_Backlight.h"
 #include "Def/DP_Env.h"
+#include "Def/DP_FeedbackGen.h"
 #include "Def/DP_GNSS.h"
 #include "Def/DP_Global.h"
 #include "Def/DP_MapInfo.h"
 #include "Def/DP_Power.h"
 #include "Def/DP_Recorder.h"
+#include "Def/DP_Slope.h"
 #include "Def/DP_SportStatus.h"
 #include "Def/DP_Storage.h"
+#include "Def/DP_SunRise.h"
+#include "Def/DP_Toast.h"
 #include "Def/DP_TrackFilter.h"
 #include "Def/DP_Version.h"
 

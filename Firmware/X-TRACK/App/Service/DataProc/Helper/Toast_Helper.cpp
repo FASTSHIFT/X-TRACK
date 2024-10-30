@@ -20,15 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __DATA_PROC_HELPER_H
-#define __DATA_PROC_HELPER_H
+#include "Toast_Helper.h"
+#include "Frameworks/DataBroker/DataBroker.h"
+#include <cstdarg>
+#include <cstdio>
 
-#include "Helper/Env_Helper.h"
-#include "Helper/FeedbackGen_Helper.h"
-#include "Helper/Global_Helper.h"
-#include "Helper/LED_Helper.h"
-#include "Helper/MsgBox_Helper.h"
-#include "Helper/Storage_Helper.h"
-#include "Helper/Toast_Helper.h"
+using namespace DataProc;
 
-#endif // __DATA_PROC_HELPER_H
+Toast_Helper::Toast_Helper(DataNode* node)
+{
+    _node = node;
+    _nodeToast = node->subscribe("Toast");
+}
+
+int Toast_Helper::show(const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    char buf[256];
+    vsnprintf(buf, sizeof(buf), format, args);
+
+    va_end(args);
+
+    Toast_Info_t info;
+    info.txt = buf;
+    info.duration = 2000;
+    return _node->notify(_nodeToast, &info, sizeof(info));
+}
