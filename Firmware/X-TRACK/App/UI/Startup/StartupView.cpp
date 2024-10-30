@@ -31,7 +31,7 @@ using namespace Page;
 
 StartupView::StartupView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
-    , _font(36, "agencyb")
+    , _font(36, "medium")
 {
     static_assert(sizeof(StartupView) >= (size_t)MSG_ID::_LAST, "Large MSG_ID");
     int32_t contWidth = 0;

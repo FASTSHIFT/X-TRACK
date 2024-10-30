@@ -24,7 +24,7 @@
 #define __VERSION_H
 
 /* Firmware Version */
-#define VERSION_FIRMWARE_NAME   "X-TRACK EVO"
+#define VERSION_FIRMWARE_NAME   "X-TRACK"
 #define VERSION_SOFTWARE        "v2.7 (dev-lvgl-v9)"
 #define VERSION_HARDWARE        "v1.0"
 #define VERSION_AUTHOR_NAME     "_VIFEXTech"
