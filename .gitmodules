@@ -4,3 +4,6 @@
 [submodule "Firmware/X-TRACK/External/freetype"]
 	path = Firmware/X-TRACK/External/freetype
 	url = https://github.com/freetype/freetype.git
+[submodule "Firmware/X-TRACK/External/cJSON"]
+	path = Firmware/X-TRACK/External/cJSON
+	url = https://github.com/DaveGamble/cJSON.git

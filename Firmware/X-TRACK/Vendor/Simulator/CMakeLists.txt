@@ -115,6 +115,7 @@ add_subdirectory(${EXTERNAL_SOURCE_DIR}/graphics/lvgl
                  ${PROJECT_BINARY_DIR}/build_lvgl)
 add_subdirectory(${EXTERNAL_SOURCE_DIR}/freetype
                  ${PROJECT_BINARY_DIR}/build_freetype)
+add_subdirectory(${EXTERNAL_SOURCE_DIR}/cJSON ${PROJECT_BINARY_DIR}/build_cjson)
 
 # Executable
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -122,7 +123,7 @@ add_executable(Simulator main.cpp ${SOURCES} ${INCLUDES})
 
 # Link
 target_link_libraries(Simulator PRIVATE lvgl lvgl::examples lvgl::demos
-                                        freetype ${SDL2_LIBRARIES})
+                                        freetype cjson ${SDL2_LIBRARIES})
 
 # Output
 set_target_properties(Simulator PROPERTIES RUNTIME_OUTPUT_DIRECTORY
