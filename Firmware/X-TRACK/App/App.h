@@ -23,6 +23,8 @@
 #ifndef __APP_H
 #define __APP_H
 
+#include <stdint.h>
+
 typedef struct AppContext AppContext_t;
 
 extern "C" {
@@ -41,7 +43,7 @@ AppContext_t* App_CreateContext(int argc, const char* argv[]);
  *
  * @param context
  */
-void App_RunLoopExecute(AppContext_t* context);
+uint32_t App_RunLoopExecute(AppContext_t* context);
 
 /**
  * @brief Destroy app context

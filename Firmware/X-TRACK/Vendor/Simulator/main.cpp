@@ -46,8 +46,14 @@ int main(int argc, const char* argv[])
     LV_LOG_USER("App context created: %p", appCtx);
 
     while (1) {
-        uint32_t time_until_next = lv_timer_handler();
-        lv_port_sleep(time_until_next);
+        /* Run app loop */
+        uint32_t app_idle_time = App_RunLoopExecute(appCtx);
+
+        /* Run lvgl loop */
+        uint32_t lvgl_idle_time = lv_timer_handler();
+
+        /* Sleep the idle time */
+        lv_port_sleep(LV_MIN(app_idle_time, lvgl_idle_time));
     }
 
     App_DestroyContext(appCtx);

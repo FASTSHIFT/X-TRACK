@@ -54,11 +54,11 @@ AppContext_t* App_CreateContext(int argc, const char* argv[])
     return context;
 }
 
-void App_RunLoopExecute(AppContext_t* context)
+uint32_t App_RunLoopExecute(AppContext_t* context)
 {
     LV_ASSERT_NULL(context);
     context->global->publish(DataProc::GLOBAL_EVENT::APP_RUN_LOOP_EXECUTE);
-    context->broker->handleTimer();
+    return context->broker->handleTimer();
 }
 
 void App_DestroyContext(AppContext_t* context)
