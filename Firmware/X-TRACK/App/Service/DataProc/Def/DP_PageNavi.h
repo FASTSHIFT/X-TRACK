@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2021 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#ifndef __DATA_PROC_PAGE_NAVI_DEF_H
+#define __DATA_PROC_PAGE_NAVI_DEF_H
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+#include <cstdint>
 
-#endif
+namespace DataProc {
+
+enum class PAGE_NAVI_CMD {
+    NONE,
+    PUSH,
+    POP,
+};
+
+typedef struct PageNavi_Info {
+    PageNavi_Info()
+        : cmd(PAGE_NAVI_CMD::NONE)
+        , name(nullptr)
+    {
+    }
+    PAGE_NAVI_CMD cmd;
+    const char* name;
+} PageNavi_Info_t;
+
+} // namespace DataProc
+
+#endif // __DATA_PROC_PAGE_NAVI_DEF_H

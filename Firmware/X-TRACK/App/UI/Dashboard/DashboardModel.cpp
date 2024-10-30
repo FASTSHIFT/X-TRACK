@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#include "DashboardModel.h"
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+using namespace Page;
 
-#endif
+DashboardModel::DashboardModel(EventListener* listener)
+    : DataNode(__func__, DataProc::broker())
+    , _listener(listener)
+{
+    setEventFilter(DataNode::EVENT_PUBLISH | DataNode::EVENT_NOTIFY);
+}
+
+DashboardModel::~DashboardModel()
+{
+}
+
+int DashboardModel::onEvent(DataNode::EventParam_t* param)
+{
+    return DataNode::RES_OK;
+}

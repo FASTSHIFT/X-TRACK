@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#ifndef __DASHBOARD_MODEL_H
+#define __DASHBOARD_MODEL_H
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+#include "Service/DataProc/DataProc.h"
+
+namespace Page {
+
+class DashboardModel : private DataNode {
+
+public:
+    enum class EVENT_ID {
+        SPORT_STATUS, /* param: SportStatus_Info_t */
+        _EVENT_LAST,
+    };
+
+    class EventListener {
+    public:
+        virtual void onModelEvent(EVENT_ID id, const void* param = nullptr) = 0;
+    };
+
+public:
+    DashboardModel(EventListener* listener);
+    ~DashboardModel();
+
+private:
+    EventListener* _listener;
+
+private:
+    virtual int onEvent(DataNode::EventParam_t* param);
+};
+
+} /* namespace Page */
 
 #endif

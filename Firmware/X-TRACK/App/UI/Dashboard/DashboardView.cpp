@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#include "DashboardView.h"
+#include "Service/DataProc/DataProc_Def.h"
+#include "Utils/lv_anim_label/lv_anim_label.h"
+#include "Utils/lv_ext/lv_anim_timeline_wrapper.h"
+#include "Utils/lv_ext/lv_ext_func.h"
+#include <stdarg.h>
+#include <stdio.h>
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+using namespace Page;
 
-#endif
+DashboardView::DashboardView(EventListener* listener, lv_obj_t* root)
+    : _listener(listener)
+{
+}
+
+DashboardView::~DashboardView()
+{
+}
+
+lv_uintptr_t DashboardView::msgID(MSG_ID id)
+{
+    return (lv_uintptr_t)this + (lv_uintptr_t)id;
+}
+
+void DashboardView::publish(MSG_ID id, const void* payload)
+{
+    lv_msg_send(msgID(id), payload);
+}
+
+void DashboardView::subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb, void* user_data)
+{
+    lv_msg_subscribe_obj(msgID(id), obj, this);
+    lv_obj_add_event(obj, event_cb, LV_EVENT_MSG_RECEIVED, user_data);
+}

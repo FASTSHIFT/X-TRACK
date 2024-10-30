@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#ifndef __DASHBOARD_VIEW_H
+#define __DASHBOARD_VIEW_H
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+#include "../Page.h"
 
-#endif
+namespace Page {
+
+class DashboardView {
+public:
+    enum class EVENT_ID {
+        _LAST,
+    };
+
+    enum class MSG_ID {
+        NONE,
+        _LAST
+    };
+
+    class EventListener {
+    public:
+        virtual void onViewEvent(EVENT_ID id, const void* param = nullptr) = 0;
+    };
+
+public:
+    DashboardView(EventListener* listener, lv_obj_t* root);
+    ~DashboardView();
+    void publish(MSG_ID id, const void* payload = nullptr);
+
+private:
+    EventListener* _listener;
+
+private:
+    lv_uintptr_t msgID(MSG_ID id);
+    void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t cb, void* user_data = nullptr);
+};
+
+}
+
+#endif /* __DASHBOARD_VIEW_H */

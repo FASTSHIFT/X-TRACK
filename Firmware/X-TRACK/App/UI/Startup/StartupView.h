@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#ifndef __STARTUP_VIEW_H
+#define __STARTUP_VIEW_H
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+#include "../Page.h"
 
-#endif
+namespace Page {
+
+class StartupView {
+public:
+    enum class EVENT_ID {
+        _LAST,
+    };
+
+    typedef struct FadeOutParam {
+        FadeOutParam()
+            : time(0)
+            , delay(0)
+        {
+        }
+        uint32_t time;
+        uint32_t delay;
+    } FadeOutParam_t;
+
+    enum class MSG_ID {
+        SHOW, /* param: bool */
+        FADE_OUT, /* param: FadeOutParam_t */
+        _LAST,
+    };
+
+    class EventListener {
+    public:
+        virtual void onViewEvent(EVENT_ID id, const void* param = nullptr) = 0;
+    };
+
+public:
+    StartupView(EventListener* listener, lv_obj_t* root);
+    ~StartupView();
+    void publish(MSG_ID id, const void* payload);
+
+private:
+    EventListener* _listener;
+    ResourcePool::Font _font;
+    lv_anim_timeline_t* _anim_timeline;
+
+private:
+    lv_uintptr_t msgID(MSG_ID id);
+    void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb);
+};
+
+}
+
+#endif /* __STARTUP_VIEW_H */

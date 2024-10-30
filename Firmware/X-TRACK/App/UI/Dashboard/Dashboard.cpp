@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,75 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#include "Dashboard.h"
+#include <cmath>
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+using namespace Page;
 
-#endif
+APP_DESCRIPTOR_DEF(Dashboard);
+
+Dashboard::Dashboard()
+    : _model(nullptr)
+    , _view(nullptr)
+{
+}
+
+Dashboard::~Dashboard()
+{
+}
+
+void Dashboard::onInstalled()
+{
+}
+
+void Dashboard::onViewLoad()
+{
+    _model = new DashboardModel(this);
+    _view = new DashboardView(this, getRoot());
+}
+
+void Dashboard::onViewDidLoad()
+{
+}
+
+void Dashboard::onViewWillAppear()
+{
+}
+
+void Dashboard::onViewDidAppear()
+{
+}
+
+void Dashboard::onViewWillDisappear()
+{
+}
+
+void Dashboard::onViewDidDisappear()
+{
+}
+
+void Dashboard::onViewUnload()
+{
+    delete _model;
+    delete _view;
+}
+
+void Dashboard::onViewDidUnload()
+{
+}
+
+void Dashboard::onModelEvent(DashboardModel::EVENT_ID id, const void* param)
+{
+    switch (id) {
+    default:
+        break;
+    }
+}
+
+void Dashboard::onViewEvent(DashboardView::EVENT_ID id, const void* param)
+{
+    switch (id) {
+    default:
+        break;
+    }
+}

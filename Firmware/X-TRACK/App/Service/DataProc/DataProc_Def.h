@@ -29,6 +29,7 @@
 #include "Def/DP_GNSS.h"
 #include "Def/DP_Global.h"
 #include "Def/DP_MapInfo.h"
+#include "Def/DP_PageNavi.h"
 #include "Def/DP_Power.h"
 #include "Def/DP_Recorder.h"
 #include "Def/DP_Slope.h"

@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __PAGE_H
-#define __PAGE_H
+#ifndef __STARTUP_PRESENTER_H
+#define __STARTUP_PRESENTER_H
 
-#include "AppFactory.h"
-#include "Frameworks/PageManager/PageManager.h"
-#include "Resource/ResourcePool.h"
-#include "Service/i18n/lv_i18n.h"
-#include "Utils/lv_msg/lv_msg.h"
+#include "StartupModel.h"
+#include "StartupView.h"
+
+namespace Page {
+
+class Startup : public PageBase, public StartupModel::EventListener, public StartupView::EventListener {
+
+public:
+    typedef struct {
+        bool shutdown;
+    } Param_t;
+
+public:
+    Startup();
+    virtual ~Startup();
+
+    virtual void onInstalled();
+    virtual void onViewLoad();
+    virtual void onViewDidLoad();
+    virtual void onViewWillAppear();
+    virtual void onViewDidAppear();
+    virtual void onViewWillDisappear();
+    virtual void onViewDidDisappear();
+    virtual void onViewUnload();
+    virtual void onViewDidUnload();
+
+private:
+    virtual void onModelEvent(StartupModel::EVENT_ID id, const void* param) override;
+    virtual void onViewEvent(StartupView::EVENT_ID id, const void* param) override;
+    void readyToExit();
+    void onExitTimer();
+
+private:
+    StartupModel* _model;
+    StartupView* _view;
+};
+
+}
 
 #endif
