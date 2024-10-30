@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2021 - 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,102 +21,118 @@
  * SOFTWARE.
  */
 #include "MapConv.h"
-#include <stdio.h>
-#include "GPS_Transform/GPS_Transform.h"
+#include "TileSystem.h"
+#include "gcj02.h"
+#include <cmath>
+#include <cstdio>
 
-using namespace::Microsoft_MapPoint;
+#define LONGITUDE_OFFSET 0.008
+#define LATITUDE_OFFSET 0.009
 
-#ifndef constrain
-#  define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
-#endif
+using namespace ::Microsoft_MapPoint;
 
-char MapConv::dirPath[] = "/MAP";
-char MapConv::extName[] = "bin";
-int16_t MapConv::levelMin = 0;
-int16_t MapConv::levelMax = 19;
-bool MapConv::coordTransformEnable = false;
-
-MapConv::MapConv()
+MapConv::MapConv(bool coordTransformEnable, int level, int tileSize)
+    : _longitudeOffset(0)
+    , _latitudeOffset(0)
+    , _longitudeLast(0)
+    , _latitudeLast(0)
+    , _level(level)
+    , _tileSize(tileSize)
+    , _coordTransformEnable(coordTransformEnable)
 {
-    priv.level = 16;
-    priv.tileSize = 256;
 }
 
-void MapConv::SetLevel(int level)
+void MapConv::setCoordTransformEnable(bool enable)
 {
-    priv.level = constrain(level, levelMin, levelMax);
+    _coordTransformEnable = enable;
 }
 
-void MapConv::GetMapTile(double longitude, double latitude, MapTile_t* mapTile)
+bool MapConv::getCoordTransformEnable()
 {
-    int32_t x, y;
-    ConvertMapCoordinate(longitude, latitude, &x, &y);
-    ConvertPosToTile(x, y, mapTile);
+    return _coordTransformEnable;
 }
 
-void MapConv::ConvertMapCoordinate(
-    double longitude, double latitude,
-    int32_t* mapX, int32_t* mapY
-)
+void MapConv::setLevel(int level)
 {
-    int pixelX, pixelY;
+    _level = level;
+}
 
-    if (coordTransformEnable)
-    {
-        GPS_Transform(latitude, longitude, &latitude, &longitude);
+int MapConv::getLevel()
+{
+    return _level;
+}
+
+MapConv::Tile_t MapConv::getTile(double longitude, double latitude)
+{
+    Point_t point = getCoordinate(longitude, latitude);
+    return posToTile(point.x, point.y);
+}
+
+MapConv::Point_t MapConv::getCoordinate(double longitude, double latitude)
+{
+    if (_coordTransformEnable) {
+        if (std::abs(longitude - _longitudeLast) > LONGITUDE_OFFSET
+            || std::abs(latitude - _latitudeLast) > LATITUDE_OFFSET) {
+            double gcj02_latitude, gcj02_longitude;
+            gcj02_to_wgs84(&gcj02_latitude, &gcj02_longitude, latitude, longitude);
+
+            /* cache offset */
+            _longitudeOffset = longitude - gcj02_longitude;
+            _latitudeOffset = latitude - gcj02_latitude;
+            _longitudeLast = longitude;
+            _latitudeLast = latitude;
+        }
+
+        longitude -= _longitudeOffset;
+        latitude -= _latitudeOffset;
     }
+
+    int pixelX, pixelY;
 
     TileSystem::LatLongToPixelXY(
         latitude,
         longitude,
-        priv.level,
+        _level,
         &pixelX,
-        &pixelY
-    );
+        &pixelY);
 
-    *mapX = pixelX;
-    *mapY = pixelY;
+    Point_t point;
+    point.x = pixelX;
+    point.y = pixelY;
+    return point;
 };
 
-void MapConv::ConvertMapLevelPos(
-    int32_t* destX, int32_t* destY,
-    int32_t srcX, int32_t srcY, int srcLevel
-)
+int MapConv::getPath(char* path, size_t len, int32_t x, int32_t y)
 {
-    int diffLevel = srcLevel - GetLevel();
-    if (diffLevel >= 0)
-    {
-        *destX = srcX >> diffLevel;
-        *destY = srcY >> diffLevel;
-    }
-    else
-    {
-        *destX = srcX << -diffLevel;
-        *destY = srcY << -diffLevel;
-    }
-}
-
-int MapConv::ConvertMapPath(int32_t x, int32_t y, char* path, uint32_t len)
-{
-    int32_t tileX = x / priv.tileSize;
-    int32_t tileY = y / priv.tileSize;
-    int ret = snprintf(
-                  path, len,
-                  "%s/%d/%d/%d.%s",
-                  dirPath,
-                  priv.level,
-                  tileX,
-                  tileY,
-                  extName
-              );
-
+    int tileX = x / _tileSize;
+    int tileY = y / _tileSize;
+    int ret = snprintf(path, len, "/%d/%d/%d", _level, tileX, tileY);
     return ret;
 }
 
-void MapConv::ConvertPosToTile(int32_t x, int32_t y, MapTile_t* mapTile)
+MapConv::Tile_t MapConv::posToTile(int32_t x, int32_t y)
 {
-    mapTile->tileX = x / priv.tileSize;
-    mapTile->tileY = y / priv.tileSize;
-    mapTile->subX = x % priv.tileSize;
-    mapTile->subY = y % priv.tileSize;
+    Tile_t mapTile;
+    mapTile.tileX = x / _tileSize;
+    mapTile.tileY = y / _tileSize;
+    mapTile.subX = x % _tileSize;
+    mapTile.subY = y % _tileSize;
+    return mapTile;
+}
+
+MapConv::Point_t MapConv::convertPoint(int32_t x, int32_t y, int level)
+{
+    Point_t point;
+
+    int diff = level - _level;
+
+    if (diff >= 0) {
+        point.x = x >> diff;
+        point.y = y >> diff;
+    } else {
+        point.x = x << -diff;
+        point.y = y << -diff;
+    }
+
+    return point;
 }

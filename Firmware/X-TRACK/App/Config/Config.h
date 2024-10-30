@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2021 - 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,61 +23,58 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+/* clang-format off */
+
 /*=========================
-   Application configuration
+  Application configuration
  *=========================*/
 
-#define CONFIG_SYSTEM_SAVE_FILE_PATH          "/SystemSave.json"
-#define CONFIG_SYSTEM_SAVE_FILE_BACKUP_PATH   "/.SystemSaveBackup.json"
-#define CONFIG_SYSTEM_LANGUAGE_DEFAULT        "en-GB"
-#define CONFIG_SYSTEM_TIME_ZONE_DEFAULT       8    // GMT+ 8
-#define CONFIG_SYSTEM_SOUND_ENABLE_DEFAULT    true
+/* Default time zone (GMT+ X)*/
+#define CONFIG_TIME_ZONE_DEFAULT              8
 
-#define CONFIG_WEIGHT_DEFAULT                 65   // kg
+/* Default language code
+ * zh-CN: Chinese (PRC)
+ * en-US: English (United States)
+ *
+ * Language coding standards: https://www.andiamo.co.uk/resources/iso-language-codes
+ */
+#define CONFIG_LANGUAGE_DEFAULT               "zh-CN"
 
-#ifdef ARDUINO
-#  define CONFIG_GPS_REFR_PERIOD              1000 // ms
-#else
-#  define CONFIG_GPS_REFR_PERIOD              10 // ms
+/* Default weight (kilogram) */
+#define CONFIG_WEIGHT_DEFAULT                 65
+
+/* Default wheel diameter (millimeter) */
+#define CONFIG_WHEEL_DIAMETER_DEFAULT         700
+
+/* Default GNSS data refresh period (milliseconds) */
+#ifndef CONFIG_GNSS_UPDATE_PERIOD
+#  define CONFIG_GNSS_UPDATE_PERIOD           1000
 #endif
 
-#define CONFIG_GPS_LONGITUDE_DEFAULT          116.391332f
-#define CONFIG_GPS_LATITUDE_DEFAULT           39.907415f
+/* Default latitude and longitude */
+#define CONFIG_GNSS_LONGITUDE_DEFAULT         116.391332f
+#define CONFIG_GNSS_LATITUDE_DEFAULT          39.907415f
 
-#define CONFIG_TRACK_FILTER_OFFSET_THRESHOLD  2 // pixel
+/* Track file storage directory */
 #define CONFIG_TRACK_RECORD_FILE_DIR_NAME     "Track"
 
-#define CONFIG_MAP_USE_WGS84_DEFAULT          false
+/* Coordinate conversion
+ * true:  GCJ-02 (GCJ-02 Coordinate System)
+ * false: WGS-84 (World Geodetic System)
+ */
+#define CONFIG_MAP_COORD_TRANSFORM_ENABLE     true
+
+/* Default map file storage directory */
 #define CONFIG_MAP_DIR_PATH_DEFAULT           "/MAP"
 
-#ifndef CONFIG_MAP_EXT_NAME_DEFAULT
-#define CONFIG_MAP_EXT_NAME_DEFAULT           "bin"
+/* Default map file extension name */
+#define CONFIG_MAP_EXT_NAME_DEFAULT           "png"
+
+/* Watchdog timeout (seconds) */
+#ifndef CONFIG_WATCHDOG_TIMEOUT
+#define CONFIG_WATCHDOG_TIMEOUT               10
 #endif
 
-#ifndef CONFIG_MAP_IMG_PNG_ENABLE
-#  define CONFIG_MAP_IMG_PNG_ENABLE           0
-#endif
+/* clang-format on */
 
-#define CONFIG_ARROW_THEME_DEFAULT            "default"
-
-#define CONFIG_LIVE_MAP_LEVEL_DEFAULT         16
-
-#define CONFIG_LIVE_MAP_DEBUG_ENABLE          0
-#if CONFIG_LIVE_MAP_DEBUG_ENABLE
-#  define CONFIG_LIVE_MAP_VIEW_WIDTH          240
-#  define CONFIG_LIVE_MAP_VIEW_HEIGHT         240
-#else
-#  define CONFIG_LIVE_MAP_VIEW_WIDTH          LV_HOR_RES
-#  define CONFIG_LIVE_MAP_VIEW_HEIGHT         LV_VER_RES
-#endif
-
-#define CONFIG_MONKEY_TEST_ENABLE             0
-#if CONFIG_MONKEY_TEST_ENABLE
-#  define CONFIG_MONKEY_INDEV_TYPE            LV_INDEV_TYPE_ENCODER
-#  define CONFIG_MONKEY_PERIOD_MIN            10
-#  define CONFIG_MONKEY_PERIOD_MAX            100
-#  define CONFIG_MONKEY_INPUT_RANGE_MIN       -5
-#  define CONFIG_MONKEY_INPUT_RANGE_MAX       5
-#endif
-
-#endif
+#endif /* __CONFIG_H */

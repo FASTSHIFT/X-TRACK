@@ -35,7 +35,6 @@ public:
     {
         this->Reset();
 
-        this->dT = dt;
         if (cutoff > 0.001f)
         {
             float RC = 1 / (2 * 3.141592653f * cutoff);
@@ -61,7 +60,6 @@ public:
     }
 
 private:
-    float dT;
     float rc;
 };
 

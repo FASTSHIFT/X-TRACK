@@ -10,7 +10,7 @@ extern "C" {
 /*Data of anim_timeline*/
 typedef struct {
     uint32_t start_time;
-    lv_obj_t* obj;
+    void* obj;
     lv_anim_exec_xcb_t exec_cb;
     int32_t start;
     int32_t end;
@@ -23,12 +23,6 @@ typedef struct {
 * GLOBAL PROTOTYPES
 **********************/
 
-/**
- * Start animation according to the timeline
- * @param anim_timeline  timeline array address
- * @param playback       whether to play in reverse
- * @return timeline total time spent
- */
 void lv_anim_timeline_add_wrapper(lv_anim_timeline_t* at, const lv_anim_timeline_wrapper_t* wrapper);
 
 /**********************

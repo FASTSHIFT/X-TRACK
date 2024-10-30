@@ -1,77 +1,105 @@
+/*
+ * MIT License
+ * Copyright (c) 2023 - 2024 _VIFEXTech
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 #include "HAL.h"
-#include "lvgl/lvgl.h"
 
-/**
-  * @brief  背光亮度渐变，受lv_anim控制
-  * @param  obj:无用
-  * @param  brightness:亮度值
-  * @retval None
-  */
-static void Backlight_AnimCallback(void * obj, int32_t brightness)
+#define BACKLIGHT_RESOLUTION 1000
+
+namespace HAL {
+
+class Backlight : private DeviceObject {
+public:
+    Backlight(const char* name)
+        : DeviceObject(name)
+        , _backlightValue(0)
+    {
+    }
+
+private:
+    int _backlightValue;
+
+private:
+    virtual int onInit();
+    virtual int onRead(void* buffer, size_t size);
+    virtual int onWrite(const void* buffer, size_t size);
+    virtual int onIoctl(DeviceObject::IO_Cmd_t cmd, void* data);
+    int getValue();
+    void setValue(int value);
+    void forceLit();
+};
+
+int Backlight::onInit()
 {
-    HAL::Backlight_SetValue(brightness);
+    setValue(0);
+    return DeviceObject::RES_OK;
 }
 
-/**
-  * @brief  背光初始化
-  * @param  无
-  * @retval 无
-  */
-void HAL::Backlight_Init()
+int Backlight::onRead(void* buffer, size_t size)
 {
-    /*PWM初始化，1000级，20KHz频率*/
-    PWM_Init(CONFIG_SCREEN_BLK_PIN, 1000, 20000);
-    Backlight_SetValue(0);
+    if (size != sizeof(int)) {
+        return DeviceObject::RES_PARAM_ERROR;
+    }
+    *(int*)buffer = getValue();
+    return sizeof(int);
 }
 
-/**
-  * @brief  背光设置，渐变效果
-  * @param  target:目标亮度(0~1000 -> 0~100%)
-  * @retval 无
-  */
-void HAL::Backlight_SetGradual(uint16_t target, uint16_t time)
+int Backlight::onWrite(const void* buffer, size_t size)
 {
-    lv_anim_t a;
-    lv_anim_init(&a);
-    lv_anim_set_exec_cb(&a, (lv_anim_exec_xcb_t)Backlight_AnimCallback);
-    lv_anim_set_values(&a, Backlight_GetValue(), target);
-    lv_anim_set_time(&a, time);
-    lv_anim_set_path_cb(&a, lv_anim_path_ease_out);
-
-    lv_anim_start(&a);
+    if (size != sizeof(int)) {
+        return DeviceObject::RES_PARAM_ERROR;
+    }
+    setValue(*(int*)buffer);
+    return sizeof(int);
 }
 
-/**
-  * @brief  获取背光亮度
-  * @param  无
-  * @retval 当前亮度(0~1000 -> 0~100%)
-  */
-uint16_t HAL::Backlight_GetValue()
+int Backlight::onIoctl(DeviceObject::IO_Cmd_t cmd, void* data)
 {
-    return Timer_GetCompare(
-               PIN_MAP[CONFIG_SCREEN_BLK_PIN].TIMx,
-               PIN_MAP[CONFIG_SCREEN_BLK_PIN].TimerChannel
-           );
+    int retval = DeviceObject::RES_UNKNOWN;
+    switch (cmd.full) {
+    case BACKLIGHT_IOCMD_FORCE_LIT:
+        forceLit();
+        retval = DeviceObject::RES_OK;
+        break;
+    default:
+        break;
+    }
+    return retval;
 }
 
-/**
-  * @brief  设置背光亮度
-  * @param  val: 亮度(0~1000 -> 0~100%)
-  * @retval 无
-  */
-void HAL::Backlight_SetValue(int16_t val)
+int Backlight::getValue()
 {
-    CM_VALUE_LIMIT(val, 0, 1000);
-    analogWrite(CONFIG_SCREEN_BLK_PIN, val);
+    return _backlightValue;
 }
 
-/**
-  * @brief  背光强制点亮
-  * @param  en: 背光使能
-  * @retval 无
-  */
-void HAL::Backlight_ForceLit(bool en)
+void Backlight::setValue(int value)
 {
-    pinMode(CONFIG_SCREEN_BLK_PIN, OUTPUT);
-    digitalWrite(CONFIG_SCREEN_BLK_PIN, en);
+    CM_VALUE_LIMIT(value, 0, BACKLIGHT_RESOLUTION);
+    _backlightValue = value;
 }
+
+void Backlight::forceLit()
+{
+}
+
+} /* namespace HAL */
+
+DEVICE_OBJECT_MAKE(Backlight);

@@ -1,33 +1,21 @@
 #include "GPX_Parser.h"
 #include <string.h>
 
-#define STR_LEN_MAX 64
-
-GPX_Parser::GPX_Parser()
+GPX_Parser::GPX_Parser(Callback_t avaliableCallback, Callback_t readCallback, void* userData)
+    : _avaliableCallback(avaliableCallback)
+    , _readCallback(readCallback)
+    , _userData(userData)
 {
-    memset(&priv, 0, sizeof(priv));
-}
-
-GPX_Parser::~GPX_Parser()
-{
-
-}
-
-void GPX_Parser::SetCallback(Callback_t avaliableCallback, Callback_t readCallback)
-{
-    priv.avaliableCallback = avaliableCallback;
-    priv.readCallback = readCallback;
 }
 
 bool GPX_Parser::readStringUntil(char terminator, String* str)
 {
     bool retval = false;
-    char strBuf[STR_LEN_MAX];
+    char strBuf[64];
 
     size_t len = readBytesUntil(terminator, strBuf, sizeof(strBuf));
 
-    if (len < sizeof(strBuf))
-    {
+    if (len < sizeof(strBuf)) {
         strBuf[len] = '\0';
         *str = strBuf;
         retval = true;
@@ -36,61 +24,53 @@ bool GPX_Parser::readStringUntil(char terminator, String* str)
     return retval;
 }
 
-int GPX_Parser::ReadNext(Point_t* point)
+int GPX_Parser::getNext(Point_t* point)
 {
     String str;
-    int flag = PARSER_FLAG_NONE;
+    int flag = FLAG_NONE;
 
-    if (!find((char*)"<trkpt"))
-    {
-        flag |= PARSER_FLAG_UNMATCHED;
-        flag |= PARSER_FLAG_EOF;
+    if (!find((char*)"<trkpt")) {
+        flag |= FLAG_UNMATCHED;
+        flag |= FLAG_END_OF_FILE;
         goto failed;
     }
 
-    while (true)
-    {
+    while (true) {
         bool ret = readStringUntil('>', &str);
-        if (!ret)
-        {
-            flag |= PARSER_FLAG_UNMATCHED;
+        if (!ret) {
+            flag |= FLAG_UNMATCHED;
             goto failed;
         }
 
         int index = str.indexOf("lat=");
-        if (index >= 0)
-        {
+        if (index >= 0) {
             String lat = str.substring(str.indexOf('"') + 1);
             point->latitude = lat.toFloat();
-            flag |= PARSER_FLAG_LAT;
+            flag |= FLAG_LATITUDE;
 
             String lon = str.substring(str.indexOf("lon="));
             lon = lon.substring(lon.indexOf('"') + 1);
             point->longitude = lon.toFloat();
-            flag |= PARSER_FLAG_LNG;
+            flag |= FLAG_LONGITUDE;
             continue;
         }
 
         index = str.indexOf("<ele");
-        if (index >= 0)
-        {
-            if (!readStringUntil('>', &str))
-            {
-                flag |= PARSER_FLAG_UNMATCHED;
+        if (index >= 0) {
+            if (!readStringUntil('>', &str)) {
+                flag |= FLAG_UNMATCHED;
                 goto failed;
             }
             String ele = str;
             point->altitude = ele.toFloat();
-            flag |= PARSER_FLAG_ALT;
+            flag |= FLAG_ALTITUDE;
             continue;
         }
 
         index = str.indexOf("<time");
-        if (index >= 0)
-        {
-            if (!readStringUntil('>', &str))
-            {
-                flag |= PARSER_FLAG_UNMATCHED;
+        if (index >= 0) {
+            if (!readStringUntil('>', &str)) {
+                flag |= FLAG_UNMATCHED;
                 goto failed;
             }
             String time = str;
@@ -103,25 +83,22 @@ int GPX_Parser::ReadNext(Point_t* point)
                 &day,
                 &hour,
                 &minute,
-                &second
-            );
+                &second);
             point->time.year = year;
             point->time.month = month;
             point->time.day = day;
             point->time.hour = hour;
             point->time.minute = minute;
             point->time.second = second;
-            flag |= PARSER_FLAG_TIME;
+            flag |= FLAG_TIME;
             continue;
         }
 
-        if (str.length() == 0)
-        {     
+        if (str.length() == 0) {
             goto failed;
         }
 
-        if (str.indexOf("</trkpt") >= 0)
-        {
+        if (str.indexOf("</trkpt") >= 0) {
             break;
         }
     }
@@ -132,20 +109,10 @@ failed:
 
 int GPX_Parser::available()
 {
-    if (priv.avaliableCallback)
-    {
-        return priv.avaliableCallback(this);
-    }
-
-    return 0;
+    return _avaliableCallback(this);
 }
 
 int GPX_Parser::read()
 {
-    if (priv.readCallback)
-    {
-        return priv.readCallback(this);
-    }
-
-    return 0;
+    return _readCallback(this);
 }

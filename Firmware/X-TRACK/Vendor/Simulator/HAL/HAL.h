@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2023 - 2024 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __HAL_INTERNAL_H
-#define __HAL_INTERNAL_H
+#ifndef __HAL_H
+#define __HAL_H
 
-#include "App/Common/HAL/HAL.h"
-#include "HAL_Config.h"
-#include "CommonMacro.h"
+#include "Service/HAL/HAL.h"
+#include "Service/HAL/HAL_Log.h"
+#include "Utils/CommonMacro/CommonMacro.h"
 
 #endif

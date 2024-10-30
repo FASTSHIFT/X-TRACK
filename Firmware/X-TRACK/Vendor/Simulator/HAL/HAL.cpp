@@ -1,85 +1,57 @@
+/*
+ * MIT License
+ * Copyright (c) 2023 - 2024 _VIFEXTech
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 #include "HAL.h"
-#include "App/Version.h"
-#include "MillisTaskManager/MillisTaskManager.h"
 
-static MillisTaskManager taskManager;
+/* Import Device */
+#define HAL_DEF(name) extern DeviceObject DevObj_##name;
+#include "HAL_DeviceTree.inc"
+#undef HAL_DEF
 
-#if CONFIG_SENSOR_ENABLE
-
-static void HAL_Sensor_Init()
+DeviceManager* HAL::Manager()
 {
-    if(HAL::I2C_Scan() <= 0)
-    {
-        Serial.println("I2C: disable sensors");
-        return;
-    }
+    /* Device Array */
+    static DeviceObject* devObjArr[] = {
+#define HAL_DEF(name) &(DevObj_##name),
+#include "HAL_DeviceTree.inc"
+#undef HAL_DEF
+    };
 
-#if CONFIG_SENSOR_IMU_ENABLE
-    if(HAL::IMU_Init())
-    {
-        taskManager.Register(HAL::IMU_Update, 1000);
-    }
-#endif
-
-#if CONFIG_SENSOR_MAG_ENABLE
-    if(HAL::MAG_Init())
-    {
-        taskManager.Register(HAL::MAG_Update, 1000);
-    }
-#endif
+    static DeviceManager manager(devObjArr, CM_ARRAY_SIZE(devObjArr));
+    return &manager;
 }
 
-#endif
-
-static void HAL_TimerInterrputUpdate()
+void HAL::Init()
 {
-    HAL::Power_Update();
-    HAL::Encoder_Update();
-    HAL::Audio_Update();
-}
+    HAL_Log_Init();
+    HAL_LOG_INFO("begin");
 
-void HAL::HAL_Init()
-{
-    Serial.begin(115200);
-    Serial.println(VERSION_FIRMWARE_NAME);
-    Serial.println("Version: " VERSION_SOFTWARE);
-    Serial.println("Author: "  VERSION_AUTHOR_NAME);
-    Serial.println("Project: " VERSION_PROJECT_LINK);
+    Manager()->init([](DeviceManager* manager, DeviceObject* dev, int retval) {
+        if (retval < 0) {
+            HAL_LOG_ERROR("[%s] init fail: %d", dev->getName(), retval);
+        } else {
+            HAL_LOG_INFO("[%s] init success", dev->getName());
+        }
+    });
 
-    FaultHandle_Init();
-
-    Memory_DumpInfo();
-
-    Power_Init();
-    Backlight_Init();
-    Encoder_Init();
-    Clock_Init();
-    Buzz_init();
-    GPS_Init();
-#if CONFIG_SENSOR_ENABLE
-    HAL_Sensor_Init();
-#endif
-    Audio_Init();
-    SD_Init();
-
-    Display_Init();
-
-#if CONFIG_WATCH_DOG_ENABLE
-    uint32_t timeout = WDG_Init(CONFIG_WATCH_DOG_TIMEOUT);
-    taskManager.Register(WDG_ReloadCounter, CONFIG_WATCH_DOG_TIMEOUT / 10);
-    Serial.printf("WatchDog: Timeout = %dms\r\n", timeout);
-#endif
-
-    taskManager.Register(Power_EventMonitor, 100);
-    taskManager.Register(GPS_Update, 200);
-    taskManager.Register(SD_Update, 500);
-    taskManager.Register(Memory_DumpInfo, 1000);
-
-    Timer_SetInterrupt(CONFIG_HAL_UPDATE_TIM, 10 * 1000, HAL_TimerInterrputUpdate);
-    Timer_SetEnable(CONFIG_HAL_UPDATE_TIM, true);
-}
-
-void HAL::HAL_Update()
-{
-    taskManager.Running(millis());
+    HAL_LOG_INFO("end");
 }

@@ -40,14 +40,14 @@
 
 #include "Time.h"
 
-static tmElements_t tm;          // a cache of time elements
-static time_t cacheTime;   // the time the cache was updated
-static uint32_t syncInterval = 300;  // time sync will be attempted after this many seconds
+static tmElements_t g_tm;          // a cache of time elements
+static time_t g_cacheTime;   // the time the cache was updated
+static uint32_t g_syncInterval = 300;  // time sync will be attempted after this many seconds
 
 void refreshCache(time_t t) {
-  if (t != cacheTime) {
-    breakTime(t, tm); 
-    cacheTime = t; 
+  if (t != g_cacheTime) {
+    breakTime(t, g_tm); 
+    g_cacheTime = t; 
   }
 }
 
@@ -57,7 +57,7 @@ int hour() { // the hour now
 
 int hour(time_t t) { // the hour for the given time
   refreshCache(t);
-  return tm.Hour;  
+  return g_tm.Hour;  
 }
 
 int hourFormat12() { // the hour now in 12 hour format
@@ -66,12 +66,12 @@ int hourFormat12() { // the hour now in 12 hour format
 
 int hourFormat12(time_t t) { // the hour for the given time in 12 hour format
   refreshCache(t);
-  if( tm.Hour == 0 )
+  if( g_tm.Hour == 0 )
     return 12; // 12 midnight
-  else if( tm.Hour  > 12)
-    return tm.Hour - 12 ;
+  else if( g_tm.Hour  > 12)
+    return g_tm.Hour - 12 ;
   else
-    return tm.Hour ;
+    return g_tm.Hour ;
 }
 
 uint8_t isAM() { // returns true if time now is AM
@@ -96,7 +96,7 @@ int minute() {
 
 int minute(time_t t) { // the minute for the given time
   refreshCache(t);
-  return tm.Minute;  
+  return g_tm.Minute;  
 }
 
 int second() {
@@ -105,7 +105,7 @@ int second() {
 
 int second(time_t t) {  // the second for the given time
   refreshCache(t);
-  return tm.Second;
+  return g_tm.Second;
 }
 
 int day(){
@@ -114,7 +114,7 @@ int day(){
 
 int day(time_t t) { // the day for the given time (0-6)
   refreshCache(t);
-  return tm.Day;
+  return g_tm.Day;
 }
 
 int weekday() {   // Sunday is day 1
@@ -123,7 +123,7 @@ int weekday() {   // Sunday is day 1
 
 int weekday(time_t t) {
   refreshCache(t);
-  return tm.Wday;
+  return g_tm.Wday;
 }
    
 int month(){
@@ -132,7 +132,7 @@ int month(){
 
 int month(time_t t) {  // the month for the given time
   refreshCache(t);
-  return tm.Month;
+  return g_tm.Month;
 }
 
 int year() {  // as in Processing, the full four digit year: (2009, 2010 etc) 
@@ -141,7 +141,7 @@ int year() {  // as in Processing, the full four digit year: (2009, 2010 etc)
 
 int year(time_t t) { // the year for the given time
   refreshCache(t);
-  return tmYearToCalendar(tm.Year);
+  return tmYearToCalendar(g_tm.Year);
 }
 
 /*============================================================================*/	
@@ -268,7 +268,7 @@ time_t now() {
       if (t != 0) {
         setTime(t);
       } else {
-        nextSyncTime = sysTime + syncInterval;
+        nextSyncTime = sysTime + g_syncInterval;
         Status = (Status == timeNotSet) ?  timeNotSet : timeNeedsSync;
       }
     }
@@ -283,7 +283,7 @@ void setTime(time_t t) {
 #endif
 
   sysTime = (uint32_t)t;  
-  nextSyncTime = (uint32_t)t + syncInterval;
+  nextSyncTime = (uint32_t)t + g_syncInterval;
   Status = timeSet;
   prevMillis = millis();  // restart counting from now (thanks to Korman for this fix)
 } 
@@ -295,13 +295,13 @@ void setTime(int hr,int min,int sec,int dy, int mnth, int yr){
       yr = yr - 1970;
   else
       yr += 30;  
-  tm.Year = yr;
-  tm.Month = mnth;
-  tm.Day = dy;
-  tm.Hour = hr;
-  tm.Minute = min;
-  tm.Second = sec;
-  setTime(makeTime(tm));
+  g_tm.Year = yr;
+  g_tm.Month = mnth;
+  g_tm.Day = dy;
+  g_tm.Hour = hr;
+  g_tm.Minute = min;
+  g_tm.Second = sec;
+  setTime(makeTime(g_tm));
 }
 
 void adjustTime(long adjustment) {
@@ -321,6 +321,6 @@ void setSyncProvider( getExternalTime getTimeFunction){
 }
 
 void setSyncInterval(time_t interval){ // set the number of seconds between re-sync
-  syncInterval = (uint32_t)interval;
-  nextSyncTime = sysTime + syncInterval;
+  g_syncInterval = (uint32_t)interval;
+  nextSyncTime = sysTime + g_syncInterval;
 }

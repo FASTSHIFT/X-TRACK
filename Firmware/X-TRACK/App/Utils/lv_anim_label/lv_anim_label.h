@@ -14,6 +14,7 @@ extern "C" {
  *      INCLUDES
  *********************/
 #include "lvgl/lvgl.h"
+#include "lvgl/src/lvgl_private.h"
 
 typedef struct {
     lv_obj_t obj;

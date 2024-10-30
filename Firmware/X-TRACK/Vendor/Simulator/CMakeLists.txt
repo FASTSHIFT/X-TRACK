@@ -85,11 +85,14 @@ include_directories(
   ${EXTERNAL_SOURCE_DIR}/graphics
   ${EXTERNAL_SOURCE_DIR}/freetype/include)
 
+# lvgl porting
+file(GLOB LV_PORT_SOURCES "lv_port/*.c" "lv_port/*.cpp")
+
 # HAL
-# file(GLOB HAL_SOURCES "HAL/*.cpp")
+file(GLOB HAL_SOURCES "HAL/*.cpp")
 
 # App
-# file(GLOB_RECURSE APP_SOURCES ${APP_SOURCE_DIR}/*.c ${APP_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE APP_SOURCES ${APP_SOURCE_DIR}/*.c ${APP_SOURCE_DIR}/*.cpp)
 
 # Frameworks
 file(
@@ -102,6 +105,7 @@ file(
 
 # ALL Sources
 set(SOURCES
+    ${LV_PORT_SOURCES}
     ${HAL_SOURCES}
     ${APP_SOURCES}
     ${FRAMEWORKS_SOURCES})

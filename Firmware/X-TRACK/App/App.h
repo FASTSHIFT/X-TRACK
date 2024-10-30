@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2021 - 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,33 @@
 #ifndef __APP_H
 #define __APP_H
 
-void App_Init(void);
-void App_Uninit(void);
+typedef struct AppContext AppContext_t;
+
+extern "C" {
+
+/**
+ * @brief Create app context
+ *
+ * @param argc Number of arguments
+ * @param argv Arguments
+ * @return AppContext_t* 
+ */
+AppContext_t* App_CreateContext(int argc, const char* argv[]);
+
+/**
+ * @brief Run app loop
+ *
+ * @param context
+ */
+void App_RunLoopExecute(AppContext_t* context);
+
+/**
+ * @brief Destroy app context
+ *
+ * @param context 
+ */
+void App_DestroyContext(AppContext_t* context);
+
+} /* extern "C" */
 
 #endif

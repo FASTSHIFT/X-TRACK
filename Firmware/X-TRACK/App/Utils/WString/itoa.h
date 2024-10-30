@@ -19,27 +19,14 @@
 #ifndef _ITOA_
 #define _ITOA_
 
-#include <string.h>
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-#if 0
-
-extern void itoa( int n, char s[] ) ;
-
-#else
-
-extern char* itoa( int value, char *string, int radix ) ;
-extern char* ltoa( long value, char *string, int radix ) ;
-#if 0/*__GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 9 || \
-   (__GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ > 2)))*/
-extern char* utoa( unsigned value, char *string, int radix ) ;
-#else
-extern char* utoa( unsigned long value, char *string, int radix ) ;
-#endif
-extern char* ultoa( unsigned long value, char *string, int radix ) ;
-#endif /* 0 */
+char *itoa(int value, char *string, int radix);
+char *ltoa(long value, char *string, int radix);
+char *utoa(unsigned int value, char *string, int radix);
+char *ultoa(unsigned long value, char *string, int radix);
 
 #ifdef __cplusplus
 } // extern "C"

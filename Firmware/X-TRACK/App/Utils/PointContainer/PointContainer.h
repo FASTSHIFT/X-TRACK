@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 _VIFEXTech
+ * Copyright (c) 2021 - 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,35 +26,32 @@
 #include <stdint.h>
 #include <vector>
 
-class PointContainer
-{
+class PointContainer {
 public:
     PointContainer();
     ~PointContainer();
-    void PushPoint(int32_t x, int32_t y)
+    void pushPoint(int32_t x, int32_t y)
     {
         const FullPoint_t point = { x, y };
-        PushPoint(&point);
+        pushPoint(&point);
     }
 
-    bool PopPoint(int32_t* x, int32_t* y)
+    bool popPoint(int32_t* x, int32_t* y)
     {
         FullPoint_t point;
-        bool retval = PopPoint(&point);
+        bool retval = popPoint(&point);
 
-        if (retval)
-        {
+        if (retval) {
             *x = point.x;
             *y = point.y;
         }
         return retval;
     }
 
-    void PopStart();
+    void popStart();
 
 private:
-    typedef enum
-    {
+    typedef enum {
         FLAG_END_POINT = 0,
         FLAG_FULL_POINT = 1,
     } Flag_t;
@@ -72,12 +69,12 @@ private:
     } DiffPoint_t;
 
 private:
-    void PushPoint(const FullPoint_t* point);
-    bool PopPoint(FullPoint_t* point);
-    void PushFullPoint(const FullPoint_t* point);
-    bool PopFullPoint(FullPoint_t* point);
-    bool IsFlag(const DiffPoint_t* point);
-    inline DiffPoint_t MakeFlag(Flag_t flag)
+    void pushPoint(const FullPoint_t* point);
+    bool popPoint(FullPoint_t* point);
+    void pushFullPoint(const FullPoint_t* point);
+    bool popFullPoint(FullPoint_t* point);
+    bool isFlag(const DiffPoint_t* point);
+    inline DiffPoint_t makeFlag(Flag_t flag)
     {
         DiffPoint_t point = { (int8_t)flag, (int8_t)flag };
         return point;
@@ -85,12 +82,9 @@ private:
 
 private:
     std::vector<DiffPoint_t> vecPoints;
-    struct
-    {
-        FullPoint_t curPushPoint;
-        FullPoint_t curPopPoint;
-        uint32_t curPopIndex;
-    } priv;
+    FullPoint_t _curPushPoint;
+    FullPoint_t _curPopPoint;
+    uint32_t _curPopIndex;
 };
 
 #endif
