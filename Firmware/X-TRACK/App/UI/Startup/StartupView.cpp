@@ -35,6 +35,8 @@ StartupView::StartupView(EventListener* listener, lv_obj_t* root)
 {
     static_assert(sizeof(StartupView) >= (size_t)MSG_ID::_LAST, "Large MSG_ID");
 
+    lv_obj_set_style_pad_all(root, 0, 0);
+
     lv_obj_t* cont = lv_obj_create(root);
     lv_obj_remove_style_all(cont);
     lv_obj_clear_flag(cont, LV_OBJ_FLAG_SCROLLABLE);

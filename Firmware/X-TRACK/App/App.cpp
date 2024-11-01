@@ -26,11 +26,13 @@
 #include "Service/DataProc/DataProc.h"
 #include "UI/AppFactory.h"
 #include "UI/Resource/ResourcePool.h"
+#include "UI/StatusBar/StatusBar.h"
 
 struct AppContext {
     DataBroker* broker;
     DataProc::Global_Helper* global;
     PageManager* manager;
+    Page::StatusBar* statusBar;
 };
 
 AppContext_t* App_CreateContext(int argc, const char* argv[])
@@ -52,6 +54,10 @@ AppContext_t* App_CreateContext(int argc, const char* argv[])
     AppFactory::getInstance()->intsallAll(context->manager);
     context->global->publish(DataProc::GLOBAL_EVENT::PAGE_MANAGER_INIT_FINISHED, context->manager);
 
+    /* StatusBar */
+    context->statusBar = new Page::StatusBar;
+    context->global->publish(DataProc::GLOBAL_EVENT::STATUS_BAR_INIT_FINISHED);
+
     /* App started */
     context->global->publish(DataProc::GLOBAL_EVENT::APP_STARTED);
 
@@ -71,6 +77,7 @@ void App_DestroyContext(AppContext_t* context)
     context->global->publish(DataProc::GLOBAL_EVENT::APP_STOPPED);
 
     delete context->manager;
+    delete context->statusBar;
     delete context->broker;
     ResourcePool::deinit();
     delete context;
