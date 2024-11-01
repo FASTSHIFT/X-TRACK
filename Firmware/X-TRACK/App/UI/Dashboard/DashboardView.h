@@ -24,19 +24,36 @@
 #define __DASHBOARD_VIEW_H
 
 #include "../Page.h"
+#include "Utils/Binding/Binding.h"
 
 namespace Page {
+
+class DashboardModel;
 
 class DashboardView {
 public:
     enum class EVENT_ID {
+        GET_BINDING, /* Param: Binding_Info_t */
         _LAST,
     };
 
     enum class MSG_ID {
         NONE,
+        SPORT_STATUS, /* param: SportStatus_Info_t */
+        RECORDER_STATUS, /* param: Recorder_Info_t */
         _LAST
     };
+
+    enum class BINDING_TYPE {
+#define BINDING_DEF(name, type) name,
+#include "BindingDef.inc"
+#undef BINDING_DEF
+    };
+
+    typedef struct {
+        BINDING_TYPE type;
+        void* binding;
+    } Binding_Info_t;
 
     class EventListener {
     public:
@@ -50,10 +67,20 @@ public:
 
 private:
     EventListener* _listener;
+    ResourcePool::Font _fontLarge;
+
+#define BINDING_DEF(name, type) Binding<type, DashboardModel>* _binding##name;
+#include "BindingDef.inc"
+#undef BINDING_DEF
 
 private:
     lv_uintptr_t msgID(MSG_ID id);
     void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t cb, void* user_data = nullptr);
+    void* getBinding(BINDING_TYPE type);
+
+    void topInfoCreate(lv_obj_t* par);
+    void bottomInfoCreate(lv_obj_t* par);
+    void btnCreate(lv_obj_t* par, const void* src);
 };
 
 }

@@ -24,6 +24,7 @@
 #define __DASHBOARD_MODEL_H
 
 #include "Service/DataProc/DataProc.h"
+#include "Utils/Binding/Binding.h"
 
 namespace Page {
 
@@ -32,8 +33,20 @@ class DashboardModel : private DataNode {
 public:
     enum class EVENT_ID {
         SPORT_STATUS, /* param: SportStatus_Info_t */
+        RECORDER_STATUS, /* param: Recorder_Info_t */
         _EVENT_LAST,
     };
+
+    enum class BINDING_TYPE {
+#define BINDING_DEF(name, type) name,
+#include "BindingDef.inc"
+#undef BINDING_DEF
+    };
+
+    typedef struct {
+        BINDING_TYPE type;
+        void* binding;
+    } Binding_Info_t;
 
     class EventListener {
     public:
@@ -43,9 +56,22 @@ public:
 public:
     DashboardModel(EventListener* listener);
     ~DashboardModel();
+    void initBingdings();
+    void* getBinding(BINDING_TYPE type);
+    DataProc::Env_Helper* env()
+    {
+        return &_env;
+    }
 
 private:
     EventListener* _listener;
+    const DataNode* _nodeSportStatus;
+    const DataNode* _nodeRecorder;
+    DataProc::Env_Helper _env;
+
+#define BINDING_DEF(name, type) Binding<type, DashboardModel> _binding##name;
+#include "BindingDef.inc"
+#undef BINDING_DEF
 
 private:
     virtual int onEvent(DataNode::EventParam_t* param);

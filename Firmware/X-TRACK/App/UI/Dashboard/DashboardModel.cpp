@@ -27,15 +27,55 @@ using namespace Page;
 DashboardModel::DashboardModel(EventListener* listener)
     : DataNode(__func__, DataProc::broker())
     , _listener(listener)
+    , _env(this)
 {
-    setEventFilter(DataNode::EVENT_PUBLISH | DataNode::EVENT_NOTIFY);
+    _nodeSportStatus = subscribe("SportStatus");
+    _nodeRecorder = subscribe("Recorder");
+    setEventFilter(DataNode::EVENT_PUBLISH);
 }
 
 DashboardModel::~DashboardModel()
 {
 }
 
+void DashboardModel::initBingdings()
+{
+    _bindingRec.setCallback(
+        /* setter */
+        [](DashboardModel* self, bool v) {
+            DataProc::Recorder_Info_t info;
+            info.active = v;
+            self->notify(self->_nodeRecorder, &info, sizeof(info));
+        },
+        /* getter */
+        [](DashboardModel* self) -> bool {
+            DataProc::Recorder_Info_t info;
+            self->pull(self->_nodeRecorder, &info, sizeof(info));
+            return info.active;
+        },
+        this);
+}
+
+void* DashboardModel::getBinding(BINDING_TYPE type)
+{
+    switch (type) {
+#define BINDING_DEF(name, type) \
+    case BINDING_TYPE::name:    \
+        return &_binding##name;
+#include "BindingDef.inc"
+#undef BINDING_DEF
+    default:
+        return nullptr;
+    }
+}
+
 int DashboardModel::onEvent(DataNode::EventParam_t* param)
 {
+    if (param->tran == _nodeSportStatus) {
+        _listener->onModelEvent(EVENT_ID::SPORT_STATUS, param->data_p);
+    } else if (param->tran == _nodeRecorder) {
+        _listener->onModelEvent(EVENT_ID::RECORDER_STATUS, param->data_p);
+    }
+
     return DataNode::RES_OK;
 }

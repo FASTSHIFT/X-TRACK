@@ -80,6 +80,14 @@ void Dashboard::onViewDidUnload()
 void Dashboard::onModelEvent(DashboardModel::EVENT_ID id, const void* param)
 {
     switch (id) {
+    case DashboardModel::EVENT_ID::SPORT_STATUS: {
+        _view->publish(DashboardView::MSG_ID::SPORT_STATUS, param);
+    } break;
+
+    case DashboardModel::EVENT_ID::RECORDER_STATUS: {
+        _view->publish(DashboardView::MSG_ID::RECORDER_STATUS, param);
+    } break;
+
     default:
         break;
     }
@@ -88,6 +96,11 @@ void Dashboard::onModelEvent(DashboardModel::EVENT_ID id, const void* param)
 void Dashboard::onViewEvent(DashboardView::EVENT_ID id, const void* param)
 {
     switch (id) {
+    case DashboardView::EVENT_ID::GET_BINDING: {
+        auto binding = (DashboardView::Binding_Info_t*)param;
+        binding->binding = _model->getBinding((DashboardModel::BINDING_TYPE)binding->type);
+    } break;
+
     default:
         break;
     }

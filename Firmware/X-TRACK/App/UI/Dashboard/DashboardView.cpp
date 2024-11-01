@@ -32,7 +32,13 @@ using namespace Page;
 
 DashboardView::DashboardView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
+    , _fontLarge(65, "regular")
+#define BINDING_DEF(name, type) , _binding##name((Binding<type, DashboardModel>*)getBinding(BINDING_TYPE::name))
+#include "BindingDef.inc"
+#undef BINDING_DEF
 {
+    topInfoCreate(root);
+    bottomInfoCreate(root);
 }
 
 DashboardView::~DashboardView()
@@ -53,4 +59,51 @@ void DashboardView::subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb, 
 {
     lv_msg_subscribe_obj(msgID(id), obj, this);
     lv_obj_add_event(obj, event_cb, LV_EVENT_MSG_RECEIVED, user_data);
+}
+
+void* DashboardView::getBinding(BINDING_TYPE type)
+{
+    Binding_Info_t info;
+    info.type = type;
+    info.binding = nullptr;
+    _listener->onViewEvent(EVENT_ID::GET_BINDING, &info);
+    return info.binding;
+}
+
+void DashboardView::topInfoCreate(lv_obj_t* par)
+{
+    lv_obj_t* cont = lv_obj_create(par);
+    {
+        lv_obj_remove_style_all(cont);
+        lv_obj_set_size(cont, lv_pct(100), 142);
+
+        lv_obj_set_style_bg_opa(cont, LV_OPA_COVER, 0);
+        lv_obj_set_style_bg_color(cont, lv_color_hex(0x333333), 0);
+
+        lv_obj_set_style_radius(cont, 27, 0);
+        lv_obj_set_y(cont, -36);
+    }
+
+    lv_obj_t* labelSpeed = lv_label_create(cont);
+    {
+        lv_obj_set_style_text_font(labelSpeed, _fontLarge, 0);
+        lv_obj_set_style_text_color(labelSpeed, lv_color_white(), 0);
+        lv_label_set_text_static(labelSpeed, "00");
+        lv_obj_align(labelSpeed, LV_ALIGN_TOP_MID, 0, 63);
+    }
+
+    lv_obj_t* labelUnit = lv_label_create(cont);
+    {
+        lv_obj_set_style_text_color(labelUnit, lv_color_white(), 0);
+        lv_label_set_text_static(labelUnit, "km/h");
+        lv_obj_align_to(labelUnit, labelSpeed, LV_ALIGN_OUT_BOTTOM_MID, 0, 8);
+    }
+}
+
+void DashboardView::bottomInfoCreate(lv_obj_t* par)
+{
+}
+
+void DashboardView::btnCreate(lv_obj_t* par, const void* src)
+{
 }
