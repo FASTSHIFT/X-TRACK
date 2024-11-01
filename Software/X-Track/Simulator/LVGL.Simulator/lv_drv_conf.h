@@ -105,6 +105,22 @@
 #endif
 
 /*-----------------------------------
+ *  SDL
+ *----------------------------------*/
+#ifndef USE_SDL
+#  define USE_SDL           0
+#endif
+
+#if USE_SDL
+#  define SDL_HOR_RES     LV_HOR_RES
+#  define SDL_VER_RES     LV_VER_RES
+#  define SDL_ZOOM          1
+#  define SDL_DOUBLE_BUFFERED 0
+#  define SDL_INCLUDE_PATH  <SDL2/SDL.h>
+#  define SDL_DUAL_DISPLAY  0
+#endif
+
+/*-----------------------------------
  *  Native Windows (including mouse)
  *----------------------------------*/
 #ifndef USE_WINDOWS
