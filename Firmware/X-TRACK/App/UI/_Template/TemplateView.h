@@ -49,6 +49,10 @@ public:
 
 private:
     EventListener* _listener;
+
+private:
+    lv_uintptr_t msgID(MSG_ID id);
+    void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb);
 };
 
 }

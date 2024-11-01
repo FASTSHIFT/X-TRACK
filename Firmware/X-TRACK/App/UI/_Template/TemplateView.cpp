@@ -27,9 +27,26 @@ using namespace Page;
 TemplateView::TemplateView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
 {
+    /* Ensure that MSG_ID is unique */
+    static_assert(sizeof(TemplateView) >= (size_t)MSG_ID::_LAST, "Large MSG_ID");
 }
 
 TemplateView::~TemplateView()
 {
 }
 
+lv_uintptr_t TemplateView::msgID(MSG_ID id)
+{
+    return (lv_uintptr_t)this + (lv_uintptr_t)id;
+}
+
+void TemplateView::publish(MSG_ID id, const void* payload)
+{
+    lv_msg_send(msgID(id), payload);
+}
+
+void TemplateView::subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb)
+{
+    lv_msg_subscribe_obj(msgID(id), obj, this);
+    lv_obj_add_event(obj, event_cb, LV_EVENT_MSG_RECEIVED, this);
+}
