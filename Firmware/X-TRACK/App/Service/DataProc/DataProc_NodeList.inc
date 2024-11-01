@@ -16,4 +16,5 @@ DP_DEF(Toast);
 DP_DEF(TrackFilter);
 DP_DEF(PageNavi);
 DP_DEF(Version);
+DP_DEF(Theme);
 DP_DEF(SunRise);
