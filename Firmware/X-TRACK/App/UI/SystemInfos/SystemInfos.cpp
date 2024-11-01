@@ -87,6 +87,11 @@ void SystemInfos::onModelEvent(SystemInfosModel::EVENT_ID id, const void* param)
 void SystemInfos::onViewEvent(SystemInfosView::EVENT_ID id, const void* param)
 {
     switch (id) {
+    case SystemInfosView::EVENT_ID::GET_BINDING: {
+        auto binding = (SystemInfosView::Binding_Info_t*)param;
+        binding->binding = _model->getBinding((SystemInfosModel::BINDING_TYPE)binding->type);
+    } break;
+
     default:
         break;
     }

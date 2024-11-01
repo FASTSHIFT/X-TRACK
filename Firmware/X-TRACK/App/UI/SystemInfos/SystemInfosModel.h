@@ -24,6 +24,7 @@
 #define __SYSTEMINFOS_MODEL_H
 
 #include "Service/DataProc/DataProc.h"
+#include "Utils/Binding/Binding.h"
 
 namespace Page {
 
@@ -33,6 +34,17 @@ public:
         _LAST,
     };
 
+    enum class BINDING_TYPE {
+#define BINDING_DEF(name, type) name,
+#include "BindingDef.inc"
+#undef BINDING_DEF
+    };
+
+    typedef struct {
+        BINDING_TYPE type;
+        void* binding;
+    } Binding_Info_t;
+
     class EventListener {
     public:
         virtual void onModelEvent(EVENT_ID id, const void* param = nullptr) = 0;
@@ -41,12 +53,20 @@ public:
 public:
     SystemInfosModel(EventListener* listener);
     ~SystemInfosModel();
+    void* getBinding(BINDING_TYPE type);
 
 private:
     EventListener* _listener;
+    const DataNode* _nodeGNSS;
+    const DataNode* _nodeClock;
+
+#define BINDING_DEF(name, type) Binding<type, SystemInfosModel> _binding##name;
+#include "BindingDef.inc"
+#undef BINDING_DEF
 
 private:
     virtual int onEvent(DataNode::EventParam_t* param);
+    void initBingdings();
 };
 
 }

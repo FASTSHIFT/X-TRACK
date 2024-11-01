@@ -26,6 +26,9 @@ using namespace Page;
 
 SystemInfosView::SystemInfosView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
+#define BINDING_DEF(name, type) , _binding##name((Binding<type, SystemInfosModel>*)getBinding(BINDING_TYPE::name))
+#include "BindingDef.inc"
+#undef BINDING_DEF
 {
     /* Ensure that MSG_ID is unique */
     static_assert(sizeof(SystemInfosView) >= (size_t)MSG_ID::_LAST, "Large MSG_ID");
@@ -49,4 +52,13 @@ void SystemInfosView::subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb
 {
     lv_msg_subscribe_obj(msgID(id), obj, this);
     lv_obj_add_event(obj, event_cb, LV_EVENT_MSG_RECEIVED, this);
+}
+
+void* SystemInfosView::getBinding(BINDING_TYPE type)
+{
+    Binding_Info_t info;
+    info.type = type;
+    info.binding = nullptr;
+    _listener->onViewEvent(EVENT_ID::GET_BINDING, &info);
+    return info.binding;
 }

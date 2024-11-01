@@ -29,11 +29,54 @@ SystemInfosModel::SystemInfosModel(EventListener* listener)
     : DataNode(__func__, DataProc::broker())
     , _listener(listener)
 {
-    setEventFilter(DataNode::EVENT_ALL);
+    _nodeGNSS = subscribe("GNSS");
+    _nodeClock = subscribe("Clock");
+
+    setEventFilter(DataNode::EVENT_PUBLISH);
+
+    initBingdings();
 }
 
 SystemInfosModel::~SystemInfosModel()
 {
+}
+
+void SystemInfosModel::initBingdings()
+{
+    _bindingGNSS.setCallback(
+        /* setter */
+        nullptr,
+        /* getter */
+        [](SystemInfosModel* self) -> HAL::GNSS_Info_t {
+            HAL::GNSS_Info_t info;
+            self->pull(self->_nodeGNSS, &info, sizeof(info));
+            return info;
+        },
+        this);
+
+    _bindingClock.setCallback(
+        /* setter */
+        nullptr,
+        /* getter */
+        [](SystemInfosModel* self) -> HAL::Clock_Info_t {
+            HAL::Clock_Info_t info;
+            self->pull(self->_nodeClock, &info, sizeof(info));
+            return info;
+        },
+        this);
+}
+
+void* SystemInfosModel::getBinding(BINDING_TYPE type)
+{
+    switch (type) {
+#define BINDING_DEF(name, type) \
+    case BINDING_TYPE::name:    \
+        return &_binding##name;
+#include "BindingDef.inc"
+#undef BINDING_DEF
+    default:
+        return nullptr;
+    }
 }
 
 int SystemInfosModel::onEvent(DataNode::EventParam_t* param)
