@@ -34,6 +34,7 @@ class DashboardView {
 public:
     enum class EVENT_ID {
         GET_BINDING, /* Param: Binding_Info_t */
+        NAVI_TO_PAGE, /* Param: const char* */
         _LAST,
     };
 
@@ -82,9 +83,9 @@ private:
 
     void bottomInfoCreate(lv_obj_t* par);
     lv_obj_t* infoItemCreate(lv_obj_t* par, const char* title);
-    
+
     void btnGroupCreate(lv_obj_t* par);
-    lv_obj_t* btnCreate(lv_obj_t* par, const void* src);
+    lv_obj_t* btnCreate(lv_obj_t* par, const void* src, const char* pageID = nullptr);
     
     static const char* makeTimeString(uint64_t ms);
 };

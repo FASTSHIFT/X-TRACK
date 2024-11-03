@@ -29,8 +29,12 @@ SystemInfosModel::SystemInfosModel(EventListener* listener)
     : DataNode(__func__, DataProc::broker())
     , _listener(listener)
 {
+    _nodeSportStatus = subscribe("SportStatus");
     _nodeGNSS = subscribe("GNSS");
     _nodeClock = subscribe("Clock");
+    _nodePower = subscribe("Power");
+    _nodeStorage = subscribe("Storage");
+    _nodeVersion = subscribe("Version");
 
     setEventFilter(DataNode::EVENT_PUBLISH);
 
@@ -43,24 +47,24 @@ SystemInfosModel::~SystemInfosModel()
 
 void SystemInfosModel::initBingdings()
 {
-    _bindingGNSS.setCallback(
+    _bindingVerison.setCallback(
         /* setter */
         nullptr,
         /* getter */
-        [](SystemInfosModel* self) -> HAL::GNSS_Info_t {
-            HAL::GNSS_Info_t info;
-            self->pull(self->_nodeGNSS, &info, sizeof(info));
+        [](SystemInfosModel* self) -> DataProc::Version_Info_t {
+            DataProc::Version_Info_t info;
+            self->pull(self->_nodeVersion, &info, sizeof(info));
             return info;
         },
         this);
 
-    _bindingClock.setCallback(
+    _bindingStorage.setCallback(
         /* setter */
         nullptr,
         /* getter */
-        [](SystemInfosModel* self) -> HAL::Clock_Info_t {
-            HAL::Clock_Info_t info;
-            self->pull(self->_nodeClock, &info, sizeof(info));
+        [](SystemInfosModel* self) -> DataProc::Storage_Device_Info_t {
+            DataProc::Storage_Device_Info_t info;
+            self->pull(self->_nodeStorage, &info, sizeof(info));
             return info;
         },
         this);
@@ -81,5 +85,15 @@ void* SystemInfosModel::getBinding(BINDING_TYPE type)
 
 int SystemInfosModel::onEvent(DataNode::EventParam_t* param)
 {
+    if (param->tran == _nodeSportStatus) {
+        _listener->onModelEvent(EVENT_ID::SPORT_STATUS, param->data_p);
+    } else if (param->tran == _nodeGNSS) {
+        _listener->onModelEvent(EVENT_ID::GNSS, param->data_p);
+    } else if (param->tran == _nodeClock) {
+        _listener->onModelEvent(EVENT_ID::CLOCK, param->data_p);
+    } else if (param->tran == _nodePower) {
+        _listener->onModelEvent(EVENT_ID::POWER, param->data_p);
+    }
+
     return DataNode::RES_OK;
 }

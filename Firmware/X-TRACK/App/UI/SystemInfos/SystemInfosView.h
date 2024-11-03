@@ -24,6 +24,7 @@
 #define __SYSTEMINFOS_VIEW_H
 
 #include "../Page.h"
+#include "Service/DataProc/DataProc.h"
 #include "Service/HAL/HAL.h"
 #include "Utils/Binding/Binding.h"
 
@@ -35,10 +36,15 @@ class SystemInfosView {
 public:
     enum class EVENT_ID {
         GET_BINDING, /* Param: Binding_Info_t */
+        BACK,
         _LAST,
     };
 
     enum class MSG_ID {
+        SPORT_STATUS, /* param: SportStatus_Info_t */
+        GNSS, /* param: GNSS_Info_t */
+        CLOCK, /* param: Clock_Info_t */
+        POWER, /* param: Power_Info_t */
         _LAST,
     };
 
@@ -66,6 +72,20 @@ public:
 private:
     EventListener* _listener;
 
+    struct STYLE {
+        ~STYLE()
+        {
+            lv_style_reset(&icon);
+            lv_style_reset(&focus);
+            lv_style_reset(&info);
+            lv_style_reset(&data);
+        }
+        lv_style_t icon;
+        lv_style_t focus;
+        lv_style_t info;
+        lv_style_t data;
+    } _style;
+
 #define BINDING_DEF(name, type) Binding<type, SystemInfosModel>* _binding##name;
 #include "BindingDef.inc"
 #undef BINDING_DEF
@@ -74,6 +94,16 @@ private:
     lv_uintptr_t msgID(MSG_ID id);
     void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb);
     void* getBinding(BINDING_TYPE type);
+    void styleInit();
+    void itemGroupCreate(lv_obj_t* par);
+    lv_obj_t* itemCreate(
+        lv_obj_t* par,
+        const char* name,
+        const char* img_src,
+        const char* infos);
+
+    static const char* makeTimeString(uint64_t ms);
+    static const char* makeTimeString(const HAL::Clock_Info_t* info);
 };
 
 }

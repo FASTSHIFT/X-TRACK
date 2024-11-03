@@ -102,6 +102,11 @@ void Dashboard::onViewEvent(DashboardView::EVENT_ID id, const void* param)
         binding->binding = _model->getBinding((DashboardModel::BINDING_TYPE)binding->type);
     } break;
 
+    case DashboardView::EVENT_ID::NAVI_TO_PAGE: {
+        auto pageID = (const char*)param;
+        getManager()->push(pageID);
+    }; break;
+
     default:
         break;
     }

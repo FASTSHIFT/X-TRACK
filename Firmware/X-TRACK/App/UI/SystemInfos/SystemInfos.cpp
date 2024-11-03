@@ -79,6 +79,18 @@ void SystemInfos::onViewDidUnload()
 void SystemInfos::onModelEvent(SystemInfosModel::EVENT_ID id, const void* param)
 {
     switch (id) {
+    case SystemInfosModel::EVENT_ID::SPORT_STATUS: {
+        _view->publish(SystemInfosView::MSG_ID::SPORT_STATUS, param);
+    } break;
+    case SystemInfosModel::EVENT_ID::GNSS: {
+        _view->publish(SystemInfosView::MSG_ID::GNSS, param);
+    } break;
+    case SystemInfosModel::EVENT_ID::CLOCK: {
+        _view->publish(SystemInfosView::MSG_ID::CLOCK, param);
+    } break;
+    case SystemInfosModel::EVENT_ID::POWER: {
+        _view->publish(SystemInfosView::MSG_ID::POWER, param);
+    } break;
     default:
         break;
     }
@@ -90,6 +102,10 @@ void SystemInfos::onViewEvent(SystemInfosView::EVENT_ID id, const void* param)
     case SystemInfosView::EVENT_ID::GET_BINDING: {
         auto binding = (SystemInfosView::Binding_Info_t*)param;
         binding->binding = _model->getBinding((SystemInfosModel::BINDING_TYPE)binding->type);
+    } break;
+
+    case SystemInfosView::EVENT_ID::BACK: {
+        getManager()->pop();
     } break;
 
     default:

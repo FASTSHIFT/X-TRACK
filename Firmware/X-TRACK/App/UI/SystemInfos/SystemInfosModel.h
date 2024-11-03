@@ -31,6 +31,10 @@ namespace Page {
 class SystemInfosModel : private DataNode {
 public:
     enum class EVENT_ID {
+        SPORT_STATUS,
+        GNSS,
+        CLOCK,
+        POWER,
         _LAST,
     };
 
@@ -57,8 +61,12 @@ public:
 
 private:
     EventListener* _listener;
+    const DataNode* _nodeSportStatus;
     const DataNode* _nodeGNSS;
     const DataNode* _nodeClock;
+    const DataNode* _nodePower;
+    const DataNode* _nodeStorage;
+    const DataNode* _nodeVersion;
 
 #define BINDING_DEF(name, type) Binding<type, SystemInfosModel> _binding##name;
 #include "BindingDef.inc"

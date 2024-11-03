@@ -24,6 +24,9 @@
 
 using namespace Page;
 
+#define ITEM_HEIGHT_MIN 100
+#define ITEM_PAD ((LV_VER_RES - ITEM_HEIGHT_MIN) / 2)
+
 SystemInfosView::SystemInfosView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
 #define BINDING_DEF(name, type) , _binding##name((Binding<type, SystemInfosModel>*)getBinding(BINDING_TYPE::name))
@@ -32,6 +35,34 @@ SystemInfosView::SystemInfosView(EventListener* listener, lv_obj_t* root)
 {
     /* Ensure that MSG_ID is unique */
     static_assert(sizeof(SystemInfosView) >= (size_t)MSG_ID::_LAST, "Large MSG_ID");
+
+    lv_obj_set_style_pad_ver(root, ITEM_PAD, 0);
+
+    lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(
+        root,
+        LV_FLEX_ALIGN_START,
+        LV_FLEX_ALIGN_START,
+        LV_FLEX_ALIGN_CENTER);
+
+    styleInit();
+
+    lv_obj_remove_flag(root, LV_OBJ_FLAG_GESTURE_BUBBLE);
+    lv_obj_add_flag(root, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scrollbar_mode(root, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_add_event_cb(
+        root,
+        [](lv_event_t* e) {
+            auto self = (SystemInfosView*)lv_event_get_user_data(e);
+            auto dir = lv_indev_get_gesture_dir(lv_indev_active());
+            if (dir == LV_DIR_RIGHT) {
+                self->_listener->onViewEvent(EVENT_ID::BACK);
+            }
+        },
+        LV_EVENT_GESTURE,
+        this);
+
+    itemGroupCreate(root);
 }
 
 SystemInfosView::~SystemInfosView()
@@ -61,4 +92,299 @@ void* SystemInfosView::getBinding(BINDING_TYPE type)
     info.binding = nullptr;
     _listener->onViewEvent(EVENT_ID::GET_BINDING, &info);
     return info.binding;
+}
+
+void SystemInfosView::styleInit()
+{
+    lv_style_init(&_style.icon);
+    lv_style_set_pad_all(&_style.icon, 0);
+    lv_style_set_border_width(&_style.icon, 0);
+    lv_style_set_radius(&_style.icon, 0);
+    lv_style_set_width(&_style.icon, 220);
+    lv_style_set_text_font(&_style.icon, lv_theme_get_font_normal(nullptr));
+    lv_style_set_text_color(&_style.icon, lv_color_white());
+
+    lv_style_init(&_style.focus);
+    lv_style_set_pad_all(&_style.focus, 0);
+    lv_style_set_radius(&_style.focus, 0);
+    lv_style_set_width(&_style.focus, 70);
+    lv_style_set_border_side(&_style.focus, LV_BORDER_SIDE_RIGHT);
+    lv_style_set_border_width(&_style.focus, 2);
+    lv_style_set_border_color(&_style.focus, lv_color_hex(0xff931e));
+
+    static const lv_style_prop_t style_prop[] = {
+        LV_STYLE_WIDTH,
+        LV_STYLE_PROP_INV
+    };
+
+    static lv_style_transition_dsc_t trans;
+    lv_style_transition_dsc_init(
+        &trans,
+        style_prop,
+        lv_anim_path_overshoot,
+        200,
+        0,
+        nullptr);
+    lv_style_set_transition(&_style.focus, &trans);
+    lv_style_set_transition(&_style.icon, &trans);
+
+    lv_style_init(&_style.info);
+    lv_style_set_text_font(&_style.info, lv_theme_get_font_small(nullptr));
+
+    lv_style_init(&_style.data);
+    lv_style_set_text_font(&_style.data, lv_theme_get_font_small(nullptr));
+}
+
+void SystemInfosView::itemGroupCreate(lv_obj_t* par)
+{
+    /* Sport */
+    {
+        lv_obj_t* label = itemCreate(
+            par,
+            "Sport",
+            "bicycle",
+
+            "Total trip\n"
+            "Total time\n"
+            "Max speed");
+
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto obj = lv_event_get_current_target_obj(e);
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                lv_label_set_text_fmt(
+                    obj,
+                    "%0.2fkm\n"
+                    "%s\n"
+                    "%0.1fkm/h",
+                    info->totalDistance / 1000.0f,
+                    makeTimeString(info->totalTime),
+                    info->speedMaxKph);
+            });
+    }
+
+    {
+        lv_obj_t* label = itemCreate(
+            par,
+            "GNSS",
+            "map_location",
+
+            "Latitude\n"
+            "Longitude\n"
+            "Altitude\n"
+            "UTC Time\n\n"
+            "Course\n"
+            "Speed");
+
+        subscribe(
+            MSG_ID::GNSS,
+            label,
+            [](lv_event_t* e) {
+                auto obj = lv_event_get_current_target_obj(e);
+                auto msg = lv_event_get_msg(e);
+                auto info = (const HAL::GNSS_Info_t*)lv_msg_get_payload(msg);
+                lv_label_set_text_fmt(
+                    obj,
+                    "%0.6f\n"
+                    "%0.6f\n"
+                    "%0.2fm\n"
+                    "%s\n"
+                    "%0.1f deg\n"
+                    "%0.1fkm/h",
+                    info->latitude,
+                    info->longitude,
+                    info->altitude,
+                    makeTimeString(&info->clock),
+                    info->course,
+                    info->speed);
+            });
+    }
+
+    {
+        lv_obj_t* label = itemCreate(
+            par,
+            "RTC",
+            "time_info",
+
+            "Date\n"
+            "Time");
+
+        subscribe(
+            MSG_ID::CLOCK,
+            label,
+            [](lv_event_t* e) {
+                auto obj = lv_event_get_current_target_obj(e);
+                auto msg = lv_event_get_msg(e);
+                auto info = (const HAL::Clock_Info_t*)lv_msg_get_payload(msg);
+                lv_label_set_text_fmt(
+                    obj,
+                    "%s",
+                    makeTimeString(info));
+            });
+    }
+
+    {
+        lv_obj_t* label = itemCreate(
+            par,
+            "Battery",
+            "battery_info",
+
+            "Usage\n"
+            "Voltage\n"
+            "Status");
+
+        subscribe(
+            MSG_ID::POWER,
+            label,
+            [](lv_event_t* e) {
+                auto obj = lv_event_get_current_target_obj(e);
+                auto msg = lv_event_get_msg(e);
+                auto info = (const HAL::Power_Info_t*)lv_msg_get_payload(msg);
+                lv_label_set_text_fmt(
+                    obj,
+                    "%d%%\n"
+                    "%0.2fV\n"
+                    "%s",
+                    info->level,
+                    info->voltage / 1000.0f,
+                    info->isCharging ? "Charging" : "Discharging");
+            });
+    }
+
+    {
+        lv_obj_t* label = itemCreate(
+            par,
+            "System",
+            "system_info",
+
+            "Name\n"
+            "Author\n"
+            "LVGL\n"
+            "Compiler\n"
+            "Build");
+
+        auto info = _bindingVerison->get();
+
+        lv_label_set_text_fmt(
+            label,
+            "%s\n"
+            "%s\n"
+            "%s\n"
+            "%s\n"
+            "%s",
+            info.name,
+            info.author,
+            info.graphics,
+            info.compiler,
+            info.buildDate);
+    }
+}
+
+lv_obj_t* SystemInfosView::itemCreate(
+    lv_obj_t* par,
+    const char* name,
+    const char* img_src,
+    const char* infos)
+{
+    lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_enable_style_refresh(false);
+    lv_obj_remove_style_all(cont);
+    lv_obj_set_width(cont, 220);
+    lv_obj_clear_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
+
+    /* icon */
+    lv_obj_t* icon = lv_obj_create(cont);
+    lv_obj_enable_style_refresh(false);
+    lv_obj_clear_flag(icon, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_add_flag(icon, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
+
+    lv_obj_add_style(icon, &_style.icon, 0);
+    lv_obj_add_style(icon, &_style.focus, LV_STATE_FOCUSED);
+    lv_obj_set_style_align(icon, LV_ALIGN_LEFT_MID, 0);
+
+    lv_obj_set_flex_flow(icon, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(
+        icon,
+        LV_FLEX_ALIGN_SPACE_AROUND,
+        LV_FLEX_ALIGN_CENTER,
+        LV_FLEX_ALIGN_CENTER);
+
+    {
+        lv_obj_t* img = lv_img_create(icon);
+        lv_obj_enable_style_refresh(false);
+        lv_img_set_src(img, ResourcePool::getImage(img_src));
+    }
+
+    {
+        lv_obj_t* label = lv_label_create(icon);
+        lv_obj_enable_style_refresh(false);
+        lv_label_set_text(label, name);
+    }
+
+    /* infos */
+    lv_obj_t* labelInfo = lv_label_create(cont);
+    {
+        lv_obj_enable_style_refresh(false);
+        lv_label_set_text(labelInfo, infos);
+        lv_obj_add_style(labelInfo, &_style.info, 0);
+        lv_obj_align(labelInfo, LV_ALIGN_LEFT_MID, 75, 0);
+    }
+
+    /* datas */
+    lv_obj_t* labelData = lv_label_create(cont);
+    {
+        lv_obj_enable_style_refresh(false);
+        lv_label_set_text(labelData, "-");
+        lv_obj_add_style(labelData, &_style.data, 0);
+        lv_obj_align(labelData, LV_ALIGN_CENTER, 60, 0);
+    }
+
+    lv_obj_move_foreground(icon);
+    lv_obj_enable_style_refresh(true);
+
+    /* get real max height */
+    lv_obj_update_layout(labelInfo);
+    lv_coord_t height = lv_obj_get_height(labelInfo);
+    height = LV_MAX(height, ITEM_HEIGHT_MIN);
+    lv_obj_set_height(cont, height);
+    lv_obj_set_height(icon, height);
+
+    return labelData;
+}
+
+const char* SystemInfosView::makeTimeString(uint64_t ms)
+{
+    static char buf[16];
+    uint64_t ss = ms / 1000;
+    uint64_t mm = ss / 60;
+    uint32_t hh = (uint32_t)(mm / 60);
+
+    lv_snprintf(
+        buf, sizeof(buf),
+        "%d:%02d:%02d",
+        (int)hh,
+        (int)(mm % 60),
+        (int)(ss % 60));
+
+    return buf;
+}
+
+const char* SystemInfosView::makeTimeString(const HAL::Clock_Info_t* info)
+{
+    static char buf[32];
+    lv_snprintf(
+        buf,
+        sizeof(buf),
+        "%d-%d-%d\n%02d:%02d:%02d",
+        info->year,
+        info->month,
+        info->day,
+        info->hour,
+        info->minute,
+        info->second);
+
+    return buf;
 }

@@ -215,26 +215,26 @@ void DashboardView::btnGroupCreate(lv_obj_t* par)
         LV_FLEX_ALIGN_CENTER,
         LV_FLEX_ALIGN_CENTER);
 
-    btnCreate(cont, ResourcePool::getImage("locate"));
+    btnCreate(cont, ResourcePool::getImage("locate"), "LiveMap");
     btnCreate(cont, ResourcePool::getImage("start"));
-    btnCreate(cont, ResourcePool::getImage("menu"));
+    btnCreate(cont, ResourcePool::getImage("menu"), "SystemInfos");
 }
 
-lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const void* src)
+lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const void* src, const char* pageID)
 {
-    lv_obj_t* obj = lv_obj_create(par);
-    lv_obj_remove_style_all(obj);
-    lv_obj_set_size(obj, 40, 31);
-    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_img_src(obj, src, 0);
+    lv_obj_t* btn = lv_obj_create(par);
+    lv_obj_remove_style_all(btn);
+    lv_obj_set_size(btn, 40, 31);
+    lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_bg_img_src(btn, src, 0);
 
-    lv_obj_set_style_bg_opa(obj, LV_OPA_COVER, 0);
-    lv_obj_set_style_transform_width(obj, 5, LV_STATE_PRESSED);
-    lv_obj_set_style_transform_height(obj, -5, LV_STATE_PRESSED);
-    lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), 0);
-    lv_obj_set_style_bg_color(obj, lv_color_hex(0xbbbbbb), LV_STATE_PRESSED);
-    lv_obj_set_style_bg_color(obj, lv_color_hex(0xff931e), LV_STATE_FOCUSED);
-    lv_obj_set_style_radius(obj, 9, 0);
+    lv_obj_set_style_bg_opa(btn, LV_OPA_COVER, 0);
+    lv_obj_set_style_transform_width(btn, 5, LV_STATE_PRESSED);
+    lv_obj_set_style_transform_height(btn, -5, LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(0x666666), 0);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(0xbbbbbb), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(btn, lv_color_hex(0xff931e), LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(btn, 9, 0);
 
     static lv_style_transition_dsc_t tran;
     static const lv_style_prop_t prop[] = {
@@ -249,10 +249,23 @@ lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const void* src)
         200,
         0,
         nullptr);
-    lv_obj_set_style_transition(obj, &tran, LV_STATE_PRESSED);
-    lv_obj_set_style_transition(obj, &tran, LV_STATE_FOCUSED);
+    lv_obj_set_style_transition(btn, &tran, LV_STATE_PRESSED);
+    lv_obj_set_style_transition(btn, &tran, LV_STATE_FOCUSED);
 
-    return obj;
+    if (pageID) {
+        lv_obj_set_user_data(btn, (void*)pageID);
+        lv_obj_add_event_cb(
+            btn,
+            [](lv_event_t* e) {
+                auto self = (DashboardView*)lv_event_get_user_data(e);
+                auto id = lv_obj_get_user_data(lv_event_get_current_target_obj(e));
+                self->_listener->onViewEvent(EVENT_ID::NAVI_TO_PAGE, id);
+            },
+            LV_EVENT_CLICKED,
+            this);
+    }
+
+    return btn;
 }
 
 const char* DashboardView::makeTimeString(uint64_t ms)
