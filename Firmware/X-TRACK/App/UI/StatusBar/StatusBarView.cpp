@@ -168,7 +168,7 @@ void StatusBarView::satelliteCreate(lv_obj_t* par)
     lv_obj_t* label = lv_label_create(par);
     {
         lv_obj_set_style_text_font(label, _fontMedium, 0);
-        lv_obj_align_to(label, img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+        lv_obj_align(label, LV_ALIGN_LEFT_MID, 20, 0);
         lv_label_set_text(label, "00");
 
         subscribe(MSG_ID::SAT_NUM, label, [](lv_event_t* e) {
@@ -257,7 +257,7 @@ void StatusBarView::batteryCreate(lv_obj_t* par)
 
     lv_obj_t* label = lv_label_create(par);
     {
-        lv_obj_align_to(label, img, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
+        lv_obj_align(label, LV_ALIGN_RIGHT_MID, -10, 0);
         lv_label_set_text(label, "-");
 
         subscribe(MSG_ID::POWER, label, [](lv_event_t* e) {
