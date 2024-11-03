@@ -99,6 +99,8 @@ DP_Theme::DP_Theme(DataNode* node)
         },
         LV_EVENT_RESOLUTION_CHANGED,
         this);
+
+    updateTheme(true);
 }
 
 int DP_Theme::onEvent(DataNode::EventParam_t* param)
