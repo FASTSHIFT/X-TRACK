@@ -79,8 +79,14 @@ private:
     void* getBinding(BINDING_TYPE type);
 
     void topInfoCreate(lv_obj_t* par);
+
     void bottomInfoCreate(lv_obj_t* par);
-    void btnCreate(lv_obj_t* par, const void* src);
+    lv_obj_t* infoItemCreate(lv_obj_t* par, const char* title);
+    
+    void btnGroupCreate(lv_obj_t* par);
+    lv_obj_t* btnCreate(lv_obj_t* par, const void* src);
+    
+    static const char* makeTimeString(uint64_t ms);
 };
 
 }

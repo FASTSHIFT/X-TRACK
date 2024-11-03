@@ -39,6 +39,7 @@ Dashboard::~Dashboard()
 
 void Dashboard::onInstalled()
 {
+    setLoadAnimType(PAGE_ANIM::NONE);
 }
 
 void Dashboard::onViewLoad()

@@ -22,7 +22,6 @@
  */
 #include "DashboardView.h"
 #include "Service/DataProc/DataProc_Def.h"
-#include "Utils/lv_anim_label/lv_anim_label.h"
 #include "Utils/lv_ext/lv_anim_timeline_wrapper.h"
 #include "Utils/lv_ext/lv_ext_func.h"
 #include <stdarg.h>
@@ -37,8 +36,11 @@ DashboardView::DashboardView(EventListener* listener, lv_obj_t* root)
 #include "BindingDef.inc"
 #undef BINDING_DEF
 {
+    lv_obj_set_style_pad_all(root, 0, 0);
+
     topInfoCreate(root);
     bottomInfoCreate(root);
+    btnGroupCreate(root);
 }
 
 DashboardView::~DashboardView()
@@ -75,35 +77,205 @@ void DashboardView::topInfoCreate(lv_obj_t* par)
     lv_obj_t* cont = lv_obj_create(par);
     {
         lv_obj_remove_style_all(cont);
-        lv_obj_set_size(cont, lv_pct(100), 142);
+        lv_obj_set_size(cont, lv_pct(100), 135);
 
         lv_obj_set_style_bg_opa(cont, LV_OPA_COVER, 0);
         lv_obj_set_style_bg_color(cont, lv_color_hex(0x333333), 0);
 
         lv_obj_set_style_radius(cont, 27, 0);
-        lv_obj_set_y(cont, -36);
+        lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, -27);
+
+        lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN);
+        lv_obj_set_flex_align(
+            cont,
+            LV_FLEX_ALIGN_END,
+            LV_FLEX_ALIGN_CENTER,
+            LV_FLEX_ALIGN_CENTER);
     }
 
-    lv_obj_t* labelSpeed = lv_label_create(cont);
     {
-        lv_obj_set_style_text_font(labelSpeed, _fontLarge, 0);
-        lv_obj_set_style_text_color(labelSpeed, lv_color_white(), 0);
-        lv_label_set_text_static(labelSpeed, "00");
-        lv_obj_align(labelSpeed, LV_ALIGN_TOP_MID, 0, 63);
+        lv_obj_t* label = lv_label_create(cont);
+        lv_obj_set_style_text_font(label, _fontLarge, 0);
+        lv_obj_set_style_text_color(label, lv_color_white(), 0);
+        lv_obj_set_style_translate_y(label, 10, 0);
+        lv_label_set_text_static(label, "00");
     }
 
-    lv_obj_t* labelUnit = lv_label_create(cont);
     {
-        lv_obj_set_style_text_color(labelUnit, lv_color_white(), 0);
-        lv_label_set_text_static(labelUnit, "km/h");
-        lv_obj_align_to(labelUnit, labelSpeed, LV_ALIGN_OUT_BOTTOM_MID, 0, 8);
+        lv_obj_t* label = lv_label_create(cont);
+        lv_obj_set_style_text_color(label, lv_color_white(), 0);
+        lv_obj_set_style_translate_y(label, -5, 0);
+        lv_label_set_text_static(label, "km/h");
     }
 }
 
 void DashboardView::bottomInfoCreate(lv_obj_t* par)
 {
+    lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_remove_style_all(cont);
+    lv_obj_set_size(cont, lv_pct(100), 90);
+    lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, 110);
+
+    lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW_WRAP);
+    lv_obj_set_flex_align(
+        cont,
+        LV_FLEX_ALIGN_SPACE_EVENLY,
+        LV_FLEX_ALIGN_CENTER,
+        LV_FLEX_ALIGN_CENTER);
+
+    {
+        lv_obj_t* label = infoItemCreate(cont, "AVG");
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%0.1f km/h", info->speedAvgKph);
+            });
+    }
+
+    {
+        lv_obj_t* label = infoItemCreate(cont, "Time");
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%s", makeTimeString(info->singleTime));
+            });
+    }
+
+    {
+        lv_obj_t* label = infoItemCreate(cont, "Trip");
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%0.1f km", info->singleDistance / 1000.0f);
+            });
+    }
+
+    {
+        lv_obj_t* label = infoItemCreate(cont, "Calorie");
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%d k", (int)(info->singleCalorie / 1000));
+            });
+    }
 }
 
-void DashboardView::btnCreate(lv_obj_t* par, const void* src)
+lv_obj_t* DashboardView::infoItemCreate(lv_obj_t* par, const char* title)
 {
+    lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_remove_style_all(cont);
+    lv_obj_remove_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_size(cont, 93, 39);
+
+    lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(
+        cont,
+        LV_FLEX_ALIGN_SPACE_AROUND,
+        LV_FLEX_ALIGN_CENTER,
+        LV_FLEX_ALIGN_CENTER);
+
+    lv_obj_t* labelValue = lv_label_create(cont);
+
+    {
+        lv_obj_t* label = lv_label_create(cont);
+        lv_obj_set_style_text_color(label, lv_color_hex(0xb3b3b3), 0);
+        lv_label_set_text(label, title);
+    }
+
+    return labelValue;
+}
+
+void DashboardView::btnGroupCreate(lv_obj_t* par)
+{
+    lv_obj_t* cont = lv_obj_create(par);
+    lv_obj_remove_style_all(cont);
+    lv_obj_set_size(cont, lv_pct(100), 40);
+    lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, 195);
+
+    lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW);
+    lv_obj_set_flex_align(
+        cont,
+        LV_FLEX_ALIGN_SPACE_AROUND,
+        LV_FLEX_ALIGN_CENTER,
+        LV_FLEX_ALIGN_CENTER);
+
+    btnCreate(cont, ResourcePool::getImage("locate"));
+    btnCreate(cont, ResourcePool::getImage("start"));
+    btnCreate(cont, ResourcePool::getImage("menu"));
+}
+
+lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const void* src)
+{
+    lv_obj_t* obj = lv_obj_create(par);
+    lv_obj_remove_style_all(obj);
+    lv_obj_set_size(obj, 40, 31);
+    lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_bg_img_src(obj, src, 0);
+
+    lv_obj_set_style_bg_opa(obj, LV_OPA_COVER, 0);
+    lv_obj_set_style_transform_width(obj, 5, LV_STATE_PRESSED);
+    lv_obj_set_style_transform_height(obj, -5, LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), 0);
+    lv_obj_set_style_bg_color(obj, lv_color_hex(0xbbbbbb), LV_STATE_PRESSED);
+    lv_obj_set_style_bg_color(obj, lv_color_hex(0xff931e), LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(obj, 9, 0);
+
+    static lv_style_transition_dsc_t tran;
+    static const lv_style_prop_t prop[] = {
+        LV_STYLE_TRANSFORM_WIDTH,
+        LV_STYLE_TRANSFORM_HEIGHT,
+        LV_STYLE_PROP_INV
+    };
+    lv_style_transition_dsc_init(
+        &tran,
+        prop,
+        lv_anim_path_ease_out,
+        200,
+        0,
+        nullptr);
+    lv_obj_set_style_transition(obj, &tran, LV_STATE_PRESSED);
+    lv_obj_set_style_transition(obj, &tran, LV_STATE_FOCUSED);
+
+    return obj;
+}
+
+const char* DashboardView::makeTimeString(uint64_t ms)
+{
+    static char buf[16];
+    uint64_t ss = ms / 1000;
+    uint64_t mm = ss / 60;
+    uint32_t hh = (uint32_t)(mm / 60);
+
+    if (hh < 100) {
+        lv_snprintf(
+            buf, sizeof(buf),
+            "%d:%02d:%02d",
+            (int)hh,
+            (int)(mm % 60),
+            (int)(ss % 60));
+    } else {
+        lv_snprintf(
+            buf, sizeof(buf),
+            "%d:%02d",
+            (int)hh,
+            (int)(mm % 60));
+    }
+
+    return buf;
 }
