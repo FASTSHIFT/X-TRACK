@@ -3,23 +3,22 @@
  */
 #include "SunRiseCalc.h"
 #include <math.h>
+#include <stdbool.h>
 
 #define PI 3.1415926f
 #define ACOS acosf
 #define COS cosf
 #define TAN tanf
 
-static const uint8_t daysOfMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30 };
-
-static uint8_t isLeapYear(uint16_t year)
+static bool isLeapYear(uint16_t year)
 {
     if (year % 4 != 0)
-        return 0;
+        return false;
     if (year % 100 != 0)
-        return 1;
+        return true;
     if (year % 400 == 0)
-        return 1;
-    return 0;
+        return true;
+    return false;
 }
 
 static uint16_t dayOfYear(uint16_t year, uint8_t month, uint8_t day)
@@ -28,7 +27,8 @@ static uint16_t dayOfYear(uint16_t year, uint8_t month, uint8_t day)
     if (month > 2 && isLeapYear(year)) {
         days += 1;
     }
-    for (int i = 0; i < month; i++) {
+    for (uint8_t i = 0; i < month; i++) {
+        static const uint8_t daysOfMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30 };
         days += daysOfMonth[i];
     }
     return days;
