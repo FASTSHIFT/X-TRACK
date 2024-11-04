@@ -40,6 +40,8 @@ void LiveMap::onInstalled()
 {
     /* workaround page is hidden after the model is not disconnected */
     setAutoCacheEnable(false);
+
+    setBackGestureDirection(LV_DIR_RIGHT);
 }
 
 void LiveMap::onViewLoad()

@@ -130,8 +130,6 @@ int DP_PageNavi::onGlobalEvent(const Global_Info_t* info)
         lv_style_set_text_font(&_pageStyle, lv_theme_get_font_normal(nullptr));
         _manager->setRootDefaultStyle(&_pageStyle);
 
-        _manager->setGlobalLoadAnim(PAGE_ANIM::OVER_TOP);
-
         /* Page event hooker */
         _manager->setEventCallback(onPageEvent, this);
     } break;

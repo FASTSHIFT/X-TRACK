@@ -36,7 +36,6 @@ class SystemInfosView {
 public:
     enum class EVENT_ID {
         GET_BINDING, /* Param: Binding_Info_t */
-        BACK,
         _LAST,
     };
 

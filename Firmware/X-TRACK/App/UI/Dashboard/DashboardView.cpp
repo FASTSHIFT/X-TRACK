@@ -226,7 +226,7 @@ void DashboardView::btnGroupCreate(lv_obj_t* par)
         LV_FLEX_ALIGN_CENTER);
 
     btnCreate(cont, ResourcePool::getImage("locate"), "LiveMap");
-    btnCreate(cont, ResourcePool::getImage("start"), "Shutdown");
+    btnCreate(cont, ResourcePool::getImage("power"), "Shutdown");
     btnCreate(cont, ResourcePool::getImage("menu"), "SystemInfos");
 }
 

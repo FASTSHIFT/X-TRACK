@@ -93,21 +93,9 @@ void SystemInfosView::rootInit(lv_obj_t* root)
         LV_EVENT_SCROLL,
         this);
 
-    lv_obj_remove_flag(root, LV_OBJ_FLAG_GESTURE_BUBBLE);
     lv_obj_add_flag(root, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_scroll_snap_y(root, LV_SCROLL_SNAP_CENTER);
     lv_obj_set_scrollbar_mode(root, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_add_event_cb(
-        root,
-        [](lv_event_t* e) {
-            auto self = (SystemInfosView*)lv_event_get_user_data(e);
-            auto dir = lv_indev_get_gesture_dir(lv_indev_active());
-            if (dir == LV_DIR_RIGHT) {
-                self->_listener->onViewEvent(EVENT_ID::BACK);
-            }
-        },
-        LV_EVENT_GESTURE,
-        this);
 }
 
 void SystemInfosView::onRootScroll(lv_obj_t* obj)

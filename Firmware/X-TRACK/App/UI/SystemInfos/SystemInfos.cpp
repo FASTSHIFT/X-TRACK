@@ -38,6 +38,7 @@ SystemInfos::~SystemInfos()
 
 void SystemInfos::onInstalled()
 {
+    setBackGestureDirection(LV_DIR_RIGHT);
 }
 
 void SystemInfos::onViewLoad()
@@ -102,10 +103,6 @@ void SystemInfos::onViewEvent(SystemInfosView::EVENT_ID id, const void* param)
     case SystemInfosView::EVENT_ID::GET_BINDING: {
         auto binding = (SystemInfosView::Binding_Info_t*)param;
         binding->binding = _model->getBinding((SystemInfosModel::BINDING_TYPE)binding->type);
-    } break;
-
-    case SystemInfosView::EVENT_ID::BACK: {
-        getManager()->pop();
     } break;
 
     default:
