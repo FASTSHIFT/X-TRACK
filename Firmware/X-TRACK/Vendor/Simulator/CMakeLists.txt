@@ -17,8 +17,7 @@ add_definitions(
   # Others
   -DDATA_BROKER_LOG_LEVEL=1
   -DPAGE_LOG_LEVEL=0
-  -DCONFIG_GNSS_UPDATE_PERIOD=100
-  -DCONFIG_RESOURCE_PATH="./Resource/")
+  -DCONFIG_GNSS_UPDATE_PERIOD=100)
 
 # Build configuration
 option(ENABLE_DEBUG "Enable debug build" ON)
