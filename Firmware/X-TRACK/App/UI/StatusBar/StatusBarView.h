@@ -67,8 +67,9 @@ private:
         lv_obj_t* cont;
     } ui;
 
-    ResourcePool::Font _fontSmall;
     ResourcePool::Font _fontMedium;
+    ResourcePool::Font _fontAwesome;
+    lv_font_t _fontHandle;
 
     struct {
         int16_t satellitesNum;

@@ -29,8 +29,9 @@ using namespace Page;
 StatusBarView::StatusBarView(EventListener* listener, lv_obj_t* par)
     : _listener(listener)
     , ui { 0 }
-    , _fontSmall(12, "medium")
     , _fontMedium(15, "medium")
+    , _fontAwesome(15, "awesome")
+    , _fontHandle { 0 }
     , _curState { 0 }
 {
     /* Ensure that MSG_ID is unique */
@@ -38,6 +39,10 @@ StatusBarView::StatusBarView(EventListener* listener, lv_obj_t* par)
 
     _curState.satellitesNum = -1;
     _curState.battLevel = -1;
+
+    _fontHandle = *_fontMedium;
+    _fontHandle.fallback = _fontAwesome;
+    lv_obj_set_style_text_font(par, &_fontHandle, 0);
 
     contCreate(par);
     satelliteCreate(ui.cont);
@@ -68,7 +73,6 @@ void StatusBarView::contCreate(lv_obj_t* par)
         lv_obj_set_style_radius(cont, 0, 0);
         lv_obj_set_style_border_width(cont, 0, 0);
         lv_obj_add_state(cont, LV_STATE_DISABLED);
-        lv_obj_set_style_text_font(cont, _fontSmall, 0);
         ui.cont = cont;
     }
 
@@ -156,18 +160,14 @@ void StatusBarView::contCreate(lv_obj_t* par)
 
 void StatusBarView::satelliteCreate(lv_obj_t* par)
 {
-    lv_obj_t* img = lv_img_create(par);
     {
-        const void* src = ResourcePool::getImage("satellite_signal");
-        lv_img_set_src(img, src);
-        lv_obj_align(img, LV_ALIGN_LEFT_MID, 0, 0);
-        lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_GREY), 0);
-        lv_obj_set_style_img_recolor_opa(img, LV_OPA_TRANSP, 0);
+        lv_obj_t* label = lv_label_create(par);
+        lv_label_set_text_static(label, LV_SYMBOL_EXT_SATELLITE);
+        lv_obj_align(label, LV_ALIGN_LEFT_MID, 0, 0);
     }
 
-    lv_obj_t* label = lv_label_create(par);
     {
-        lv_obj_set_style_text_font(label, _fontMedium, 0);
+        lv_obj_t* label = lv_label_create(par);
         lv_obj_align(label, LV_ALIGN_LEFT_MID, 20, 0);
         lv_label_set_text(label, "00");
 
@@ -194,7 +194,6 @@ void StatusBarView::clockCreate(lv_obj_t* par)
 {
     lv_obj_t* label = lv_label_create(par);
     {
-        lv_obj_set_style_text_font(label, _fontMedium, 0);
         lv_obj_center(label);
         lv_label_set_text(label, "00:00");
     }
@@ -220,20 +219,19 @@ void StatusBarView::clockCreate(lv_obj_t* par)
 
 void StatusBarView::batteryCreate(lv_obj_t* par)
 {
-    lv_obj_t* img = lv_img_create(par);
+    lv_obj_t* batteryLabel = lv_label_create(par);
     {
-        lv_img_set_src(img, ResourcePool::getImage("battery"));
-        lv_obj_align(img, LV_ALIGN_RIGHT_MID, -35, 0);
-        lv_obj_set_style_img_recolor(img, lv_palette_main(LV_PALETTE_GREY), 0);
-        lv_obj_set_style_img_recolor_opa(img, LV_OPA_TRANSP, 0);
+        lv_label_set_text_static(batteryLabel, LV_SYMBOL_EXT_BATTERY_EMPTY);
+        lv_obj_align(batteryLabel, LV_ALIGN_RIGHT_MID, -35, 0);
     }
 
-    lv_obj_t* bg = lv_obj_create(img);
+    /* battery bg */
     {
+        lv_obj_t* bg = lv_obj_create(batteryLabel);
         lv_obj_remove_style_all(bg);
-        lv_obj_set_size(bg, lv_pct(100), lv_pct(100));
-        lv_obj_align(bg, LV_ALIGN_LEFT_MID, 0, 0);
-        lv_obj_set_style_bg_color(bg, lv_palette_main(LV_PALETTE_GREY), 0);
+        lv_obj_set_size(bg, 10, 3);
+        lv_obj_align(bg, LV_ALIGN_LEFT_MID, 3, -1);
+        lv_obj_set_style_bg_color(bg, lv_color_white(), 0);
         lv_obj_set_style_bg_opa(bg, LV_OPA_COVER, 0);
 
         subscribe(MSG_ID::POWER, bg, [](lv_event_t* e) {
@@ -247,11 +245,9 @@ void StatusBarView::batteryCreate(lv_obj_t* par)
 
             auto info = (const DataProc::Power_Info_t*)lv_msg_get_payload(msg);
 
-            info->isCharging ? lv_obj_add_state(obj, LV_STATE_USER_1) : lv_obj_clear_state(obj, LV_STATE_USER_1);
-
             if (info->level != self->_curState.battLevel) {
-                lv_obj_set_height(obj, lv_pct(info->level));
-            }   
+                lv_obj_set_width(obj, lv_map(info->level, 0, 100, 0, 10));
+            }
         });
     }
 
