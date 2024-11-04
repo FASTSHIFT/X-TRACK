@@ -62,10 +62,6 @@ public:
 
 private:
     EventListener* _listener;
-    struct
-    {
-        lv_obj_t* cont;
-    } ui;
 
     ResourcePool::Font _fontMedium;
     ResourcePool::Font _fontAwesome;
@@ -80,7 +76,7 @@ private:
 private:
     lv_uintptr_t msgID(MSG_ID id);
     void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb);
-    void contCreate(lv_obj_t* par);
+    lv_obj_t* contCreate(lv_obj_t* par);
     void satelliteCreate(lv_obj_t* par);
     void clockCreate(lv_obj_t* par);
     void batteryCreate(lv_obj_t* par);

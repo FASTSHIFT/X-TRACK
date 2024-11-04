@@ -28,7 +28,6 @@ using namespace Page;
 
 StatusBarView::StatusBarView(EventListener* listener, lv_obj_t* par)
     : _listener(listener)
-    , ui { 0 }
     , _fontMedium(15, "medium")
     , _fontAwesome(15, "awesome")
     , _fontHandle { 0 }
@@ -44,26 +43,25 @@ StatusBarView::StatusBarView(EventListener* listener, lv_obj_t* par)
     _fontHandle.fallback = _fontAwesome;
     lv_obj_set_style_text_font(par, &_fontHandle, 0);
 
-    contCreate(par);
-    satelliteCreate(ui.cont);
-    clockCreate(ui.cont);
-    recCreate(ui.cont);
-    batteryCreate(ui.cont);
+    lv_obj_t* cont = contCreate(par);
+    satelliteCreate(cont);
+    clockCreate(cont);
+    recCreate(cont);
+    batteryCreate(cont);
 
-    lv_obj_update_layout(ui.cont);
-    int height = lv_obj_get_height(ui.cont);
-    lv_obj_set_y(ui.cont, -height);
-    lv_obj_set_style_translate_y(ui.cont, height, LV_STATE_DEFAULT);
-    lv_obj_set_style_translate_y(ui.cont, 0, LV_STATE_DISABLED);
+    lv_obj_update_layout(cont);
+    int height = lv_obj_get_height(cont);
+    lv_obj_set_y(cont, -height);
+    lv_obj_set_style_translate_y(cont, height, LV_STATE_DEFAULT);
+    lv_obj_set_style_translate_y(cont, 0, LV_STATE_DISABLED);
     _listener->onViewEvent(EVENT_ID::HEIGHT_UPDATE, &height);
 }
 
 StatusBarView::~StatusBarView()
 {
-    lv_obj_del(ui.cont);
 }
 
-void StatusBarView::contCreate(lv_obj_t* par)
+lv_obj_t* StatusBarView::contCreate(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     {
@@ -73,7 +71,6 @@ void StatusBarView::contCreate(lv_obj_t* par)
         lv_obj_set_style_radius(cont, 0, 0);
         lv_obj_set_style_border_width(cont, 0, 0);
         lv_obj_add_state(cont, LV_STATE_DISABLED);
-        ui.cont = cont;
     }
 
     /* style trans & cover */
@@ -156,6 +153,8 @@ void StatusBarView::contCreate(lv_obj_t* par)
             }
         });
     }
+
+    return cont;
 }
 
 void StatusBarView::satelliteCreate(lv_obj_t* par)
