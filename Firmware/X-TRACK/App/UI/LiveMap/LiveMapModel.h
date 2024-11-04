@@ -30,6 +30,10 @@ namespace Page {
 class LiveMapModel : private DataNode {
 public:
     enum class EVENT_ID {
+        SPORT_STATUS, /* param: SportStatus_Info_t */
+        TRACK_REC, /* param: TrackFilter_Info_t */
+        GNSS, /* param: GNSS_Info_t */
+        MAP_LEVEL_CHANGE, /* param: int */
         _LAST,
     };
 
@@ -42,8 +46,28 @@ public:
     LiveMapModel(EventListener* listener);
     ~LiveMapModel();
 
+    DataProc::Env_Helper* env()
+    {
+        return &_env;
+    }
+
+    bool getGNSSInfo(HAL::GNSS_Info_t* info);
+    void setGNSSEnable(bool enable) { _gnssEnable = enable; }
+    bool getMapInfo(DataProc::Map_Info_t* info);
+    int getMapLevel() { return _mapLevel; };
+    bool setMapLevel(int level, bool sendEvent = false);
+    bool getTrackFilterInfo(DataProc::TrackFilter_Info_t* info);
+    void loadSportStatusInfo();
+
 private:
     EventListener* _listener;
+    DataProc::Env_Helper _env;
+    const DataNode* _nodeSportStatus;
+    const DataNode* _nodeGNSS;
+    const DataNode* _nodeTrackFilter;
+    int _mapLevel;
+    DataProc::Map_Info_t _mapInfo;
+    bool _gnssEnable;
 
 private:
     virtual int onEvent(DataNode::EventParam_t* param);

@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2021 - 2024 _VIFEXTech
+ * Copyright (c) 2023 _VIFEXTech
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-#ifndef __LIVEMAP_PRESENTER_H
-#define __LIVEMAP_PRESENTER_H
+#ifndef __LIVE_MAP_PRESENTER_H
+#define __LIVE_MAP_PRESENTER_H
 
 #include "LiveMapModel.h"
 #include "LiveMapView.h"
@@ -54,4 +54,4 @@ private:
 
 }
 
-#endif /* __LIVEMAP_PRESENTER_H */
+#endif
