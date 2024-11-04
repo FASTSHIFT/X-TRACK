@@ -65,9 +65,9 @@ lv_obj_t* StatusBarView::contCreate(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     {
+        lv_obj_remove_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
         lv_obj_set_size(cont, lv_pct(100), LV_SIZE_CONTENT);
         lv_obj_set_style_pad_all(cont, 2, 0);
-        lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, 0);
         lv_obj_set_style_radius(cont, 0, 0);
         lv_obj_set_style_border_width(cont, 0, 0);
         lv_obj_add_state(cont, LV_STATE_DISABLED);
@@ -81,13 +81,14 @@ lv_obj_t* StatusBarView::contCreate(lv_obj_t* par)
         lv_obj_set_style_bg_opa(cont, LV_OPA_TRANSP, LV_STATE_DEFAULT);
 
         /* style cover */
-        lv_obj_set_style_bg_opa(cont, LV_OPA_60, dark_state);
+        lv_obj_set_style_bg_color(cont, lv_color_black(), dark_state);
+        lv_obj_set_style_bg_opa(cont, LV_OPA_20, dark_state);
         lv_obj_set_style_shadow_color(cont, lv_color_black(), dark_state);
         lv_obj_set_style_shadow_width(cont, 10, dark_state);
 
         static lv_style_transition_dsc_t tran;
         static const lv_style_prop_t prop[] = {
-            LV_STYLE_BG_COLOR,
+            LV_STYLE_SHADOW_WIDTH,
             LV_STYLE_BG_OPA,
             LV_STYLE_PROP_INV
         };
@@ -162,12 +163,12 @@ void StatusBarView::satelliteCreate(lv_obj_t* par)
     {
         lv_obj_t* label = lv_label_create(par);
         lv_label_set_text_static(label, LV_SYMBOL_EXT_SATELLITE);
-        lv_obj_align(label, LV_ALIGN_LEFT_MID, 0, 0);
+        lv_obj_align(label, LV_ALIGN_LEFT_MID, 5, 0);
     }
 
     {
         lv_obj_t* label = lv_label_create(par);
-        lv_obj_align(label, LV_ALIGN_LEFT_MID, 20, 0);
+        lv_obj_align(label, LV_ALIGN_LEFT_MID, 25, 0);
         lv_label_set_text(label, "00");
 
         subscribe(MSG_ID::SAT_NUM, label, [](lv_event_t* e) {
@@ -221,7 +222,7 @@ void StatusBarView::batteryCreate(lv_obj_t* par)
     lv_obj_t* batteryLabel = lv_label_create(par);
     {
         lv_label_set_text_static(batteryLabel, LV_SYMBOL_EXT_BATTERY_EMPTY);
-        lv_obj_align(batteryLabel, LV_ALIGN_RIGHT_MID, -35, 0);
+        lv_obj_align(batteryLabel, LV_ALIGN_RIGHT_MID, -30, 0);
     }
 
     /* battery bg */
@@ -252,7 +253,7 @@ void StatusBarView::batteryCreate(lv_obj_t* par)
 
     lv_obj_t* label = lv_label_create(par);
     {
-        lv_obj_align(label, LV_ALIGN_RIGHT_MID, -10, 0);
+        lv_obj_align(label, LV_ALIGN_RIGHT_MID, -5, 0);
         lv_label_set_text(label, "-");
 
         subscribe(MSG_ID::POWER, label, [](lv_event_t* e) {
@@ -270,7 +271,7 @@ void StatusBarView::batteryCreate(lv_obj_t* par)
                 return;
             }
 
-            lv_label_set_text_fmt(obj, "%d", info->level);
+            lv_label_set_text_fmt(obj, "%02d", info->level);
             self->_curState.battLevel = info->level;
         });
     }
