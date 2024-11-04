@@ -60,7 +60,7 @@ void TrackView::setStyle(lv_style_t* style)
 {
     _trackLine->set_style(style);
     lv_obj_add_style(_activeLine, style, 0);
-    lv_obj_set_style_line_color(_activeLine, lv_palette_main(LV_PALETTE_BLUE), 0);
+    // lv_obj_set_style_line_color(_activeLine, lv_palette_main(LV_PALETTE_BLUE), 0);
 }
 
 void TrackView::setArea(int32_t x0, int32_t y0, int32_t x1, int32_t y1)
