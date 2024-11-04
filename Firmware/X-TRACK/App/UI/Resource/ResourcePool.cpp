@@ -33,6 +33,9 @@
 #define FONT_REGULAR_NAME                   "Alibaba_PuHuiTi_2.0_55_Regular"
 #define FONT_MEDIUM_NAME                    "Alibaba_PuHuiTi_2.0_65_Medium"
 #define FONT_BOLD_NAME                      "Alibaba_PuHuiTi_2.0_115_Black"
+#define FONT_AWESOME_BRANDS_REGULAR_NAME    "Font Awesome 6 Brands-Regular-400"
+#define FONT_AWESOME_FREE_REGULAR_NAME      "Font Awesome 6 Free-Regular-400"
+#define FONT_AWESOME_FREE_SOLID_NAME        "Font Awesome 6 Free-Solid-900"
 
 /* clang-format on */
 
@@ -44,7 +47,8 @@ DEF_RES_MNGR_OBJ_EXT(Font, font_value_t,
     IMPORT_FONT_NATIVE(montserrat, 14),
     IMPORT_FONT_FILE("regular", FONT_REGULAR_NAME),
     IMPORT_FONT_FILE("medium", FONT_MEDIUM_NAME),
-    IMPORT_FONT_FILE("bold", FONT_BOLD_NAME));
+    IMPORT_FONT_FILE("bold", FONT_BOLD_NAME),
+    IMPORT_FONT_FILE("awesome", FONT_AWESOME_FREE_SOLID_NAME), );
 
 DEF_RES_MNGR_OBJ(Image,
     IMPORT_IMAGE_FILE("alarm"),
@@ -70,6 +74,9 @@ void init()
     lv_font_manager_add_path_static(g_font_manager, FONT_REGULAR_NAME, FONT_PATH_BASE FONT_REGULAR_NAME FONT_EXT);
     lv_font_manager_add_path_static(g_font_manager, FONT_MEDIUM_NAME, FONT_PATH_BASE FONT_MEDIUM_NAME FONT_EXT);
     lv_font_manager_add_path_static(g_font_manager, FONT_BOLD_NAME, FONT_PATH_BASE FONT_BOLD_NAME FONT_EXT);
+    lv_font_manager_add_path_static(g_font_manager, FONT_AWESOME_BRANDS_REGULAR_NAME, FONT_PATH_BASE FONT_AWESOME_BRANDS_REGULAR_NAME FONT_EXT);
+    lv_font_manager_add_path_static(g_font_manager, FONT_AWESOME_FREE_REGULAR_NAME, FONT_PATH_BASE FONT_AWESOME_FREE_REGULAR_NAME FONT_EXT);
+    lv_font_manager_add_path_static(g_font_manager, FONT_AWESOME_FREE_SOLID_NAME, FONT_PATH_BASE FONT_AWESOME_FREE_SOLID_NAME FONT_EXT);
 
     font_value_t default_font = {
         font_value_type::UNKNOWN,

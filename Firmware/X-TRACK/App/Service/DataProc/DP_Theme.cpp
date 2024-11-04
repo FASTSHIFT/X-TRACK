@@ -40,6 +40,10 @@
 #define THEME_FONT_NORMAL "<16>regular"
 #define THEME_FONT_LARGE "<20>regular"
 
+#define THEME_FONTAWESOME_SMALL "<12>awesome"
+#define THEME_FONTAWESOME_NORMAL "<16>awesome"
+#define THEME_FONTAWESOME_LARGE "<20>awesome"
+
 #define IS_STR_EQ(STR1, STR2) (strcmp(STR1, STR2) == 0)
 
 using namespace DataProc;
@@ -59,6 +63,12 @@ private:
     ResourcePool::Font _fontSmall;
     ResourcePool::Font _fontNormal;
     ResourcePool::Font _fontLarge;
+    ResourcePool::Font _fontAwesomeSmall;
+    ResourcePool::Font _fontAwesomeNormal;
+    ResourcePool::Font _fontAwesomeLarge;
+    lv_font_t _fontSmallHandle;
+    lv_font_t _fontNormalHandle;
+    lv_font_t _fontLargeHandle;
 
 private:
     int onEvent(DataNode::EventParam_t* param);
@@ -75,6 +85,9 @@ DP_Theme::DP_Theme(DataNode* node)
     , _fontSmall(THEME_FONT_SMALL)
     , _fontNormal(THEME_FONT_NORMAL)
     , _fontLarge(THEME_FONT_LARGE)
+    , _fontAwesomeSmall(THEME_FONTAWESOME_SMALL)
+    , _fontAwesomeNormal(THEME_FONTAWESOME_NORMAL)
+    , _fontAwesomeLarge(THEME_FONTAWESOME_LARGE)
 {
     _nodeStorage = node->subscribe("Storage");
     _nodeSunRise = node->subscribe("SunRise");
@@ -99,6 +112,14 @@ DP_Theme::DP_Theme(DataNode* node)
         },
         LV_EVENT_RESOLUTION_CHANGED,
         this);
+
+    /* Initialize font handles */
+    _fontSmallHandle = *_fontSmall;
+    _fontSmallHandle.fallback = _fontAwesomeSmall;
+    _fontNormalHandle = *_fontNormal;
+    _fontNormalHandle.fallback = _fontAwesomeNormal;
+    _fontLargeHandle = *_fontLarge;
+    _fontLargeHandle.fallback = _fontAwesomeLarge;
 
     updateTheme(true);
 }
@@ -155,9 +176,9 @@ void DP_Theme::updateTheme(bool isDark)
     lv_color_t color_secondary = isDark ? THEME_DARK_COLOR_SECONDARY : THEME_LIGHT_COLOR_SECONDARY;
 
     lv_theme_t* def_theme = lv_theme_default_init(nullptr, color_primary, color_secondary, isDark, LV_FONT_DEFAULT);
-    def_theme->font_small = _fontSmall;
-    def_theme->font_normal = _fontNormal;
-    def_theme->font_large = _fontLarge;
+    def_theme->font_small = &_fontSmallHandle;
+    def_theme->font_normal = &_fontNormalHandle;
+    def_theme->font_large = &_fontLargeHandle;
 }
 
 DATA_PROC_DESCRIPTOR_DEF(Theme)
