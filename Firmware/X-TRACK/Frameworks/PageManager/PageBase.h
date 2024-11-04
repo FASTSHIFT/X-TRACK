@@ -138,6 +138,13 @@ public:
     void setLoadAnimPath(lv_anim_path_cb_t path);
 
     /**
+     * @brief  Set page back gesture direction
+     * @param  dir: Back gesture direction, See lv_dir_t
+     * @retval None
+     */
+    void setBackGestureDirection(lv_dir_t dir);
+
+    /**
      * @brief  Get page parameter
      * @param  ptr: Parameter pointer
      * @param  size: Parameter size
@@ -210,6 +217,8 @@ private:
             bool isBusy; /* Animation is busy */
             ANIM_ATTR attr; /* Animation properties */
         } anim;
+
+        lv_dir_t backGestureDir; /* Back gesture direction */
     };
 
 private:

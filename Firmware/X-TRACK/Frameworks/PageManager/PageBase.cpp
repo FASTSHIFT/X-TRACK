@@ -64,6 +64,11 @@ void PageBase::setLoadAnimPath(lv_anim_path_cb_t path)
     _context.anim.attr.path = path;
 }
 
+void PageBase::setBackGestureDirection(lv_dir_t dir)
+{
+    _context.backGestureDir = dir;
+}
+
 bool PageBase::getParam(void* ptr, uint32_t size)
 {
     if (!_context.param.ptr) {

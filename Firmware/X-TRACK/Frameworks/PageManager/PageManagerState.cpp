@@ -91,6 +91,21 @@ PageBase::STATE PageManager::stateLoad(PageBase* base)
     lv_obj_clear_flag(root_obj, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_user_data(root_obj, base);
 
+    if (base->_context.backGestureDir != LV_DIR_NONE) {
+        lv_obj_remove_flag(root_obj, LV_OBJ_FLAG_GESTURE_BUBBLE);
+        lv_obj_add_event_cb(
+            root_obj,
+            [](lv_event_t* e) {
+                auto self = (PageBase*)lv_event_get_user_data(e);
+                auto dir = lv_indev_get_gesture_dir(lv_indev_active());
+                if (dir == self->_context.backGestureDir) {
+                    self->getManager()->pop();
+                }
+            },
+            LV_EVENT_GESTURE,
+            base);
+    }
+
     if (_rootDefaultStyle) {
         lv_obj_add_style(root_obj, _rootDefaultStyle, LV_PART_MAIN);
     }
