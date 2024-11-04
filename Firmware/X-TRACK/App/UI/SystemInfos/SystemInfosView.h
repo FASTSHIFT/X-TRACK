@@ -76,12 +76,10 @@ private:
         ~STYLE()
         {
             lv_style_reset(&icon);
-            lv_style_reset(&focus);
             lv_style_reset(&info);
             lv_style_reset(&data);
         }
         lv_style_t icon;
-        lv_style_t focus;
         lv_style_t info;
         lv_style_t data;
     } _style;
@@ -94,6 +92,8 @@ private:
     lv_uintptr_t msgID(MSG_ID id);
     void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t event_cb);
     void* getBinding(BINDING_TYPE type);
+    void rootInit(lv_obj_t* root);
+    static void onRootScroll(lv_obj_t* obj);
     void styleInit();
     void itemGroupCreate(lv_obj_t* par);
     lv_obj_t* itemCreate(

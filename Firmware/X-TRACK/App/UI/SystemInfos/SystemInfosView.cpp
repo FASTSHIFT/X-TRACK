@@ -36,33 +36,13 @@ SystemInfosView::SystemInfosView(EventListener* listener, lv_obj_t* root)
     /* Ensure that MSG_ID is unique */
     static_assert(sizeof(SystemInfosView) >= (size_t)MSG_ID::_LAST, "Large MSG_ID");
 
-    lv_obj_set_style_pad_ver(root, ITEM_PAD, 0);
-
-    lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
-    lv_obj_set_flex_align(
-        root,
-        LV_FLEX_ALIGN_START,
-        LV_FLEX_ALIGN_START,
-        LV_FLEX_ALIGN_CENTER);
+    rootInit(root);
 
     styleInit();
 
-    lv_obj_remove_flag(root, LV_OBJ_FLAG_GESTURE_BUBBLE);
-    lv_obj_add_flag(root, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_scrollbar_mode(root, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_add_event_cb(
-        root,
-        [](lv_event_t* e) {
-            auto self = (SystemInfosView*)lv_event_get_user_data(e);
-            auto dir = lv_indev_get_gesture_dir(lv_indev_active());
-            if (dir == LV_DIR_RIGHT) {
-                self->_listener->onViewEvent(EVENT_ID::BACK);
-            }
-        },
-        LV_EVENT_GESTURE,
-        this);
-
     itemGroupCreate(root);
+
+    onRootScroll(root);
 }
 
 SystemInfosView::~SystemInfosView()
@@ -94,6 +74,78 @@ void* SystemInfosView::getBinding(BINDING_TYPE type)
     return info.binding;
 }
 
+void SystemInfosView::rootInit(lv_obj_t* root)
+{
+    lv_obj_set_style_pad_ver(root, ITEM_PAD, 0);
+
+    lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
+    lv_obj_set_flex_align(
+        root,
+        LV_FLEX_ALIGN_START,
+        LV_FLEX_ALIGN_START,
+        LV_FLEX_ALIGN_CENTER);
+
+    lv_obj_add_event_cb(
+        root,
+        [](lv_event_t* e) {
+            onRootScroll(lv_event_get_current_target_obj(e));
+        },
+        LV_EVENT_SCROLL,
+        this);
+
+    lv_obj_remove_flag(root, LV_OBJ_FLAG_GESTURE_BUBBLE);
+    lv_obj_add_flag(root, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_scroll_snap_y(root, LV_SCROLL_SNAP_CENTER);
+    lv_obj_set_scrollbar_mode(root, LV_SCROLLBAR_MODE_OFF);
+    lv_obj_add_event_cb(
+        root,
+        [](lv_event_t* e) {
+            auto self = (SystemInfosView*)lv_event_get_user_data(e);
+            auto dir = lv_indev_get_gesture_dir(lv_indev_active());
+            if (dir == LV_DIR_RIGHT) {
+                self->_listener->onViewEvent(EVENT_ID::BACK);
+            }
+        },
+        LV_EVENT_GESTURE,
+        this);
+}
+
+void SystemInfosView::onRootScroll(lv_obj_t* obj)
+{
+    auto child_cnt = lv_obj_get_child_count(obj);
+    auto obj_height = lv_obj_get_height(obj);
+    auto obj_pad_top = lv_obj_get_style_pad_top(obj, 0);
+    auto scroll_y = lv_obj_get_scroll_y(obj);
+
+    for (auto i = 0; i < child_cnt; i++) {
+        auto cont = lv_obj_get_child(obj, i);
+
+        /* skip 2 label obj */
+        auto icon = lv_obj_get_child(cont, 2);
+
+        auto cont_height = lv_obj_get_height(cont);
+        auto cont_y = lv_obj_get_y(cont);
+        auto offset_y = (obj_height / 2.0f + scroll_y) - (obj_pad_top + cont_y + cont_height / 2.0f);
+
+        lv_anim_t a;
+        lv_anim_init(&a);
+        a.duration = cont_height;
+        a.act_time = LV_ABS(offset_y);
+        a.start_value = 70;
+        a.end_value = 220;
+        auto width = lv_anim_path_ease_out(&a);
+
+        a.duration = cont_height / 2;
+        a.start_value = LV_OPA_COVER;
+        a.end_value = LV_OPA_TRANSP;
+        auto opa = lv_anim_path_ease_out(&a);
+
+        // LV_LOG_USER("index: %d, icon: %p, offset_y: %d, width: %d", i, icon, (int)offset_y, width);
+        lv_obj_set_width(icon, width);
+        lv_obj_set_style_border_opa(icon, opa, 0);
+    }
+}
+
 void SystemInfosView::styleInit()
 {
     lv_style_init(&_style.icon);
@@ -101,32 +153,11 @@ void SystemInfosView::styleInit()
     lv_style_set_border_width(&_style.icon, 0);
     lv_style_set_radius(&_style.icon, 0);
     lv_style_set_width(&_style.icon, 220);
+    lv_style_set_border_side(&_style.icon, LV_BORDER_SIDE_RIGHT);
+    lv_style_set_border_width(&_style.icon, 2);
+    lv_style_set_border_color(&_style.icon, lv_color_hex(0xff931e));
     lv_style_set_text_font(&_style.icon, lv_theme_get_font_normal(nullptr));
     lv_style_set_text_color(&_style.icon, lv_color_white());
-
-    lv_style_init(&_style.focus);
-    lv_style_set_pad_all(&_style.focus, 0);
-    lv_style_set_radius(&_style.focus, 0);
-    lv_style_set_width(&_style.focus, 70);
-    lv_style_set_border_side(&_style.focus, LV_BORDER_SIDE_RIGHT);
-    lv_style_set_border_width(&_style.focus, 2);
-    lv_style_set_border_color(&_style.focus, lv_color_hex(0xff931e));
-
-    static const lv_style_prop_t style_prop[] = {
-        LV_STYLE_WIDTH,
-        LV_STYLE_PROP_INV
-    };
-
-    static lv_style_transition_dsc_t trans;
-    lv_style_transition_dsc_init(
-        &trans,
-        style_prop,
-        lv_anim_path_overshoot,
-        200,
-        0,
-        nullptr);
-    lv_style_set_transition(&_style.focus, &trans);
-    lv_style_set_transition(&_style.icon, &trans);
 
     lv_style_init(&_style.info);
     lv_style_set_text_font(&_style.info, lv_theme_get_font_small(nullptr));
@@ -250,7 +281,7 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
                     "%s",
                     info->level,
                     info->voltage / 1000.0f,
-                    info->isCharging ? "Charging" : "Discharging");
+                    info->isCharging ? "CHARGE" : "DISCHARGE");
             });
     }
 
@@ -302,7 +333,6 @@ lv_obj_t* SystemInfosView::itemCreate(
     lv_obj_add_flag(icon, LV_OBJ_FLAG_SCROLL_ON_FOCUS);
 
     lv_obj_add_style(icon, &_style.icon, 0);
-    lv_obj_add_style(icon, &_style.focus, LV_STATE_FOCUSED);
     lv_obj_set_style_align(icon, LV_ALIGN_LEFT_MID, 0);
 
     lv_obj_set_flex_flow(icon, LV_FLEX_FLOW_COLUMN);
