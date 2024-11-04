@@ -134,7 +134,7 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
         LV_FLEX_ALIGN_CENTER);
 
     {
-        lv_obj_t* label = infoItemCreate(cont, "AVG");
+        lv_obj_t* label = infoItemCreate(cont, _("AVG_SPEED"));
         subscribe(
             MSG_ID::SPORT_STATUS,
             label,
@@ -147,7 +147,7 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
     }
 
     {
-        lv_obj_t* label = infoItemCreate(cont, "Time");
+        lv_obj_t* label = infoItemCreate(cont, _("TIME"));
         subscribe(
             MSG_ID::SPORT_STATUS,
             label,
@@ -160,7 +160,7 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
     }
 
     {
-        lv_obj_t* label = infoItemCreate(cont, "Trip");
+        lv_obj_t* label = infoItemCreate(cont, _("DISTANCE"));
         subscribe(
             MSG_ID::SPORT_STATUS,
             label,
@@ -173,7 +173,7 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
     }
 
     {
-        lv_obj_t* label = infoItemCreate(cont, "Calorie");
+        lv_obj_t* label = infoItemCreate(cont, _("CALORIES"));
         subscribe(
             MSG_ID::SPORT_STATUS,
             label,
@@ -225,9 +225,9 @@ void DashboardView::btnGroupCreate(lv_obj_t* par)
         LV_FLEX_ALIGN_CENTER,
         LV_FLEX_ALIGN_CENTER);
 
-    btnCreate(cont, ResourcePool::getImage("locate"), "LiveMap");
-    btnCreate(cont, ResourcePool::getImage("power"), "Shutdown");
-    btnCreate(cont, ResourcePool::getImage("menu"), "SystemInfos");
+    btnCreate(cont, LV_SYMBOL_EXT_LOCATION_DOT, "LiveMap");
+    btnCreate(cont, LV_SYMBOL_EXT_POWER_OFF, "Shutdown");
+    btnCreate(cont, LV_SYMBOL_EXT_BARS, "SystemInfos");
 }
 
 lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const void* src, const char* pageID)

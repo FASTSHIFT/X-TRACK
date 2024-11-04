@@ -17,6 +17,29 @@ static inline uint32_t op_w(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_f(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_t(uint32_t val) { UNUSED(val); return 0; }
 
+static lv_i18n_phrase_t en_us_singulars[] = {
+    {"EPHEMERIS", "Ephemeris"},
+    {"LOAD_SUCCESS", "Load Success"},
+    {"LOW_BATTERY", "Low Battery"},
+    {"SHUTDOWN?", "Shutdown?"},
+    {"NO_OPERATION", "No Operation"},
+    {"NO", "No"},
+    {"YES", "Yes"},
+    {"START_RECORD", "Start Record"},
+    {"STOP_RECORD", "Stop Record"},
+    {"GNSS_NOT_READY", "GNSS Not Ready"},
+    {"OPEN_FILE_FAILED", "Open File Failed"},
+    {"AVG_SPEED", "AVG"},
+    {"TIME", "Time"},
+    {"DISTANCE", "Distance"},
+    {"CALORIES", "Calories"},
+    {"LOADING...", "Loading..."},
+    {"POWER_OFF", "Power Off"},
+    {NULL, NULL} // End mark
+};
+
+
+
 static uint8_t en_us_plural_fn(int32_t num)
 {
     uint32_t n = op_n(num); UNUSED(n);
@@ -29,10 +52,33 @@ static uint8_t en_us_plural_fn(int32_t num)
 
 static const lv_i18n_lang_t en_us_lang = {
     .locale_name = "en-US",
-
+    .singulars = en_us_singulars,
 
     .locale_plural_fn = en_us_plural_fn
 };
+
+static lv_i18n_phrase_t zh_cn_singulars[] = {
+    {"EPHEMERIS", "星历"},
+    {"LOAD_SUCCESS", "加载成功"},
+    {"LOW_BATTERY", "低电量"},
+    {"SHUTDOWN?", "关闭？"},
+    {"NO_OPERATION", "无操作"},
+    {"NO", "否"},
+    {"YES", "是"},
+    {"START_RECORD", "开始记录"},
+    {"STOP_RECORD", "停止记录"},
+    {"GNSS_NOT_READY", "GNSS 未就绪"},
+    {"OPEN_FILE_FAILED", "打开文件失败"},
+    {"AVG_SPEED", "平均速度"},
+    {"TIME", "时间"},
+    {"DISTANCE", "距离"},
+    {"CALORIES", "卡路里"},
+    {"LOADING...", "加载中..."},
+    {"POWER_OFF", "关机"},
+    {NULL, NULL} // End mark
+};
+
+
 
 static uint8_t zh_cn_plural_fn(int32_t num)
 {
@@ -44,7 +90,7 @@ static uint8_t zh_cn_plural_fn(int32_t num)
 
 static const lv_i18n_lang_t zh_cn_lang = {
     .locale_name = "zh-CN",
-
+    .singulars = zh_cn_singulars,
 
     .locale_plural_fn = zh_cn_plural_fn
 };

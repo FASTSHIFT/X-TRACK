@@ -1,12 +1,18 @@
 zh-CN:
-  EPHEMERIS: ~
-  LOAD_SUCCESS: ~
-  LOW_BATTERY: ~
-  SHUTDOWN?: ~
-  NO_OPERATION: ~
-  'NO': ~
-  'YES': ~
-  START_RECORD: ~
-  STOP_RECORD: ~
-  GNSS_NOT_READY: ~
-  OPEN_FILE_FAILED: ~
+  EPHEMERIS: 星历
+  LOAD_SUCCESS: 加载成功
+  LOW_BATTERY: 低电量
+  SHUTDOWN?: 关闭？
+  NO_OPERATION: 无操作
+  'NO': 否
+  'YES': 是
+  START_RECORD: 开始记录
+  STOP_RECORD: 停止记录
+  GNSS_NOT_READY: GNSS 未就绪
+  OPEN_FILE_FAILED: 打开文件失败
+  AVG_SPEED: 平均速度
+  TIME: 时间
+  DISTANCE: 距离
+  CALORIES: 卡路里
+  LOADING...: 加载中...
+  POWER_OFF: 关机

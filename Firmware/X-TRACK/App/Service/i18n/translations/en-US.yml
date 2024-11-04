@@ -1,12 +1,18 @@
 en-US:
-  EPHEMERIS: ~
-  LOAD_SUCCESS: ~
-  LOW_BATTERY: ~
-  SHUTDOWN?: ~
-  NO_OPERATION: ~
-  'NO': ~
-  'YES': ~
-  START_RECORD: ~
-  STOP_RECORD: ~
-  GNSS_NOT_READY: ~
-  OPEN_FILE_FAILED: ~
+  EPHEMERIS: Ephemeris
+  LOAD_SUCCESS: Load Success
+  LOW_BATTERY: Low Battery
+  SHUTDOWN?: Shutdown?
+  NO_OPERATION: No Operation
+  'NO': 'No'
+  'YES': 'Yes'
+  START_RECORD: Start Record
+  STOP_RECORD: Stop Record
+  GNSS_NOT_READY: GNSS Not Ready
+  OPEN_FILE_FAILED: Open File Failed
+  AVG_SPEED: AVG
+  TIME: Time
+  DISTANCE: Distance
+  CALORIES: Calories
+  LOADING...: Loading...
+  POWER_OFF: Power Off
