@@ -16,3 +16,27 @@ zh-CN:
   CALORIES: 卡路里
   LOADING...: 加载中...
   POWER_OFF: 关机
+  SPORT: 运动
+  GNSS: 卫星
+  BATTERY: 电池
+  ABOUT: 关于
+  TOTAL_TRIP: 总里程
+  TOTAL_TIME: 总时间
+  MAX_SPEED: 最高速度
+  LATITUDE: 纬度
+  LONGITUDE: 经度
+  ALTITUDE: 海拔
+  UTC_TIME: UTC 时间
+  COURSE: 航向
+  SPEED: 速度
+  DATE: 日期
+  USAGE: 使用量
+  VOLTAGE: 电压
+  STATUS: 状态
+  CHARGE: 充电
+  DISCHARGE: 放电
+  NAME: 名称
+  AUTHOR: 作者
+  GRAPHICS: 图形
+  COMPILER: 编译器
+  BUILD_DATE: 编译日期

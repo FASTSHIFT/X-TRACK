@@ -29,6 +29,7 @@ using namespace Page;
 
 SystemInfosView::SystemInfosView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
+    , _fontAwesome(40, "awesome")
 #define BINDING_DEF(name, type) , _binding##name((Binding<type, SystemInfosModel>*)getBinding(BINDING_TYPE::name))
 #include "BindingDef.inc"
 #undef BINDING_DEF
@@ -151,16 +152,18 @@ void SystemInfosView::styleInit()
 
 void SystemInfosView::itemGroupCreate(lv_obj_t* par)
 {
+    char infoBuf[128];
+
     /* Sport */
     {
+        lv_snprintf(infoBuf, sizeof(infoBuf),
+            "%s\n%s\n%s",
+            _("TOTAL_TRIP"), _("TOTAL_TIME"), _("MAX_SPEED"));
         lv_obj_t* label = itemCreate(
             par,
-            "Sport",
-            "bicycle",
-
-            "Total trip\n"
-            "Total time\n"
-            "Max speed");
+            _("SPORT"),
+            LV_SYMBOL_EXT_BICYCLE,
+            infoBuf);
 
         subscribe(
             MSG_ID::SPORT_STATUS,
@@ -181,17 +184,19 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
     }
 
     {
+        lv_snprintf(infoBuf, sizeof(infoBuf),
+            "%s\n%s\n%s\n%s\n\n%s\n%s",
+            _("LATITUDE"),
+            _("LONGITUDE"),
+            _("ALTITUDE"),
+            _("UTC_TIME"),
+            _("COURSE"),
+            _("SPEED"));
         lv_obj_t* label = itemCreate(
             par,
-            "GNSS",
-            "map_location",
-
-            "Latitude\n"
-            "Longitude\n"
-            "Altitude\n"
-            "UTC Time\n\n"
-            "Course\n"
-            "Speed");
+            _("GNSS"),
+            LV_SYMBOL_EXT_SATELLITE,
+            infoBuf);
 
         subscribe(
             MSG_ID::GNSS,
@@ -218,13 +223,15 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
     }
 
     {
+        lv_snprintf(infoBuf, sizeof(infoBuf),
+            "%s\n%s",
+            _("DATE"),
+            _("TIME"));
         lv_obj_t* label = itemCreate(
             par,
-            "RTC",
-            "time_info",
-
-            "Date\n"
-            "Time");
+            _("TIME"),
+            LV_SYMBOL_EXT_CLOCK,
+            infoBuf);
 
         subscribe(
             MSG_ID::CLOCK,
@@ -241,14 +248,16 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
     }
 
     {
+        lv_snprintf(infoBuf, sizeof(infoBuf),
+            "%s\n%s\n%s",
+            _("USAGE"),
+            _("VOLTAGE"),
+            _("STATUS"));
         lv_obj_t* label = itemCreate(
             par,
-            "Battery",
-            "battery_info",
-
-            "Usage\n"
-            "Voltage\n"
-            "Status");
+            _("BATTERY"),
+            LV_SYMBOL_EXT_BATTERY_THREE_QUARTERS,
+            infoBuf);
 
         subscribe(
             MSG_ID::POWER,
@@ -256,7 +265,7 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
             [](lv_event_t* e) {
                 auto obj = lv_event_get_current_target_obj(e);
                 auto msg = lv_event_get_msg(e);
-                auto info = (const HAL::Power_Info_t*)lv_msg_get_payload(msg);
+                auto info = (const DataProc::Power_Info_t*)lv_msg_get_payload(msg);
                 lv_label_set_text_fmt(
                     obj,
                     "%d%%\n"
@@ -264,21 +273,23 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
                     "%s",
                     info->level,
                     info->voltage / 1000.0f,
-                    info->isCharging ? "CHARGE" : "DISCHARGE");
+                    info->isCharging ? _("CHARGE") : _("DISCHARGE"));
             });
     }
 
     {
+        lv_snprintf(infoBuf, sizeof(infoBuf),
+            "%s\n%s\n%s\n%s\n%s",
+            _("NAME"),
+            _("AUTHOR"),
+            _("GRAPHICS"),
+            _("COMPILER"),
+            _("BUILD_DATE"));
         lv_obj_t* label = itemCreate(
             par,
-            "System",
-            "system_info",
-
-            "Name\n"
-            "Author\n"
-            "LVGL\n"
-            "Compiler\n"
-            "Build");
+            _("ABOUT"),
+            LV_SYMBOL_EXT_ADDRESS_CARD,
+            infoBuf);
 
         auto info = _bindingVerison->get();
 
@@ -300,7 +311,7 @@ void SystemInfosView::itemGroupCreate(lv_obj_t* par)
 lv_obj_t* SystemInfosView::itemCreate(
     lv_obj_t* par,
     const char* name,
-    const char* img_src,
+    const char* symbol,
     const char* infos)
 {
     lv_obj_t* cont = lv_obj_create(par);
@@ -326,9 +337,10 @@ lv_obj_t* SystemInfosView::itemCreate(
         LV_FLEX_ALIGN_CENTER);
 
     {
-        lv_obj_t* img = lv_img_create(icon);
+        lv_obj_t* label = lv_label_create(icon);
         lv_obj_enable_style_refresh(false);
-        lv_img_set_src(img, ResourcePool::getImage(img_src));
+        lv_obj_set_style_text_font(label, _fontAwesome, 0);
+        lv_label_set_text_static(label, symbol);
     }
 
     {

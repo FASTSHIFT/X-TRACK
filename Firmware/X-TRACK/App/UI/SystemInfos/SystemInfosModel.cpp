@@ -28,6 +28,7 @@ using namespace Page;
 SystemInfosModel::SystemInfosModel(EventListener* listener)
     : DataNode(__func__, DataProc::broker())
     , _listener(listener)
+    , _env(this)
 {
     _nodeSportStatus = subscribe("SportStatus");
     _nodeGNSS = subscribe("GNSS");

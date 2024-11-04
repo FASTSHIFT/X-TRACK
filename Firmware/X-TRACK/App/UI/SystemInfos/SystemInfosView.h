@@ -86,6 +86,8 @@ private:
         lv_style_t info;
     } _style;
 
+    ResourcePool::Font _fontAwesome;
+
 #define BINDING_DEF(name, type) Binding<type, SystemInfosModel>* _binding##name;
 #include "BindingDef.inc"
 #undef BINDING_DEF
@@ -101,7 +103,7 @@ private:
     lv_obj_t* itemCreate(
         lv_obj_t* par,
         const char* name,
-        const char* img_src,
+        const char* symbol,
         const char* infos);
 
     static const char* makeTimeString(uint64_t ms);

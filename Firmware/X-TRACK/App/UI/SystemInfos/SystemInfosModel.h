@@ -58,6 +58,7 @@ public:
     SystemInfosModel(EventListener* listener);
     ~SystemInfosModel();
     void* getBinding(BINDING_TYPE type);
+    DataProc::Env_Helper* env() { return &_env; }
 
 private:
     EventListener* _listener;
@@ -67,6 +68,7 @@ private:
     const DataNode* _nodePower;
     const DataNode* _nodeStorage;
     const DataNode* _nodeVersion;
+    DataProc::Env_Helper _env;
 
 #define BINDING_DEF(name, type) Binding<type, SystemInfosModel> _binding##name;
 #include "BindingDef.inc"

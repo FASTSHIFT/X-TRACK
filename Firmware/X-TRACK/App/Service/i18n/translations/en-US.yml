@@ -16,3 +16,27 @@ en-US:
   CALORIES: Calories
   LOADING...: Loading...
   POWER_OFF: Power Off
+  SPORT: Sport
+  GNSS: GNSS
+  BATTERY: Battery
+  ABOUT: About
+  TOTAL_TRIP: Total Trip
+  TOTAL_TIME: Total Time
+  MAX_SPEED: Max Speed
+  LATITUDE: Latitude
+  LONGITUDE: Longitude
+  ALTITUDE: Altitude
+  UTC_TIME: UTC Time
+  COURSE: Course
+  SPEED: Speed
+  DATE: Date
+  USAGE: Usage
+  VOLTAGE: Voltage
+  STATUS: Status
+  CHARGE: Charge
+  DISCHARGE: Discharge
+  NAME: Name
+  AUTHOR: Author
+  GRAPHICS: GUI
+  COMPILER: Compiler
+  BUILD_DATE: Build

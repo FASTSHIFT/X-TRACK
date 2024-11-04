@@ -57,6 +57,7 @@ void SystemInfos::onViewWillAppear()
 
 void SystemInfos::onViewDidAppear()
 {
+    _model->env()->set("statusbar-opa", "light");
 }
 
 void SystemInfos::onViewWillDisappear()
