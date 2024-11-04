@@ -22,7 +22,6 @@
  */
 #include "MapConv.h"
 #include "TileSystem.h"
-#include "gcj02.h"
 #include <cmath>
 #include <cstdio>
 
@@ -70,23 +69,6 @@ MapConv::Tile_t MapConv::getTile(double longitude, double latitude)
 
 MapConv::Point_t MapConv::getCoordinate(double longitude, double latitude)
 {
-    if (_coordTransformEnable) {
-        if (std::abs(longitude - _longitudeLast) > LONGITUDE_OFFSET
-            || std::abs(latitude - _latitudeLast) > LATITUDE_OFFSET) {
-            double gcj02_latitude, gcj02_longitude;
-            gcj02_to_wgs84(&gcj02_latitude, &gcj02_longitude, latitude, longitude);
-
-            /* cache offset */
-            _longitudeOffset = longitude - gcj02_longitude;
-            _latitudeOffset = latitude - gcj02_latitude;
-            _longitudeLast = longitude;
-            _latitudeLast = latitude;
-        }
-
-        longitude -= _longitudeOffset;
-        latitude -= _latitudeOffset;
-    }
-
     int pixelX, pixelY;
 
     TileSystem::LatLongToPixelXY(
