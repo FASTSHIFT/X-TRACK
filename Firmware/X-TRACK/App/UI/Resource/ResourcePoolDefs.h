@@ -69,7 +69,7 @@
     {                             \
         #NAME, &img_src_##NAME    \
     }
-#define IMAGE_PATH_BASE RESOURCE_PATH_BASE "/images/"
+#define IMAGE_PATH_BASE RESOURCE_PATH_BASE "images/"
 #define IMAGE_EXT ".png"
 #define IMPORT_IMAGE_FILE(NAME)                \
     {                                          \
