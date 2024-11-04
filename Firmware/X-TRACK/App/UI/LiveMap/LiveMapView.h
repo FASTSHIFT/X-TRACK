@@ -67,17 +67,14 @@ private:
         {
             lv_style_init(&cont);
             lv_style_init(&line);
-            lv_style_init(&roadMap);
         }
         ~STYLE()
         {
             lv_style_reset(&cont);
             lv_style_reset(&line);
-            lv_style_reset(&roadMap);
         }
         lv_style_t cont;
         lv_style_t line;
-        lv_style_t roadMap;
     } _style;
 
     MapView* _mapView;

@@ -94,12 +94,6 @@ void LiveMapView::styleInit()
     lv_style_set_line_width(&_style.line, 5);
     lv_style_set_line_opa(&_style.line, LV_OPA_COVER);
     lv_style_set_line_rounded(&_style.line, true);
-
-    /* road map style */
-    lv_style_set_line_color(&_style.roadMap, lv_palette_main(LV_PALETTE_LIGHT_BLUE));
-    lv_style_set_line_width(&_style.roadMap, 3);
-    lv_style_set_line_opa(&_style.roadMap, LV_OPA_COVER);
-    lv_style_set_line_rounded(&_style.roadMap, true);
 }
 
 void LiveMapView::mapViewCreate(lv_obj_t* par)
@@ -158,7 +152,7 @@ void LiveMapView::mapViewCreate(lv_obj_t* par)
     trackCreate(viewCont);
 
     /* img arrow */
-    _mapView->addArrowImage(ResourcePool::getImage("navi_arrow_dark"));
+    _mapView->addArrowImage(ResourcePool::getImage("navi_arrow_light"));
 }
 
 void LiveMapView::onMapViewEvent(MapView::EVENT_ID id, const void* param, void* userData)
