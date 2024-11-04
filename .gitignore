@@ -15,7 +15,10 @@ cmake-build-*
 .DS_STORE
 
 # Resource
-Resource
+Resource/SystemSave.json
+Resource/Backup/
+Resource/MAP/
+Resource/Track/
 
 # Others
 *.log
