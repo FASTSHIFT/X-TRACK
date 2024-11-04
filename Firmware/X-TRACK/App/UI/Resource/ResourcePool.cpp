@@ -51,21 +51,8 @@ DEF_RES_MNGR_OBJ_EXT(Font, font_value_t,
     IMPORT_FONT_FILE("awesome", FONT_AWESOME_FREE_SOLID_NAME), );
 
 DEF_RES_MNGR_OBJ(Image,
-    IMPORT_IMAGE_FILE("alarm"),
-    IMPORT_IMAGE_FILE("battery_info"),
-    IMPORT_IMAGE_FILE("battery"),
-    IMPORT_IMAGE_FILE("bicycle"),
-    IMPORT_IMAGE_FILE("compass"),
-    IMPORT_IMAGE_FILE("locate"),
-    IMPORT_IMAGE_FILE("map_locate"),
-    IMPORT_IMAGE_FILE("menu"),
     IMPORT_IMAGE_FILE("navi_arrow_dark"),
-    IMPORT_IMAGE_FILE("navi_arrow_light"),
-    IMPORT_IMAGE_FILE("satellite"),
-    IMPORT_IMAGE_FILE("storage"),
-    IMPORT_IMAGE_FILE("system_info"),
-    IMPORT_IMAGE_FILE("time"),
-    IMPORT_IMAGE_FILE("trip"));
+    IMPORT_IMAGE_FILE("navi_arrow_light"), );
 
 void init()
 {
