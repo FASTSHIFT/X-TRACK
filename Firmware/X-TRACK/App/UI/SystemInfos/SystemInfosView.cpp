@@ -148,7 +148,6 @@ void SystemInfosView::onRootScroll(lv_obj_t* obj)
 
 void SystemInfosView::styleInit()
 {
-    lv_style_init(&_style.icon);
     lv_style_set_pad_all(&_style.icon, 0);
     lv_style_set_border_width(&_style.icon, 0);
     lv_style_set_radius(&_style.icon, 0);
@@ -159,11 +158,7 @@ void SystemInfosView::styleInit()
     lv_style_set_text_font(&_style.icon, lv_theme_get_font_normal(nullptr));
     lv_style_set_text_color(&_style.icon, lv_color_white());
 
-    lv_style_init(&_style.info);
     lv_style_set_text_font(&_style.info, lv_theme_get_font_small(nullptr));
-
-    lv_style_init(&_style.data);
-    lv_style_set_text_font(&_style.data, lv_theme_get_font_small(nullptr));
 }
 
 void SystemInfosView::itemGroupCreate(lv_obj_t* par)
@@ -368,7 +363,7 @@ lv_obj_t* SystemInfosView::itemCreate(
     {
         lv_obj_enable_style_refresh(false);
         lv_label_set_text(labelData, "-");
-        lv_obj_add_style(labelData, &_style.data, 0);
+        lv_obj_add_style(labelData, &_style.info, 0);
         lv_obj_align(labelData, LV_ALIGN_CENTER, 60, 0);
     }
 

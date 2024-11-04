@@ -73,15 +73,18 @@ private:
     EventListener* _listener;
 
     struct STYLE {
+        STYLE()
+        {
+            lv_style_init(&icon);
+            lv_style_init(&info);
+        }
         ~STYLE()
         {
             lv_style_reset(&icon);
             lv_style_reset(&info);
-            lv_style_reset(&data);
         }
         lv_style_t icon;
         lv_style_t info;
-        lv_style_t data;
     } _style;
 
 #define BINDING_DEF(name, type) Binding<type, SystemInfosModel>* _binding##name;
