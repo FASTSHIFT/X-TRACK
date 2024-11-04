@@ -99,6 +99,16 @@ void DashboardView::topInfoCreate(lv_obj_t* par)
         lv_obj_set_style_text_color(label, lv_color_white(), 0);
         lv_obj_set_style_translate_y(label, 10, 0);
         lv_label_set_text_static(label, "00");
+
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%02d", (int)info->speedKph);
+            });
     }
 
     {
