@@ -42,6 +42,7 @@ public:
         NONE,
         SPORT_STATUS, /* param: SportStatus_Info_t */
         RECORDER_STATUS, /* param: Recorder_Info_t */
+        POWER_STATUS, /* param: Power_Info_t */
         _LAST
     };
 

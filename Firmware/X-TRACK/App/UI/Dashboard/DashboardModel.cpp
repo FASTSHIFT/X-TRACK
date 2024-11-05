@@ -31,6 +31,7 @@ DashboardModel::DashboardModel(EventListener* listener)
 {
     _nodeSportStatus = subscribe("SportStatus");
     _nodeRecorder = subscribe("Recorder");
+    _nodePower = subscribe("Power");
     setEventFilter(DataNode::EVENT_PUBLISH);
 }
 
@@ -75,6 +76,8 @@ int DashboardModel::onEvent(DataNode::EventParam_t* param)
         _listener->onModelEvent(EVENT_ID::SPORT_STATUS, param->data_p);
     } else if (param->tran == _nodeRecorder) {
         _listener->onModelEvent(EVENT_ID::RECORDER_STATUS, param->data_p);
+    } else if (param->tran == _nodePower) {
+        _listener->onModelEvent(EVENT_ID::POWER_STATUS, param->data_p);
     }
 
     return DataNode::RES_OK;

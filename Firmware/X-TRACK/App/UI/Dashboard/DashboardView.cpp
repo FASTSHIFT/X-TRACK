@@ -123,7 +123,7 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
-    lv_obj_set_size(cont, lv_pct(100), 90);
+    lv_obj_set_size(cont, lv_pct(100), 160);
     lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, 110);
 
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW_WRAP);
@@ -131,7 +131,7 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
         cont,
         LV_FLEX_ALIGN_SPACE_EVENLY,
         LV_FLEX_ALIGN_CENTER,
-        LV_FLEX_ALIGN_CENTER);
+        LV_FLEX_ALIGN_SPACE_EVENLY);
 
     {
         lv_obj_t* label = infoItemCreate(cont, _("AVG_SPEED"));
@@ -173,6 +173,19 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
     }
 
     {
+        lv_obj_t* label = infoItemCreate(cont, _("ALTITUDE"));
+        subscribe(
+            MSG_ID::SPORT_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%0.1f m", info->altitude);
+            });
+    }
+
+    {
         lv_obj_t* label = infoItemCreate(cont, _("CALORIES"));
         subscribe(
             MSG_ID::SPORT_STATUS,
@@ -182,6 +195,19 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
                 auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
                 auto obj = lv_event_get_current_target_obj(e);
                 lv_label_set_text_fmt(obj, "%d k", (int)(info->singleCalorie / 1000));
+            });
+    }
+
+    {
+        lv_obj_t* label = infoItemCreate(cont, _("VOLTAGE"));
+        subscribe(
+            MSG_ID::POWER_STATUS,
+            label,
+            [](lv_event_t* e) {
+                auto msg = lv_event_get_msg(e);
+                auto info = (const DataProc::Power_Info_t*)lv_msg_get_payload(msg);
+                auto obj = lv_event_get_current_target_obj(e);
+                lv_label_set_text_fmt(obj, "%0.2f V", info->voltage / 1000.0f);
             });
     }
 }
@@ -216,7 +242,7 @@ void DashboardView::btnGroupCreate(lv_obj_t* par)
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
     lv_obj_set_size(cont, lv_pct(100), 40);
-    lv_obj_align(cont, LV_ALIGN_TOP_MID, 0, 195);
+    lv_obj_align(cont, LV_ALIGN_BOTTOM_MID, 0, -10);
 
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(

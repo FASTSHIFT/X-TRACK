@@ -34,6 +34,7 @@ public:
     enum class EVENT_ID {
         SPORT_STATUS, /* param: SportStatus_Info_t */
         RECORDER_STATUS, /* param: Recorder_Info_t */
+        POWER_STATUS, /* param: Power_Info_t */
         _EVENT_LAST,
     };
 
@@ -67,6 +68,7 @@ private:
     EventListener* _listener;
     const DataNode* _nodeSportStatus;
     const DataNode* _nodeRecorder;
+    const DataNode* _nodePower;
     DataProc::Env_Helper _env;
 
 #define BINDING_DEF(name, type) Binding<type, DashboardModel> _binding##name;
