@@ -45,6 +45,7 @@ ShutdownModel::~ShutdownModel()
 int ShutdownModel::shutdown()
 {
     DataProc::Power_Info_t info;
+    info.delayShutdownTime = 3000;
     info.cmd = DataProc::POWER_CMD::SHUTDOWN;
     return notify(_nodePower, &info, sizeof(info));
 }

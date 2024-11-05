@@ -33,19 +33,8 @@ public:
         _LAST,
     };
 
-    typedef struct FadeOutParam {
-        FadeOutParam()
-            : time(0)
-            , delay(0)
-        {
-        }
-        uint32_t time;
-        uint32_t delay;
-    } FadeOutParam_t;
-
     enum class MSG_ID {
         SHOW, /* param: bool */
-        FADE_OUT, /* param: FadeOutParam_t */
         _LAST,
     };
 

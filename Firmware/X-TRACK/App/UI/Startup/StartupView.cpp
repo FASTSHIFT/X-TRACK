@@ -57,12 +57,17 @@ StartupView::StartupView(EventListener* listener, lv_obj_t* root)
 
     _anim_timeline = lv_anim_timeline_create();
 
+    auto lv_obj_set_opa = [](void* obj, int32_t v) {
+        lv_obj_set_style_opa((lv_obj_t*)obj, v, 0);
+    };
+
 #define ANIM_DEF(start_time, obj, attr, start, end) \
     { start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true }
 
     lv_anim_timeline_wrapper_t wrapper[] = {
         ANIM_DEF(0, cont, width, 0, contWidth),
         ANIM_DEF(500, label, y, contHeight, lv_obj_get_y(label)),
+        ANIM_DEF(1500, cont, opa, LV_OPA_COVER, LV_OPA_TRANSP),
         LV_ANIM_TIMELINE_WRAPPER_END
     };
 
@@ -80,22 +85,11 @@ StartupView::StartupView(EventListener* listener, lv_obj_t* root)
             auto show = (bool)(lv_uintptr_t)lv_msg_get_payload(msg);
 
             lv_anim_timeline_set_reverse(self->_anim_timeline, !show);
-            lv_anim_timeline_start(self->_anim_timeline);
-        });
-
-    subscribe(MSG_ID::FADE_OUT, cont,
-        [](lv_event_t* e) {
-            auto self = (StartupView*)lv_event_get_user_data(e);
-            auto obj = lv_event_get_current_target_obj(e);
-            auto msg = lv_event_get_msg(e);
-
-            if (lv_msg_get_id(msg) != self->msgID(MSG_ID::FADE_OUT)) {
-                return;
+            if (!show) {
+                /* set progress to max to hide the view */
+                lv_anim_timeline_set_progress(self->_anim_timeline, LV_ANIM_TIMELINE_PROGRESS_MAX);
             }
-
-            auto param = (const FadeOutParam_t*)lv_msg_get_payload(msg);
-
-            lv_obj_fade_out(obj, param->time, param->delay);
+            lv_anim_timeline_start(self->_anim_timeline);
         });
 }
 

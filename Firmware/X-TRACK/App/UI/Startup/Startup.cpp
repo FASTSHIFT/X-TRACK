@@ -67,7 +67,7 @@ void Startup::onViewWillAppear()
                 auto self = (Startup*)lv_timer_get_user_data(tmr);
                 self->readyToExit();
             },
-            1000, this);
+            1500, this);
         lv_timer_set_repeat_count(timer, 1);
     }
 }
@@ -115,12 +115,6 @@ void Startup::readyToExit()
         },
         500, this);
     lv_timer_set_repeat_count(timer, 1);
-
-    /* fade out */
-    StartupView::FadeOutParam_t param;
-    param.time = 400;
-    param.delay = 0;
-    _view->publish(StartupView::MSG_ID::FADE_OUT, &param);
 }
 
 void Startup::onExitTimer()
