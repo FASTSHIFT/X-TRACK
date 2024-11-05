@@ -73,9 +73,6 @@ DP_SportStatus::DP_SportStatus(DataNode* node)
     Storage_Helper storage(node);
 
     storage.structStart("sportStatus");
-    SPORT_STORAGE(singleDistance);
-    SPORT_STORAGE(singleCalorie);
-    storage.addArray("singleTime", &_sportStatus.singleTime, sizeof(uint32_t), 2, STORAGE_TYPE::INT);
     SPORT_STORAGE(totalDistance);
     storage.addArray("totalTime", &_sportStatus.totalTime, sizeof(uint32_t), 2, STORAGE_TYPE::INT);
     SPORT_STORAGE(speedMaxKph);
