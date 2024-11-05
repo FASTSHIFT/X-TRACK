@@ -251,7 +251,7 @@ lv_obj_t* DashboardView::bottomInfoCreate(lv_obj_t* par)
                 auto msg = lv_event_get_msg(e);
                 auto info = (const DataProc::SportStatus_Info_t*)lv_msg_get_payload(msg);
                 auto obj = lv_event_get_current_target_obj(e);
-                lv_label_set_text_fmt(obj, "%d k", (int)(info->singleCalorie / 1000));
+                lv_label_set_text_fmt(obj, "%d k", (int)info->singleCalorie);
             });
     }
 
