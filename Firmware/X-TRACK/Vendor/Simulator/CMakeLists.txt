@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 # Platform common configuration
 add_definitions(
-  # LVGL
-  -DLV_SCREEN_HOR_RES=240
-  -DLV_SCREEN_VER_RES=240
   # FreeType
   -DFT2_BUILD_LIBRARY
   -DFT_CONFIG_MODULES_H=<External/graphics/lvgl/src/libs/freetype/ftmodule.h>

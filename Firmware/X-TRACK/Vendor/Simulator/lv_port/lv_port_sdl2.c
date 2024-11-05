@@ -47,7 +47,7 @@
 #endif
 
 #ifndef LV_SCREEN_VER_RES
-#define LV_SCREEN_VER_RES 240
+#define LV_SCREEN_VER_RES 320
 #endif
 
 /**********************
