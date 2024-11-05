@@ -43,6 +43,7 @@ public:
         SPORT_STATUS, /* param: SportStatus_Info_t */
         RECORDER_STATUS, /* param: Recorder_Info_t */
         POWER_STATUS, /* param: Power_Info_t */
+        ANIM_START, /* param: None */
         _LAST
     };
 
@@ -70,6 +71,7 @@ public:
 private:
     EventListener* _listener;
     ResourcePool::Font _fontLarge;
+    lv_anim_timeline_t* _anim_timeline;
 
 #define BINDING_DEF(name, type) Binding<type, DashboardModel>* _binding##name;
 #include "BindingDef.inc"
@@ -80,14 +82,14 @@ private:
     void subscribe(MSG_ID id, lv_obj_t* obj, lv_event_cb_t cb, void* user_data = nullptr);
     void* getBinding(BINDING_TYPE type);
 
-    void topInfoCreate(lv_obj_t* par);
+    lv_obj_t* topInfoCreate(lv_obj_t* par);
 
-    void bottomInfoCreate(lv_obj_t* par);
+    lv_obj_t* bottomInfoCreate(lv_obj_t* par);
     lv_obj_t* infoItemCreate(lv_obj_t* par, const char* title);
 
-    void btnGroupCreate(lv_obj_t* par);
-    lv_obj_t* btnCreate(lv_obj_t* par, const void* src, const char* pageID = nullptr);
-    
+    lv_obj_t* btnGroupCreate(lv_obj_t* par);
+    lv_obj_t* btnCreate(lv_obj_t* par, const char* symbol, const char* pageID = nullptr);
+
     static const char* makeTimeString(uint64_t ms);
 };
 

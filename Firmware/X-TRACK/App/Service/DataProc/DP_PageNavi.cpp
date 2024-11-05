@@ -141,7 +141,7 @@ int DP_PageNavi::onGlobalEvent(const Global_Info_t* info)
 
     case GLOBAL_EVENT::APP_STARTED: {
         /* Open page */
-        _manager->push("Dashboard");
+        _manager->push("Startup");
     } break;
 
     case GLOBAL_EVENT::APP_STOPPED: {

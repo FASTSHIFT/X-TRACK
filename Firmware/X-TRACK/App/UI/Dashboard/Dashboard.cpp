@@ -58,6 +58,13 @@ void Dashboard::onViewWillAppear()
 
 void Dashboard::onViewDidAppear()
 {
+    Param_t param;
+    param.animEnable = false,
+
+    PAGE_GET_PARAM(param);
+    if (param.animEnable) {
+        _view->publish(DashboardView::MSG_ID::ANIM_START);
+    }
 }
 
 void Dashboard::onViewWillDisappear()

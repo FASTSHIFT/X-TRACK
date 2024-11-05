@@ -38,9 +38,64 @@ DashboardView::DashboardView(EventListener* listener, lv_obj_t* root)
 {
     lv_obj_set_style_pad_all(root, 0, 0);
 
-    topInfoCreate(root);
-    bottomInfoCreate(root);
-    btnGroupCreate(root);
+    lv_obj_t* topInfoCont = topInfoCreate(root);
+    lv_obj_t* bottomInfoCont = bottomInfoCreate(root);
+    lv_obj_t* btnGrpCont = btnGroupCreate(root);
+    lv_obj_move_foreground(topInfoCont);
+
+    _anim_timeline = lv_anim_timeline_create();
+
+#define ANIM_DEF(start_time, obj, attr, start, end)                                       \
+    {                                                                                     \
+        start_time, obj, LV_ANIM_EXEC(attr), start, end, 500, lv_anim_path_ease_out, true \
+    }
+
+    auto lv_obj_set_opa = [](void* obj, int32_t v) {
+        lv_obj_set_style_opa((lv_obj_t*)obj, v, 0);
+    };
+
+    auto lv_obj_set_trans_y = [](void* obj, int32_t v) {
+        lv_obj_set_style_translate_y((lv_obj_t*)obj, v, 0);
+    };
+
+    auto lv_obj_set_trans_h = [](void* obj, int32_t v) {
+        lv_obj_set_style_transform_height((lv_obj_t*)obj, v, 0);
+    };
+
+    auto lv_obj_set_text_opa = [](void* obj, int32_t v) {
+        lv_obj_set_style_text_opa((lv_obj_t*)obj, v, 0);
+    };
+
+    lv_obj_update_layout(root);
+    lv_coord_t btn_h = lv_obj_get_height(lv_obj_get_child(btnGrpCont, 0));
+
+    lv_anim_timeline_wrapper_t wrapper[] = {
+        ANIM_DEF(0, topInfoCont, trans_y, -lv_obj_get_height(topInfoCont), 0),
+        ANIM_DEF(200, bottomInfoCont, trans_y, -lv_obj_get_height(bottomInfoCont), 0),
+        ANIM_DEF(200, bottomInfoCont, opa, LV_OPA_TRANSP, LV_OPA_COVER),
+
+        ANIM_DEF(500, lv_obj_get_child(btnGrpCont, 0), trans_h, -btn_h, 0),
+        ANIM_DEF(600, lv_obj_get_child(btnGrpCont, 1), trans_h, -btn_h, 0),
+        ANIM_DEF(700, lv_obj_get_child(btnGrpCont, 2), trans_h, -btn_h, 0),
+        ANIM_DEF(900, btnGrpCont, text_opa, LV_OPA_TRANSP, LV_OPA_COVER),
+        LV_ANIM_TIMELINE_WRAPPER_END
+    };
+    lv_anim_timeline_add_wrapper(_anim_timeline, wrapper);
+    lv_anim_timeline_set_progress(_anim_timeline, 0);
+
+    subscribe(
+        MSG_ID::ANIM_START,
+        root,
+        [](lv_event_t* e) {
+            auto self = (DashboardView*)lv_event_get_user_data(e);
+            auto msg = lv_event_get_msg(e);
+            if (lv_msg_get_id(msg) != self->msgID(MSG_ID::ANIM_START)) {
+                return;
+            }
+
+            lv_anim_timeline_start(self->_anim_timeline);
+        },
+        this);
 }
 
 DashboardView::~DashboardView()
@@ -72,7 +127,7 @@ void* DashboardView::getBinding(BINDING_TYPE type)
     return info.binding;
 }
 
-void DashboardView::topInfoCreate(lv_obj_t* par)
+lv_obj_t* DashboardView::topInfoCreate(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     {
@@ -117,9 +172,11 @@ void DashboardView::topInfoCreate(lv_obj_t* par)
         lv_obj_set_style_translate_y(label, -5, 0);
         lv_label_set_text_static(label, "km/h");
     }
+
+    return cont;
 }
 
-void DashboardView::bottomInfoCreate(lv_obj_t* par)
+lv_obj_t* DashboardView::bottomInfoCreate(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
@@ -210,6 +267,8 @@ void DashboardView::bottomInfoCreate(lv_obj_t* par)
                 lv_label_set_text_fmt(obj, "%0.2f V", info->voltage / 1000.0f);
             });
     }
+
+    return cont;
 }
 
 lv_obj_t* DashboardView::infoItemCreate(lv_obj_t* par, const char* title)
@@ -237,7 +296,7 @@ lv_obj_t* DashboardView::infoItemCreate(lv_obj_t* par, const char* title)
     return labelValue;
 }
 
-void DashboardView::btnGroupCreate(lv_obj_t* par)
+lv_obj_t* DashboardView::btnGroupCreate(lv_obj_t* par)
 {
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
@@ -254,15 +313,20 @@ void DashboardView::btnGroupCreate(lv_obj_t* par)
     btnCreate(cont, LV_SYMBOL_EXT_LOCATION_DOT, "LiveMap");
     btnCreate(cont, LV_SYMBOL_EXT_POWER_OFF, "Shutdown");
     btnCreate(cont, LV_SYMBOL_EXT_BARS, "SystemInfos");
+
+    return cont;
 }
 
-lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const void* src, const char* pageID)
+lv_obj_t* DashboardView::btnCreate(lv_obj_t* par, const char* symbol, const char* pageID)
 {
     lv_obj_t* btn = lv_obj_create(par);
     lv_obj_remove_style_all(btn);
     lv_obj_set_size(btn, 40, 31);
     lv_obj_clear_flag(btn, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_style_bg_img_src(btn, src, 0);
+
+    lv_obj_t* label = lv_label_create(btn);
+    lv_label_set_text_static(label, symbol);
+    lv_obj_center(label);
 
     lv_obj_set_style_bg_opa(btn, LV_OPA_COVER, 0);
     lv_obj_set_style_transform_width(btn, 5, LV_STATE_PRESSED);
