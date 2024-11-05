@@ -96,8 +96,8 @@ void Dashboard::onModelEvent(DashboardModel::EVENT_ID id, const void* param)
         _view->publish(DashboardView::MSG_ID::RECORDER_STATUS, param);
     } break;
 
-    case DashboardModel::EVENT_ID::POWER_STATUS: {
-        _view->publish(DashboardView::MSG_ID::POWER_STATUS, param);
+    case DashboardModel::EVENT_ID::GNSS: {
+        _view->publish(DashboardView::MSG_ID::GNSS_STATUS, param);
     } break;
 
     default:

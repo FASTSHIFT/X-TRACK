@@ -22,6 +22,8 @@
  */
 #include "DashboardView.h"
 #include "Service/DataProc/DataProc_Def.h"
+#include "Service/HAL/HAL_Def.h"
+#include "Utils/Geo/Geo.h"
 #include "Utils/lv_ext/lv_anim_timeline_wrapper.h"
 #include "Utils/lv_ext/lv_ext_func.h"
 #include <stdarg.h>
@@ -256,15 +258,15 @@ lv_obj_t* DashboardView::bottomInfoCreate(lv_obj_t* par)
     }
 
     {
-        lv_obj_t* label = infoItemCreate(cont, _("VOLTAGE"));
+        lv_obj_t* label = infoItemCreate(cont, _("COURSE"));
         subscribe(
-            MSG_ID::POWER_STATUS,
+            MSG_ID::GNSS_STATUS,
             label,
             [](lv_event_t* e) {
                 auto msg = lv_event_get_msg(e);
-                auto info = (const DataProc::Power_Info_t*)lv_msg_get_payload(msg);
+                auto info = (const HAL::GNSS_Info_t*)lv_msg_get_payload(msg);
                 auto obj = lv_event_get_current_target_obj(e);
-                lv_label_set_text_fmt(obj, "%0.2f V", info->voltage / 1000.0f);
+                lv_label_set_text_fmt(obj, "%s", Geo::cardinal(info->course));
             });
     }
 
@@ -276,7 +278,7 @@ lv_obj_t* DashboardView::infoItemCreate(lv_obj_t* par, const char* title)
     lv_obj_t* cont = lv_obj_create(par);
     lv_obj_remove_style_all(cont);
     lv_obj_remove_flag(cont, LV_OBJ_FLAG_SCROLLABLE);
-    lv_obj_set_size(cont, 93, 39);
+    lv_obj_set_size(cont, 100, 39);
 
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(
@@ -286,6 +288,7 @@ lv_obj_t* DashboardView::infoItemCreate(lv_obj_t* par, const char* title)
         LV_FLEX_ALIGN_CENTER);
 
     lv_obj_t* labelValue = lv_label_create(cont);
+    lv_label_set_text_static(labelValue, "-");
 
     {
         lv_obj_t* label = lv_label_create(cont);
