@@ -45,6 +45,7 @@ typedef struct Power_Info {
         , isCharging(false)
         , level(0)
         , voltage(0)
+        , delayShutdownTime(2000)
         , autoShutdownTime(0)
         , batteryUseTime(0)
         , uptime(0)
@@ -57,6 +58,7 @@ typedef struct Power_Info {
     bool isBatteryLow;
     uint8_t level;
     uint16_t voltage;
+    uint16_t delayShutdownTime;
     int autoShutdownTime;
     uint64_t batteryUseTime;
     uint64_t uptime;

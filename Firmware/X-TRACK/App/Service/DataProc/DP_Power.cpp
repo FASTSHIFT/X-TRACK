@@ -145,7 +145,7 @@ void DP_Power::onPowerNotify(const Power_Info_t* info)
 {
     switch (info->cmd) {
     case POWER_CMD::SHUTDOWN: {
-        requestShutdown();
+        requestShutdown(info->delayShutdownTime);
     } break;
 
     case POWER_CMD::REBOOT: {
