@@ -27,16 +27,6 @@
 
 #define LV_ANIM_EXEC(attr) (lv_anim_exec_xcb_t) lv_obj_set_##attr
 
-#define LV_SYMBOL_UNICODE(unicode) lv_txt_unicode_to_utf8_str(unicode)
-
-void lv_obj_set_opa_scale(lv_obj_t* obj, lv_opa_t opa);
-
-lv_opa_t lv_obj_get_opa_scale(lv_obj_t* obj);
-
-void lv_label_set_text_add(lv_obj_t* label, const char* text);
-
 lv_indev_t* lv_indev_search(lv_indev_type_t type);
-
-const char* lv_txt_unicode_to_utf8_str(uint32_t unicode);
 
 #endif /* __LV_EXT_FUNC_H */

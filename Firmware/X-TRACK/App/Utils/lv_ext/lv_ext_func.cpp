@@ -22,16 +22,6 @@
  */
 #include "lv_ext_func.h"
 
-void lv_obj_set_opa_scale(lv_obj_t* obj, lv_opa_t opa)
-{
-    lv_obj_set_style_opa(obj, opa, LV_PART_MAIN);
-}
-
-lv_opa_t lv_obj_get_opa_scale(lv_obj_t* obj)
-{
-    return lv_obj_get_style_opa(obj, LV_PART_MAIN);
-}
-
 lv_indev_t* lv_indev_search(lv_indev_type_t type)
 {
     lv_indev_t* cur_indev = NULL;
