@@ -31,6 +31,7 @@
 #include <ctime>
 
 #define CONFIG_GPX_FILE_PATH "/Track/TRK_EXAMPLE.gpx"
+#define CONFIG_GPX_DELAY_INIT 5000
 #define CONFIG_RANDOM_GNSS 0
 #define CONFIG_NO_GNSS 0
 
@@ -68,6 +69,7 @@ private:
     virtual int onWrite(const void* buffer, size_t size);
     virtual int onIoctl(DeviceObject::IO_Cmd_t cmd, void* data);
     bool parserInit();
+    void paserStart();
     void paserUpdate();
     static int parserReadByte(GPX_Parser* parser);
     static int parserAvaliable(GPX_Parser* parser);
@@ -80,24 +82,22 @@ private:
 
 int GNSS::onInit()
 {
-    bool success = parserInit();
-
-#if CONFIG_NO_GNSS
-    success = false;
-#endif
-
-    if (success) {
+#if !CONFIG_NO_GNSS
+    if (parserInit()) {
         _gnssInfo.isVaild = true;
         _gnssInfo.satellites = 10;
 
-        lv_timer_create(
-            [](lv_timer_t* timer) {
-                auto ctx = (GNSS*)lv_timer_get_user_data(timer);
-                ctx->paserUpdate();
+        /* Delay start GPX parser */
+        lv_timer_t* timer = lv_timer_create(
+            [](lv_timer_t* tmr) {
+                auto ctx = (GNSS*)lv_timer_get_user_data(tmr);
+                ctx->paserStart();
             },
-            CONFIG_GNSS_UPDATE_PERIOD,
+            CONFIG_GPX_DELAY_INIT,
             this);
+        lv_timer_set_repeat_count(timer, 1);
     }
+#endif
 
     return DeviceObject::RES_OK;
 }
@@ -203,6 +203,17 @@ bool GNSS::parserInit()
     lv_fs_tell(&_file, &_size);
     lv_fs_seek(&_file, 0, LV_FS_SEEK_SET);
     return true;
+}
+
+void GNSS::paserStart()
+{
+    lv_timer_create(
+        [](lv_timer_t* timer) {
+            auto ctx = (GNSS*)lv_timer_get_user_data(timer);
+            ctx->paserUpdate();
+        },
+        CONFIG_GNSS_UPDATE_PERIOD,
+        this);
 }
 
 time_t GNSS::makeTime(const GPX_Parser::Time_t* time)
