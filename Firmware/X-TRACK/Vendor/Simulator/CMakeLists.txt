@@ -78,6 +78,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}
   ${PROJECT_ROOT_DIR}
   ${APP_SOURCE_DIR}
+  ${EXTERNAL_SOURCE_DIR}/cJSON
   ${EXTERNAL_SOURCE_DIR}/graphics
   ${EXTERNAL_SOURCE_DIR}/freetype/include)
 

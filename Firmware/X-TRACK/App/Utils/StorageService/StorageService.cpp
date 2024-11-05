@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 #include "StorageService.h"
-#include "External/cJSON/cJSON.h"
 #include "lvgl/lvgl.h"
 #include <algorithm>
+#include <cJSON.h>
 #include <cstring>
 #include <stack>
 
