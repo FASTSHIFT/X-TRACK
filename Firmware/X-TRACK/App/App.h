@@ -34,7 +34,7 @@ extern "C" {
  *
  * @param argc Number of arguments
  * @param argv Arguments
- * @return AppContext_t* 
+ * @return AppContext_t*
  */
 AppContext_t* App_CreateContext(int argc, const char* argv[]);
 
@@ -48,7 +48,7 @@ uint32_t App_RunLoopExecute(AppContext_t* context);
 /**
  * @brief Destroy app context
  *
- * @param context 
+ * @param context
  */
 void App_DestroyContext(AppContext_t* context);
 
