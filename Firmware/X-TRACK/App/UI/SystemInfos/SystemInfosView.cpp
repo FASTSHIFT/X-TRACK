@@ -106,7 +106,7 @@ void SystemInfosView::onRootScroll(lv_obj_t* obj)
     auto obj_pad_top = lv_obj_get_style_pad_top(obj, 0);
     auto scroll_y = lv_obj_get_scroll_y(obj);
 
-    for (auto i = 0; i < child_cnt; i++) {
+    for (uint32_t i = 0; i < child_cnt; i++) {
         auto cont = lv_obj_get_child(obj, i);
 
         /* skip 2 label obj */
