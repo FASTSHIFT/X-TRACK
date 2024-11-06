@@ -27,8 +27,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#ifndef CONFIG_RESOURCE_PATH
-#define CONFIG_RESOURCE_PATH "./"
+#ifndef RESOURCE_PATH_BASE
+#define RESOURCE_PATH_BASE "."
 #endif
 
 #define SD_CARD_GB(byte) ((uint64_t)(byte) * 1024 * 1024 * 1024)
@@ -103,7 +103,7 @@ int SdCard::onIoctl(DeviceObject::IO_Cmd_t cmd, void* data)
 const char* SdCard::genRealPath(const char* path)
 {
     static char realPath[128];
-    snprintf(realPath, sizeof(realPath), CONFIG_RESOURCE_PATH "/%s", path);
+    snprintf(realPath, sizeof(realPath), RESOURCE_PATH_BASE "/%s", path);
     return realPath;
 }
 
