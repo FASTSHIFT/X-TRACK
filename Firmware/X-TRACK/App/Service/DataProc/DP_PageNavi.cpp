@@ -115,8 +115,16 @@ int DP_PageNavi::onGlobalEvent(const Global_Info_t* info)
     case GLOBAL_EVENT::PAGE_MANAGER_INIT_FINISHED: {
         _manager = (PageManager*)info->param;
 
-        /* Screen style */
+#if defined(PAGE_HOR_RES) && PAGE_HOR_RES > 0 && defined(PAGE_VER_RES) && PAGE_VER_RES > 0
+        lv_obj_t* scr = lv_obj_create(lv_scr_act());
+        lv_obj_remove_style_all(scr);
+        lv_obj_set_size(scr, PAGE_HOR_RES, PAGE_VER_RES);
+        lv_obj_center(scr);
+#else
         lv_obj_t* scr = lv_scr_act();
+#endif
+
+        /* Screen style */
         lv_obj_set_style_pad_all(scr, 0, 0);
         lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
         _manager->setRootParent(scr);

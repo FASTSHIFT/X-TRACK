@@ -25,7 +25,6 @@
 using namespace Page;
 
 #define ITEM_HEIGHT_MIN 100
-#define ITEM_PAD ((LV_VER_RES - ITEM_HEIGHT_MIN) / 2)
 
 SystemInfosView::SystemInfosView(EventListener* listener, lv_obj_t* root)
     : _listener(listener)
@@ -77,7 +76,8 @@ void* SystemInfosView::getBinding(BINDING_TYPE type)
 
 void SystemInfosView::rootInit(lv_obj_t* root)
 {
-    lv_obj_set_style_pad_ver(root, ITEM_PAD, 0);
+    lv_obj_update_layout(root);
+    lv_obj_set_style_pad_ver(root, ((lv_obj_get_height(root) - ITEM_HEIGHT_MIN) / 2), 0);
 
     lv_obj_set_flex_flow(root, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(

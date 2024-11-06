@@ -21,15 +21,36 @@
  * SOFTWARE.
  */
 #include "StatusBar.h"
+#include "Frameworks/PageManager/PageManager.h"
 
 #define IS_STR_EQ(STR1, STR2) (strcmp(STR1, STR2) == 0)
 
 using namespace Page;
 
-StatusBar::StatusBar()
+StatusBar::StatusBar(void* arg)
 {
+    auto parent = lv_layer_top();
+
+    if (arg) {
+        auto manager = (PageManager*)arg;
+        auto rootParent = manager->getRootParent();
+
+        /* If the root parent is not the active screen, create a new object for the status bar */
+        if (rootParent != lv_scr_act()) {
+            parent = lv_obj_create(lv_layer_top());
+            lv_obj_remove_style_all(parent);
+            lv_obj_remove_flag(parent, LV_OBJ_FLAG_SCROLLABLE);
+            lv_obj_remove_flag(parent, LV_OBJ_FLAG_CLICKABLE);
+
+            /* Set the parent's style to the root parent's style */
+            lv_obj_set_style_align(parent, lv_obj_get_style_align(rootParent, 0), 0);
+            lv_obj_set_pos(parent, lv_obj_get_style_x(rootParent, 0), lv_obj_get_style_y(rootParent, 0));
+            lv_obj_set_size(parent, lv_obj_get_style_width(rootParent, 0), lv_obj_get_style_height(rootParent, 0));
+        }
+    }
+
     _model = new StatusBarModel(this);
-    _view = new StatusBarView(this, lv_layer_top());
+    _view = new StatusBarView(this, parent);
 }
 
 StatusBar::~StatusBar()
