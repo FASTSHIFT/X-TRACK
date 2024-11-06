@@ -25,6 +25,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#if LV_USE_PROFILER
+
 static uint32_t profiler_get_tick_us(void)
 {
     struct timespec ts;
@@ -39,7 +41,6 @@ static void profiler_flush(const char* buf)
 
 void lv_port_profiler_init(void)
 {
-#if LV_USE_PROFILER
     lv_profiler_builtin_config_t config;
     lv_profiler_builtin_config_init(&config);
     config.buf_size = 64 * 1024;
@@ -47,5 +48,13 @@ void lv_port_profiler_init(void)
     config.tick_get_cb = profiler_get_tick_us;
     config.flush_cb = profiler_flush;
     lv_profiler_builtin_init(&config);
-#endif
 }
+
+#else
+
+void lv_port_profiler_init(void)
+{
+    /*Do nothing*/
+}
+
+#endif
