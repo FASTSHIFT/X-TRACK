@@ -30,7 +30,7 @@ namespace Page {
 
 class StatusBar : public StatusBarModel::EventListener, public StatusBarView::EventListener {
 public:
-    StatusBar(void* arg = nullptr);
+    StatusBar(lv_obj_t* parent);
     virtual ~StatusBar();
 
 private:

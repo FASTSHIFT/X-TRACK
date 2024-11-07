@@ -120,14 +120,20 @@ int DP_PageNavi::onGlobalEvent(const Global_Info_t* info)
         lv_obj_remove_style_all(scr);
         lv_obj_set_size(scr, PAGE_HOR_RES, PAGE_VER_RES);
         lv_obj_center(scr);
-#else
-        lv_obj_t* scr = lv_scr_act();
+        _manager->setRootParent(scr);
+
+        lv_obj_t* layer_top = lv_obj_create(lv_layer_top());
+        lv_obj_remove_style_all(layer_top);
+        lv_obj_remove_flag(layer_top, LV_OBJ_FLAG_SCROLLABLE);
+        lv_obj_remove_flag(layer_top, LV_OBJ_FLAG_CLICKABLE);
+        lv_obj_set_size(layer_top, PAGE_HOR_RES, PAGE_VER_RES);
+        lv_obj_center(layer_top);
+        _manager->setLayerTop(layer_top);
 #endif
 
         /* Screen style */
-        lv_obj_set_style_pad_all(scr, 0, 0);
-        lv_obj_clear_flag(scr, LV_OBJ_FLAG_SCROLLABLE);
-        _manager->setRootParent(scr);
+        lv_obj_set_style_pad_all(_manager->getRootParent(), 0, 0);
+        lv_obj_clear_flag(_manager->getRootParent(), LV_OBJ_FLAG_SCROLLABLE);
 
         /* Page style */
         lv_style_init(&_pageStyle);

@@ -55,7 +55,7 @@ AppContext_t* App_CreateContext(int argc, const char* argv[])
     context->global->publish(DataProc::GLOBAL_EVENT::PAGE_MANAGER_INIT_FINISHED, context->manager);
 
     /* StatusBar */
-    context->statusBar = new Page::StatusBar(context->manager);
+    context->statusBar = new Page::StatusBar(context->manager->getLayerTop());
     context->global->publish(DataProc::GLOBAL_EVENT::STATUS_BAR_INIT_FINISHED);
 
     /* App started */

@@ -22,6 +22,7 @@
  */
 #include "Config/Config.h"
 #include "DataProc.h"
+#include "Frameworks/PageManager/PageManager.h"
 #include "UI/Resource/ResourcePool.h"
 #include "Utils/lv_toast/lv_toast.h"
 
@@ -32,6 +33,7 @@ public:
     DP_Toast(DataNode* node);
 
 private:
+    const DataNode* _nodeGlobal;
     lv_obj_t* _toast;
     lv_style_t _style;
     ResourcePool::Font _font;
@@ -44,6 +46,8 @@ DP_Toast::DP_Toast(DataNode* node)
     : _toast(nullptr)
     , _font(16, "bold")
 {
+    _nodeGlobal = node->subscribe("Global");
+
     lv_style_init(&_style);
     lv_style_set_radius(&_style, LV_RADIUS_CIRCLE);
     lv_style_set_margin_top(&_style, 10);
@@ -61,17 +65,37 @@ DP_Toast::DP_Toast(DataNode* node)
             auto ctx = (DP_Toast*)n->getUserData();
             return ctx->onEvent(param);
         },
-        DataNode::EVENT_NOTIFY);
+        DataNode::EVENT_NOTIFY | DataNode::EVENT_PUBLISH);
 }
 
 int DP_Toast::onEvent(DataNode::EventParam_t* param)
 {
-    if (param->size != sizeof(Toast_Info_t)) {
-        return DataNode::RES_SIZE_MISMATCH;
+    switch (param->event) {
+    case DataNode::EVENT_NOTIFY: {
+        if (param->size != sizeof(Toast_Info_t)) {
+            return DataNode::RES_SIZE_MISMATCH;
+        }
+
+        auto info = (const Toast_Info_t*)param->data_p;
+        lv_toast_show_text(_toast, info->txt, info->duration);
+    } break;
+
+    case DataNode::EVENT_PUBLISH: {
+        if (param->tran == _nodeGlobal) {
+            auto info = (const Global_Info_t*)param->data_p;
+            if (info->event == GLOBAL_EVENT::PAGE_MANAGER_INIT_FINISHED) {
+                auto manager = (PageManager*)info->param;
+
+                /* Change the parent of the toast to the top layer of the page manager */
+                lv_obj_set_parent(_toast, manager->getLayerTop());
+            }
+        }
+    } break;
+
+    default:
+        return DataNode::RES_UNSUPPORTED_REQUEST;
     }
 
-    auto info = (const Toast_Info_t*)param->data_p;
-    lv_toast_show_text(_toast, info->txt, info->duration);
     return DataNode::RES_OK;
 }
 
