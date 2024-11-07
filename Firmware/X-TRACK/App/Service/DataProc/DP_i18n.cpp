@@ -42,6 +42,7 @@ private:
 
 private:
     int onEvent(DataNode::EventParam_t* param);
+    int setLanguage(const char* lang);
 };
 
 DP_i18n::DP_i18n(DataNode* node)
@@ -62,6 +63,10 @@ DP_i18n::DP_i18n(DataNode* node)
 
     Storage_Helper storage(node);
     storage.add(LANGUAGE_STR, _language, sizeof(_language), STORAGE_TYPE::STRING);
+
+    if (lv_i18n_set_locale(_language) != 0) {
+        LV_LOG_ERROR("set locale '%s' failed", _language);
+    }
 }
 
 int DP_i18n::onEvent(DataNode::EventParam_t* param)
