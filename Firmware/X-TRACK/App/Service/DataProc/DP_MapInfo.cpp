@@ -25,6 +25,8 @@
 #include "lvgl/lvgl.h"
 #include <stdlib.h>
 
+#define MAP_LEVEL_MIN_DEFAULT 3
+#define MAP_LEVEL_MAX_DEFAULT 16
 #define MAP_LEVEL_MIN 0
 #define MAP_LEVEL_MAX 19
 
@@ -52,8 +54,8 @@ DP_MapInfo::DP_MapInfo(DataNode* node)
 {
     _info.path = _path;
     _info.ext = _ext;
-    _info.levelMin = MAP_LEVEL_MIN;
-    _info.levelMax = MAP_LEVEL_MAX;
+    _info.levelMin = MAP_LEVEL_MIN_DEFAULT;
+    _info.levelMax = MAP_LEVEL_MAX_DEFAULT;
     _info.coordTrans = false;
 
     node->setEventCallback(
