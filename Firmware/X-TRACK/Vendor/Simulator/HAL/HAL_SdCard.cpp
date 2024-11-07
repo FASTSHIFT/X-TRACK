@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#include "Config/Config.h"
 #include "HAL.h"
 #include <cstring>
 #include <stdio.h>
@@ -27,11 +28,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#ifndef RESOURCE_PATH_BASE
-#define RESOURCE_PATH_BASE "."
-#endif
-
-#define SD_CARD_GB(byte) ((uint64_t)(byte) * 1024 * 1024 * 1024)
+#define SD_CARD_GB(byte) ((uint64_t)(byte)*1024 * 1024 * 1024)
 
 namespace HAL {
 
@@ -102,9 +99,13 @@ int SdCard::onIoctl(DeviceObject::IO_Cmd_t cmd, void* data)
 
 const char* SdCard::genRealPath(const char* path)
 {
-    static char realPath[128];
-    snprintf(realPath, sizeof(realPath), RESOURCE_PATH_BASE "/%s", path);
-    return realPath;
+    if (*path != '\0') {
+        path++;
+        if (*path == ':' || *path == '/') {
+            path++;
+        }
+    }
+    return path;
 }
 
 } /* namespace HAL */

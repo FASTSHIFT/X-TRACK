@@ -59,12 +59,14 @@ void init()
     lv_msg_init();
     g_font_manager = lv_font_manager_create(8);
 
-    lv_font_manager_add_path_static(g_font_manager, FONT_REGULAR_NAME, FONT_PATH_BASE FONT_REGULAR_NAME FONT_EXT);
-    lv_font_manager_add_path_static(g_font_manager, FONT_MEDIUM_NAME, FONT_PATH_BASE FONT_MEDIUM_NAME FONT_EXT);
-    lv_font_manager_add_path_static(g_font_manager, FONT_BOLD_NAME, FONT_PATH_BASE FONT_BOLD_NAME FONT_EXT);
-    lv_font_manager_add_path_static(g_font_manager, FONT_AWESOME_BRANDS_REGULAR_NAME, FONT_PATH_BASE FONT_AWESOME_BRANDS_REGULAR_NAME FONT_EXT);
-    lv_font_manager_add_path_static(g_font_manager, FONT_AWESOME_FREE_REGULAR_NAME, FONT_PATH_BASE FONT_AWESOME_FREE_REGULAR_NAME FONT_EXT);
-    lv_font_manager_add_path_static(g_font_manager, FONT_AWESOME_FREE_SOLID_NAME, FONT_PATH_BASE FONT_AWESOME_FREE_SOLID_NAME FONT_EXT);
+#define FONT_MANAGER_ADD_FONT(name) lv_font_manager_add_path_static(g_font_manager, name, FONT_MAKE_PATH(name));
+
+    FONT_MANAGER_ADD_FONT(FONT_REGULAR_NAME);
+    FONT_MANAGER_ADD_FONT(FONT_MEDIUM_NAME);
+    FONT_MANAGER_ADD_FONT(FONT_BOLD_NAME);
+    FONT_MANAGER_ADD_FONT(FONT_AWESOME_BRANDS_REGULAR_NAME);
+    FONT_MANAGER_ADD_FONT(FONT_AWESOME_FREE_REGULAR_NAME);
+    FONT_MANAGER_ADD_FONT(FONT_AWESOME_FREE_SOLID_NAME);
 
     font_value_t default_font = {
         font_value_type::UNKNOWN,

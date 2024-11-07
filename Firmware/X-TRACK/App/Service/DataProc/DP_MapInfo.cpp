@@ -54,7 +54,7 @@ DP_MapInfo::DP_MapInfo(DataNode* node)
     _info.ext = _ext;
     _info.levelMin = MAP_LEVEL_MIN;
     _info.levelMax = MAP_LEVEL_MAX;
-    _info.coordTrans = CONFIG_MAP_COORD_TRANSFORM_ENABLE;
+    _info.coordTrans = false;
 
     node->setEventCallback(
         [](DataNode* n, DataNode::EventParam_t* param) {

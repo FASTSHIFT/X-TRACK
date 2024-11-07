@@ -33,7 +33,7 @@ using namespace DataProc;
 
 #define RECORDER_GPX_TIME_FMT "%d-%02d-%02dT%02d:%02d:%02dZ"
 #define RECORDER_GPX_MONTH_FMT "%d_%02d"
-#define RECORDER_GPX_FILE_NAME "/" CONFIG_TRACK_RECORD_FILE_DIR_NAME "/" RECORDER_GPX_MONTH_FMT "/TRK_%d%02d%02d_%02d%02d%02d.gpx"
+#define RECORDER_GPX_FILE_NAME CONFIG_TRACK_RECORD_FILE_DIR_NAME "/" RECORDER_GPX_MONTH_FMT "/TRK_%d%02d%02d_%02d%02d%02d.gpx"
 
 class DP_Recorder {
 public:
@@ -84,7 +84,7 @@ DP_Recorder::DP_Recorder(DataNode* node)
     node->subscribe("Version");
 
     /* create Track dir */
-    makeDir("/" CONFIG_TRACK_RECORD_FILE_DIR_NAME);
+    makeDir(CONFIG_TRACK_RECORD_FILE_DIR_NAME);
 
     Storage_Helper storage(node);
     storage.add("autoRec", &_autoRec);
@@ -324,7 +324,7 @@ bool DP_Recorder::recStart(uint16_t time)
     char filepath[128];
 
     /* create dir */
-    lv_snprintf(filepath, sizeof(filepath), "/" CONFIG_TRACK_RECORD_FILE_DIR_NAME "/" RECORDER_GPX_MONTH_FMT,
+    lv_snprintf(filepath, sizeof(filepath), CONFIG_TRACK_RECORD_FILE_DIR_NAME "/" RECORDER_GPX_MONTH_FMT,
         clock.year, clock.month);
     if (makeDir(filepath) != DeviceObject::RES_OK) {
         return false;

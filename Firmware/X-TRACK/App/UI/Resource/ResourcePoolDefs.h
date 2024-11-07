@@ -26,8 +26,7 @@
 #ifndef SIMULATOR_RESOURCEPOOLDEFS_H
 #define SIMULATOR_RESOURCEPOOLDEFS_H
 
-/* Macro Definitions */
-#define RESOURCE_PATH_BASE "/"
+#include "Config/Config.h"
 
 #define KType(NAME) KType_##NAME
 #define VType(NAME) VType_##NAME
@@ -67,19 +66,15 @@
 
 #define IMPORT_IMAGE_NATIVE(NAME) \
     {                             \
-        #NAME, &img_src_##NAME    \
+#NAME, &img_src_##NAME    \
     }
-#define IMAGE_PATH_BASE RESOURCE_PATH_BASE "images/"
-#define IMAGE_EXT ".png"
-#define IMPORT_IMAGE_FILE(NAME)                \
-    {                                          \
-        NAME, (IMAGE_PATH_BASE NAME IMAGE_EXT) \
+
+#define IMPORT_IMAGE_FILE(NAME)                                      \
+    {                                                                \
+        NAME, (CONFIG_IMAGE_DIR_PATH "/" NAME CONFIG_IMAGE_EXT_NAME) \
     }
 
 #define SET_DEFAULT(NAME, VALUE) OName(NAME).setDefaultValue((VALUE))
-
-#define FONT_PATH_BASE "./font/"
-#define FONT_EXT ".ttf"
 
 enum font_value_type {
     UNKNOWN,

@@ -43,37 +43,50 @@
 /* Default weight (kilogram) */
 #define CONFIG_WEIGHT_DEFAULT                 65
 
-/* Default wheel diameter (millimeter) */
-#define CONFIG_WHEEL_DIAMETER_DEFAULT         700
-
 /* Default GNSS data refresh period (milliseconds) */
 #ifndef CONFIG_GNSS_UPDATE_PERIOD
 #  define CONFIG_GNSS_UPDATE_PERIOD           1000
 #endif
+
+/* Resource path configuration */
+#ifndef CONFIG_RESOURCE_FS_LETTER
+#define CONFIG_RESOURCE_FS_LETTER             "/"
+#endif
+
+#ifndef CONFIG_RESOURCE_DIR_PATH
+#define CONFIG_RESOURCE_DIR_PATH              "Resource"
+#endif
+
+#define RESOURCE_MAKE_PATH_NO_LETTER(path)    CONFIG_RESOURCE_DIR_PATH path
+#define RESOURCE_MAKE_PATH(path)              CONFIG_RESOURCE_FS_LETTER RESOURCE_MAKE_PATH_NO_LETTER(path)
+
+/* Image and font storage directory */
+#ifndef CONFIG_IMAGE_DIR_PATH
+#define CONFIG_IMAGE_DIR_PATH                 RESOURCE_MAKE_PATH("/images")
+#endif
+
+#define CONFIG_IMAGE_EXT_NAME                 ".png"
+
+#ifndef CONFIG_FONT_DIR_PATH
+/* Freetype uses relative paths and does not add letter */
+#define CONFIG_FONT_DIR_PATH                  RESOURCE_MAKE_PATH_NO_LETTER("/font")
+#endif
+
+#define CONFIG_FONT_EXT_NAME                  ".ttf"
+#define FONT_MAKE_PATH(name)                  CONFIG_FONT_DIR_PATH "/" name CONFIG_FONT_EXT_NAME
 
 /* Default latitude and longitude */
 #define CONFIG_GNSS_LONGITUDE_DEFAULT         116.391332f
 #define CONFIG_GNSS_LATITUDE_DEFAULT          39.907415f
 
 /* Track file storage directory */
-#define CONFIG_TRACK_RECORD_FILE_DIR_NAME     "Track"
-
-/* Coordinate conversion
- * true:  GCJ-02 (GCJ-02 Coordinate System)
- * false: WGS-84 (World Geodetic System)
- */
-#define CONFIG_MAP_COORD_TRANSFORM_ENABLE     true
+#define CONFIG_TRACK_RECORD_FILE_DIR_NAME     RESOURCE_MAKE_PATH("/Track")
 
 /* Default map file storage directory */
-#define CONFIG_MAP_DIR_PATH_DEFAULT           "/MAP"
+#define CONFIG_MAP_DIR_PATH_DEFAULT           RESOURCE_MAKE_PATH("/MAP")
 
 /* Default map file extension name */
-#define CONFIG_MAP_EXT_NAME_DEFAULT           "png"
-
-/* Watchdog timeout (seconds) */
-#ifndef CONFIG_WATCHDOG_TIMEOUT
-#define CONFIG_WATCHDOG_TIMEOUT               10
-#endif
+#define CONFIG_MAP_EXT_NAME_DEFAULT           CONFIG_IMAGE_EXT_NAME
 
 /* clang-format on */
 

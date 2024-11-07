@@ -42,7 +42,6 @@ private:
 
 private:
     int onEvent(DataNode::EventParam_t* param);
-    int setLanguage(const char* lang);
 };
 
 DP_i18n::DP_i18n(DataNode* node)

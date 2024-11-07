@@ -30,7 +30,7 @@
 #include <cstring>
 #include <ctime>
 
-#define CONFIG_GPX_FILE_PATH "/Track/TRK_EXAMPLE.gpx"
+#define CONFIG_GPX_FILE_PATH  RESOURCE_MAKE_PATH("/Track/TRK_EXAMPLE.gpx")
 #define CONFIG_GPX_DELAY_INIT 5000
 #define CONFIG_RANDOM_GNSS 0
 #define CONFIG_NO_GNSS 0

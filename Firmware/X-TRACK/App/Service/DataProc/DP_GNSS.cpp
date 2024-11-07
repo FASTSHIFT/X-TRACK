@@ -29,7 +29,7 @@
 
 using namespace DataProc;
 
-#define GNSS_EPHEMERIS_DEFAULT_FILE_PATH "/mgaoffline.ubx"
+#define GNSS_EPHEMERIS_DEFAULT_FILE_PATH RESOURCE_MAKE_PATH("/mgaoffline.ubx")
 #define GNSS_EPHEMERIS_LOAD_PERIOD 10
 #define GNSS_EPHEMERIS_LOAD_BYTES 64
 #define GNSS_SIGNAL_QUALITY_GOOD 7

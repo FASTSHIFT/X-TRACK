@@ -27,8 +27,8 @@
 #include "lvgl/lvgl.h"
 
 /* System configuration file */
-#define SYSTEM_SAVE_PATH "/SystemSave.json"
-#define SYSTEM_SAVE_BACKUP_DIR "/Backup"
+#define SYSTEM_SAVE_PATH RESOURCE_MAKE_PATH("/SystemSave.json")
+#define SYSTEM_SAVE_BACKUP_DIR RESOURCE_MAKE_PATH("/Backup")
 #define SYSTEM_SAVE_BACKUP_FMT SYSTEM_SAVE_BACKUP_DIR "/SystemSave_%d%02d%02d_%02d%02d%02d.json"
 
 #define IS_STR_EQ(STR1, STR2) (strcmp(STR1, STR2) == 0)
