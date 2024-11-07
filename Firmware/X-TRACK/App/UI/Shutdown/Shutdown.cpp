@@ -104,6 +104,11 @@ void Shutdown::onViewEvent(ShutdownView::EVENT_ID id, const void* param)
         _model->feedback()->trigger(DataProc::FEEDBACK_GEN_EFFECT::SELECTION);
         break;
     case ShutdownView::EVENT_ID::SHUTDOWN: {
+        if(_model->checkShutdownDisable()) {
+            LV_LOG_WARN("Shutdown disabled by user");
+            return;
+        }
+
         _model->setInterceptPageNavi(false);
 
         /* Let Startup page show shoutdown animation */

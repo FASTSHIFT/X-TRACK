@@ -55,6 +55,16 @@ void ShutdownModel::setInterceptPageNavi(bool en)
     _interceptPageNavi = en;
 }
 
+bool ShutdownModel::checkShutdownDisable()
+{
+    auto value = _env.get("shutdown");
+    if (!value) {
+        return false;
+    }
+
+    return (strcmp(value, "disable") == 0);
+}
+
 int ShutdownModel::onEvent(DataNode::EventParam_t* param)
 {
     if (_interceptPageNavi && param->tran == _nodePageNavi) {

@@ -44,6 +44,7 @@ public:
     ~ShutdownModel();
     int shutdown();
     void setInterceptPageNavi(bool en);
+    bool checkShutdownDisable();
 
     DataProc::Env_Helper* env()
     {
