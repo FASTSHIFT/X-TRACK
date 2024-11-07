@@ -35,6 +35,25 @@ struct AppContext {
     Page::StatusBar* statusBar;
 };
 
+static void App_ParseArgsToEnv(AppContext_t* context, int argc, const char* argv[])
+{
+    if (argc < 2) {
+        return;
+    }
+
+    DataProc::Env_Helper env(context->broker->mainNode());
+
+    int i = 1;
+    while (i < argc) {
+        const char* key = argv[i++];
+        const char* value = i < argc ? argv[i++] : nullptr;
+        LV_LOG_USER("Setting env: %s = %s", key, value);
+        env.set(key, value);
+    }
+
+    context->global->publish(DataProc::GLOBAL_EVENT::APP_ARGS_PARSED);
+}
+
 AppContext_t* App_CreateContext(int argc, const char* argv[])
 {
     AppContext_t* context = new AppContext;
@@ -48,6 +67,8 @@ AppContext_t* App_CreateContext(int argc, const char* argv[])
 
     context->global = new DataProc::Global_Helper(context->broker->mainNode());
     context->global->publish(DataProc::GLOBAL_EVENT::DATA_PROC_INIT_FINISHED);
+
+    App_ParseArgsToEnv(context, argc, argv);
 
     /* Page manager */
     context->manager = new PageManager(AppFactory::getInstance());
