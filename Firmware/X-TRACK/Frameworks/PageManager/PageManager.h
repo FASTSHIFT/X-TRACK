@@ -189,6 +189,26 @@ public:
     }
 
     /**
+     * @brief  Set the top layer of the page
+     * @param  obj: The top layer of the page
+     * @retval None
+     */
+    void setLayerTop(lv_obj_t* obj)
+    {
+        _layerTop = obj;
+    }
+
+    /**
+     * @brief  Get the top layer of the page
+     * @param  None
+     * @retval The top layer of the page
+     */
+    lv_obj_t* getLayerTop()
+    {
+        return _layerTop ? _layerTop : lv_layer_top();
+    }
+
+    /**
      * @brief  Set the event callback
      * @param  callback: Event callback
      * @param  userData: User data
@@ -266,6 +286,9 @@ private:
     /* Root */
     lv_obj_t* _rootParent;
     lv_style_t* _rootDefaultStyle;
+
+    /* Top layer */
+    lv_obj_t* _layerTop;
 
     /* Event */
     EVENT_CALLBACK _eventCallback;

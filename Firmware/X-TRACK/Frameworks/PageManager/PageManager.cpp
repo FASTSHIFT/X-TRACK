@@ -35,6 +35,7 @@ PageManager::PageManager(PageFactory* factory)
     , _animState { 0 }
     , _rootParent(nullptr)
     , _rootDefaultStyle(nullptr)
+    , _layerTop(nullptr)
     , _eventCallback(nullptr)
     , _eventUserData(nullptr)
 {
