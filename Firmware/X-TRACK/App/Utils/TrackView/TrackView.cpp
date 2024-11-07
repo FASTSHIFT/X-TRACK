@@ -85,7 +85,7 @@ void TrackView::setActivePoint(int32_t x, int32_t y)
 
     const TrackLineFilter::Area_t* area = _lineFilter.getArea();
 
-    TrackLineFilter::Point_t relEndPoint = { area->x0 + end.x, area->y0 + end.y };
+    TrackLineFilter::Point_t relEndPoint = { area->x0 + (int32_t)end.x, area->y0 + (int32_t)end.y };
     auto relActivePoint = convertPoint(x, y, _refLevel, _curLevel);
 
     if (!_lineFilter.getIsPointInArea(&relEndPoint)

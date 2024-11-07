@@ -18,7 +18,7 @@ public:
     void append(const lv_point_precise_t* point);
     void append(lv_coord_t x, lv_coord_t y)
     {
-        lv_point_precise_t point = { x, y };
+        lv_point_precise_t point = { (lv_value_precise_t)x, (lv_value_precise_t)y };
         append(&point);
     }
     void reset();
