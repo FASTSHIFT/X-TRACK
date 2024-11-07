@@ -77,6 +77,11 @@ MapView::MapView(
         viewCont, [](lv_event_t* e) {
             auto self = (MapView*)lv_event_get_user_data(e);
 
+            /* not scrollable */
+            if (!lv_obj_has_flag(self->_viewCont, LV_OBJ_FLAG_SCROLLABLE)) {
+                return;
+            }
+
             /* double click */
             if (lv_tick_elaps(self->_lastShortClickTime) < 300) {
                 if (self->setLevel(self->_curLevel + 1)) {
