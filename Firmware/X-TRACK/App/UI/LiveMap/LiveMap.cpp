@@ -78,17 +78,17 @@ void LiveMap::onViewDidAppear()
     int mapLevel = _model->getMapLevel();
     onModelEvent(LiveMapModel::EVENT_ID::MAP_LEVEL_CHANGE, &mapLevel);
 
+    DataProc::TrackFilter_Info_t trackFilterInfo;
+    if (_model->getTrackFilterInfo(&trackFilterInfo)) {
+        onModelEvent(LiveMapModel::EVENT_ID::TRACK_REC, &trackFilterInfo);
+    }
+
     HAL::GNSS_Info_t gnssInfo;
     if (_model->getGNSSInfo(&gnssInfo)) {
         onModelEvent(LiveMapModel::EVENT_ID::GNSS, &gnssInfo);
 
         /* enable gnss event */
         _model->setGNSSEnable(true);
-    }
-
-    DataProc::TrackFilter_Info_t trackFilterInfo;
-    if (_model->getTrackFilterInfo(&trackFilterInfo)) {
-        onModelEvent(LiveMapModel::EVENT_ID::TRACK_REC, &trackFilterInfo);
     }
 }
 
