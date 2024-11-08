@@ -177,6 +177,10 @@ PageBase::STATE PageManager::stateUnload(PageBase* base)
         base->_context.param.size = 0;
     }
 
+    /* Prevent another timer from modifying the style during async deletion */
+    lv_obj_clean(base->_root);
+    lv_obj_remove_style_all(base->_root);
+
     /* Delete after the end of the root animation life cycle */
     lv_obj_del_async(base->_root);
     base->_root = nullptr;
