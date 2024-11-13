@@ -82,7 +82,7 @@ lv_obj_t* StatusBarView::contCreate(lv_obj_t* par)
 
         /* style cover */
         lv_obj_set_style_bg_color(cont, lv_color_black(), dark_state);
-        lv_obj_set_style_bg_opa(cont, LV_OPA_20, dark_state);
+        lv_obj_set_style_bg_opa(cont, LV_OPA_60, dark_state);
         lv_obj_set_style_shadow_color(cont, lv_color_black(), dark_state);
         lv_obj_set_style_shadow_width(cont, 10, dark_state);
 
