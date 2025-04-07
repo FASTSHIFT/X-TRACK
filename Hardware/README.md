@@ -48,7 +48,7 @@
 * SD卡到MCU的线路可能有虚焊或者短路，尝试重新焊接SD卡和MCU
 * 尝试更换不同品牌或不同容量的SD卡
 
-> 不开机 & 关不了机
+> 不开机、关不了机、程序烧录失败
 * 长按编码器开关机
 * 检查供电是否正常，MCU和其他器件上的电压是否是3.3V
 * 检查所有二极管方向
@@ -78,6 +78,10 @@
 * 修改**SystemSave.json**里的经纬度配置到希望显示地图的地方
 * 确认生成的地图文件命名格式为`/z/x/y.png`
 * 修改**SystemSave.json**的`"sysConfig.mapExtName"`项目，将`"bin"`改为`"png"`
+
+> 怎么在PC端显示轨迹
+* 找到SD中的`Track`目录下的对应日期的`.gpx`文件，导入[gpx.studio](https://gpx.studio/zh/app)即可展示轨迹。
+
 
 ## 2.0寸屏版本
 https://github.com/FASTSHIFT/X-TRACK/tree/2.0-inch by[@HanfG](https://github.com/HanfG)
