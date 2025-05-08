@@ -13,6 +13,8 @@
 
 ![image](https://github.com/FASTSHIFT/X-TRACK/blob/main/Images/%E5%9C%B0%E5%9B%BE.jpg)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FASTSHIFT/X-TRACK)
+
 ## GUI
 > [LVGL V8](https://github.com/lvgl/lvgl)
 
