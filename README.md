@@ -54,6 +54,8 @@ https://user-images.githubusercontent.com/26767803/120889722-1f8d8e80-c631-11eb-
 ## 常见故障
 见文档: [常见故障排查](https://github.com/FASTSHIFT/X-TRACK/tree/main/Hardware#%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5)
 
+更细节的问题可以咨询DeepWiki -> [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FASTSHIFT/X-TRACK)
+
 ## 致谢
 > 感谢[@davidce](https://www.geek-workshop.com/home.php?mod=space&uid=204)贡献的参考设计“[自制基于arduino的GPS地图导航系统3.0](https://www.geek-workshop.com/thread-8835-1-1.html)”。
 
