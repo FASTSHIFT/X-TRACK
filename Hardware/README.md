@@ -86,6 +86,8 @@
 > 怎么在PC端显示轨迹
 * 找到SD中的`Track`目录下的对应日期的`.gpx`文件，导入[gpx.studio](https://gpx.studio/zh/app)即可展示轨迹。
 
+更多问题可以咨询DeepWiki -> [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FASTSHIFT/X-TRACK)
+
 
 ## 2.0寸屏版本
 https://github.com/FASTSHIFT/X-TRACK/tree/2.0-inch by[@HanfG](https://github.com/HanfG)
