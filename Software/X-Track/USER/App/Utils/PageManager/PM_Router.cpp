@@ -140,7 +140,7 @@ bool PageManager::Pop()
 
     if (top == nullptr)
     {
-        PM_LOG_WARN("Page stack is empty, cat't pop");
+        PM_LOG_WARN("Page stack is empty, can't pop");
         return false;
     }
 
